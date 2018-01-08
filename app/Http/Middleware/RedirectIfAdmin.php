@@ -18,7 +18,7 @@ class RedirectIfAdmin
 	public function handle($request, Closure $next, $guard = 'admin')
 	{
 	    if (Auth::guard($guard)->check()) {
-	        return redirect('/'.env('ADMIN_PANEL_LOCATION', 'login').'/dashboard');
+	        return redirect('/'.env('ADMIN_PANEL_LOCATION', 'admin').'/dashboard');
 	    }
 
 	    return $next($request);
