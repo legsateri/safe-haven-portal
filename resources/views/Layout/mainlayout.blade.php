@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @include('layout.partials.head')
+    @include('Layout.partials.head')
 </head>
 <body>
-@include('layout.partials.nav')
+@include('Layout.partials.nav')
 <main role="main">
 @yield('content')
 </main>
-@include('layout.partials.footer')
-@include('layout.partials.footer-scripts')
+@include('Layout.partials.footer')
+@include('Layout.partials.footer-scripts')
 </body>
 </html>
