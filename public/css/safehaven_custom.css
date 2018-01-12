@@ -13,14 +13,218 @@ body,
     display: inline-block;
     vertical-align: middle;
     max-width: 100%;
-    height: 15px;
+    height: 0.9375rem;
     line-height: inherit;
     position: relative;
-    font-size: 28px;
+    font-size: 1.75rem;
     padding-top: 0;
-    margin-top: -27px;
+    margin-top: -1.6875rem;
 }
 
 #logoImg {
     max-height: 2em;
 }
+
+.form-signin #inputPassword,
+.form-signin button,
+.form-signin #inputEmail {
+    margin-bottom: 1rem;
+}
+
+.form-signin .form-signin-heading {
+    margin-bottom: 1rem;
+}
+
+.forgot_pass {
+    margin-bottom: 0.5rem;
+}
+
+.sh_signup .fa-balance-scale,
+.sh_signup .fa-home {
+    font-size: 7em;
+    margin: .2em auto 0;
+}
+
+.sh_signup .card {
+    background-color: transparent;
+    border: none;
+}
+
+.sh_signup .card-footer {
+    background-color: transparent;
+    border: none;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 .2rem rgba(255,255,255,.5);
+    box-shadow: none;
+}
+
+.form-control:focus,
+.form-control {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #777777;
+}
+
+.sh_signup .custom-control-indicator {
+    background-color: #007bff;
+}
+.sh_signup #sign_up_org_code_half_row {
+    display: none;
+}
+
+.jumbotron-heading.signup_shelter,
+.jumbotron-heading.signup_advocate {
+    display: none;
+}
+
+.signup_form_row {
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+footer .sh_social_icons {
+    list-style-type: none;
+}
+
+footer .sh_social_icons li {
+    display: inline;
+    margin-right: .7rem;
+}
+
+footer .sh_social_icons i {
+    font-size: 2rem;
+}
+
+
+/******* Responsive views start **********/
+
+/*Extra small devices (portrait phones, less than 576px)*/
+@media (max-width: 575.99px) {
+
+}
+
+@media (min-width: 320px) and (max-width: 575.99px) {
+
+    body {
+        /*font-size: 0.7rem;*/
+    }
+
+    .homepage .btn-primary,
+    .homepage .btn-secondary {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .sh_signup label {
+        font-size: .9rem;
+    }
+
+    .footer_copyright {
+        font-size: .8rem;
+    }
+
+    footer .container {
+        background-color: #ffffff;
+    }
+
+    footer .sh_social_icons {
+        margin-left: .7rem;
+    }
+
+    footer .back_to_top,
+    footer .sh_social_icons,
+    footer .footer_copyright {
+        float: none !important;
+        padding: 0;
+        margin-right: auto !important;
+        text-align: center;
+    }
+
+    .btn.signup_advocate,
+    .btn.signup_shelter,
+    .sh_sign_btn {
+        width: 100%;
+    }
+
+}
+
+/*Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) and (max-width: 767.99px) {
+
+    .footer_copyright {
+        font-size: .8rem;
+    }
+}
+
+/*Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) and (max-width: 991.99px) {
+
+    .sh_signup label {
+        font-size: .7rem;
+    }
+
+    .sh_signup .custom-control-description {
+        line-height: 2;
+    }
+
+}
+
+/*Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) and (max-width: 1199.99px) {
+
+    .sh_signup label {
+        font-size: .9rem;
+    }
+
+}
+
+/*Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+
+}
+
+/******* Responsive views end **********/
+
+/******* Borders for breakpoints visibility start **********/
+/*
+!*Extra small devices (portrait phones, less than 576px)*!
+@media (max-width: 575.99px) {
+
+}
+
+@media (min-width: 320px) and (max-width: 575.99px) {
+    main {
+        border: 1px solid orange;
+    }
+}
+
+ !*Small devices (landscape phones, 576px and up)*!
+@media (min-width: 576px) and (max-width: 767.99px) {
+    main {
+        border: 1px solid green;
+    }
+}
+
+ !*Medium devices (tablets, 768px and up)*!
+@media (min-width: 768px) and (max-width: 991.99px) {
+    main {
+        border: 1px solid blue;
+    }
+}
+
+ !*Large devices (desktops, 992px and up)*!
+@media (min-width: 992px) and (max-width: 1199.99px) {
+    main {
+        border: 1px solid red;
+    }
+}
+
+ !*Extra large devices (large desktops, 1200px and up)*!
+@media (min-width: 1200px) {
+
+}*/
+
+/******* Borders for breakpoints visibility end **********/
