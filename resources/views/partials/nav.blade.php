@@ -2,13 +2,13 @@
     <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">
             <div class="row">
-                <div class="col-sm-8 py-4">
+                <div class="col-sm-8 pt-4">
                     <h4 class="text-white">About</h4>
                     <p class="text-muted">
                         By providing a dedicated service for domestic violence victims to escape abuse with their pets, The Safe Haven Network offers the safety options, support and the peace of mind that your pet is free from abuse as well.
                     </p>
                 </div>
-                <div class="col-sm-4 py-4">
+                <div class="col-sm-4 pt-4">
                     <h4 class="text-white"><a href="http://thesafehavennetwork.org/contact/" class="text-white">Contact</a></h4>
                     <ul class="list-unstyled">
                         <li><a href="http://thesafehavennetwork.org/" class="text-white">Home</a></li>

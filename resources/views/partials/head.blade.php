@@ -4,11 +4,11 @@
 <meta name="author" content="">
 <link rel="icon" href="../../../../favicon.ico">
 
-<title>SafeHaven</title>
+<title>SHN Secure Portal</title>
 
 <!-- Bootstrap core CSS -->
-{{--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">--}}
 <link href="{{url('/')}}/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{url('/')}}/css/font-awesome.min.css" rel="stylesheet">
 <link href="{{url('/')}}/css/safehaven_custom.css" rel="stylesheet">
 <link href="{{url('/')}}/css/public-sticky-footer.css" rel="stylesheet">
 
