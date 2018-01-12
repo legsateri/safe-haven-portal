@@ -1,30 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-{{--<div class="album text-muted">
-        <div class="container">
-
-            <div class="row">
-                <h1>Welcome to the Secure Portal!</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed egestas dolor vulputate quam convallis consequat.
-                    Quisque eu lorem eget magna lacinia suscipit. Maecenas condimentum vehicula eros. Fusce massa lacus, blandit et leo sed,
-                    accumsan commodo sem. Sed eget pulvinar tellus. Praesent ex diam, sodales at consequat id, viverra ut dolor.
-                    In eget orci sit amet magna sagittis mattis sit amet sed augue. Vivamus facilisis libero ligula, vel sodales ipsum sollicitudin id.
-                    Duis vitae urna rutrum, dignissim arcu ac, elementum augue. Quisque id interdum ligula. Donec tincidunt feugiat massa sed aliquam.
-                    Duis eu vehicula turpis.
-                </p>
-            </div>
-        </div>
-    </div>--}}
     <section class="jumbotron text-center">
         <div class="container">
-            {{--<h1 class="jumbotron-heading">Welcome to the Secure Portal!</h1>
-            <p class="lead text-muted">
-                XThe Safe Haven Network provides dedicated housing options for domestic violence victims and their pets by placing the pets in shelters and foster homes while the victims stay in domestic violence shelters.
-            </p>--}}
-            {{--<p>
-                By providing a dedicated service for domestic violence victims to escape abuse with their pets, The Safe Haven Network offers the safety options, support and the peace of mind that your pet is free from abuse as well.
-            </p>--}}
             <div class="row">
                 <div class="col-lg-4 col-md-3">
                 </div>
@@ -55,7 +33,7 @@
                                 placeholder="Password"
                                 name="password" 
                                 required>
-                        <button class="btn btn-lg btn-primary btn-block" 
+                        <button class="btn btn-md btn-primary btn-block mt-4"
                                 type="submit">Sign in</button>
                         <div class="forgot_pass">
                         <label>
@@ -71,23 +49,8 @@
                 <div class="col-lg-4 col-md-3">
                 </div>
             </div>
-
-
-
-
         </div>
     </section>
-
-
-
-
-
-
-
-
-
-
-
 <?php  /*
 <div class="container">
     <div class="row">
