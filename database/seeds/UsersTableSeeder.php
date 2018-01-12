@@ -18,31 +18,31 @@ class UsersTableSeeder extends Seeder
                 'first_name' => 'Milos',
                 'last_name' => 'Djokic',
                 'email' => 'mdjokic@ztech.io',
-                'type' => 'shelter',
+                'type' => '1',
             ],
             [
                 'first_name' => 'Milos',
                 'last_name' => 'Djokic',
                 'email' => 'milos.djokic@ztech.io',
-                'type' => 'advocate',
+                'type' => '2',
             ],
             [
                 'first_name' => 'Ninoslav',
                 'last_name' => 'Stojcic',
                 'email' => 'nstojcic@ztech.io',
-                'type' => 'shelter',
+                'type' => '2',
             ],
             [
                 'first_name' => 'Leta',
                 'last_name' => 'Pavlovic',
                 'email' => 'lpavlovic@ztech.io',
-                'type' => 'advocate',
+                'type' => '1',
             ],
             [
                 'first_name' => 'Milica',
                 'last_name' => 'Dundic',
                 'email' => 'mdundic@ztech.io',
-                'type' => 'shelter',
+                'type' => '2',
             ]
         ];
 
@@ -54,7 +54,7 @@ class UsersTableSeeder extends Seeder
             $row->slug = str_slug($user['first_name'] . ' ' . $user['last_name'], '-');
             $row->email = $user['email'];
             $row->password = bcrypt('password');
-            $row->type = $user['type'];
+            $row->user_type_id = $user['type'];
             $row->activated = true;
             $row->save();
         }

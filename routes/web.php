@@ -37,11 +37,16 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 	Route::get('/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
 });
 
-Auth::routes();
 
-// Route::get('/home', 'HomeController@index')->name('home');
+// Route::group(['middleware' => 'web'], function () {
 
-/**
- *  user dashboard page
- */
-Route::get('/dashboard', 'HomeController@index')->name('user.dashboard');
+	Auth::routes();
+
+	// Route::get('/home', 'HomeController@index')->name('home');
+
+	/**
+	 *  user dashboard page
+	 */
+	Route::get('/dashboard', 'HomeController@index')->name('user.dashboard');
+
+// });

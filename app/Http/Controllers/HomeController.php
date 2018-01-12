@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 
+use App\Code\UserObject;
+
 class HomeController extends Controller
 {
     /**
@@ -24,14 +26,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // return view('home');
-        if (Auth::user()->type == "shelter")
+        $currentUser = UserObject::get(Auth::user()->email, 'email');
+
+        if ($currentUser->type == "shelter")
         {
-            return view('user.shelter.dashboard');
+            return view('user.shelter.dashboard', compact('currentUser'));
         }
-        elseif(Auth::user()->type == "advocate")
+        elseif($currentUser->type == "advocate")
         {
-            return view('user.advocate.dashboard');
+            return view('user.advocate.dashboard', compact('currentUser'));
         }
 
     }

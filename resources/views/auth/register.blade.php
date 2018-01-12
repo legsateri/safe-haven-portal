@@ -111,7 +111,8 @@
                 <div class="col-lg-2 col-md-2">
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                    <form action="/register" method="post">
+                    <form action="{{ route('register') }}" method="post">
+                        {{ csrf_field() }}
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label class="custom-control custom-checkbox mt-4">
@@ -171,7 +172,7 @@
                         </div>
                         <div class="form-group">
                             <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input">
+                                <input type="checkbox" class="custom-control-input" name="terms_of_use">
                                 <span class="custom-control-indicator"></span>
                                 <span class="custom-control-description">
                                     I agree to the

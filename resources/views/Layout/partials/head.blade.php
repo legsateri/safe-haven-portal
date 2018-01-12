@@ -11,6 +11,3 @@
 <link href="{{url('/')}}/css/font-awesome.min.css" rel="stylesheet">
 <link href="{{url('/')}}/css/safehaven_custom.css" rel="stylesheet">
 <link href="{{url('/')}}/css/public-sticky-footer.css" rel="stylesheet">
-
-<!-- Custom styles for this template -->
-<link href="album.css" rel="stylesheet">

@@ -20,7 +20,7 @@ class User extends Authenticatable
         'first_name', 
         'last_name', 
         'slug', 
-        'type',
+        'user_type_id',
         'activation_code',
     ];
 
@@ -32,4 +32,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function type()
+    {
+        return $this->hasOne('App\UserType');
+    }
 }

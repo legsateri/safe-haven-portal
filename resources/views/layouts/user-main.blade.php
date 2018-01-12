@@ -25,9 +25,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
 
-        @if( Auth::user()->type == "shelter" )
+        @if( $currentUser->type == "shelter" )
             @include('partials.side-navigation-shelter')
-        @elseif( Auth::user()->type == "advocate" )
+        @elseif( $currentUser->type == "advocate" )
             @include('partials.side-navigation-advocate')
         @endif
         @include('partials.user-main-navigation')

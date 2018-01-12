@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('slug');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('type', ['shelter', 'advocate']);
+            $table->integer('user_type_id')->unsigned();
             $table->integer('organisation_id')->unsigned()->nullable();
             $table->string('activation_code')->nullable();
             $table->boolean('activated')->default(false);
@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
 
+            $table->foreign('user_type_id')->references('id')->on('user_types');
             $table->foreign('organisation_id')->references('id')->on('organisations');
         });
     }
