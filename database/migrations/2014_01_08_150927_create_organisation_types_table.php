@@ -14,7 +14,7 @@ class CreateOrganisationTypesTable extends Migration
     public function up()
     {
         Schema::create('organisation_types', function (Blueprint $table) {
-            $table->increments('org_id');
+            $table->increments('org_type_id');
             $table->string('org_type');
             
             $table->timestamps();

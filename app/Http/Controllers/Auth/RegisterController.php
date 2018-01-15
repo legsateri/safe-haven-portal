@@ -15,6 +15,7 @@ use App\OrganisationType;
 use App\PhoneType;
 use App\Phone;
 use App\OrgHasPhone;
+use App\UserHasPhone;
 
 
 class RegisterController extends Controller
@@ -58,20 +59,20 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {   
         return Validator::make($data, [
-            'first_name' => 'required|string|max:25',
-            'last_name' => 'required|string|max:25',
-            'email' => 'required|string|email|max:45|unique:users',
-            'password' => 'required|string|min:6|max:20|confirmed',
+            'first_name'        => 'required|string|max:25',
+            'last_name'         => 'required|string|max:25',
+            'email'             => 'required|string|email|max:45|unique:users',
+            'password'          => 'required|string|min:6|max:20|confirmed',
 
-            'already_with_org' => 'nullable|in:on',
-            'org_name' => 'nullable|max:40|required_without:already_with_org',
-            'org_code' => 'nullable|required_with:already_with_org',
-            'tax_id' => 'nullable|required_without:already_with_org|regex:/^\d{2}-\d{7}$/',
-            'org_phone_number' => 'nullable|required_without:already_with_org|regex:/^\d{3}\d{3}\d{4}$/',
-            
-            'contact_phone_number' => 'required|regex:/^\d{3}\d{3}\d{4}$/',
-            'sign_up_form_user_type' => 'required|in:advocate,shelter',
-            'terms_of_use' => 'required|in:on',
+            'already_with_org'  => 'nullable|in:on',
+            'org_name'          => 'nullable|max:40|required_without:already_with_org',
+            'organization_code' => 'nullable|required_with:already_with_org|exists:organisations,code',
+            'tax_id'            => 'nullable|required_without:already_with_org|regex:/^\d{2}-\d{7}$/|unique:organisations',
+            'org_phone_number'  => 'nullable|required_without:already_with_org|regex:/^\d{3}\d{3}\d{4}$/',
+
+            'contact_phone_number'      => 'required|regex:/^\d{3}\d{3}\d{4}$/',
+            'sign_up_form_user_type'    => 'required|in:advocate,shelter',
+            'terms_of_use'              => 'required|in:on',
         ]);
     }
     
@@ -83,23 +84,29 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
+        
+        // get phone type id for office phone
+        $phoneType = PhoneType::where('phone_type', 'office')->first();
+        
+        // check does user belong to existing organisation
+        // or create new organisation
         if ( !isset( $data['already_with_org'] ) )
         {
+            /**
+             * create new organisation
+             */
+        
             // take organisation type
             $orgType = OrganisationType::where('org_type', $data['sign_up_form_user_type'])->first();
 
             // create new organisation entry
             $organisation = new Organisation();
             $organisation->name = $data['org_name'];
-            $organisation->org_type_id = $orgType->org_id;
+            $organisation->org_type_id = $orgType->org_type_id;
             $organisation->org_status_id = 1;
             $organisation->slug = str_slug($data['org_name'], '-');
             $organisation->tax_id = $data['tax_id'];
             $organisation->save();
-            
-            // get phone type id for office phone
-            $phoneType = PhoneType::where('phone_type', 'office')->first();
 
             // save organisation phone number
             $orgPhone = new Phone();
@@ -113,8 +120,29 @@ class RegisterController extends Controller
                 'phone_id' => $orgPhone->id,
             ]);
         }
+        else
+        {
+            /**
+             * take data for existing organisation
+             * based on organisation code
+             */
+            $organisation = Organisation::where('code', $data['organization_code'])->first();
 
-        // dd($data);
+            // compare organisation type and desiered user type
+            // if not same:  level user type to organisation type
+            $orgType = OrganisationType::where('org_type_id', $organisation->org_type_id)->first();
+            if ( $data['sign_up_form_user_type'] != $orgType->org_type )
+            {
+                if ( in_array($orgType->org_type, [ 'advocate' ]) )
+                {
+                    $data['sign_up_form_user_type'] = 'advocate';
+                }
+                elseif( in_array($orgType->org_type, [ 'shelter', 'foster' ]) )
+                {
+                    $data['sign_up_form_user_type'] = 'shelter';
+                }
+            }
+        }
 
         // get user type
         $userType = UserType::where('type', $data['sign_up_form_user_type'])->first();
@@ -127,12 +155,28 @@ class RegisterController extends Controller
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
         $user->user_type_id = $userType->id;
-        $user->organisation_id = $organisation->id;
+        if ( !isset( $data['already_with_org'] ) )
+        {
+            $user->organisation_id = $organisation->id;
+        }
+        else
+        {
+            $user->organisation_id = $organisation->organisation_id;
+        }
         $user->save();
 
 
-        // add user phone number to user
-        
+        // save user phone number
+        $userPhone = new Phone();
+        $userPhone->phone_type_id = $phoneType->phone_type_id;
+        $userPhone->number = $data['contact_phone_number'];
+        $userPhone->save();
+
+        // add phone number to user
+        UserHasPhone::create([
+            'user_id' => $user->id,
+            'phone_id' => $userPhone->id,
+        ]);
 
         return $user;
     }
