@@ -22,7 +22,7 @@ class OrganisationTypesTableSeeder extends Seeder
         foreach ($organisationTypes as $type)
         {
             $row = new OrganisationType;
-            $row->type = $type;
+            $row->org_type = $type;
             $row->save();
         }
     }

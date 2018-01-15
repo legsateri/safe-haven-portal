@@ -111,68 +111,85 @@
                 <div class="col-lg-2 col-md-2">
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form action="{{ route('register') }}" method="post">
                         {{ csrf_field() }}
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label class="custom-control custom-checkbox mt-4">
-                                    <input type="checkbox" id="already_with_org" class="custom-control-input">
+                                    <input type="checkbox" id="already_with_org" class="custom-control-input" name="already_with_org"
+                                        @if( old('already_with_org') == 'on' )
+                                            checked
+                                        @endif
+                                    >
                                     <span class="custom-control-indicator"></span>
                                     <span class="custom-control-description">Already with an organization?</span>
                                 </label>
                             </div>
                             <div id="sign_up_org_name_half_row" class="form-group col-md-6">
                                 <label for="org_name">Organization Name</label>
-                                <input type="text" class="form-control" id="org_name" maxlength="40" name="org_name" value="">
+                                <input type="text" class="form-control" id="org_name" maxlength="40" name="org_name" value="{{ old('org_name') }}">
                             </div>
                             <div id="sign_up_org_code_half_row" class="form-group col-md-6">
                                 <label for="org_code">Organization Code</label>
-                                <input type="text" class="form-control" id="org_code" placeholder="XXXXXX" name="organization_code" value="">
+                                <input type="text" class="form-control" id="org_code" placeholder="XXXXXX" name="organization_code" value="{{ old('organization_code') }}">
                             </div>
                         </div>
                         <div id="sign_up_tax_id_row" class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="tax_id">Tax ID (EIN) - (9 digits)</label>
-                                <input type="text" class="form-control" id="tax_id" maxlength="10" name="tax_id" pattern="^\d{2}-\d{7}$" value="" placeholder="XX-XXXXXXX">
+                                <input type="text" class="form-control" id="tax_id" maxlength="10" name="tax_id" pattern="^\d{2}-\d{7}$" value="{{ old('tax_id') }}" placeholder="XX-XXXXXXX">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="org_phone_num">Organization Phone Number - (10 digits)</label>
-                                <input type="phone" class="form-control" id="org_phone_num" maxlength="10" name="org_phone_number" pattern="^\d{3}\d{3}\d{4}$" value="" placeholder="XXXXXXXXXX">
+                                <input type="phone" class="form-control" id="org_phone_num" maxlength="10" name="org_phone_number" pattern="^\d{3}\d{3}\d{4}$" value="{{ old('org_phone_number') }}" placeholder="XXXXXXXXXX">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="org_last_name">First Name</label>
-                                <input type="text" class="form-control" id="org_first_name" maxlength="25" required="" value="" name="first_name" placeholder="">
+                                <input type="text" class="form-control" id="org_first_name" maxlength="25" required="" value="{{ old('first_name') }}" name="first_name" placeholder="">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="org_last_name">Last Name</label>
-                                <input type="text" class="form-control" id="org_last_name" maxlength="25" required="" value="" name="last_name" placeholder="">
+                                <input type="text" class="form-control" id="org_last_name" maxlength="25" required="" value="{{ old('last_name') }}" name="last_name" placeholder="">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputEmail4">Email</label>
-                                <input type="email" maxlength="45" class="form-control" id="inputEmail4" name="email" placeholder="e.g. yourname@yourmail.com" required="" value="">
+                                <input type="email" maxlength="45" class="form-control" id="inputEmail4" name="email" placeholder="e.g. yourname@yourmail.com" required="" value="{{ old('email') }}">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="contact_phone_num">Contact Phone Number</label>
-                                <input type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}\d{3}\d{4}$" placeholder="XXXXXXXXXX" required="" value="">
+                                <input type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}\d{3}\d{4}$" placeholder="XXXXXXXXXX" required="" value="{{ old('contact_phone_number') }}">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="user_pass">Password</label>
-                                <input type="password" maxlength="15" class="form-control" id="user_pass" name="password" required="">
+                                <input type="password" minlength="6" maxlength="20" class="form-control" id="user_pass" name="password" required="">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="user_pass_confirm">Confirm Password</label>
-                                <input type="password" class="form-control" id="user_pass_confirm" name="password_confirmation" maxlength="15" required="">
+                                <input type="password" class="form-control" id="user_pass_confirm" name="password_confirmation" minlength="6" maxlength="20" required="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" name="terms_of_use">
+                                <input type="checkbox" class="custom-control-input" name="terms_of_use" id="terms_of_use"
+                                    @if( old('terms_of_use') == 'on' )
+                                        checked
+                                    @endif
+                                >
                                 <span class="custom-control-indicator"></span>
                                 <span class="custom-control-description">
                                     I agree to the

@@ -14,25 +14,25 @@ class CreateOrganisationsTable extends Migration
     public function up()
     {
         Schema::create('organisations', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('organisation_id');
             $table->string('name');
-            $table->integer('organisation_type_id')->unsigned();
-            $table->integer('organisation_status_id')->unsigned();
-            $table->string('code');
-            $table->string('update_action');
-            $table->string('phone');
-            $table->string('email');
-            $table->text('services');
-            $table->text('office_hours');
-            $table->text('website_url');
-            $table->text('geographic_area_served');
+            $table->integer('org_type_id')->unsigned();
+            $table->integer('org_status_id')->unsigned();
+            $table->integer('address_id')->unsigned()->nullable();
+            $table->string('code')->nullable();
+            $table->string('email')->nullable()->unique();
+            $table->text('services')->nullable();
+            $table->text('office_hours')->nullable();
+            $table->text('website')->nullable();
+            $table->text('geographic_area_served')->nullable();
             $table->string('slug');
             $table->string('tax_id');
 
             $table->timestamps();
 
-            $table->foreign('organisation_type_id')->references('id')->on('organisation_types');
-            $table->foreign('organisation_status_id')->references('id')->on('organisation_statuses');
+            $table->foreign('org_type_id')->references('org_id')->on('organisation_types');
+            $table->foreign('org_status_id')->references('org_status_id')->on('organisation_statuses');
+            $table->foreign('address_id')->references('address_id')->on('addresses');
         });
     }
 

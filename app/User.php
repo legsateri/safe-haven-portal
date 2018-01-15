@@ -22,6 +22,7 @@ class User extends Authenticatable
         'slug', 
         'user_type_id',
         'activation_code',
+        'organisation_id'
     ];
 
     /**
@@ -33,8 +34,4 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function type()
-    {
-        return $this->hasOne('App\UserType');
-    }
 }
