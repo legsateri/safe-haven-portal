@@ -28,7 +28,7 @@ class AppConfig
     /**
      * add new property to object
      */
-    private function __set($option, $value)
+    public function __set($option, $value)
     {
         $this->$option = $value;
     }
