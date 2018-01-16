@@ -1,93 +1,84 @@
 <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="/admin/dashboard">
             <i class="fa fa-fw fa-dashboard"></i>
             <span class="nav-link-text">Dashboard</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="charts.html">
-            <i class="fa fa-fw fa-area-chart"></i>
-            <span class="nav-link-text">Charts</span>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseUsers" data-parent="#exampleAccordion">
+            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+
+            <span class="nav-link-text">Users</span>
           </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="tables.html">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">Tables</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-wrench"></i>
-            <span class="nav-link-text">Components</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseComponents">
+          <ul class="sidenav-second-level collapse" id="collapseUsers">
             <li>
-              <a href="navbar.html">Navbar</a>
+              <a href="/admin/users/users-all"><i class="fa fa-users" aria-hidden="true"></i> All Users</a>
             </li>
             <li>
-              <a href="cards.html">Cards</a>
+              <a href="/admin/users/advocates"><i class="fa fa-balance-scale"></i> Advocates</a>
+            </li>
+            <li>
+              <a href="/admin/users/shelters"><i class="fa fa-home"></i> Shelters</a>
+            </li>
+            <li>
+              <a href="/admin/users/user-add"><i class="fa fa-user-plus" aria-hidden="true"></i>
+                 Add User</a>
             </li>
           </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-file"></i>
-            <span class="nav-link-text">Example Pages</span>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Clients">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseClients" data-parent="#exampleAccordion">
+
+            <i class="fa fa-user" aria-hidden="true"></i>
+
+            <span class="nav-link-text">Clients</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+          <ul class="sidenav-second-level collapse" id="collapseClients">
             <li>
-              <a href="login.html">Login Page</a>
+              <a href="/admin/clients/clients-all"><i class="fa fa-users" aria-hidden="true"></i> All Clients</a>
             </li>
             <li>
-              <a href="register.html">Registration Page</a>
+              <a href="/admin/clients/pets-all"><i class="fa fa-paw" aria-hidden="true"></i>
+                All Pets</a>
             </li>
             <li>
-              <a href="forgot-password.html">Forgot Password Page</a>
+              <a href="/admin/clients/applications"><i class="fa fa-book" aria-hidden="true"></i>
+                Applications</a>
             </li>
             <li>
-              <a href="blank.html">Blank Page</a>
+              <a href="/admin/clients/client-add"><i class="fa fa-user-plus" aria-hidden="true"></i>
+                Add Client</a>
             </li>
           </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-sitemap"></i>
-            <span class="nav-link-text">Menu Levels</span>
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Clients">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSettings" data-parent="#exampleAccordion">
+
+            <i class="fa fa-sliders" aria-hidden="true"></i>
+
+            <span class="nav-link-text">Settings</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseMulti">
+          <ul class="sidenav-second-level collapse" id="collapseSettings">
             <li>
-              <a href="#">Second Level Item</a>
+              <a href="/admin/settings/application"><i class="fa fa-sliders" aria-hidden="true"></i>
+                Application Settings</a>
             </li>
             <li>
-              <a href="#">Second Level Item</a>
+              <a href="/admin/settings/admin-users"><i class="fa fa-user-secret" aria-hidden="true"></i>
+
+                Admin Users</a>
             </li>
             <li>
-              <a href="#">Second Level Item</a>
-            </li>
-            <li>
-              <a class="nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti2">Third Level</a>
-              <ul class="sidenav-third-level collapse" id="collapseMulti2">
-                <li>
-                  <a href="#">Third Level Item</a>
-                </li>
-                <li>
-                  <a href="#">Third Level Item</a>
-                </li>
-                <li>
-                  <a href="#">Third Level Item</a>
-                </li>
-              </ul>
+              <a href="/admin/settings/account"><i class="fa fa-address-card" aria-hidden="true"></i>
+                My Account</a>
             </li>
           </ul>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
-          <a class="nav-link" href="#">
-            <i class="fa fa-fw fa-link"></i>
-            <span class="nav-link-text">Link</span>
-          </a>
-        </li>
+
       </ul>
       <ul class="navbar-nav sidenav-toggler">
         <li class="nav-item">
