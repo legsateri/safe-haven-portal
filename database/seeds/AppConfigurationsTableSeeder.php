@@ -14,8 +14,10 @@ class AppConfigurationsTableSeeder extends Seeder
     public function run()
     {
         $configuration = [
-            "maintenance-mode" => "0",
-            "main-email" => "safe-haven@test.com",
+            "maintenance_mode" => "0",
+            "email_main" => "safe-haven@test.com",
+            "recaptcha_public_key" => "",
+            "recaptcha_secret_key" => "",
         ];
 
 
