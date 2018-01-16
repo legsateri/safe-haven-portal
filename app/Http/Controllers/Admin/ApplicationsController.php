@@ -8,10 +8,10 @@ use App\Http\Controllers\Controller;
 class ApplicationsController extends Controller
 {
     /**
-     * display client applications list page
+     * display applications list page
      */
     public function index()
     {
-
+        return view('admin.clients.applications.list');
     }
 }

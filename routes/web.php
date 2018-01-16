@@ -35,18 +35,20 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 	Route::get('/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
 
 	// user pages
-	Route::get('/users', 'Admin\UsersController@index')->name('admin.users.list');
-	Route::get('/users/add', 'Admin\UsersController@add')->name('admin.users.add');
+	Route::get('/users/users-all', 'Admin\UsersController@index')->name('admin.users.users_all.list');
+	Route::get('/users/advocates', 'Admin\UsersController@advocates')->name('admin.users.advocates.list');
+	Route::get('/users/shelters', 'Admin\UsersController@shelters')->name('admin.users.shelters.list');
+	Route::get('/users/user-add', 'Admin\UsersController@add')->name('admin.users.user_add.list');
 
 	// client pages
-	Route::get('/clients/clients', 'Admin\ClientsController@index')->name('admin.clients.list');
-	Route::get('/clients/applications', 'Admin\ClientsController@add')->name('admin.clients.add');
+	Route::get('/clients/clients-all', 'Admin\ClientsController@index')->name('admin.clients.clients_all.list');
+	Route::get('/clients/client-add', 'Admin\ClientsController@add')->name('admin.clients.client_add.list');
 	
 	// pet pages
-	Route::get('/clients/pets', 'Admin\PetsController@index')->name('admin.pets.list');
+	Route::get('/clients/pets-all', 'Admin\PetsController@index')->name('admin.clients.pets_all.list');
 	
 	// client applications pages
-	Route::get('/clients/applications', 'Admin\ApplicationsController@index')->name('admin.applications.list');
+	Route::get('/clients/applications', 'Admin\ApplicationsController@index')->name('admin.clients.applications.list');
 	
 	// settings pages
 	Route::get('/settings/application', 'Admin\ApplicationSettingsController@index')->name('admin.settings.application');

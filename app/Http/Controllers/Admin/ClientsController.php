@@ -12,7 +12,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-
+        return view('admin.clients.clients_all.list');
     }
 
     /**
@@ -20,6 +20,6 @@ class ClientsController extends Controller
      */
     public function add()
     {
-
+        return view('admin.clients.client_add.list');
     }
 }

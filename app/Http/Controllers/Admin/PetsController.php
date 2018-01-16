@@ -12,6 +12,6 @@ class PetsController extends Controller
      */
     public function index()
     {
-
+        return view('admin.clients.pets_all.list');
     }
 }

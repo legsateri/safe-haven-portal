@@ -12,7 +12,23 @@ class UsersController extends Controller
      */
     public function index()
     {
+        return view('admin.users.users_all.list');
+    }
 
+    /**
+     * display advocates list page
+     */
+    public function advocates()
+    {
+        return view('admin.users.advocates.list');
+    }
+
+    /**
+     * display advocates list page
+     */
+    public function shelters()
+    {
+        return view('admin.users.shelters.list');
     }
 
     /**
@@ -20,6 +36,6 @@ class UsersController extends Controller
      */
     public function add()
     {
-
+        return view('admin.users.user_add.list');
     }
 }
