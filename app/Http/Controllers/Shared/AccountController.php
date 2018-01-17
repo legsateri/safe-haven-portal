@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Shared;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Auth;
 
+use Auth;
 use App\Code\UserObject;
 
 class AccountController extends Controller
