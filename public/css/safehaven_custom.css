@@ -85,6 +85,17 @@ body,
     flex-wrap: wrap;
 }
 
+body .custom-select {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #777777;
+}
+
+.new_client_form_row select {
+    width: 100%;
+}
+
 footer .sh_social_icons {
     list-style-type: none;
 }

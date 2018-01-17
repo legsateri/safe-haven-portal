@@ -14,6 +14,8 @@
   <link href="{{url('/')}}/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
   <link href="{{url('/')}}/css/sb-admin.css" rel="stylesheet">
+    <!-- Safe Haven Custom styles for this template-->
+    <link href="{{url('/')}}/css/safehaven_custom.css" rel="stylesheet">
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
