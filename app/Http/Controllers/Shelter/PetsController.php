@@ -28,6 +28,8 @@ class PetsController extends Controller
     public function associatedList()
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
+
+        return view('auth.shelter.petsAssociated', compact('currentUser'));
     }
 
 
@@ -37,6 +39,8 @@ class PetsController extends Controller
     public function inNeedList()
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
+
+        return view('auth.shelter.petsInNeed', compact('currentUser'));
     }
 
 
