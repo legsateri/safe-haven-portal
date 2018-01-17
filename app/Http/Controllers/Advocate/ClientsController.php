@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Advocate;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
+
+use App\Code\UserObject;
 
 class ClientsController extends Controller
 {
@@ -24,7 +27,9 @@ class ClientsController extends Controller
      */
     public function associatedList()
     {
+        $currentUser = UserObject::get(Auth::user()->email, 'email');
 
+        return view('auth.advocate.clientsCurrent', compact('currentUser'));
     }
 
     /**
@@ -32,7 +37,9 @@ class ClientsController extends Controller
      */
     public function inNeedList()
     {
+        $currentUser = UserObject::get(Auth::user()->email, 'email');
 
+        return view('auth.advocate.clientsInNeed', compact('currentUser'));
     }
 
     /**

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Advocate;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
+
+use App\Code\UserObject;
 
 class ApplicationsController extends Controller
 {
@@ -25,7 +28,9 @@ class ApplicationsController extends Controller
      */
     public function newApplication()
     {
+        $currentUser = UserObject::get(Auth::user()->email, 'email');
 
+        return view('auth.advocate.applicationNew', compact('currentUser'));
     }
 
     /**
