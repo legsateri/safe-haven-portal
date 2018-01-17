@@ -55,6 +55,19 @@
                         <td>No</td>
                         <td><a href="#">More info</a></td>
                     </tr>
+                    @foreach( $pets as $pet )
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>{{ $pet->name }}</td>
+                            <td>Parrot</td>
+                            <td>Likes to talk</td>
+                            <td>3</td>
+                            <td>German Shepard</td>
+                            <td>{{ $pet->age }}</td>
+                            <td>No</td>
+                            <td><a href="#">More info</a></td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>

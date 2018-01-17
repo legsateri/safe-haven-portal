@@ -32,9 +32,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 	Route::get('/password/reset/{token}', 'AdminAuth\ResetPasswordController@showResetForm');
 
 	/**
+	 * auth guard
 	 * restricted for logged-in admin user
 	 */
-
 	Route::group(['middleware' => ['admin']], function () {
 
 		// admin panel dashboard page
@@ -70,8 +70,46 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 	 */
 	Auth::routes();
 
-
 	/**
-	 *  user dashboard page
+	 * auth guard
+	 * restricted for logged-in user
 	 */
-	Route::get('/dashboard', 'HomeController@index')->name('user.dashboard');
+	Route::group(['middleware' => ['auth']], function () {
+
+		/**
+		 *  user dashboard page
+		 */
+		Route::get('/dashboard', 'HomeController@index')->name('user.dashboard');
+
+		/**
+		 *  advocate user routes
+		 */
+
+		// associated clients list page
+		Route::get('/clients', 'Advocate\ClientsController@associatedList')->name('advocate.clients.associated.list');
+		// clients in need list page
+		Route::get('/clients/in-need', 'Advocate\ClientsController@inNeedList')->name('advocate.clients-in-need.list');
+		// single client page
+		Route::get('/client/{id}/{slug}', 'Advocate\ClientsController@single')->name('advocate.client.single');
+
+		// new client application page (form)
+		Route::get('/application/new', 'Advocate\ApplicationsController@newApplication')->name('advocate.application.new.form');
+		// submit new client application form
+		Route::post('/application/new', 'Advocate\ApplicationsController@newApplicationSubmit')->name('advocate.application.new.form.submit');
+
+
+
+
+		/**
+		 *  advocate and shelters shared routes
+		 */
+
+		// my organisation page
+
+		// user account page
+		Route::get('/account', 'Shared\AccountController@index')->name('user.account.page');
+
+		// user organization page
+		Route::get('/organization', 'Shared\OrganizationController@index')->name('user.organization.page');
+
+	});

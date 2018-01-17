@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use DB;
+
 class PetsController extends Controller
 {
     /**
@@ -12,6 +14,10 @@ class PetsController extends Controller
      */
     public function index()
     {
-        return view('admin.clients.pets_all.list');
+        $pets = DB::table('pets')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate('25');
+
+        return view('admin.clients.pets_all.list', compact('pets'));
     }
 }
