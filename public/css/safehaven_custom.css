@@ -109,6 +109,55 @@ footer .sh_social_icons i {
     font-size: 2rem;
 }
 
+    /*---- custom radio buttons starts ----*/
+
+    .custom-radio .custom-control-input:checked ~ .custom-control-label::after {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23fff'/%3E%3C/svg%3E");
+    }
+
+    .custom-control-label::before {
+        position: absolute;
+        top: .25rem;
+        left: 0;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        pointer-events: none;
+        content: "";
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: #dee2e6;
+    }
+
+    .custom-radio .custom-control-label::before {
+        border-radius: 50%;
+    }
+
+    .custom-control-input:checked ~ .custom-control-label::before {
+        color: #fff;
+        background-color: #007bff;
+    }
+
+    .custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+        background-color: #007bff;
+    }
+
+    .custom-control-label::after {
+        position: absolute;
+        top: .25rem;
+        left: 0;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        content: "";
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 50% 50%;
+    }
+
+    /*---- custom radio buttons ends ----*/
 
 /******* Responsive views start **********/
 
