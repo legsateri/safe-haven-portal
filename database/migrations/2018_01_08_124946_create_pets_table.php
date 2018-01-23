@@ -42,9 +42,9 @@ class CreatePetsTable extends Migration
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients');
-            $table->foreign('organisation_id')->references('organisation_id')->on('organisations');
-            $table->foreign('pet_type_id')->references('id')->on('pet_types');
-            $table->foreign('realise_status_id')->references('id')->on('realise_statuses');
+            $table->foreign('organisation_id')->references('id')->on('organisations');
+            $table->foreign('pet_type_id')->references('id')->on('object_types');
+            $table->foreign('realise_status_id')->references('id')->on('statuses');
         });
     }
 

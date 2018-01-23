@@ -14,7 +14,7 @@ class CreateOrganisationsTable extends Migration
     public function up()
     {
         Schema::create('organisations', function (Blueprint $table) {
-            $table->increments('organisation_id');
+            $table->increments('id');
             $table->string('name');
             $table->integer('org_type_id')->unsigned();
             $table->integer('org_status_id')->unsigned();
@@ -30,9 +30,9 @@ class CreateOrganisationsTable extends Migration
 
             $table->timestamps();
 
-            $table->foreign('org_type_id')->references('org_type_id')->on('organisation_types');
-            $table->foreign('org_status_id')->references('org_status_id')->on('organisation_statuses');
-            $table->foreign('address_id')->references('address_id')->on('addresses');
+            $table->foreign('org_type_id')->references('id')->on('object_types');
+            $table->foreign('org_status_id')->references('id')->on('statuses');
+            $table->foreign('address_id')->references('id')->on('addresses');
         });
     }
 

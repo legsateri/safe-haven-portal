@@ -14,15 +14,15 @@ class CreateUserHasPhonesTable extends Migration
     public function up()
     {
         Schema::create('user_has_phones', function (Blueprint $table) {
-
+            $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('phone_id')->unsigned();
 
             $table->timestamps();
 
-            $table->primary(array('user_id', 'phone_id'));
+            $table->unique(array('user_id', 'phone_id'));
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('phone_id')->references('phone_id')->on('phones');
+            $table->foreign('phone_id')->references('id')->on('phones');
 
         });
     }

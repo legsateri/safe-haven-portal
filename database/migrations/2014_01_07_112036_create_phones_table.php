@@ -14,12 +14,12 @@ class CreatePhonesTable extends Migration
     public function up()
     {
         Schema::create('phones', function (Blueprint $table) {
-            $table->increments('phone_id');
+            $table->increments('id');
             $table->integer('phone_type_id')->unsigned();
             $table->string('number');
             $table->timestamps();
 
-            $table->foreign('phone_type_id')->references('phone_type_id')->on('phone_types');
+            $table->foreign('phone_type_id')->references('id')->on('object_types');
         });
     }
 

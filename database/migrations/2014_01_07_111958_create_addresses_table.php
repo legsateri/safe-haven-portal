@@ -14,8 +14,8 @@ class CreateAddressesTable extends Migration
     public function up()
     {
         Schema::create('addresses', function (Blueprint $table) {
-            $table->increments('address_id');
-            $table->integer('addr_type_id')->unsigned();
+            $table->increments('id');
+            $table->integer('address_type_id')->unsigned();
             $table->string('state');
             $table->string('city');
             $table->string('zip_code');
@@ -23,7 +23,7 @@ class CreateAddressesTable extends Migration
             $table->string('number');
             $table->timestamps();
 
-            $table->foreign('addr_type_id')->references('addr_type_id')->on('address_types');
+            $table->foreign('address_type_id')->references('id')->on('object_types');
         });
     }
 

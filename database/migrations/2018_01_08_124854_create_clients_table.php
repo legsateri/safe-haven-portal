@@ -15,11 +15,11 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('organisation_id')->unsigned()->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->nullable();
             $table->text('best_way_to_reach')->nullable();
-            $table->integer('organisation_id')->unsigned()->nullable();
             $table->text('update_action')->nullable();
             $table->integer('pets_count');
             $table->string('slug');
@@ -27,8 +27,8 @@ class CreateClientsTable extends Migration
 
             $table->timestamps();
 
-            $table->foreign('organisation_id')->references('organisation_id')->on('organisations');
-            $table->foreign('realise_status_id')->references('id')->on('realise_statuses');
+            $table->foreign('organisation_id')->references('id')->on('organisations');
+            $table->foreign('realise_status_id')->references('id')->on('statuses');
         });
     }
 

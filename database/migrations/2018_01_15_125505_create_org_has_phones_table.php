@@ -14,15 +14,15 @@ class CreateOrgHasPhonesTable extends Migration
     public function up()
     {
         Schema::create('org_has_phones', function (Blueprint $table) {
-
+            $table->increments('id');
             $table->integer('organisation_id')->unsigned();
             $table->integer('phone_id')->unsigned();
 
             $table->timestamps();
 
-            $table->primary(array('organisation_id', 'phone_id'));
-            $table->foreign('organisation_id')->references('organisation_id')->on('organisations');
-            $table->foreign('phone_id')->references('phone_id')->on('phones');
+            $table->unique(array('organisation_id', 'phone_id'));
+            $table->foreign('organisation_id')->references('id')->on('organisations');
+            $table->foreign('phone_id')->references('id')->on('phones');
 
         });
     }
