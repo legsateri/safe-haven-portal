@@ -97,6 +97,8 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		// submit new client application form
 		Route::post('/application/new', 'Advocate\ApplicationsController@newApplicationSubmit')->name('advocate.application.new.form.submit');
 
+		Route::post('/application/new/ajax', 'Advocate\ApplicationsController@ajaxHandler')->name('advocate.application.ajax.handler');
+
 
 
 		/**

@@ -56,9 +56,9 @@ jQuery(document).ready(function() {
             var new_client_app_form_data = $( '#new_client_app_form' ).serializeArray();
             //console.log('new_client_app_form_data = ' + new_client_app_form_data);
             console.log("object: %o", new_client_app_form_data)
-            var ajaxurl = '';
+            var ajaxurl = '/application/new/ajax';
 
-            /*jQuery.ajax({
+            jQuery.ajax({
                 method: "POST",
                 url: ajaxurl,
                 data: new_client_app_form_data,
@@ -66,7 +66,7 @@ jQuery(document).ready(function() {
 
                     var obj = response.responseJSON;
 
-                    /!*if ( obj.success == true ) {
+                    /*if ( obj.success == true ) {
 
                         // success, form valid, email sent to admin
                         if (obj.data.message === 'true' || obj.data.message === 'false') {
@@ -97,7 +97,7 @@ jQuery(document).ready(function() {
 
                         $('.section_order_form_not_sent span').html(obj.data.message);
                         $('.section_order_form_not_sent').fadeIn("slow", function () {});
-                    }*!/
+                    }*/
 
                 },
                 error: function (xml, status, error) {
@@ -105,10 +105,10 @@ jQuery(document).ready(function() {
                 },
                 complete: function (xml, status) {
                     // do something after success or error no matter what
-                    /!*$('.bg_for_spinner').fadeOut("fast", function () {});
-                    $('.order_print_share_form_spinner').fadeOut("fast", function () {});*!/
+                    /*$('.bg_for_spinner').fadeOut("fast", function () {});
+                    $('.order_print_share_form_spinner').fadeOut("fast", function () {});*/
                 }
-            });*/
+            });
 
             /*if ( client_info_form_valid() === true ) {*/
             if ( true ) {

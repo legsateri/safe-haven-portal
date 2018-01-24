@@ -40,4 +40,10 @@ class ApplicationsController extends Controller
     {
 
     }
+
+
+    public function ajaxHandler(Request $request)
+    {
+        return "hello";
+    }
 }
