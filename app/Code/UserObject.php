@@ -24,13 +24,14 @@ class UserObject
     private function getUserById($id)
     {
         $user = DB::table('users')
-            ->join('user_types', 'users.user_type_id', '=', 'user_types.id')
-            ->select('users.*', 'user_types.type')
+            ->join('object_types', 'users.user_type_id', '=', 'object_types.id')
+            ->select('users.*', 'object_types.value')
             ->where('users.id', '=', $id)
             ->first();
         
         if ($user)
         {
+            $user->type = $user->value;
             $this->user = $user;
         }
     }
@@ -38,13 +39,14 @@ class UserObject
     private function getUserByEmail($email)
     {
         $user = DB::table('users')
-            ->join('user_types', 'users.user_type_id', '=', 'user_types.id')
-            ->select('users.*', 'user_types.type')
+            ->join('object_types', 'users.user_type_id', '=', 'object_types.id')
+            ->select('users.*', 'object_types.value')
             ->where('users.email', '=', $email)
             ->first();
-        
+
         if ($user)
         {
+            $user->type = $user->value;
             $this->user = $user;
         }
     }

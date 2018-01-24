@@ -9,10 +9,8 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 
 use App\User;
-use App\UserType;
+use App\ObjectType;
 use App\Organisation;
-use App\OrganisationType;
-use App\PhoneType;
 use App\Phone;
 use App\OrgHasPhone;
 use App\UserHasPhone;
@@ -85,8 +83,11 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         
-        // get phone type id for office phone
-        $phoneType = PhoneType::where('phone_type', 'office')->first();
+        // get phone type for office phone
+        $phoneType = ObjectType::where([
+                        ['type', '=', 'phone'],
+                        ['value', '=', 'office']
+                    ])->first();
         
         // check does user belong to existing organisation
         // or create new organisation
@@ -97,12 +98,15 @@ class RegisterController extends Controller
              */
         
             // take organisation type
-            $orgType = OrganisationType::where('org_type', $data['sign_up_form_user_type'])->first();
+            $orgType = ObjectType::where([
+                        ['type', '=', 'organisation'],
+                        ['value', '=', $data['sign_up_form_user_type']]
+                    ])->first();
 
             // create new organisation entry
             $organisation = new Organisation();
             $organisation->name = $data['org_name'];
-            $organisation->org_type_id = $orgType->org_type_id;
+            $organisation->org_type_id = $orgType->id;
             $organisation->org_status_id = 1;
             $organisation->slug = str_slug($data['org_name'], '-');
             $organisation->tax_id = $data['tax_id'];
@@ -110,7 +114,7 @@ class RegisterController extends Controller
 
             // save organisation phone number
             $orgPhone = new Phone();
-            $orgPhone->phone_type_id = $phoneType->phone_type_id;
+            $orgPhone->phone_type_id = $phoneType->id;
             $orgPhone->number = $data['org_phone_number'];
             $orgPhone->save();
 
@@ -130,14 +134,20 @@ class RegisterController extends Controller
 
             // compare organisation type and desiered user type
             // if not same:  level user type to organisation type
-            $orgType = OrganisationType::where('org_type_id', $organisation->org_type_id)->first();
-            if ( $data['sign_up_form_user_type'] != $orgType->org_type )
+
+            $orgType = ObjectType::where([
+                            ['type', '=', 'organisation'],
+                            ['value', '=', $organisation->org_type_id]
+                        ])->first();
+
+
+            if ( $data['sign_up_form_user_type'] != $orgType->value )
             {
-                if ( in_array($orgType->org_type, [ 'advocate' ]) )
+                if ( in_array($orgType->value, [ 'advocate' ]) )
                 {
                     $data['sign_up_form_user_type'] = 'advocate';
                 }
-                elseif( in_array($orgType->org_type, [ 'shelter', 'foster' ]) )
+                elseif( in_array($orgType->value, [ 'shelter', 'foster' ]) )
                 {
                     $data['sign_up_form_user_type'] = 'shelter';
                 }
@@ -145,7 +155,11 @@ class RegisterController extends Controller
         }
 
         // get user type
-        $userType = UserType::where('type', $data['sign_up_form_user_type'])->first();
+        $userType = ObjectType::where([
+                    ['type', '=', 'user'],
+                    ['value', '=', $data['sign_up_form_user_type']]
+                ])->first();
+
 
         // create user
         $user = new User();
@@ -155,20 +169,13 @@ class RegisterController extends Controller
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
         $user->user_type_id = $userType->id;
-        if ( !isset( $data['already_with_org'] ) )
-        {
-            $user->organisation_id = $organisation->id;
-        }
-        else
-        {
-            $user->organisation_id = $organisation->organisation_id;
-        }
+        $user->organisation_id = $organisation->id;
         $user->save();
 
 
         // save user phone number
         $userPhone = new Phone();
-        $userPhone->phone_type_id = $phoneType->phone_type_id;
+        $userPhone->phone_type_id = $phoneType->id;
         $userPhone->number = $data['contact_phone_number'];
         $userPhone->save();
 
