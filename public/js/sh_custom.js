@@ -50,6 +50,147 @@ jQuery(document).ready(function() {
 
     if ( $('#accordion_client_new_application').length != 0 ) { // if client new application page
         console.log('in accordion');
+
+        /*--------------- text/textarea input function for all starts --------------------*/
+
+        $("input[type='text'], textarea").blur(function (e) {
+            //alert('blur');
+
+            var ajaxurl = '/application/new/ajax';
+            var sh_input_id = $(this).attr('id');
+            var sh_input_value = $(this).val();
+            var token = $(this).closest('form').find('input[name="_token"]').val();
+            console.log('token = ' + token);
+
+            var data = {
+                action: 'validation_single',
+                element_id: sh_input_id,
+                input_value: sh_input_value,
+                _token: token
+            };
+
+            jQuery.ajax({
+                method: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function (data, status, response) {
+
+                    //jQuery(".survey-element-" + element_id + " input").siblings("img").css('display', 'none');
+
+                    console.log('are we here');
+                    var obj = response.responseJSON;
+                    console.log('are we here1');
+                    console.log('obj.message = ' + obj.data.message);
+                    console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
+                    console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
+                    console.log('are we here2');
+
+                    if ( obj.success == true ) {
+                        console.log('super cool');
+
+                        if ( $('#' + sh_input_id).hasClass('is-invalid') ) {
+                            $('#' + sh_input_id).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $('#' + sh_input_id).addClass('is-valid');
+                        }
+                    } else {
+                        console.log('not cool');
+                        console.log('sh_input_id = ' + sh_input_id);
+
+                        $('#' + sh_input_id).next('.invalid-feedback').html(obj.data.message);
+
+                        //$('#' + sh_input_id).addClass('is-invalid');
+                        if ( $('#' + sh_input_id).hasClass('is-valid') ) {
+                            $('#' + sh_input_id).removeClass('is-valid').addClass('is-invalid');
+                        } else {
+                            $('#' + sh_input_id).addClass('is-invalid');
+                        }
+                    }
+
+                }, // end success
+                error: function (xml, status, error) {
+                    // do something if there was an error
+                    //console.log('zzz6 - error');
+                },
+                complete: function (xml, status) {
+                    // do something after success or error no matter what
+                    // console.log('zzz6 - completed');
+                }
+            }); // end ajax post
+
+        });
+
+        /*--------------- text/textarea input function for all starts --------------------*/
+
+        /*--------------- select input function for all starts --------------------*/
+
+        $("select").on('change', function () {
+
+            var ajaxurl = '/application/new/ajax';
+
+            var token = $(this).closest('form').find('input[name="_token"]').val();
+            var sh_input_value = this.value;
+            console.log('sh_input_value = ' + sh_input_value);
+            var sh_input_id = $(this).attr('id');
+            console.log('sh_input_id = ' + sh_input_id);
+
+            var data = {
+                action: 'validation_single',
+                element_id: sh_input_id,
+                input_value: sh_input_value,
+                _token: token
+            };
+
+            jQuery.ajax({
+                method: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function (data, status, response) {
+
+                    console.log('are we here');
+                    var obj = response.responseJSON;
+                    console.log('are we here1');
+                    console.log('obj.message = ' + obj.data.message);
+                    console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
+                    console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
+                    console.log('are we here2');
+
+                    if ( obj.success == true ) {
+                        console.log('super cool');
+
+                        if ( $('#' + sh_input_id).hasClass('is-invalid') ) {
+                            $('#' + sh_input_id).removeClass('is-invalid').addClass('is-valid');
+                        } else {
+                            $('#' + sh_input_id).addClass('is-valid');
+                        }
+                    } else {
+                        console.log('not cool');
+                        console.log('sh_input_id = ' + sh_input_id);
+
+                        if ( $('#' + sh_input_id).hasClass('is-valid') ) {
+                            $('#' + sh_input_id).removeClass('is-valid').addClass('is-invalid');
+                        } else {
+                            $('#' + sh_input_id).addClass('is-invalid');
+                        }
+                    }
+
+
+                }, // end success
+                error: function (xml, status, error) {
+                    // do something if there was an error
+                    //console.log('zzz6 - error');
+                },
+                complete: function (xml, status) {
+                    // do something after success or error no matter what
+                    // console.log('zzz6 - completed');
+                }
+            }); // end ajax post
+
+        })
+
+        /*--------------- select input function for all ends --------------------*/
+
+
         $('#next_step_1_2').click(function() { // step 1 to 2
             console.log('accordion next clicked');
 
@@ -63,41 +204,15 @@ jQuery(document).ready(function() {
                 url: ajaxurl,
                 data: new_client_app_form_data,
                 success: function (data, status, response) {
-
+                    console.log('are we here');
                     var obj = response.responseJSON;
+                    console.log('are we here1');
+                    console.log('obj.message = ' + obj.data.message);
+                    console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
+                    console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
+                    console.log('are we here2');
 
-                    /*if ( obj.success == true ) {
 
-                        // success, form valid, email sent to admin
-                        if (obj.data.message === 'true' || obj.data.message === 'false') {
-
-                            $('.single-print-share .section_order_form form').fadeOut("fast", function () {
-
-                                $('.section_order_form_thank_you').fadeOut("fast", function () {});
-                                $('.section_order_form_not_sent').fadeOut("fast", function () {});
-                                $('.section_order_form_title').fadeOut("fast", function () {});
-
-                                $('.section_order_form_thank_you').fadeIn("slow", function () {});
-                            });
-
-                        } else { // form not valid
-
-                            $('.section_order_form_thank_you').fadeOut("fast", function () {});
-                            $('.section_order_form_not_sent').fadeOut("fast", function () {});
-
-                            $('.section_order_form_not_sent span').html(obj.data.message);
-                            $('.section_order_form_not_sent').fadeIn("slow", function () {});
-
-                        }
-
-                    } else if ( obj.success == false ) { // form valid, email not sent, show error message to user
-
-                        $('.section_order_form_thank_you').fadeOut("fast", function () {});
-                        $('.section_order_form_not_sent').fadeOut("fast", function () {});
-
-                        $('.section_order_form_not_sent span').html(obj.data.message);
-                        $('.section_order_form_not_sent').fadeIn("slow", function () {});
-                    }*/
 
                 },
                 error: function (xml, status, error) {
@@ -105,8 +220,8 @@ jQuery(document).ready(function() {
                 },
                 complete: function (xml, status) {
                     // do something after success or error no matter what
-                    /*$('.bg_for_spinner').fadeOut("fast", function () {});
-                    $('.order_print_share_form_spinner').fadeOut("fast", function () {});*/
+                    console.log('completed');
+
                 }
             });
 

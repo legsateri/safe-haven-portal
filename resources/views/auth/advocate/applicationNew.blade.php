@@ -1,14 +1,6 @@
 @extends('layouts.user-main')
 
 @section('content')
-    {{--<div class="card mb-3">
-        <div class="card-header">
-            <i class="fa fa-area-chart"></i> New Application</div>
-        <div class="card-body">
-            <canvas id="myAreaChart" width="100%" height="30"></canvas>
-        </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-    </div>--}}
 
     <div id="accordion_client_new_application" role="tablist">
         <div class="card">
@@ -38,15 +30,21 @@
                             @endif
                             <form id="new_client_app_form" action="{{ route('register') }}" method="post">
                                 {{ csrf_field() }}
-
+                                <input name="action" value="validation_multi" type="hidden">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="org_last_name">First Name</label>
                                         <input type="text" class="form-control" id="org_first_name" maxlength="25" required="" value="{{ old('first_name') }}" name="first_name" placeholder="">
+                                        <div class="invalid-feedback">
+                                            Please enter your first name.
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="org_last_name">Last Name</label>
                                         <input type="text" class="form-control" id="org_last_name" maxlength="25" required="" value="{{ old('last_name') }}" name="last_name" placeholder="">
+                                        <div class="invalid-feedback">
+                                            Please enter your last name.
+                                        </div>
                                     </div>
                                 </div>
 
@@ -54,23 +52,32 @@
                                     <div class="form-group col-md-4">
                                         <label for="contact_phone_num">Phone Number (10 digits)</label>
                                         <input type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}\d{3}\d{4}$" placeholder="XXXXXXXXXX" required="" value="{{ old('contact_phone_number') }}">
+                                        <div class="invalid-feedback">
+                                            Please enter your phone number.
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <label for="pref_contact_method">Type</label>
+                                        <label for="phone_number_type">Type</label>
                                         <div class="input-group mb-3">
 
-                                            <select class="custom-select" id="pref_contact_method">
-                                                <option selected>Choose...</option>
-                                                <option value="1">Mobile</option>
-                                                <option value="2">Home</option>
-                                                <option value="3">Office</option>
+                                            <select class="custom-select" name="phone_number_type" id="phone_number_type">
+                                                <option value="" selected>Choose...</option>
+                                                <option value="mobile">Mobile</option>
+                                                <option value="home">Home</option>
+                                                <option value="office">Office</option>
                                             </select>
+                                            <div class="invalid-feedback">
+                                                Please select your phone number type.
+                                            </div>
                                         </div>
 
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="inputEmail4">Email</label>
                                         <input type="email" maxlength="45" class="form-control" id="inputEmail4" name="email" placeholder="e.g. yourname@yourmail.com" required="" value="{{ old('email') }}">
+                                        <div class="invalid-feedback">
+                                            Please enter your email.
+                                        </div>
                                     </div>
                                 </div>
 
@@ -80,18 +87,24 @@
 
                                         <div class="input-group mb-3">
 
-                                            <select class="custom-select" id="pref_contact_method">
-                                                <option selected>Choose...</option>
-                                                <option value="1">Phone</option>
-                                                <option value="2">Email</option>
-                                                <option value="3">Text message</option>
+                                            <select class="custom-select" name="pref_contact_method" id="pref_contact_method">
+                                                <option value=""  selected>Choose...</option>
+                                                <option value="phone">Phone</option>
+                                                <option value="email">Email</option>
+                                                <option value="text_message">Text message</option>
                                             </select>
+                                            <div class="invalid-feedback">
+                                                Please enter your preferred contact method.
+                                            </div>
                                         </div>
 
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="address">Address</label>
                                         <input type="text" class="form-control" id="address" maxlength="50" required="" value="{{ old('address') }}" name="address" placeholder="">
+                                        <div class="invalid-feedback">
+                                            Please enter your address.
+                                        </div>
                                     </div>
                                 </div>
 
@@ -99,21 +112,30 @@
                                     <div class="form-group col-md-6">
                                         <label for="city">City</label>
                                         <input type="text" class="form-control" id="city" maxlength="25" required="" value="{{ old('city') }}" name="city" placeholder="">
+                                        <div class="invalid-feedback">
+                                            Please enter your city.
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label for="org_last_name">State</label>
+                                        <label for="state">State</label>
                                         <div class="input-group mb-3">
-                                            <select class="custom-select" id="pref_contact_method">
-                                                <option selected>Choose...</option>
-                                                <option value="1">Alaska</option>
-                                                <option value="2">California</option>
-                                                <option value="3">Michigan</option>
+                                            <select class="custom-select" name="state" id="state">
+                                                <option value="" selected>Choose...</option>
+                                                <option value="Alaska">Alaska</option>
+                                                <option value="California">California</option>
+                                                <option value="Michigan">Michigan</option>
                                             </select>
+                                            <div class="invalid-feedback">
+                                                Please enter your state.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-2">
                                         <label for="zip">Zip (5 digits)</label>
                                         <input type="text" class="form-control" id="zip" maxlength="5" required="" value="{{ old('zip') }}" name="zip" placeholder="XXXXX">
+                                        <div class="invalid-feedback">
+                                            Please enter your zip code.
+                                        </div>
                                     </div>
                                 </div>
 
@@ -408,20 +430,10 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    {{--<div class="form-group col-md-6 text-left">
-                                        --}}{{--<div class="card text-right">
-                                            <div class="card-body">--}}{{--
-                                        <button type="button" class="btn btn-primary">Add Another Pet</button>
-                                        --}}{{--</div>
-                                    </div>--}}{{--
-                                    </div>--}}
+
                                     <div class="form-group col-md-12 text-right">
-                                        {{--<div class="card text-right">
-                                            <div class="card-body">--}}
-                                                <button id="add_another_pet" type="button" class="btn btn-primary">Add Another Pet</button>
-                                                <button id="next_step_2_3" type="button" class="btn btn-primary">Next Step</button>
-                                            {{--</div>
-                                        </div>--}}
+                                        <button id="add_another_pet" type="button" class="btn btn-primary">Add Another Pet</button>
+                                        <button id="next_step_2_3" type="button" class="btn btn-primary">Next Step</button>
                                     </div>
                                 </div>
 
@@ -462,7 +474,7 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-12 text-right">
-                            {{--<button id="add_another_pet" type="button" class="btn btn-primary">Add Another Pet</button>--}}
+
                             <button id="next_step_3_4" type="button" class="btn btn-primary">Next Step</button>
                         </div>
                     </div>
@@ -481,7 +493,7 @@
                 <div class="card-body">
                     <div class="form-row">
                         <div class="form-group col-md-12 text-center">
-                            {{--<button id="add_another_pet" type="button" class="btn btn-primary">Add Another Pet</button>--}}
+
                             <button id="client_new_application_submit" type="button" class="btn btn-primary">Submit Application</button>
                         </div>
                     </div>
@@ -490,28 +502,4 @@
         </div>
     </div>
 
-    {{--<div class="row">
-        <div class="col-lg-8">
-            <!-- Example Bar Chart Card-->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
-                <div class="card-body">
-                    <canvas id="myBarChart" width="100" height="50"></canvas>
-                </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <!-- Example Pie Chart Card-->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-pie-chart"></i> Pie Chart Example</div>
-                <div class="card-body">
-                    <canvas id="myPieChart" width="100%" height="100"></canvas>
-                </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-        </div>
-    </div>--}}
 @endsection

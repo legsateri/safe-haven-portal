@@ -44,6 +44,17 @@ class ApplicationsController extends Controller
 
     public function ajaxHandler(Request $request)
     {
-        return "hello";
+        $ajax_response_data = array(
+                'message' => 'some error message from backend'/*, // description of why is invalid
+                'global_answer_counts' => 'yes',
+                'current_answer_value' => 'yes'*/
+            );
+
+        $ajax_response = array(
+            'success' => true, // true if valid, false if invalid
+            'data' => $ajax_response_data // add data if invalid
+        );
+
+        return $ajax_response;
     }
 }
