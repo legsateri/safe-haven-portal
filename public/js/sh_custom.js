@@ -53,7 +53,7 @@ jQuery(document).ready(function() {
 
         /*--------------- text/textarea input function for all starts --------------------*/
 
-        $("input[type='text'], textarea").blur(function (e) {
+        $("input[type='text'], textarea, input[type='phone'], input[type='email']").blur(function (e) {
             //alert('blur');
 
             var ajaxurl = '/application/new/ajax';

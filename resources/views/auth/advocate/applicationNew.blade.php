@@ -62,9 +62,9 @@
 
                                             <select class="custom-select" name="phone_number_type" id="phone_number_type">
                                                 <option value="" selected>Choose...</option>
-                                                <option value="mobile">Mobile</option>
-                                                <option value="home">Home</option>
-                                                <option value="office">Office</option>
+                                                @foreach( $phoneTypes as $phoneType )
+                                                    <option value="{{$phoneType->value}}">{{$phoneType->label}}</option>
+                                                @endforeach
                                             </select>
                                             <div class="invalid-feedback">
                                                 Please select your phone number type.
@@ -121,9 +121,9 @@
                                         <div class="input-group mb-3">
                                             <select class="custom-select" name="state" id="state">
                                                 <option value="" selected>Choose...</option>
-                                                <option value="Alaska">Alaska</option>
-                                                <option value="California">California</option>
-                                                <option value="Michigan">Michigan</option>
+                                                @foreach( $states as $state )
+                                                    <option value="{{ $state->value }}">{{ $state->name }}</option>
+                                                @endforeach
                                             </select>
                                             <div class="invalid-feedback">
                                                 Please enter your state.

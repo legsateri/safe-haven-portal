@@ -5,8 +5,14 @@ namespace App\Http\Controllers\Advocate;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use Validator;
+use DB;
+
+use App\ObjectType;
+use App\State;
 
 use App\Code\UserObject;
+use App\Code\TempObject;
 
 class ApplicationsController extends Controller
 {
@@ -30,7 +36,11 @@ class ApplicationsController extends Controller
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
 
-        return view('auth.advocate.applicationNew', compact('currentUser'));
+        $phoneTypes = ObjectType::where('type', 'phone')->get();
+
+        $states = State::all();
+
+        return view('auth.advocate.applicationNew', compact('currentUser', 'phoneTypes', 'states'));
     }
 
     /**
@@ -44,17 +54,320 @@ class ApplicationsController extends Controller
 
     public function ajaxHandler(Request $request)
     {
-        $ajax_response_data = array(
-                'message' => 'some error message from backend'/*, // description of why is invalid
-                'global_answer_counts' => 'yes',
-                'current_answer_value' => 'yes'*/
-            );
+        
+        if ( !isset(Auth::user()->id) )
+        {
+            return [
+                'success' => false,
+                'message' => 'You re not authenticated!'
+            ];
+        }
+        
+        // check is action type specified
+        if ( !isset($request->action) )
+        {
+            // return error to user
+            return;
+        }
 
-        $ajax_response = array(
-            'success' => true, // true if valid, false if invalid
-            'data' => $ajax_response_data // add data if invalid
-        );
+        /**
+         * validation for single fields
+         */
+        if ( $request->action == "validation_single" )
+        {
 
+            switch ($request->element_id) {
+
+                case 'org_first_name':
+                    $response = $this->_validateClientFirstName($request->input_value);
+                    break;
+
+                case 'org_last_name':
+                    $response = $this->_validateClientLastName($request->input_value);
+                    break;
+
+                case 'contact_phone_num':
+                    $response = $this->_validateClientPhoneNumber($request->input_value);
+                    break;
+
+                case 'phone_number_type':
+                    $response = $this->_validateClientPhoneNumberType($request->input_value);
+                    break;
+
+                case 'inputEmail4':
+                    $response = $this->_validateClientEmail($request->input_value);
+                    break;
+
+                case 'pref_contact_method':
+                    $response = $this->_validateClientPreferedContactMethod($request->input_value);
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+            // die('sssssss');
+            // var_dump($responce);
+            // exit;
+
+            
+
+        }
+        
+        
+        
+        // $ajax_response_data = array(
+        //         'message' => 'some error message from backend'/*, // description of why is invalid
+        //         'global_answer_counts' => 'yes',
+        //         'current_answer_value' => 'yes'*/
+        //     );
+
+        // $ajax_response = array(
+        //     'success' => true, // true if valid, false if invalid
+        //     'data' => $ajax_response_data // add data if invalid
+        // );
+
+        $ajax_response['success'] = $response['success'];
+        if ( $ajax_response['success'] != true )
+        {
+            $ajax_response['data']['message'] = $response['message'];
+        }
         return $ajax_response;
     }
+
+
+    /**
+     * validate new client first name
+     * and return status with message
+     */
+    private function _validateClientFirstName($value)
+    {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|string|max:20'
+        ]);
+
+        // add value to user temp data
+        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+        $temp['client-first-name'] = $value;
+        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+        if ( !$validator->fails() )
+        {
+            // return success
+            return ['success' => true];
+        }
+        else
+        {
+            // return error mesasage
+            if ( $value == "" || $value == null )
+            {
+                return [
+                    'success' => false,
+                    'message' => 'Requiered field'
+                ];
+            }
+            return [
+                'success' => false,
+                'message' => 'Max lenght of first name is 20 characters'
+            ];
+        }
+    } // end _validateClientFirstName
+
+
+    /**
+     * validate new client last name
+     * and return status with message
+     */
+    private function _validateClientLastName($value)
+    {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|string|max:20'
+        ]);
+
+        // add value to user temp data
+        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+        $temp['client-last-name'] = $value;
+        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+        if ( !$validator->fails() )
+        {
+            // return success
+            return ['success' => true];
+        }
+        else
+        {
+            // return error mesasage
+            if ( $value == "" || $value == null )
+            {
+                return [
+                    'success' => false,
+                    'message' => 'Requiered field'
+                ];
+            }
+            return [
+                'success' => false,
+                'message' => 'Max lenght of last name is 20 characters'
+            ];
+        }
+    } // end _validateClientLastName
+
+
+
+    /**
+     * validate new client phone number
+     * and return status with message
+     */
+    private function _validateClientPhoneNumber($value)
+    {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|regex:/^\d{3}\d{3}\d{4}$/'
+        ]);
+
+        // add value to user temp data
+        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+        $temp['client-phone-number'] = $value;
+        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+        if ( !$validator->fails() )
+        {
+            // return success
+            return ['success' => true];
+        }
+        else
+        {
+            // return error mesasage
+            if ( $value == "" || $value == null )
+            {
+                return [
+                    'success' => false,
+                    'message' => 'Requiered field'
+                ];
+            }
+            return [
+                'success' => false,
+                'message' => 'Invalid format for phone number'
+            ];
+        }
+
+    } // end _validateClientPhoneNumber
+
+
+    /**
+     * validate new client phone number type
+     * and return status with message
+     */
+    private function _validateClientPhoneNumberType($value)
+    {
+        // get phone types from db
+        $phoneTypesDB = DB::table('object_types')
+                        ->select('value')
+                        ->where('type', '=', 'phone')
+                        ->get();
+        $phoneTypes = [];
+        foreach ($phoneTypesDB as $phoneType) {
+            array_push($phoneTypes, $phoneType->value);
+        }
+
+        // add value to user temp data
+        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+        $temp['client-phone-number-type'] = $value;
+        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+        // check is $value empty
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Phone type not selected'
+            ];
+        }
+
+        // check does value exist in phone types array
+        if ( in_array($value, $phoneTypes) )
+        {
+            return [
+                'success' => true
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Invalid phone type'
+        ];
+
+
+    } // end _validateClientPhoneNumberType
+
+
+    private function _validateClientEmail($value)
+    {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|email|max:40'
+        ]);
+
+        // add value to user temp data
+        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+        $temp['client-email'] = $value;
+        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+        if ( !$validator->fails() )
+        {
+            
+            $validator_unique = Validator::make(['value' => $value], [
+                'value' => 'unique:clients,email'
+            ]);
+
+            if ( !$validator_unique->fails() )
+            {
+                // return success
+                return ['success' => true];
+            }
+            return [
+                'success' => false,
+                'message' => "Email can\'t be used"
+            ];
+            
+        }
+        
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Requiered field'
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Invalid format of email, max lenght 40 characters'
+        ];
+
+
+    } // end _validateClientEmail
+
+
+
+    private function _validateClientPreferedContactMethod($value)
+    {
+        $contactMethods = ['phone', 'email', 'text_message'];
+
+        if ( in_array($value, $contactMethods) )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['client-prefered-contact-method'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+            // return success
+            return ['success' => true];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Contact method not specified'
+        ];
+
+    } // end _validateClientPreferedContactMethod
+
 }
