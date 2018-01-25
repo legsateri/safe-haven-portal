@@ -14,10 +14,11 @@ class CreateUserTempDataTable extends Migration
     public function up()
     {
         Schema::create('user_temp_data', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
-            $table->mediumText('temp');
+            $table->integer('user_id')->unique();
+            $table->mediumText('data')->nullable();
             $table->timestamps();
+
+            $table->primary(array('user_id'));
         });
     }
 

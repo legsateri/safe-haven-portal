@@ -61,6 +61,10 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/settings/admin-users', 'Admin\AdminUsersController@index')->name('admin.settings.admin-users');
 		Route::get('/settings/account', 'Admin\AccountSettingsController@index')->name('admin.settings.account');
 
+		// submit form for username and email update
+        Route::post('/settings/account/update/info', 'Admin\AccountSettingsController@updateInfo')->name('admin.settings.account.update.info');
+        Route::post('/settings/account/update/password', 'Admin\AccountSettingsController@updatePassword')->name('admin.settings.account.update.password');
+
 	});
 
 });
