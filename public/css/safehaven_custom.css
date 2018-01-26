@@ -167,6 +167,10 @@ footer .sh_social_icons i {
     display: none;
 }
 
+.invalid_message_correction {
+    display: block;
+}
+
 /******* Responsive views start **********/
 
 /*Extra small devices (portrait phones, less than 576px)*/
