@@ -159,6 +159,18 @@ footer .sh_social_icons i {
 
     /*---- custom radio buttons ends ----*/
 
+.radio_custom_group.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+.radio_custom_group.is-valid ~ .invalid-feedback {
+    display: none;
+}
+
+.invalid_message_correction {
+    display: block;
+}
+
 /******* Responsive views start **********/
 
 /*Extra small devices (portrait phones, less than 576px)*/
