@@ -101,7 +101,23 @@ class ApplicationsController extends Controller
                 case 'pref_contact_method':
                     $response = $this->_validateClientPreferedContactMethod($request->input_value);
                     break;
-                
+
+                case 'address':
+                    $response = $this->_validateClientAddress($request->input_value);
+                    break;
+
+                case 'city':
+                    $response = $this->_validateClientCity($request->input_value);
+                    break;
+
+                case 'state':
+                    $response = $this->_validateClientState($request->input_value);
+                    break;
+
+                case 'zip':
+                    $response = $this->_validateClientZip($request->input_value);
+                    break;
+                    
                 default:
                     # code...
                     break;
@@ -109,9 +125,9 @@ class ApplicationsController extends Controller
             // die('sssssss');
             // var_dump($responce);
             // exit;
-
             
-
+            
+            
         }
         
         
@@ -146,13 +162,14 @@ class ApplicationsController extends Controller
             'value' => 'required|string|max:20'
         ]);
 
-        // add value to user temp data
-        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-        $temp['client-first-name'] = $value;
-        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
-
         if ( !$validator->fails() )
         {
+            
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['client-first-name'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
             // return success
             return ['success' => true];
         }
@@ -184,13 +201,13 @@ class ApplicationsController extends Controller
             'value' => 'required|string|max:20'
         ]);
 
-        // add value to user temp data
-        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-        $temp['client-last-name'] = $value;
-        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
-
         if ( !$validator->fails() )
         {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['client-last-name'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+            
             // return success
             return ['success' => true];
         }
@@ -223,13 +240,13 @@ class ApplicationsController extends Controller
             'value' => 'required|regex:/^\d{3}\d{3}\d{4}$/'
         ]);
 
-        // add value to user temp data
-        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-        $temp['client-phone-number'] = $value;
-        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
-
         if ( !$validator->fails() )
         {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['client-phone-number'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+            
             // return success
             return ['success' => true];
         }
@@ -268,11 +285,6 @@ class ApplicationsController extends Controller
             array_push($phoneTypes, $phoneType->value);
         }
 
-        // add value to user temp data
-        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-        $temp['client-phone-number-type'] = $value;
-        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
-
         // check is $value empty
         if ( $value == "" || $value == null )
         {
@@ -285,6 +297,13 @@ class ApplicationsController extends Controller
         // check does value exist in phone types array
         if ( in_array($value, $phoneTypes) )
         {
+            
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['client-phone-number-type'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+            
+            // return success
             return [
                 'success' => true
             ];
@@ -305,11 +324,6 @@ class ApplicationsController extends Controller
             'value' => 'required|email|max:40'
         ]);
 
-        // add value to user temp data
-        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-        $temp['client-email'] = $value;
-        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
-
         if ( !$validator->fails() )
         {
             
@@ -319,6 +333,11 @@ class ApplicationsController extends Controller
 
             if ( !$validator_unique->fails() )
             {
+                // add value to user temp data
+                $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+                $temp['client-email'] = $value;
+                TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+                
                 // return success
                 return ['success' => true];
             }
@@ -350,6 +369,7 @@ class ApplicationsController extends Controller
 
     private function _validateClientPreferedContactMethod($value)
     {
+        // allowed values
         $contactMethods = ['phone', 'email', 'text_message'];
 
         if ( in_array($value, $contactMethods) )
@@ -369,5 +389,142 @@ class ApplicationsController extends Controller
         ];
 
     } // end _validateClientPreferedContactMethod
+
+
+    private function _validateClientAddress($value)
+    {
+
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|string|max:50'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['client-address'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+            // return success
+            return ['success' => true];
+        }
+
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Requiered field'
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Max lenght 50 characters'
+        ];
+
+    } // end _validateClientAddress
+
+
+    private function _validateClientCity($value)
+    {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|string|max:25'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['client-city'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+            // return success
+            return ['success' => true];
+        }
+
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Requiered field'
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Max lenght 25 characters'
+        ];
+
+    } // end _validateClientCity
+
+    private function _validateClientState($value)
+    {   
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|exists:states,value'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['client-state'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+            // return success
+            return ['success' => true];
+        }
+
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Requiered field'
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Invalid value'
+        ];
+    }
+
+
+    private function _validateClientZip($value)
+    {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|digits:5'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['client-zip'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+            // return success
+            return ['success' => true];
+        }
+
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Requiered field'
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Invalid format or lenght'
+        ];
+
+
+    } // end _validateClientZip
+
 
 }
