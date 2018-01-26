@@ -130,12 +130,19 @@ class ApplicationsController extends Controller
                     # code...
                     break;
             }
-            // die('sssssss');
-            // var_dump($responce);
-            // exit;
+
             
             
             
+        }
+
+
+        /**
+         * validation for multy fields
+         */
+        if ( $request->action == "validation_multi" )
+        {
+            $response = $this->_validateNewApplicationStageOne($request);
         }
         
         
@@ -188,7 +195,7 @@ class ApplicationsController extends Controller
             {
                 return [
                     'success' => false,
-                    'message' => 'Requiered field'
+                    'message' => 'Required field'
                 ];
             }
             return [
@@ -226,7 +233,7 @@ class ApplicationsController extends Controller
             {
                 return [
                     'success' => false,
-                    'message' => 'Requiered field'
+                    'message' => 'Required field'
                 ];
             }
             return [
@@ -265,7 +272,7 @@ class ApplicationsController extends Controller
             {
                 return [
                     'success' => false,
-                    'message' => 'Requiered field'
+                    'message' => 'Required field'
                 ];
             }
             return [
@@ -326,6 +333,10 @@ class ApplicationsController extends Controller
     } // end _validateClientPhoneNumberType
 
 
+
+    /**
+     * validate client email address
+     */
     private function _validateClientEmail($value)
     {
         $validator = Validator::make(['value' => $value], [
@@ -361,7 +372,7 @@ class ApplicationsController extends Controller
         {
             return [
                 'success' => false,
-                'message' => 'Requiered field'
+                'message' => 'Required field'
             ];
         }
 
@@ -374,7 +385,9 @@ class ApplicationsController extends Controller
     } // end _validateClientEmail
 
 
-
+    /**
+     * validate client prefered contact method
+     */
     private function _validateClientPreferedContactMethod($value)
     {
         // allowed values
@@ -399,6 +412,10 @@ class ApplicationsController extends Controller
     } // end _validateClientPreferedContactMethod
 
 
+
+    /**
+     * validate client address
+     */
     private function _validateClientAddress($value)
     {
 
@@ -422,7 +439,7 @@ class ApplicationsController extends Controller
         {
             return [
                 'success' => false,
-                'message' => 'Requiered field'
+                'message' => 'Required field'
             ];
         }
 
@@ -434,6 +451,10 @@ class ApplicationsController extends Controller
     } // end _validateClientAddress
 
 
+
+    /**
+     * validate client city
+     */
     private function _validateClientCity($value)
     {
         $validator = Validator::make(['value' => $value], [
@@ -456,7 +477,7 @@ class ApplicationsController extends Controller
         {
             return [
                 'success' => false,
-                'message' => 'Requiered field'
+                'message' => 'Required field'
             ];
         }
 
@@ -467,6 +488,11 @@ class ApplicationsController extends Controller
 
     } // end _validateClientCity
 
+
+
+    /**
+     * validate client state
+     */
     private function _validateClientState($value)
     {   
         $validator = Validator::make(['value' => $value], [
@@ -489,7 +515,7 @@ class ApplicationsController extends Controller
         {
             return [
                 'success' => false,
-                'message' => 'Requiered field'
+                'message' => 'Required field'
             ];
         }
 
@@ -500,6 +526,10 @@ class ApplicationsController extends Controller
     }
 
 
+
+    /**
+     * validate client zip code
+     */
     private function _validateClientZip($value)
     {
         $validator = Validator::make(['value' => $value], [
@@ -522,7 +552,7 @@ class ApplicationsController extends Controller
         {
             return [
                 'success' => false,
-                'message' => 'Requiered field'
+                'message' => 'Required field'
             ];
         }
 
@@ -533,6 +563,224 @@ class ApplicationsController extends Controller
 
 
     } // end _validateClientZip
+
+
+
+    /**
+     * validation for new client application
+     * for stage 1
+     * (general client information)
+     */
+    private function _validateNewApplicationStageOne($request)
+    {
+        // get phone types from db
+        $phoneTypesDB = DB::table('object_types')
+                            ->select('value')
+                            ->where('type', '=', 'phone')
+                            ->get();
+        $phoneTypes = "";
+        $phoneTypeCounter = 0;
+        foreach ($phoneTypesDB as $phoneType) 
+        {
+            if ( $phoneTypeCounter > 0 )
+            {
+                $phoneTypes .= ',';
+            }
+            $phoneTypes .= $phoneType->value;
+            $phoneTypeCounter++;
+        }
+        
+        // validation rules
+        $validator = Validator::make($request->all(), [
+            'first_name'            => 'required|string|max:20',
+            'last_name'             => 'required|string|max:20',
+            'contact_phone_number'  => 'required|regex:/^\d{3}\d{3}\d{4}$/',
+            'phone_number_type'     => 'required|in:' . $phoneTypes,
+            'email'                 => 'required|email|max:40|unique:clients,email',
+            'pref_contact_method'   => 'required|in:phone,email,text_message',
+            'address'               => 'required|string|max:50',
+            'city'                  => 'required|string|max:25',
+            'state'                 => 'required|exists:states,value',
+            'zip'                   => 'required|digits:5',
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // add values to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['client-first-name'] = $request->first_name;
+            $temp['client-last-name'] = $request->last_name;
+            $temp['client-phone-number'] = $request->contact_phone_number;
+            $temp['client-phone-number-type'] = $request->phone_number_type;
+            $temp['client-email'] = $request->email;
+            $temp['client-prefered-contact-method'] = $request->pref_contact_method;
+            $temp['client-address'] = $request->address;
+            $temp['client-city'] = $request->city;
+            $temp['client-state'] = $request->state;
+            $temp['client-zip'] = $request->zip;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+            // return success
+            return ['success' => true];
+        }
+
+        // get all validation errors
+        $errors = $validator->errors();
+        
+        $error_messages = [];
+
+        // first name error
+        // html id: org_first_name
+        if ( $errors->first('first_name') != null )
+        {
+            if ( $request->first_name == "" || $request->first_name == null )
+            {
+                $error_messages['org_first_name'] = 'Required field';
+            }
+            else
+            {
+                $error_messages['org_first_name'] = 'Max lenght of first name is 20 characters';
+            }
+        }
+
+        // last name error
+        // html id: org_last_name
+        if ( $errors->first('last_name') != null )
+        {
+            if ( $request->last_name == "" || $request->last_name == null )
+            {
+                $error_messages['org_last_name'] = 'Required field';
+            }
+            else
+            {
+                $error_messages['org_last_name'] = 'Max lenght of last name is 20 characters';
+            }
+        }
+
+        // phone number error
+        // html id: contact_phone_num
+        if ( $errors->first('contact_phone_number') != null )
+        {
+            // return error mesasage
+            if ( $request->contact_phone_number == "" || $request->contact_phone_number == null )
+            {
+                $error_messages['contact_phone_num'] = 'Required field';
+            }
+            else
+            {
+                $error_messages['contact_phone_num'] = 'Invalid format for phone number';
+            }
+        }
+
+        // phone number type error
+        // html id: phone_number_type
+        if ( $errors->first('phone_number_type') != null )
+        {
+            if ( $request->phone_number_type == "" || $request->phone_number_type == null )
+            {
+                $error_messages['phone_number_type'] = 'Phone type not selected';
+            }
+            else
+            {
+                $error_messages['phone_number_type'] = 'Invalid phone type';
+            }
+        }
+
+        // email address error
+        // html id: inputEmail4
+        if ( $errors->first('email') != null )
+        {
+            if ( $request->email == "" || $request->email == null )
+            {
+                $error_messages['inputEmail4'] = 'Required field';
+            }
+            else
+            {
+                $validator_unique = Validator::make(['value' => $request->email], [
+                    'value' => 'unique:clients,email'
+                ]);
+    
+                if ( !$validator_unique->fails() )
+                {
+                    $error_messages['inputEmail4'] = 'Invalid format of email, max lenght 40 characters';
+                }
+                else
+                {
+                    $error_messages['inputEmail4'] = "Email can\'t be used";
+                }
+            }
+        }
+
+        // prefered contact method error
+        // html id: pref_contact_method
+        if ( $errors->first('pref_contact_method') != null )
+        {
+            $error_messages['pref_contact_method'] = 'Contact method not specified';
+        }
+
+        // address error
+        // html id: address
+        if ( $errors->first('address') != null )
+        {
+            if ( $request->address == "" || $request->address == null )
+            {
+                $error_messages['address'] = 'Required field';
+            }
+            else
+            {
+                $error_messages['address'] = 'Max lenght 50 characters';
+            }
+        }
+
+        // city error
+        // html id: city
+        if ( $errors->first('city') != null )
+        {
+            if ( $request->city == "" || $request->city == null )
+            {
+                $error_messages['city'] = 'Required field';
+            }
+            else
+            {
+                $error_messages['city'] = 'Max lenght 25 characters';
+            }
+        }
+
+        // state error
+        // html id: state
+        if ( $errors->first('state') != null )
+        {
+            if ( $request->state == "" || $request->state == null )
+            {
+                $error_messages['state'] = 'Required field';
+            }
+            else
+            {
+                $error_messages['state'] = 'Invalid value';
+            }
+        }
+
+        // zip error
+        // html id: zip
+        if ( $errors->first('zip') != null )
+        {
+            if ( $request->zip == "" || $request->zip == null )
+            {
+                $error_messages['zip'] = 'Required field';
+            }
+            else
+            {
+                $error_messages['zip'] = 'Invalid format or lenght';
+            }
+        }
+
+        // return status and errors
+        return [
+            'success' => false,
+            'message' => $error_messages
+        ];
+
+    } // end _validateNewApplicationStageOne
 
 
 }
