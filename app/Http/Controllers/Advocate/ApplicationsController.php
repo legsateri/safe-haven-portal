@@ -119,7 +119,7 @@ class ApplicationsController extends Controller
                     break;
 
                 //case 'pet_type':
-                case 'description': //testing, remove later
+                case 'dietary_needs': //testing, remove later
                     $ajax_response['success'] =true;
                     if ( $ajax_response['success'] != true )
                     {
