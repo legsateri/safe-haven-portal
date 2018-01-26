@@ -117,7 +117,15 @@ class ApplicationsController extends Controller
                 case 'zip':
                     $response = $this->_validateClientZip($request->input_value);
                     break;
-                    
+
+                //case 'pet_type':
+                case 'description': //testing, remove later
+                    $ajax_response['success'] =true;
+                    if ( $ajax_response['success'] != true )
+                    {
+                        $ajax_response['data']['message'] = 'not good value';
+                    }
+                    return $ajax_response;
                 default:
                     # code...
                     break;
