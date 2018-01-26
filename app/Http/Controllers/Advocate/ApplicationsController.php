@@ -187,7 +187,7 @@ class ApplicationsController extends Controller
             {
                 return [
                     'success' => false,
-                    'message' => 'Requiered field'
+                    'message' => 'Required field'
                 ];
             }
             return [
@@ -225,7 +225,7 @@ class ApplicationsController extends Controller
             {
                 return [
                     'success' => false,
-                    'message' => 'Requiered field'
+                    'message' => 'Required field'
                 ];
             }
             return [
@@ -264,7 +264,7 @@ class ApplicationsController extends Controller
             {
                 return [
                     'success' => false,
-                    'message' => 'Requiered field'
+                    'message' => 'Required field'
                 ];
             }
             return [
@@ -364,7 +364,7 @@ class ApplicationsController extends Controller
         {
             return [
                 'success' => false,
-                'message' => 'Requiered field'
+                'message' => 'Required field'
             ];
         }
 
@@ -431,7 +431,7 @@ class ApplicationsController extends Controller
         {
             return [
                 'success' => false,
-                'message' => 'Requiered field'
+                'message' => 'Required field'
             ];
         }
 
@@ -469,7 +469,7 @@ class ApplicationsController extends Controller
         {
             return [
                 'success' => false,
-                'message' => 'Requiered field'
+                'message' => 'Required field'
             ];
         }
 
@@ -507,7 +507,7 @@ class ApplicationsController extends Controller
         {
             return [
                 'success' => false,
-                'message' => 'Requiered field'
+                'message' => 'Required field'
             ];
         }
 
@@ -544,7 +544,7 @@ class ApplicationsController extends Controller
         {
             return [
                 'success' => false,
-                'message' => 'Requiered field'
+                'message' => 'Required field'
             ];
         }
 
@@ -627,7 +627,7 @@ class ApplicationsController extends Controller
         {
             if ( $request->first_name == "" || $request->first_name == null )
             {
-                $error_messages['org_first_name'] = 'Requiered field';
+                $error_messages['org_first_name'] = 'Required field';
             }
             else
             {
@@ -641,7 +641,7 @@ class ApplicationsController extends Controller
         {
             if ( $request->last_name == "" || $request->last_name == null )
             {
-                $error_messages['org_last_name'] = 'Requiered field';
+                $error_messages['org_last_name'] = 'Required field';
             }
             else
             {
@@ -656,7 +656,7 @@ class ApplicationsController extends Controller
             // return error mesasage
             if ( $request->contact_phone_number == "" || $request->contact_phone_number == null )
             {
-                $error_messages['contact_phone_num'] = 'Requiered field';
+                $error_messages['contact_phone_num'] = 'Required field';
             }
             else
             {
@@ -684,7 +684,7 @@ class ApplicationsController extends Controller
         {
             if ( $request->email == "" || $request->email == null )
             {
-                $error_messages['inputEmail4'] = 'Requiered field';
+                $error_messages['inputEmail4'] = 'Required field';
             }
             else
             {
@@ -716,7 +716,7 @@ class ApplicationsController extends Controller
         {
             if ( $request->address == "" || $request->address == null )
             {
-                $error_messages['address'] = 'Requiered field';
+                $error_messages['address'] = 'Required field';
             }
             else
             {
@@ -730,7 +730,7 @@ class ApplicationsController extends Controller
         {
             if ( $request->city == "" || $request->city == null )
             {
-                $error_messages['city'] = 'Requiered field';
+                $error_messages['city'] = 'Required field';
             }
             else
             {
@@ -744,7 +744,7 @@ class ApplicationsController extends Controller
         {
             if ( $request->state == "" || $request->state == null )
             {
-                $error_messages['state'] = 'Requiered field';
+                $error_messages['state'] = 'Required field';
             }
             else
             {
@@ -758,7 +758,7 @@ class ApplicationsController extends Controller
         {
             if ( $request->zip == "" || $request->zip == null )
             {
-                $error_messages['zip'] = 'Requiered field';
+                $error_messages['zip'] = 'Required field';
             }
             else
             {
