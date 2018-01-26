@@ -39,5 +39,13 @@ class AdminsTableSeeder extends Seeder
             $row->password = bcrypt('password');
             $row->save();
         }
+
+        for ($i=0; $i < 150; $i++) { 
+            $row = new Admin();
+            $row->name = "test_name_" . (string)$i . " test_last_" . (string)$i;
+            $row->email = "test_email_" . (string)$i . '@email.com';
+            $row->password = bcrypt('password');
+            $row->save();
+        }
     }
 }
