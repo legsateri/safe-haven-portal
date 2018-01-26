@@ -59,6 +59,7 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		// settings pages
 		Route::get('/settings/application', 'Admin\ApplicationSettingsController@index')->name('admin.settings.application');
 		Route::get('/settings/admin-users', 'Admin\AdminUsersController@index')->name('admin.settings.admin-users');
+		Route::get('/settings/admin-user/{id}', 'Admin\AdminUsersController@single')->name('admin.settings.admin-user.single');
 		Route::get('/settings/account', 'Admin\AccountSettingsController@index')->name('admin.settings.account');
 
 		// submit form for username and email update
