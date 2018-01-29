@@ -119,7 +119,7 @@ class ApplicationsController extends Controller
                     break;
 
                 //case 'pet_type':
-                case 'dietary_needs': //testing, remove later
+                case 'i_understand': //testing, remove later
                     $ajax_response['success'] =true;
                     if ( $ajax_response['success'] != true )
                     {
@@ -142,10 +142,17 @@ class ApplicationsController extends Controller
          */
         if ( $request->action == "validation_multi" )
         {
+            // disable when testing
             $response = $this->_validateNewApplicationStageOne($request);
+            // for testing
+            //$response['success'] = true;
         }
-        
-        
+
+        if ( $request->action == "validation_multi_pet" )
+        {
+            // for testing
+            $response['success'] = true;
+        }
         
         // $ajax_response_data = array(
         //         'message' => 'some error message from backend'/*, // description of why is invalid

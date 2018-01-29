@@ -3,7 +3,7 @@
 @section('content')
 
     <div id="accordion_client_new_application" role="tablist">
-        <div class="card">
+        <div class="card accordion_section_1">
             <div class="card-header" role="tab" id="headingOne">
                 <h5 class="mb-0">
                     <a data-toggle="collapse" href="#collapseOne" role="button" aria-expanded="true" aria-controls="collapseOne">
@@ -30,7 +30,8 @@
                             @endif
                             <form id="new_client_app_form" action="{{ route('register') }}" method="post">
                                 {{ csrf_field() }}
-                                <input name="action" value="validation_multi_client" type="hidden">
+                                {{--<input name="action" value="validation_multi_client" type="hidden">--}}
+                                <input name="action" value="validation_multi" type="hidden">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="org_last_name">First Name</label>
@@ -142,6 +143,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-12 text-right">
                                         <button id="next_step_1_2" type="button" class="btn btn-primary">Next Step</button>
+                                        <i class="fa fa-spinner" aria-hidden="true"></i>
                                     </div>
                                 </div>
                             </form>
@@ -153,7 +155,7 @@
                 </div>
             </div>
         </div>
-        <div class="card">
+        <div class="card accordion_section_2">
             <div class="card-header" role="tab" id="headingTwo">
                 <h5 class="mb-0">
                     <a class="collapsed" data-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false" aria-controls="collapseTwo">
@@ -470,7 +472,7 @@
                 </div>
             </div>
         </div>
-        <div class="card">
+        <div class="card accordion_section_3">
             <div class="card-header" role="tab" id="headingThree">
                 <h5 class="mb-0">
                     <a class="collapsed" data-toggle="collapse" href="#collapseThree" role="button" aria-expanded="false" aria-controls="collapseThree">
@@ -480,7 +482,7 @@
             </div>
             <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row understand_row">
                         <div class="col-lg-2 col-md-2">
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
@@ -491,6 +493,7 @@
                             </div>
                             <div class="row text-center">
                                 <button id="i_understand" type="button" class="btn btn-primary mx-auto">I understand</button>
+                                {{ csrf_field() }}
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2">
@@ -500,13 +503,13 @@
                     <div class="form-row">
                         <div class="form-group col-md-12 text-right">
 
-                            <button id="next_step_3_4" type="button" class="btn btn-primary">Next Step</button>
+                            <button id="next_step_3_4" type="button" class="btn btn-primary disabled">Next Step</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card">
+        <div class="card accordion_section_4">
             <div class="card-header" role="tab" id="headingThree">
                 <h5 class="mb-0">
                     <a class="collapsed" data-toggle="collapse" href="#collapseFour" role="button" aria-expanded="false" aria-controls="collapseFour">
@@ -520,6 +523,7 @@
                         <div class="form-group col-md-12 text-center">
 
                             <button id="client_new_application_submit" type="button" class="btn btn-primary">Submit Application</button>
+                            <button id="client_new_application_start_another" type="button" class="btn btn-primary">Start another Application</button>
                         </div>
                     </div>
                 </div>
