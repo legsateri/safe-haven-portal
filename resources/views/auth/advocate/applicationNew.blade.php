@@ -305,12 +305,24 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="weight">Weight</label>
-                                                <input type="text" class="form-control" id="weight" maxlength="4" required="" value="{{ old('weight') }}" name="weight" placeholder="">
+                                                <input  type="text" class="form-control" id="weight" maxlength="4" required="" 
+                                                        @if ( isset( $tempData['pet-weight'] ) )
+                                                            value="{{ $tempData['pet-weight'] }}" 
+                                                        @else
+                                                            value="{{ old('weight') }}" 
+                                                        @endif
+                                                        name="weight" placeholder="">
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="age">Age</label>
-                                                <input type="text" class="form-control" id="age" maxlength="3" required="" value="{{ old('age') }}" name="age" placeholder="">
+                                                <input  type="text" class="form-control" id="age" maxlength="3" required="" 
+                                                        @if ( isset( $tempData['pet-age'] ) )
+                                                            value="{{ $tempData['pet-age'] }}" 
+                                                        @else
+                                                            value="{{ old('age') }}" 
+                                                        @endif
+                                                        name="age" placeholder="">
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
