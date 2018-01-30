@@ -284,6 +284,8 @@ jQuery(document).ready(function() {
         $('#next_step_1_2').click(function() { // step 1 to 2
             console.log('accordion next clicked');
 
+            $('.spinner_form_1').css('display','inline');
+
             var new_client_app_form_data = $( '#new_client_app_form' ).serializeArray();
             //console.log('new_client_app_form_data = ' + new_client_app_form_data);
             console.log("object: %o", new_client_app_form_data)
@@ -330,6 +332,7 @@ jQuery(document).ready(function() {
                         }*/
                         $('.accordion_section_2 .card-header a').attr('href', '#collapseTwo');
                         setTimeout(function(){
+                            $('.spinner_form_1').css('display','none');
                             $('#collapseOne').collapse('hide');
                             $('#collapseTwo').collapse('show');
                         }, 2000);
@@ -353,7 +356,7 @@ jQuery(document).ready(function() {
                             }
 
                         });
-
+                        $('.spinner_form_1').css('display','none');
                         //$('#' + sh_input_id).next('.invalid-feedback').html(obj.data.message);
 
                         //$('#' + sh_input_id).addClass('is-invalid');
@@ -372,6 +375,7 @@ jQuery(document).ready(function() {
                     // do something after success or error no matter what
                     console.log('completed');
 
+
                 }
             });
 
@@ -389,6 +393,9 @@ jQuery(document).ready(function() {
         });
 
         $('#next_step_2_3').click(function() { // step 2 to 3
+
+            $('.spinner_form_2').css('display','inline');
+
             console.log("next_step_2_3");
             var new_pet_app_form_data = $( '#new_pet_app_form' ).serializeArray();
             //console.log('new_client_app_form_data = ' + new_client_app_form_data);
@@ -417,6 +424,7 @@ jQuery(document).ready(function() {
                         $('.accordion_section_3 .card-header a').attr('href', '#collapseThree');
 
                         setTimeout(function(){
+                            $('.spinner_form_2').css('display','none');
                             $('#collapseTwo').collapse('hide');
                             $('#collapseThree').collapse('show');
                         }, 2000);
@@ -440,7 +448,7 @@ jQuery(document).ready(function() {
                             }
 
                         });
-
+                        $('.spinner_form_2').css('display','none');
                         //$('#' + sh_input_id).next('.invalid-feedback').html(obj.data.message);
 
                         //$('#' + sh_input_id).addClass('is-invalid');
@@ -478,6 +486,7 @@ jQuery(document).ready(function() {
 
         $('#i_understand').click(function() { // step 3 to 4
 
+            $('.spinner_form_3').css('display','inline');
             //$(this).attr('disabled','disabled');
 
             if ( $(this).hasClass('disabled') !== true ) {
@@ -515,6 +524,7 @@ jQuery(document).ready(function() {
                         if ( obj.success == true ) {
                             console.log('super cool i understand');
 
+                            $('.spinner_form_3').css('display','none');
                             clicked_button.addClass('disabled');
                             $('#next_step_3_4').removeClass('disabled');
 
@@ -529,7 +539,7 @@ jQuery(document).ready(function() {
 
                             // TODO support email change set
                             var tech_support_message = 'Please contact us at support@ztech.io';
-
+                            $('.spinner_form_3').css('display','none');
                             alert(obj.data.message + '<br/>' + tech_support_message);
 
                             //$('#' + sh_input_id).next('.invalid-feedback').html(obj.data.message);
