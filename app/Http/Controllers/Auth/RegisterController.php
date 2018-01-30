@@ -114,15 +114,17 @@ class RegisterController extends Controller
 
             // save organisation phone number
             $orgPhone = new Phone();
+            $orgPhone->entity_type = "organisation";
+            $orgPhone->entity_id = $organisation->id;
             $orgPhone->phone_type_id = $phoneType->id;
             $orgPhone->number = $data['org_phone_number'];
             $orgPhone->save();
 
             // add phone number to organisation
-            OrgHasPhone::create([
-                'organisation_id' => $organisation->id,
-                'phone_id' => $orgPhone->id,
-            ]);
+            // OrgHasPhone::create([
+            //     'organisation_id' => $organisation->id,
+            //     'phone_id' => $orgPhone->id,
+            // ]);
         }
         else
         {
@@ -175,15 +177,17 @@ class RegisterController extends Controller
 
         // save user phone number
         $userPhone = new Phone();
+        $userPhone->entity_type = "user";
+        $userPhone->entity_id = $user->id;
         $userPhone->phone_type_id = $phoneType->id;
         $userPhone->number = $data['contact_phone_number'];
         $userPhone->save();
 
         // add phone number to user
-        UserHasPhone::create([
-            'user_id' => $user->id,
-            'phone_id' => $userPhone->id,
-        ]);
+        // UserHasPhone::create([
+        //     'user_id' => $user->id,
+        //     'phone_id' => $userPhone->id,
+        // ]);
 
         return $user;
     }

@@ -40,7 +40,18 @@ class ApplicationsController extends Controller
 
         $states = State::all();
 
-        return view('auth.advocate.applicationNew', compact('currentUser', 'phoneTypes', 'states'));
+        $preferedContactMethods = [
+            'phone' => 'Phone', 
+            'email' => 'Email', 
+            'text_message' => 'Text message'
+        ];
+
+        $petTypes = ObjectType::where('type', 'pet')->get();
+
+        $tempData = TempObject::get(Auth::user()->id, 'new-client-application-form');
+
+        return  view('auth.advocate.applicationNew', 
+                compact('currentUser', 'phoneTypes', 'states', 'preferedContactMethods', 'petTypes', 'tempData'));
     }
 
     /**
@@ -116,6 +127,26 @@ class ApplicationsController extends Controller
 
                 case 'zip':
                     $response = $this->_validateClientZip($request->input_value);
+                    break;
+
+
+                /**
+                 * pet data validation
+                 */
+                case 'pet_type':
+                    $response = $this->_validatePetType($request->input_value);
+                    break;
+
+                case 'pet_name':
+                    $response = $this->_validatePetName($request->input_value);
+                    break;
+
+                case 'breed':
+                    $response = $this->_validatePetBreed($request->input_value);
+                    break;
+
+                case 'weight':
+                    $response = $this->_validatePetWeight($request->input_value);
                     break;
 
                 //case 'pet_type':
@@ -789,5 +820,138 @@ class ApplicationsController extends Controller
 
     } // end _validateNewApplicationStageOne
 
+
+
+    /**
+     * validate per type
+     */
+    private function _validatePetType($value)
+    {
+        $petTypesDB = ObjectType::where('type', 'pet')->get();
+        $petTypes = "";
+        $firstItem = true;
+        foreach( $petTypesDB as $item )
+        {
+            if ( !$firstItem )
+            {
+                $petTypes .= ",";
+            }
+            $petTypes .= $item->value . "_type";
+            $firstItem = false;
+        }
+
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|in:' . $petTypes
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['pet-type'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+            // return success
+            return ['success' => true];
+        }
+
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Required field'
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Invalid value'
+        ];
+    } // end _validatePetType
+
+
+    /**
+     * validate pet name
+     */
+    private function _validatePetName($value)
+    {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|string|max:25'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['pet-name'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+    
+            // return success
+            return ['success' => true];
+        }
+
+
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Required field'
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Max lenght is 25 characters'
+        ];
+
+    } // end _validatePetName
+
+
+    /** 
+     * validate pet breed
+     */
+    private function _validatePetBreed($value)
+    {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|string|max:25'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['pet-breed'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+    
+            // return success
+            return ['success' => true];
+        }
+
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Required field'
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Max lenght is 25 characters'
+        ];
+
+    } // end _validatePetBreed
+
+
+    private function _validatePetWeight($value)
+    {
+        if ( is_float($value) )
+        {
+
+        }
+    }
 
 }

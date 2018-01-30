@@ -35,14 +35,26 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="org_last_name">First Name</label>
-                                        <input type="text" class="form-control" id="org_first_name" maxlength="25" required="" value="{{ old('first_name') }}" name="first_name" placeholder="">
+                                        <input  type="text" class="form-control" id="org_first_name" maxlength="25" required="" 
+                                                @if ( isset($tempData['client-first-name']) )
+                                                    value="{{ $tempData['client-first-name'] }}" 
+                                                @else
+                                                    value="{{ old('first_name') }}" 
+                                                @endif
+                                                name="first_name" placeholder="">
                                         <div class="invalid-feedback">
                                             Please enter your first name.
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="org_last_name">Last Name</label>
-                                        <input type="text" class="form-control" id="org_last_name" maxlength="25" required="" value="{{ old('last_name') }}" name="last_name" placeholder="">
+                                        <input  type="text" class="form-control" id="org_last_name" maxlength="25" required="" 
+                                                @if ( isset($tempData['client-last-name']) )
+                                                    value="{{ $tempData['client-last-name'] }}"
+                                                @else
+                                                    value="{{ old('last_name') }}" 
+                                                @endif
+                                                name="last_name" placeholder="">
                                         <div class="invalid-feedback">
                                             Please enter your last name.
                                         </div>
@@ -52,7 +64,13 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label for="contact_phone_num">Phone Number (10 digits)</label>
-                                        <input type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}\d{3}\d{4}$" placeholder="XXXXXXXXXX" required="" value="{{ old('contact_phone_number') }}">
+                                        <input  type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}\d{3}\d{4}$" placeholder="XXXXXXXXXX" required="" 
+                                                @if ( isset($tempData['client-phone-number']) )
+                                                    value="{{ $tempData['client-phone-number'] }}"
+                                                @else
+                                                    value="{{ old('contact_phone_number') }}"
+                                                @endif
+                                                >
                                         <div class="invalid-feedback">
                                             Please enter your phone number.
                                         </div>
@@ -64,7 +82,13 @@
                                             <select class="custom-select" name="phone_number_type" id="phone_number_type">
                                                 <option value="" selected>Choose...</option>
                                                 @foreach( $phoneTypes as $phoneType )
-                                                    <option value="{{$phoneType->value}}">{{$phoneType->label}}</option>
+                                                    <option value="{{$phoneType->value}}"
+                                                        @if ( isset($tempData['client-phone-number-type']) )
+                                                            @if ( $tempData['client-phone-number-type'] == $phoneType->value )
+                                                                selected
+                                                            @endif
+                                                        @endif
+                                                    >{{$phoneType->label}}</option>
                                                 @endforeach
                                             </select>
                                             <div class="invalid-feedback">
@@ -75,7 +99,13 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="inputEmail4">Email</label>
-                                        <input type="email" maxlength="45" class="form-control" id="inputEmail4" name="email" placeholder="e.g. yourname@yourmail.com" required="" value="{{ old('email') }}">
+                                        <input  type="email" maxlength="45" class="form-control" id="inputEmail4" name="email" placeholder="e.g. yourname@yourmail.com" required="" 
+                                                @if ( isset($tempData['client-email']) )
+                                                    value="{{ $tempData['client-email'] }}"
+                                                @else
+                                                    value="{{ old('email') }}".
+                                                @endif
+                                                >
                                         <div class="invalid-feedback">
                                             Please enter your email.
                                         </div>
@@ -90,9 +120,15 @@
 
                                             <select class="custom-select" name="pref_contact_method" id="pref_contact_method">
                                                 <option value=""  selected>Choose...</option>
-                                                <option value="phone">Phone</option>
-                                                <option value="email">Email</option>
-                                                <option value="text_message">Text message</option>
+                                                @foreach( $preferedContactMethods as $key => $value )
+                                                    <option value="{{ $key }}"
+                                                        @if ( isset( $tempData['client-prefered-contact-method'] ) )
+                                                            @if ( $tempData['client-prefered-contact-method'] == $key )
+                                                                selected
+                                                            @endif
+                                                        @endif
+                                                    >{{ $value }}</option>
+                                                @endforeach
                                             </select>
                                             <div class="invalid-feedback">
                                                 Please enter your preferred contact method.
@@ -102,7 +138,13 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="address">Address</label>
-                                        <input type="text" class="form-control" id="address" maxlength="50" required="" value="{{ old('address') }}" name="address" placeholder="">
+                                        <input  type="text" class="form-control" id="address" maxlength="50" required="" 
+                                                @if ( isset($tempData['client-address']) )
+                                                    value="{{ $tempData['client-address'] }}" 
+                                                @else
+                                                    value="{{ old('address') }}" 
+                                                @endif
+                                                name="address" placeholder="">
                                         <div class="invalid-feedback">
                                             Please enter your address.
                                         </div>
@@ -112,7 +154,13 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="city">City</label>
-                                        <input type="text" class="form-control" id="city" maxlength="25" required="" value="{{ old('city') }}" name="city" placeholder="">
+                                        <input  type="text" class="form-control" id="city" maxlength="25" required="" 
+                                                @if ( isset( $tempData['client-city'] ) )
+                                                    value="{{ $tempData['client-city'] }}" 
+                                                @else
+                                                    value="{{ old('city') }}" 
+                                                @endif
+                                                name="city" placeholder="">
                                         <div class="invalid-feedback">
                                             Please enter your city.
                                         </div>
@@ -123,7 +171,13 @@
                                             <select class="custom-select" name="state" id="state">
                                                 <option value="" selected>Choose...</option>
                                                 @foreach( $states as $state )
-                                                    <option value="{{ $state->value }}">{{ $state->name }}</option>
+                                                    <option value="{{ $state->value }}"
+                                                        @if ( isset( $tempData['client-state'] ) )
+                                                            @if ( $tempData['client-state'] == $state->value )
+                                                                selected
+                                                            @endif
+                                                        @endif
+                                                    >{{ $state->name }}</option>
                                                 @endforeach
                                             </select>
                                             <div class="invalid-feedback">
@@ -133,7 +187,13 @@
                                     </div>
                                     <div class="form-group col-md-2">
                                         <label for="zip">Zip (5 digits)</label>
-                                        <input type="text" class="form-control" id="zip" maxlength="5" required="" value="{{ old('zip') }}" name="zip" placeholder="XXXXX">
+                                        <input  type="text" class="form-control" id="zip" maxlength="5" required="" 
+                                                @if ( isset( $tempData['client-city'] ) )
+                                                    value="{{ $tempData['client-zip'] }}"
+                                                @else
+                                                    value="{{ old('zip') }}" 
+                                                @endif
+                                                name="zip" placeholder="XXXXX">
                                         <div class="invalid-feedback">
                                             Please enter your zip code.
                                         </div>
@@ -188,7 +248,22 @@
                                             <div class="form-group col-md-6">
                                                 <label for="">Pet Type</label>
                                                 <div style="display: block;" class="radio_custom_group">
-                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                    @foreach( $petTypes as $petType )
+                                                        <div class="custom-control custom-radio custom-control-inline">
+                                                            <input  type="radio" 
+                                                                    id="{{ $petType->value }}_type" 
+                                                                    name="pet_type" 
+                                                                    class="custom-control-input"
+                                                                    @if ( isset($tempData['pet-type']) )
+                                                                        @if ( $tempData['pet-type'] == $petType->value . "_type" )
+                                                                            checked
+                                                                        @endif
+                                                                    @endif
+                                                                    >
+                                                            <label class="custom-control-label" for="{{ $petType->value }}_type">{{ $petType->label }}</label>
+                                                        </div>
+                                                    @endforeach
+                                                    <!-- <div class="custom-control custom-radio custom-control-inline">
                                                         <input type="radio" id="dog_type" name="pet_type" class="custom-control-input">
                                                         <label class="custom-control-label" for="dog_type">Dog</label>
                                                     </div>
@@ -199,13 +274,19 @@
                                                     <div class="custom-control custom-radio custom-control-inline">
                                                         <input type="radio" id="other_type" name="pet_type" class="custom-control-input">
                                                         <label class="custom-control-label" for="other_type">Other </label>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="pet_name">Pet Name</label>
-                                                <input type="text" class="form-control" id="pet_name" maxlength="25" required="" value="{{ old('pet_name') }}" name="pet_name" placeholder="">
+                                                <input  type="text" class="form-control" id="pet_name" maxlength="25" required="" 
+                                                        @if ( isset( $tempData['pet-name'] ) )
+                                                            value="{{ $tempData['pet-name'] }}" 
+                                                        @else
+                                                            value="{{ old('pet_name') }}" 
+                                                        @endif
+                                                        name="pet_name" placeholder="">
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
@@ -213,7 +294,13 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="breed">Breed</label>
-                                                <input type="text" class="form-control" id="breed" maxlength="25" required="" value="{{ old('breed') }}" name="breed" placeholder="">
+                                                <input  type="text" class="form-control" id="breed" maxlength="25" required="" 
+                                                        @if ( isset( $tempData['pet-breed'] ) )
+                                                            value="{{ $tempData['pet-breed'] }}" 
+                                                        @else
+                                                            value="{{ old('breed') }}" 
+                                                        @endif
+                                                        name="breed" placeholder="">
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                             <div class="form-group col-md-3">
