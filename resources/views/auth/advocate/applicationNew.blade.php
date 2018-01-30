@@ -203,7 +203,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-12 text-right">
                                         <button id="next_step_1_2" type="button" class="btn btn-primary">Next Step</button>
-                                        <i class="fa fa-spinner" aria-hidden="true"></i>
+                                        <div class="spinner_cont spinner_form_1"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
                                     </div>
                                 </div>
                             </form>
@@ -305,12 +305,24 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="weight">Weight</label>
-                                                <input type="text" class="form-control" id="weight" maxlength="4" required="" value="{{ old('weight') }}" name="weight" placeholder="">
+                                                <input  type="text" class="form-control" id="weight" maxlength="4" required="" 
+                                                        @if ( isset( $tempData['pet-weight'] ) )
+                                                            value="{{ $tempData['pet-weight'] }}" 
+                                                        @else
+                                                            value="{{ old('weight') }}" 
+                                                        @endif
+                                                        name="weight" placeholder="">
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label for="age">Age</label>
-                                                <input type="text" class="form-control" id="age" maxlength="3" required="" value="{{ old('age') }}" name="age" placeholder="">
+                                                <input  type="text" class="form-control" id="age" maxlength="3" required="" 
+                                                        @if ( isset( $tempData['pet-age'] ) )
+                                                            value="{{ $tempData['pet-age'] }}" 
+                                                        @else
+                                                            value="{{ old('age') }}" 
+                                                        @endif
+                                                        name="age" placeholder="">
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
@@ -548,6 +560,7 @@
                                     <div class="form-group col-md-12 text-right">
                                         <button id="add_another_pet" type="button" class="btn btn-primary">Add Another Pet</button>
                                         <button id="next_step_2_3" type="button" class="btn btn-primary">Next Step</button>
+                                        <div class="spinner_cont spinner_form_2"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
                                     </div>
                                 </div>
 
@@ -579,8 +592,11 @@
                                 independent programs that may require additional information from me and may have different guidelines for admission.
                             </div>
                             <div class="row text-center">
-                                <button id="i_understand" type="button" class="btn btn-primary mx-auto">I understand</button>
-                                {{ csrf_field() }}
+                                <div class="i_understand_button_cont">
+                                    <button id="i_understand" type="button" class="btn btn-primary mx-auto">I understand</button>
+                                    <div class="spinner_cont spinner_form_3"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
+                                    {{ csrf_field() }}
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-2">

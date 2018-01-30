@@ -148,6 +148,17 @@ class ApplicationsController extends Controller
                 case 'weight':
                     $response = $this->_validatePetWeight($request->input_value);
                     break;
+                
+                case 'age':
+                    $response = $this->_validatePetAge($request->input_value);
+                    break;
+
+                case 'description':
+                    $response = $this->_validatePetDescription($request->input_value);
+                    break;
+
+                    
+                    
 
                 //case 'pet_type':
                 case 'i_understand': //testing, remove later
@@ -946,12 +957,105 @@ class ApplicationsController extends Controller
     } // end _validatePetBreed
 
 
+
+    /**
+     * validate pet weight
+     */
     private function _validatePetWeight($value)
     {
-        if ( is_float($value) )
-        {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|numeric'
+        ]);
 
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['pet-weight'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+            
+            return ['success' => true];
         }
-    }
+        
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Required field'
+            ];
+        }
+        return [
+            'success' => false,
+            'message' => 'Invalid format'
+        ];
+    } // end _validatePetWeight
+
+
+    /**
+     * validate pet age
+     */
+    private function _validatePetAge($value)
+    {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|numeric'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['pet-age'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+            
+            return ['success' => true];
+        }
+        
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Required field'
+            ];
+        }
+        return [
+            'success' => false,
+            'message' => 'Invalid format'
+        ];
+    } // end _validatePetAge
+
+
+    private function _validatePetDescription($value)
+    {
+        $maxLength = '100';
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|string|max:' . $maxLength
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['pet-description'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+            
+            return ['success' => true];
+        }
+
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Required field'
+            ];
+        }
+        return [
+            'success' => false,
+            'message' => 'Max length is ' . $maxLength . ' characters'
+        ];
+
+    } // end _validatePetDescription
 
 }

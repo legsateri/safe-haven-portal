@@ -179,6 +179,25 @@ footer .sh_social_icons i {
     display: none;
 }
 
+.i_understand_button_cont {
+    margin: 0 auto;
+}
+
+div[class*="spinner_form_"] {
+    display: none;
+}
+
+.spinner_cont {
+     position: relative;
+    display: inline;
+}
+
+.spinner_cont i {
+    position: absolute;
+    top: -4px;
+    left: 9px;
+}
+
 /******* Responsive views start **********/
 
 /*Extra small devices (portrait phones, less than 576px)*/
