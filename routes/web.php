@@ -62,10 +62,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/settings/admin-user/{id}', 'Admin\AdminUsersController@single')->name('admin.settings.admin-user.single');
 		Route::get('/settings/account', 'Admin\AccountSettingsController@index')->name('admin.settings.account');
 
-		// submit form for username and email update
+		// submit form for admin name and email update
         Route::post('/settings/account/update/info', 'Admin\AccountSettingsController@updateInfo')->name('admin.settings.account.update.info');
-        Route::post('/settings/account/update/password', 'Admin\AccountSettingsController@updatePassword')->name('admin.settings.account.update.password');
-
+        Route::post('/settings/account/update/password', 'Admin\AccountSettingsController@updatePassword')->name('admin.settings.account.update.password');       
 	});
 
 });
@@ -131,7 +130,13 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		// user account page
 		Route::get('/account', 'Shared\AccountController@index')->name('user.account.page');
 
+		//Update Account info
+		Route::post('/account/update/info', 'Shared\AccountController@updateInfo')->name('user.account.update.info');
+
 		// user organization page
 		Route::get('/organization', 'Shared\OrganizationController@index')->name('user.organization.page');
+
+		//Update Organization info
+		Route::post('/organization/update/info', 'Shared\OrganizationController@updateInfo')->name('user.organization.update.info');
 
 	});

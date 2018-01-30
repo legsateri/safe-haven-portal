@@ -15,6 +15,8 @@ class CreatePhonesTable extends Migration
     {
         Schema::create('phones', function (Blueprint $table) {
             $table->increments('id');
+            $table->enum('entity_type', ['user', 'organisation', 'client']);
+            $table->integer('entity_id');
             $table->integer('phone_type_id')->unsigned();
             $table->string('number');
             $table->timestamps();
