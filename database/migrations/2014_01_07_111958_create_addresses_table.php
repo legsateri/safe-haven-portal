@@ -15,6 +15,8 @@ class CreateAddressesTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->increments('id');
+            $table->enum('entity_type', ['user', 'organisation', 'client']);
+            $table->integer('entity_id');
             $table->integer('address_type_id')->unsigned();
             $table->string('state');
             $table->string('city');
