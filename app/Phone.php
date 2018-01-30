@@ -12,6 +12,8 @@ class Phone extends Model
      * @var array
      */
     protected $fillable = [
+        'entity_type',
+        'entity_id',
         'phone_type_id',
         'number',
     ];

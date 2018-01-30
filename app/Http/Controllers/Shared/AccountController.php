@@ -28,7 +28,14 @@ class AccountController extends Controller
     public function index()
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
+        // $userPhone = 
 
         return view('auth.shared.userAccount', compact('currentUser'));
     }
+
+    public function updateInfo(Request $request){
+
+        //
+    }
+
 }
