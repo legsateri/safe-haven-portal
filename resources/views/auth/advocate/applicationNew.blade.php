@@ -258,7 +258,7 @@
                                                                     name="pet_type" 
                                                                     class="custom-control-input"
                                                                     @if ( isset($tempData['pet-type']) )
-                                                                        @if ( $tempData['pet-type'] == $petType->value . "_type" )
+                                                                        @if ( in_array($tempData['pet-type'], [$petType->value . "_type", $petType->value]) )
                                                                             checked
                                                                         @endif
                                                                     @endif
@@ -266,18 +266,6 @@
                                                             <label class="custom-control-label" for="{{ $petType->value }}_type">{{ $petType->label }}</label>
                                                         </div>
                                                     @endforeach
-                                                    <!-- <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="dog_type" name="pet_type" class="custom-control-input">
-                                                        <label class="custom-control-label" for="dog_type">Dog</label>
-                                                    </div>
-                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="cat_type" name="pet_type" class="custom-control-input">
-                                                        <label class="custom-control-label" for="cat_type">Cat </label>
-                                                    </div>
-                                                    <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="other_type" name="pet_type" class="custom-control-input">
-                                                        <label class="custom-control-label" for="other_type">Other </label>
-                                                    </div> -->
                                                 </div>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
@@ -333,7 +321,11 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="description">Description</label>
-                                                <textarea class="form-control" id="description" name="description" rows="1"></textarea>
+                                                <textarea class="form-control" id="description" name="description" rows="1">
+                                                    @if( isset( $tempData['pet-description'] ) )
+                                                        {{ $tempData['pet-description'] }}
+                                                    @endif
+                                                </textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
@@ -343,11 +335,23 @@
                                                 <label for="">Is the pet spayed/neutered?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="spayed_yes" value="yes" name="pet_spayed" class="custom-control-input">
+                                                        <input  type="radio" id="spayed_yes" value="yes" name="pet_spayed" 
+                                                                @if ( isset( $tempData['pet-spayed'] ) )
+                                                                    @if ( in_array( $tempData['pet-spayed'], ['spayed_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="spayed_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="spayed_no" value="no" name="pet_spayed" class="custom-control-input">
+                                                        <input  type="radio" id="spayed_no" value="no" name="pet_spayed" 
+                                                                @if ( isset( $tempData['pet-spayed'] ) )
+                                                                    @if ( in_array( $tempData['pet-spayed'], ['spayed_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="spayed_no">No</label>
                                                     </div>
                                                 </div>
@@ -357,11 +361,23 @@
                                                 <label for="">If not does the client object to having the pet spayed/neutered?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="spay_object_yes" value="yes" name="pet_spay_object" class="custom-control-input">
+                                                        <input  type="radio" id="spay_object_yes" value="yes" name="pet_spay_object" 
+                                                                @if ( isset( $tempData['pet-spayed-object'] ) )
+                                                                    @if ( in_array( $tempData['pet-spayed-object'], ['spay_object_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="spay_object_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="spay_object_no" value="no" name="pet_spay_object" class="custom-control-input">
+                                                        <input  type="radio" id="spay_object_no" value="no" name="pet_spay_object" 
+                                                                @if ( isset( $tempData['pet-spayed-object'] ) )
+                                                                    @if ( in_array( $tempData['pet-spayed-object'], ['spay_object_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="spay_object_no">No</label>
                                                     </div>
                                                 </div>
@@ -374,11 +390,23 @@
                                                 <label for="">Is the pet microchipped?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="chipped_yes" value="yes" name="pet_chipped" class="custom-control-input">
+                                                        <input  type="radio" id="chipped_yes" value="yes" name="pet_chipped" 
+                                                                @if ( isset( $tempData['pet-chipped'] ) )
+                                                                    @if ( in_array( $tempData['pet-chipped'], ['chipped_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="chipped_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="chipped_no" value="no" name="pet_chipped" class="custom-control-input">
+                                                        <input  type="radio" id="chipped_no" value="no" name="pet_chipped" 
+                                                                @if ( isset( $tempData['pet-chipped'] ) )
+                                                                    @if ( in_array( $tempData['pet-chipped'], ['chipped_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="chipped_no">No</label>
                                                     </div>
                                                 </div>
@@ -388,11 +416,23 @@
                                                 <label for="">Up to date with vaccinations?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="vaccine_yes" value="yes" name="pet_vaccined" class="custom-control-input">
+                                                        <input  type="radio" id="vaccine_yes" value="yes" name="pet_vaccined" 
+                                                                @if ( isset( $tempData['pet-vaccine'] ) )
+                                                                    @if ( in_array( $tempData['pet-vaccine'], ['vaccine_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="vaccine_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="vaccine_no" value="no" name="pet_vaccined" class="custom-control-input">
+                                                        <input  type="radio" id="vaccine_no" value="no" name="pet_vaccined" 
+                                                                @if ( isset( $tempData['pet-vaccine'] ) )
+                                                                    @if ( in_array( $tempData['pet-vaccine'], ['vaccine_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="vaccine_no">No</label>
                                                     </div>
                                                 </div>
@@ -403,12 +443,20 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="dietary_needs">Any special dietary needs?</label>
-                                                <textarea class="form-control" id="dietary_needs" name="dietary_needs" rows="2"></textarea>
+                                                <textarea class="form-control" id="dietary_needs" name="dietary_needs" rows="2">
+                                                    @if ( isset( $tempData['pet-dietary-needs'] ) )
+                                                        {{ $tempData['pet-dietary-needs'] }}
+                                                    @endif
+                                                </textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="veterinary_needs">Any special veterinary needs?</label>
-                                                <textarea class="form-control" id="veterinary_needs" name="veterinary_needs" rows="2"></textarea>
+                                                <textarea class="form-control" id="veterinary_needs" name="veterinary_needs" rows="2">
+                                                    @if ( isset( $tempData['pet-veterinary-needs'] ) )
+                                                        {{ $tempData['pet-veterinary-needs'] }}
+                                                    @endif
+                                                </textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
@@ -416,18 +464,34 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="pets_behavior">Please describe the pets behavior and temperament</label>
-                                                <textarea class="form-control" id="pets_behavior" name="pets_behavior" rows="2"></textarea>
+                                                <textarea class="form-control" id="pets_behavior" name="pets_behavior" rows="2">
+                                                    @if ( isset( $tempData['pet-behavior'] ) )
+                                                        {{ $tempData['pet-behavior'] }}
+                                                    @endif
+                                                </textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="">Does the abuser have access or visit the pet?</label>
                                                     <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="abuser_access_yes" value="yes" name="abuser_access" class="custom-control-input">
+                                                        <input  type="radio" id="abuser_access_yes" value="yes" name="abuser_access" 
+                                                                @if ( isset( $tempData['pet-abuser-access'] ) )
+                                                                    @if ( in_array( $tempData['pet-abuser-access'], ['abuser_access_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="abuser_access_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="abuser_access_no" value="no" name="abuser_access" class="custom-control-input">
+                                                        <input  type="radio" id="abuser_access_no" value="no" name="abuser_access" 
+                                                                @if ( isset( $tempData['pet-abuser-access'] ) )
+                                                                    @if ( in_array( $tempData['pet-abuser-access'], ['abuser_access_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="abuser_access_no">No</label>
                                                     </div>
                                                 </div>
@@ -438,7 +502,11 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="pet_relevant_info">Any other relevant information for this pet?</label>
-                                                <textarea class="form-control" id="pet_relevant_info" name="pet_relevant_info" rows="1"></textarea>
+                                                <textarea class="form-control" id="pet_relevant_info" name="pet_relevant_info" rows="1">
+                                                    @if ( isset( $tempData['pet-relevant-info'] ) )
+                                                        {{ $tempData['pet-relevant-info'] }}
+                                                    @endif
+                                                </textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
@@ -448,18 +516,37 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="how_long">Approximately how long will temporary housing be required? (Please note that our program is currently limited to 30 day placement)</label>
-                                                <input type="text" class="form-control" id="how_long" maxlength="3" required="" value="{{ old('pet_name') }}" name="how_long" placeholder="">
+                                                <input  type="text" class="form-control" id="how_long" maxlength="3" required="" 
+                                                        @if ( isset( $tempData['pet-how-long'] ) )
+                                                            value="{{ $tempData['pet-how-long'] }}" 
+                                                        @else
+                                                            value="{{ old('pet_name') }}" 
+                                                        @endif
+                                                        
+                                                        name="how_long" placeholder="">
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="">Are the police currently involved?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="police_involved_yes" value="yes" name="police_involved" class="custom-control-input">
+                                                        <input  type="radio" id="police_involved_yes" value="yes" name="police_involved" 
+                                                                @if ( isset( $tempData['pet-police-involved'] ) )
+                                                                    @if ( in_array( $tempData['pet-police-involved'], ['police_involved_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="police_involved_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="police_involved_no" value="no" name="police_involved" class="custom-control-input">
+                                                        <input  type="radio" id="police_involved_no" value="no" name="police_involved" 
+                                                                @if ( isset( $tempData['pet-police-involved'] ) )
+                                                                    @if ( in_array( $tempData['pet-police-involved'], ['police_involved_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="police_involved_no">No</label>
                                                     </div>
                                                 </div>
@@ -472,11 +559,23 @@
                                                 <label for="">Does the client have a protective order?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="protective_order_yes" value="yes" name="protective_order" class="custom-control-input">
+                                                        <input  type="radio" id="protective_order_yes" value="yes" 
+                                                                @if ( isset( $tempData['client-protective-order'] ) )
+                                                                    @if ( in_array( $tempData['client-protective-order'], ['protective_order_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                name="protective_order" class="custom-control-input">
                                                         <label class="custom-control-label" for="protective_order_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="protective_order_no" value="no" name="protective_order" class="custom-control-input">
+                                                        <input  type="radio" id="protective_order_no" value="no" name="protective_order" 
+                                                                @if ( isset( $tempData['client-protective-order'] ) )
+                                                                    @if ( in_array( $tempData['client-protective-order'], ['protective_order_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="protective_order_no">No</label>
                                                     </div>
                                                 </div>
@@ -486,11 +585,23 @@
                                                 <label for="">Is the pet covered in the protective order?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_covered_yes" value="yes" name="pet_covered" class="custom-control-input">
+                                                        <input  type="radio" id="pet_covered_yes" value="yes" name="pet_covered" 
+                                                                @if ( isset( $tempData['pet-protective-order-covered'] ) )
+                                                                    @if ( in_array( $tempData['pet-protective-order-covered'], ['pet_covered_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_covered_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_covered_no" value="no" name="pet_covered" class="custom-control-input">
+                                                        <input  type="radio" id="pet_covered_no" value="no" name="pet_covered" 
+                                                                @if ( isset( $tempData['pet-protective-order-covered'] ) )
+                                                                    @if ( in_array( $tempData['pet-protective-order-covered'], ['pet_covered_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_covered_no">No</label>
                                                     </div>
                                                 </div>
@@ -503,11 +614,23 @@
                                                 <label for="">Does the client have any paperwork or evidence indicating ownership of the pet? (i.e. vet receipts, pictures, etc)</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_paperwork_yes" value="yes" name="pet_paperwork" class="custom-control-input">
+                                                        <input  type="radio" id="pet_paperwork_yes" value="yes" name="pet_paperwork" 
+                                                                @if ( isset( $tempData['pet-client-paperwork'] ) )
+                                                                    @if ( in_array( $tempData['pet-client-paperwork'], ['pet_paperwork_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_paperwork_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_paperwork_no" value="no" name="pet_paperwork" class="custom-control-input">
+                                                        <input  type="radio" id="pet_paperwork_no" value="no" name="pet_paperwork" 
+                                                                @if ( isset( $tempData['pet-client-paperwork'] ) )
+                                                                    @if ( in_array( $tempData['pet-client-paperwork'], ['pet_paperwork_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_paperwork_no">No</label>
                                                     </div>
                                                 </div>
@@ -517,11 +640,23 @@
                                                 <label for="">Does the abuser have any paperwork or evidence indicating ownership of the pet? (i.e. vet receipts, pictures, etc)</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_abuser_paperwork_yes" value="yes" name="pet_abuser_paperwork" class="custom-control-input">
+                                                        <input  type="radio" id="pet_abuser_paperwork_yes" value="yes" name="pet_abuser_paperwork" 
+                                                                @if ( isset( $tempData['pet-abuser-paperwork'] ) )
+                                                                    @if ( in_array( $tempData['pet-abuser-paperwork'], ['pet_abuser_paperwork_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_abuser_paperwork_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_abuser_paperwork_no" value="no" name="pet_abuser_paperwork" class="custom-control-input">
+                                                        <input  type="radio" id="pet_abuser_paperwork_no" value="no" name="pet_abuser_paperwork" 
+                                                                @if ( isset( $tempData['pet-abuser-paperwork'] ) )
+                                                                    @if ( in_array( $tempData['pet-abuser-paperwork'], ['pet_abuser_paperwork_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_abuser_paperwork_no">No</label>
                                                     </div>
                                                 </div>
@@ -532,7 +667,11 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="abuser_details">Please add any details about the abuser that may be helpful for protection. (frequent locations, names of friends, phone numbers used, etc)</label>
-                                                <textarea class="form-control" id="abuser_details" name="abuser_details" rows="2"></textarea>
+                                                <textarea class="form-control" id="abuser_details" name="abuser_details" rows="2">
+                                                    @if ( isset( $tempData['abuser-details'] ) )
+                                                        {{ $tempData['abuser-details'] }}
+                                                    @endif
+                                                </textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
@@ -542,11 +681,23 @@
                                                 <label for="">Has the client explored other boarding options? (i.e. friends, family, private vet or boarding)</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="boarding_options_yes" value="yes" name="boarding_options" class="custom-control-input">
+                                                        <input  type="radio" id="boarding_options_yes" value="yes" name="boarding_options" 
+                                                                @if ( isset( $tempData['pet-boarding-options'] ) )
+                                                                    @if ( in_array( $tempData['pet-boarding-options'], ['boarding_options_yes', 'yes'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="boarding_options_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="boarding_options_no" value="no" name="boarding_options" class="custom-control-input">
+                                                        <input  type="radio" id="boarding_options_no" value="no" name="boarding_options" 
+                                                                @if ( isset( $tempData['pet-boarding-options'] ) )
+                                                                    @if ( in_array( $tempData['pet-boarding-options'], ['boarding_options_no', 'no'] ) )
+                                                                        checked
+                                                                    @endif
+                                                                @endif
+                                                                class="custom-control-input">
                                                         <label class="custom-control-label" for="boarding_options_no">No</label>
                                                     </div>
                                                 </div>
