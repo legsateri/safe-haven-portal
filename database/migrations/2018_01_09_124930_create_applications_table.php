@@ -16,25 +16,18 @@ class CreateApplicationsTable extends Migration
         Schema::create('applications', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('client_id')->unsigned();
-            $table->integer('status');
-
-            $table->text('abuser_visiting_spots');
-            // $table->text('estimated_lenght_of_housing');
+            $table->integer('organisation_id')->unsigned();
+            $table->integer('status')->default(0);
 
             $table->boolean('police_involved');
             $table->boolean('protective_order');
-            // $table->boolean('pet_protective_order');
-
-            // $table->boolean('client_legal_owner_of_pet');
-            // $table->boolean('abuser_legal_owner_of_pet');
-
-            $table->boolean('explored_boarding_options');
 
             $table->text('abuser_notes');
 
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('organisation_id')->references('id')->on('organisations');
         });
     }
 

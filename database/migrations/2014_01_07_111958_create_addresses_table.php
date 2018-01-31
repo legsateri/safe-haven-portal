@@ -18,11 +18,11 @@ class CreateAddressesTable extends Migration
             $table->enum('entity_type', ['user', 'organisation', 'client']);
             $table->integer('entity_id');
             $table->integer('address_type_id')->unsigned();
-            $table->string('state');
-            $table->string('city');
-            $table->string('zip_code');
-            $table->string('street');
-            $table->string('number');
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('street')->nullable();
+            $table->string('number')->nullable();
             $table->timestamps();
 
             $table->foreign('address_type_id')->references('id')->on('object_types');

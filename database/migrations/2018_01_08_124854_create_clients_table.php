@@ -21,7 +21,7 @@ class CreateClientsTable extends Migration
             $table->string('email')->nullable();
             $table->text('best_way_to_reach')->nullable();
             $table->text('update_action')->nullable();
-            $table->integer('pets_count');
+            $table->integer('pets_count')->default(0);
             $table->string('slug');
             $table->integer('realise_status_id')->unsigned()->nullable();
 

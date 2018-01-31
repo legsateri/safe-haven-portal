@@ -18,7 +18,7 @@ class CreatePhonesTable extends Migration
             $table->enum('entity_type', ['user', 'organisation', 'client']);
             $table->integer('entity_id');
             $table->integer('phone_type_id')->unsigned();
-            $table->string('number');
+            $table->string('number')->nullable();
             $table->timestamps();
 
             $table->foreign('phone_type_id')->references('id')->on('object_types');

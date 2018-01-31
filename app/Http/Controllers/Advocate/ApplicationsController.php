@@ -10,6 +10,10 @@ use DB;
 
 use App\ObjectType;
 use App\State;
+use App\Client;
+use App\Pet;
+use App\Application;
+use App\ApplicationPet;
 
 use App\Code\UserObject;
 use App\Code\TempObject;
@@ -252,8 +256,13 @@ class ApplicationsController extends Controller
         {
             // disable when testing
             //$response = $this->_validateNewApplicationStageOne($request);
+            $response = $this->_validateNewApplicationFinal($request);
+            if ( $response['success'] == true )
+            {
+                $this->_createNewApplication();
+            }
             // for testing
-            $response['success'] = true;
+            // $response['success'] = true;
         }
 
         if ( $request->action == "validation_multi" )
@@ -1874,5 +1883,96 @@ class ApplicationsController extends Controller
         return $result;
 
     } // end _validateNewApplicationStageTwo
+
+
+
+    private function _validateNewApplicationFinal($request)
+    {
+        $response_stage_one = $this->_validateNewApplicationStageOne($request);
+        $response_stage_two = $this->_validateNewApplicationStageTwo($request);
+
+        if ( $response_stage_one['success'] == true && $response_stage_two['success'] == true )
+        {
+            $result['success'] = true;
+        }
+        else
+        {
+            $result['success'] = false;
+            if ( isset($response_stage_one['message']) )
+            {
+                foreach ($response_stage_one['message'] as $key => $value) {
+                    $result['message'][$key] = $value;
+                }
+            }
+            if ( isset($response_stage_two['message']) )
+            {
+                foreach ($response_stage_two['message'] as $key => $value) {
+                    $result['message'][$key] = $value;
+                }
+            }
+        }
+
+        return $result;
+
+    } // end _validateNewApplicationFinal
+
+    private function _createNewApplication()
+    {   
+        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+        die('under construction');
+        // create new client database entry
+        $client = new Client();
+        $client->organisation_id = Auth::user()->organisation_id;
+        $client->first_name = $temp['client-first-name'];
+        $client->last_name = $temp['client-last-name'];
+        $client->email = $temp['client-email'];
+        $client->best_way_to_reach = $temp['client-prefered-contact-method'];
+        $client->pets_count = 1;
+        $client->slug = str_slug($temp['client-first-name'] . ' ' . $temp['client-last-name'] , '-');
+        $client->save();
+
+        // find pet type
+        $petType = DB::table('object_types')
+                        ->where([
+                            ['type', '=', 'pet'],
+                            ['value', '=', $temp['pet-type']]
+                        ])
+                        ->first();
+
+        // create new pet database entry
+        $pet = new Pet();
+        $pet->client_id = $client->id;
+        $pet->organisation_id = Auth::user()->organisation_id;
+        $pet->pet_type_id = $petType->id;
+        $pet->name = $temp['pet-name'];
+        $pet->breed = $temp['pet-breed'];
+        $pet->weight = $temp['pet-weight'];
+        $pet->age = $temp['pet-age'];
+        $pet->description = $temp['pet-description'];
+        $pet->microchipped = $temp['pet-chipped'];
+        $pet->vaccinations = $temp['pet-vaccine'];
+        $pet->sprayed = $temp['pet-spayed'];
+        $pet->objection_to_spray = $temp['pet-spayed-object'];
+        $pet->dietary_needs = $temp['pet-dietary-needs'];
+        $pet->vet_needs = $temp['pet-veterinary-needs'];
+        $pet->temperament = $temp['pet-behavior'];
+        $pet->aditional_info = $temp['pet-relevant-info'];
+        $pet->slug = str_slug($temp['pet-name'], '-');
+        $pet->save();
+
+        // create client application database entry
+        $application = new Application();
+        $application->client_id = $client->id;
+        $application->organisation_id = Auth::user()->organisation_id;
+        $application->police_involved = $temp['pet-police-involved'];
+        $application->protective_order = $temp['client-protective-order'];
+        $application->abuser_notes = $temp['abuser-details'];
+        $application->save();
+
+        // create pet application database entry
+        $application_pet = new ApplicationPet();
+
+
+    }
 
 }

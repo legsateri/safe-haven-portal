@@ -22,7 +22,7 @@ class CreatePetsTable extends Migration
             $table->string('breed');
             $table->decimal('weight',  8, 2);
             $table->integer('age');
-            $table->dateTime('reported');
+            $table->dateTime('reported')->nullable();
             $table->text('description');
             $table->boolean('microchipped');
             $table->string('microchip_id')->nullable();
@@ -33,9 +33,9 @@ class CreatePetsTable extends Migration
             $table->text('vet_needs');
             $table->text('temperament');
             $table->text('aditional_info');
-            $table->dateTime('released_at');
-            $table->dateTime('relinguished_at');
-            $table->boolean('completed');
+            $table->dateTime('released_at')->nullable();
+            $table->dateTime('relinguished_at')->nullable();
+            $table->boolean('completed')->nullable();
             $table->integer('realise_status_id')->unsigned()->nullable();
             $table->string('slug');
 

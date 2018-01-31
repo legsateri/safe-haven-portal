@@ -321,11 +321,8 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="description">Description</label>
-                                                <textarea class="form-control" id="description" name="description" rows="1">
-                                                    @if( isset( $tempData['pet-description'] ) )
-                                                        {{ $tempData['pet-description'] }}
-                                                    @endif
-                                                </textarea>
+                                                <textarea class="form-control" id="description" name="description" rows="1"
+                                                    >@if( isset( $tempData['pet-description'] ) ){{ $tempData['pet-description'] }}@endif</textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
@@ -443,20 +440,14 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="dietary_needs">Any special dietary needs?</label>
-                                                <textarea class="form-control" id="dietary_needs" name="dietary_needs" rows="2">
-                                                    @if ( isset( $tempData['pet-dietary-needs'] ) )
-                                                        {{ $tempData['pet-dietary-needs'] }}
-                                                    @endif
-                                                </textarea>
+                                                <textarea class="form-control" id="dietary_needs" name="dietary_needs" rows="2"
+                                                    >@if ( isset( $tempData['pet-dietary-needs'] ) ){{ $tempData['pet-dietary-needs'] }}@endif</textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="veterinary_needs">Any special veterinary needs?</label>
-                                                <textarea class="form-control" id="veterinary_needs" name="veterinary_needs" rows="2">
-                                                    @if ( isset( $tempData['pet-veterinary-needs'] ) )
-                                                        {{ $tempData['pet-veterinary-needs'] }}
-                                                    @endif
-                                                </textarea>
+                                                <textarea class="form-control" id="veterinary_needs" name="veterinary_needs" rows="2"
+                                                    >@if ( isset( $tempData['pet-veterinary-needs'] ) ){{ $tempData['pet-veterinary-needs'] }}@endif</textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
@@ -464,11 +455,8 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="pets_behavior">Please describe the pets behavior and temperament</label>
-                                                <textarea class="form-control" id="pets_behavior" name="pets_behavior" rows="2">
-                                                    @if ( isset( $tempData['pet-behavior'] ) )
-                                                        {{ $tempData['pet-behavior'] }}
-                                                    @endif
-                                                </textarea>
+                                                <textarea class="form-control" id="pets_behavior" name="pets_behavior" rows="2"
+                                                    >@if ( isset( $tempData['pet-behavior'] ) ){{ $tempData['pet-behavior'] }}@endif</textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                             <div class="form-group col-md-6">
@@ -502,11 +490,8 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="pet_relevant_info">Any other relevant information for this pet?</label>
-                                                <textarea class="form-control" id="pet_relevant_info" name="pet_relevant_info" rows="1">
-                                                    @if ( isset( $tempData['pet-relevant-info'] ) )
-                                                        {{ $tempData['pet-relevant-info'] }}
-                                                    @endif
-                                                </textarea>
+                                                <textarea class="form-control" id="pet_relevant_info" name="pet_relevant_info" rows="1"
+                                                    >@if ( isset( $tempData['pet-relevant-info'] ) ){{ $tempData['pet-relevant-info'] }}@endif</textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
@@ -667,11 +652,8 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="abuser_details">Please add any details about the abuser that may be helpful for protection. (frequent locations, names of friends, phone numbers used, etc)</label>
-                                                <textarea class="form-control" id="abuser_details" name="abuser_details" rows="2">
-                                                    @if ( isset( $tempData['abuser-details'] ) )
-                                                        {{ $tempData['abuser-details'] }}
-                                                    @endif
-                                                </textarea>
+                                                <textarea class="form-control" id="abuser_details" name="abuser_details" rows="2"
+                                                    >@if ( isset( $tempData['abuser-details'] ) ){{ $tempData['abuser-details'] }}@endif</textarea>
                                                 <div class="invalid-feedback">More example invalid feedback text</div>
                                             </div>
                                         </div>
