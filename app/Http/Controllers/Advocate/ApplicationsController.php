@@ -247,6 +247,15 @@ class ApplicationsController extends Controller
         /**
          * validation for multy fields
          */
+
+        if ( $request->action == "validation_multi_final" )
+        {
+            // disable when testing
+            //$response = $this->_validateNewApplicationStageOne($request);
+            // for testing
+            $response['success'] = true;
+        }
+
         if ( $request->action == "validation_multi" )
         {
             // disable when testing

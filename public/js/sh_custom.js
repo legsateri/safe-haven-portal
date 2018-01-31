@@ -623,6 +623,20 @@ jQuery(document).ready(function() {
 
             full_form_array = new_client_app_form_data.concat(new_pet_app_form_data);
 
+           // console.log(full_form_array);
+
+            // fix action key value
+            var full_form_array_action = [];
+
+            jQuery.each(full_form_array, function (index, value) {
+                if ( full_form_array[index].name === "action" ) {
+                    full_form_array[index].value = 'validation_multi_final';
+                }
+                full_form_array_action.push(full_form_array[index]);
+            });
+
+            //console.log(full_form_array_action);
+
             var ajaxurl = '/application/new/ajax';
 
             jQuery.ajax({
