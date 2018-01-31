@@ -9,6 +9,7 @@
                     <a data-toggle="collapse" href="#collapseOne" role="button" aria-expanded="true" aria-controls="collapseOne">
                         New Client application - Step 1
                     </a>
+                    <i class="check_1 fa fa-check" aria-hidden="true"></i>
                 </h5>
             </div>
 
@@ -221,6 +222,7 @@
                     <a class="collapsed" data-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false" aria-controls="collapseTwo">
                         Add Pet - Step 2
                     </a>
+                    <i class="check_2 fa fa-check" aria-hidden="true"></i>
                 </h5>
             </div>
             <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
@@ -251,7 +253,8 @@
                                                     @foreach( $petTypes as $petType )
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" 
-                                                                    id="{{ $petType->value }}_type" 
+                                                                    id="{{ $petType->value }}_type"
+                                                                    value="{{ $petType->value }}"
                                                                     name="pet_type" 
                                                                     class="custom-control-input"
                                                                     @if ( isset($tempData['pet-type']) )
@@ -340,11 +343,11 @@
                                                 <label for="">Is the pet spayed/neutered?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="spayed_yes" name="pet_spayed" class="custom-control-input">
+                                                        <input type="radio" id="spayed_yes" value="yes" name="pet_spayed" class="custom-control-input">
                                                         <label class="custom-control-label" for="spayed_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="spayed_no" name="pet_spayed" class="custom-control-input">
+                                                        <input type="radio" id="spayed_no" value="no" name="pet_spayed" class="custom-control-input">
                                                         <label class="custom-control-label" for="spayed_no">No</label>
                                                     </div>
                                                 </div>
@@ -354,11 +357,11 @@
                                                 <label for="">If not does the client object to having the pet spayed/neutered?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="spay_object_yes" name="pet_spay_object" class="custom-control-input">
+                                                        <input type="radio" id="spay_object_yes" value="yes" name="pet_spay_object" class="custom-control-input">
                                                         <label class="custom-control-label" for="spay_object_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="spay_object_no" name="pet_spay_object" class="custom-control-input">
+                                                        <input type="radio" id="spay_object_no" value="no" name="pet_spay_object" class="custom-control-input">
                                                         <label class="custom-control-label" for="spay_object_no">No</label>
                                                     </div>
                                                 </div>
@@ -371,11 +374,11 @@
                                                 <label for="">Is the pet microchipped?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="chipped_yes" name="pet_chipped" class="custom-control-input">
+                                                        <input type="radio" id="chipped_yes" value="yes" name="pet_chipped" class="custom-control-input">
                                                         <label class="custom-control-label" for="chipped_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="chipped_no" name="pet_chipped" class="custom-control-input">
+                                                        <input type="radio" id="chipped_no" value="no" name="pet_chipped" class="custom-control-input">
                                                         <label class="custom-control-label" for="chipped_no">No</label>
                                                     </div>
                                                 </div>
@@ -385,11 +388,11 @@
                                                 <label for="">Up to date with vaccinations?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="vaccine_yes" name="pet_vaccined" class="custom-control-input">
+                                                        <input type="radio" id="vaccine_yes" value="yes" name="pet_vaccined" class="custom-control-input">
                                                         <label class="custom-control-label" for="vaccine_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="vaccine_no" name="pet_vaccined" class="custom-control-input">
+                                                        <input type="radio" id="vaccine_no" value="no" name="pet_vaccined" class="custom-control-input">
                                                         <label class="custom-control-label" for="vaccine_no">No</label>
                                                     </div>
                                                 </div>
@@ -418,13 +421,13 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="">Does the abuser have access or visit the pet?</label>
-                                                <div style="display: block;" class="radio_custom_group">
+                                                    <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="abuser_access_yes" name="abuser_access" class="custom-control-input">
+                                                        <input type="radio" id="abuser_access_yes" value="yes" name="abuser_access" class="custom-control-input">
                                                         <label class="custom-control-label" for="abuser_access_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="abuser_access_no" name="abuser_access" class="custom-control-input">
+                                                        <input type="radio" id="abuser_access_no" value="no" name="abuser_access" class="custom-control-input">
                                                         <label class="custom-control-label" for="abuser_access_no">No</label>
                                                     </div>
                                                 </div>
@@ -452,11 +455,11 @@
                                                 <label for="">Are the police currently involved?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="police_involved_yes" name="police_involved" class="custom-control-input">
+                                                        <input type="radio" id="police_involved_yes" value="yes" name="police_involved" class="custom-control-input">
                                                         <label class="custom-control-label" for="police_involved_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="police_involved_no" name="police_involved" class="custom-control-input">
+                                                        <input type="radio" id="police_involved_no" value="no" name="police_involved" class="custom-control-input">
                                                         <label class="custom-control-label" for="police_involved_no">No</label>
                                                     </div>
                                                 </div>
@@ -469,11 +472,11 @@
                                                 <label for="">Does the client have a protective order?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="protective_order_yes" name="protective_order" class="custom-control-input">
+                                                        <input type="radio" id="protective_order_yes" value="yes" name="protective_order" class="custom-control-input">
                                                         <label class="custom-control-label" for="protective_order_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="protective_order_no" name="protective_order" class="custom-control-input">
+                                                        <input type="radio" id="protective_order_no" value="no" name="protective_order" class="custom-control-input">
                                                         <label class="custom-control-label" for="protective_order_no">No</label>
                                                     </div>
                                                 </div>
@@ -483,11 +486,11 @@
                                                 <label for="">Is the pet covered in the protective order?</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_covered_yes" name="pet_covered" class="custom-control-input">
+                                                        <input type="radio" id="pet_covered_yes" value="yes" name="pet_covered" class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_covered_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_covered_no" name="pet_covered" class="custom-control-input">
+                                                        <input type="radio" id="pet_covered_no" value="no" name="pet_covered" class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_covered_no">No</label>
                                                     </div>
                                                 </div>
@@ -500,11 +503,11 @@
                                                 <label for="">Does the client have any paperwork or evidence indicating ownership of the pet? (i.e. vet receipts, pictures, etc)</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_paperwork_yes" name="pet_paperwork" class="custom-control-input">
+                                                        <input type="radio" id="pet_paperwork_yes" value="yes" name="pet_paperwork" class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_paperwork_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_paperwork_no" name="pet_paperwork" class="custom-control-input">
+                                                        <input type="radio" id="pet_paperwork_no" value="no" name="pet_paperwork" class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_paperwork_no">No</label>
                                                     </div>
                                                 </div>
@@ -514,11 +517,11 @@
                                                 <label for="">Does the abuser have any paperwork or evidence indicating ownership of the pet? (i.e. vet receipts, pictures, etc)</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_abuser_paperwork_yes" name="pet_abuser_paperwork" class="custom-control-input">
+                                                        <input type="radio" id="pet_abuser_paperwork_yes" value="yes" name="pet_abuser_paperwork" class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_abuser_paperwork_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="pet_abuser_paperwork_no" name="pet_abuser_paperwork" class="custom-control-input">
+                                                        <input type="radio" id="pet_abuser_paperwork_no" value="no" name="pet_abuser_paperwork" class="custom-control-input">
                                                         <label class="custom-control-label" for="pet_abuser_paperwork_no">No</label>
                                                     </div>
                                                 </div>
@@ -539,11 +542,11 @@
                                                 <label for="">Has the client explored other boarding options? (i.e. friends, family, private vet or boarding)</label>
                                                 <div style="display: block;" class="radio_custom_group">
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="boarding_options_yes" name="boarding_options" class="custom-control-input">
+                                                        <input type="radio" id="boarding_options_yes" value="yes" name="boarding_options" class="custom-control-input">
                                                         <label class="custom-control-label" for="boarding_options_yes">Yes</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
-                                                        <input type="radio" id="boarding_options_no" name="boarding_options" class="custom-control-input">
+                                                        <input type="radio" id="boarding_options_no" value="no" name="boarding_options" class="custom-control-input">
                                                         <label class="custom-control-label" for="boarding_options_no">No</label>
                                                     </div>
                                                 </div>
@@ -578,6 +581,7 @@
                     <a class="collapsed" data-toggle="collapse" href="#collapseThree" role="button" aria-expanded="false" aria-controls="collapseThree">
                         Application Review - Step 3
                     </a>
+                    <i class="check_3 fa fa-check" aria-hidden="true"></i>
                 </h5>
             </div>
             <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
@@ -618,6 +622,8 @@
                     <a class="collapsed" data-toggle="collapse" href="#collapseFour" role="button" aria-expanded="false" aria-controls="collapseFour">
                         Submit Application - Step 4
                     </a>
+                    {{--<span class="form_submitted_successfully">Your application has been successfully submitted.</span>--}}
+                    <i class="check_4 fa fa-check" aria-hidden="true"></i>
                 </h5>
             </div>
             <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
