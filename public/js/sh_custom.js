@@ -333,6 +333,7 @@ jQuery(document).ready(function() {
                         $('.accordion_section_2 .card-header a').attr('href', '#collapseTwo');
                         setTimeout(function(){
                             $('.spinner_form_1').css('display','none');
+                            $('.check_1').fadeIn("slow", function () {});
                             $('#collapseOne').collapse('hide');
                             $('#collapseTwo').collapse('show');
                         }, 2000);
@@ -425,6 +426,7 @@ jQuery(document).ready(function() {
 
                         setTimeout(function(){
                             $('.spinner_form_2').css('display','none');
+                            $('.check_2').fadeIn("slow", function () {});
                             $('#collapseTwo').collapse('hide');
                             $('#collapseThree').collapse('show');
                         }, 2000);
@@ -504,7 +506,12 @@ jQuery(document).ready(function() {
                     _token: token
                 };
 
-                jQuery.ajax({
+                $('.spinner_form_3').css('display','none');
+                $('.check_3').fadeIn("slow", function () {});
+                clicked_button.addClass('disabled');
+                $('#next_step_3_4').removeClass('disabled');
+
+                /*jQuery.ajax({
                     method: "POST",
                     url: ajaxurl,
                     data: data,
@@ -528,11 +535,11 @@ jQuery(document).ready(function() {
                             clicked_button.addClass('disabled');
                             $('#next_step_3_4').removeClass('disabled');
 
-                            /*if ( $('#' + sh_input_id).hasClass('is-invalid') ) {
+                            /!*if ( $('#' + sh_input_id).hasClass('is-invalid') ) {
                                 $('#' + sh_input_id).removeClass('is-invalid').addClass('is-valid');
                             } else {
                                 $('#' + sh_input_id).addClass('is-valid');
-                            }*/
+                            }*!/
                         } else {
                             console.log('not cool');
                             console.log('sh_input_id = ' + sh_input_id);
@@ -544,11 +551,11 @@ jQuery(document).ready(function() {
 
                             //$('#' + sh_input_id).next('.invalid-feedback').html(obj.data.message);
 
-                            /*if ( $('#' + sh_input_id).hasClass('is-valid') ) {
+                            /!*if ( $('#' + sh_input_id).hasClass('is-valid') ) {
                                 $('#' + sh_input_id).removeClass('is-valid').addClass('is-invalid');
                             } else {
                                 $('#' + sh_input_id).addClass('is-invalid');
-                            }*/
+                            }*!/
                         }
 
 
@@ -561,7 +568,7 @@ jQuery(document).ready(function() {
                         // do something after success or error no matter what
                         // console.log('zzz6 - completed');
                     }
-                }); // end ajax post
+                }); // end ajax post*/
 
             }
 
@@ -644,8 +651,9 @@ jQuery(document).ready(function() {
                             clicked_button.addClass('disabled');
                             $('#client_new_application_start_another').fadeIn("slow", function () {});
 
-
-                            alert('Final Submit successful');
+                            $('.check_4').fadeIn("slow", function () {});
+                            $('#client_new_application_submit').html('Application Submitted');
+                            //alert('Final Submit successful');
 
 
                         }, 1000);

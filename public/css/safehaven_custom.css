@@ -198,6 +198,17 @@ div[class*="spinner_form_"] {
     left: 9px;
 }
 
+[class*="check_"] {
+    color: #28a745;
+    display: none;
+}
+
+.form_submitted_successfully {
+    display: none;
+    color: #28a745;
+}
+
+
 /******* Responsive views start **********/
 
 /*Extra small devices (portrait phones, less than 576px)*/
