@@ -26,6 +26,7 @@ class AccountSettingsController extends Controller
 
     function updateInfo(Request $request)
     {
+        
         if(isset(Auth('admin')->user()->id))                        
         {
             //validate data from form
@@ -53,9 +54,9 @@ class AccountSettingsController extends Controller
                 } elseif ($check_admin->id != $admin->id) {
                     return redirect()->back()->with('message', 'Admin user with this email address already exists!');
                 }
-            }
-        }
-    }    
+            } // if
+        } // if
+    } // function    
 
     public function updatePassword(Request $request)
     {
