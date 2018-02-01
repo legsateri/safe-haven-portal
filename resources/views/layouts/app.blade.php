@@ -84,6 +84,7 @@
 <html lang="en">
 <head>
     @include('partials.head')
+    @yield('head.specific.scripts')
 </head>
 <body>
 @include('partials.nav')

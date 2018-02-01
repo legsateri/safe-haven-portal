@@ -18,6 +18,8 @@ use App\VerifyUser;
 
 use App\Mail\VerifyMail;
 
+use App\Code\AppConfig;
+
 
 class RegisterController extends Controller
 {
@@ -60,6 +62,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {   
         return Validator::make($data, [
+            'g-recaptcha-response' => 'required|recaptcha',
             'first_name'        => 'required|string|max:25',
             'last_name'         => 'required|string|max:25',
             'email'             => 'required|string|email|max:45|unique:users',
@@ -216,6 +219,12 @@ class RegisterController extends Controller
     {
         $this->guard()->logout();
         return redirect('/login')->with('status', 'We sent you an activation code. Check your email and click on the link to verify.');
+    }
+
+    public function showRegistrationForm()
+    {
+        $config = AppConfig::get();
+        return view('auth.register', compact('config'));
     }
 
 
