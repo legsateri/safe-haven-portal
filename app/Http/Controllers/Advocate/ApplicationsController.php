@@ -2088,6 +2088,8 @@ class ApplicationsController extends Controller
         $address->street = $temp['client-address'];
         $address->zip_code = $temp['client-zip'];
         $address->save();
+        
+        TempObject::delete(Auth::user()->id, 'new-client-application-form');
 
         return true;
         
