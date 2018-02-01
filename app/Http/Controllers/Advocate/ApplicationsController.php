@@ -14,6 +14,8 @@ use App\Client;
 use App\Pet;
 use App\Application;
 use App\ApplicationPet;
+use App\Phone;
+use App\Address;
 
 use App\Code\UserObject;
 use App\Code\TempObject;
@@ -1919,7 +1921,7 @@ class ApplicationsController extends Controller
     private function _createNewApplication()
     {   
         $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-        die('under construction');
+
         // create new client database entry
         $client = new Client();
         $client->organisation_id = Auth::user()->organisation_id;
@@ -1949,10 +1951,38 @@ class ApplicationsController extends Controller
         $pet->weight = $temp['pet-weight'];
         $pet->age = $temp['pet-age'];
         $pet->description = $temp['pet-description'];
-        $pet->microchipped = $temp['pet-chipped'];
-        $pet->vaccinations = $temp['pet-vaccine'];
-        $pet->sprayed = $temp['pet-spayed'];
-        $pet->objection_to_spray = $temp['pet-spayed-object'];
+        if ( in_array($temp['pet-chipped'], ['yes', 'chipped_yes']) )
+        {
+            $pet->microchipped = 1;
+        }
+        else
+        {
+            $pet->microchipped = 0;
+        }
+        if ( in_array($temp['pet-vaccine'], ['yes', 'vaccine_yes']) )
+        {
+            $pet->vaccinations = 1;
+        }
+        else
+        {
+            $pet->vaccinations = 0;
+        }
+        if ( in_array($temp['pet-spayed'], ['yes', 'spayed_yes']) )
+        {
+            $pet->sprayed = 1;
+        }
+        else
+        {
+            $pet->sprayed = 0;
+        }
+        if ( in_array($temp['pet-spayed-object'], ['yes', 'spay_object_yes']) )
+        {
+            $pet->objection_to_spray = 1;
+        }
+        else
+        {
+            $pet->objection_to_spray = 0;
+        }
         $pet->dietary_needs = $temp['pet-dietary-needs'];
         $pet->vet_needs = $temp['pet-veterinary-needs'];
         $pet->temperament = $temp['pet-behavior'];
@@ -1964,15 +1994,103 @@ class ApplicationsController extends Controller
         $application = new Application();
         $application->client_id = $client->id;
         $application->organisation_id = Auth::user()->organisation_id;
-        $application->police_involved = $temp['pet-police-involved'];
-        $application->protective_order = $temp['client-protective-order'];
+        if ( in_array($temp['pet-police-involved'], ['yes', 'police_involved_yes']) )
+        {
+            $application->police_involved = 1;
+        }
+        else
+        {
+            $application->police_involved = 0;
+        }
+        if ( in_array($temp['client-protective-order'], ['yes', 'protective_order_yes']) )
+        {
+            $application->protective_order = 1;
+        }
+        else
+        {
+            $application->protective_order = 0;
+        }
         $application->abuser_notes = $temp['abuser-details'];
         $application->save();
 
         // create pet application database entry
         $application_pet = new ApplicationPet();
+        $application_pet->application_id = $application->id;
+        $application_pet->pet_id = $pet->id;
+        $application_pet->client_id = $client->id;
+        $application_pet->organisation_id = Auth::user()->organisation_id;
+        if ( in_array($temp['pet-abuser-access'], ['yes', 'abuser_access_yes']) )
+        {
+            $application_pet->abuser_visiting_access = 1;
+        }
+        else
+        {
+            $application_pet->abuser_visiting_access = 0;
+        }
+        $application_pet->estimated_lenght_of_housing = $temp['pet-how-long'];
+        if ( in_array($temp['pet-protective-order-covered'], ['yes', 'pet_covered_yes']) )
+        {
+            $application_pet->pet_protective_order = 1;
+        }
+        else
+        {
+            $application_pet->pet_protective_order = 0;
+        }
+        if ( in_array($temp['pet-client-paperwork'], ['yes', 'pet_paperwork_yes']) )
+        {
+            $application_pet->client_legal_owner_of_pet = 1;
+        }
+        else
+        {
+            $application_pet->client_legal_owner_of_pet = 0;
+        }
+        if ( in_array($temp['pet-abuser-paperwork'], ['yes', 'pet_abuser_paperwork_yes']) )
+        {
+            $application_pet->abuser_legal_owner_of_pet = 1;
+        }
+        else
+        {
+            $application_pet->abuser_legal_owner_of_pet = 0;
+        }
+        if ( in_array($temp['pet-boarding-options'], ['yes', 'boarding_options_yes']) )
+        {
+            $application_pet->explored_boarding_options = 1;
+        }
+        else
+        {
+            $application_pet->explored_boarding_options = 0;
+        }
+        $application_pet->save();
 
+        // get phone type
+        $phone_type = ObjectType::where([
+                            ['type', '=', 'phone'],
+                            ['value', '=', $temp['client-phone-number-type']]
+                        ])->first();
 
+        // save client phone
+        $phone = new Phone();
+        $phone->entity_type = 'client';
+        $phone->entity_id = $client->id;
+        $phone->phone_type_id = $phone_type->id;
+        $phone->number = $temp['client-phone-number'];
+        $phone->save();
+        
+        // get state name
+        $state = State::where('value', $temp['client-state'])->first();
+
+        // save client address
+        $address = new Address();
+        $address->entity_type = 'client';
+        $address->entity_id = $client->id;
+        $address->state = $state->name;
+        $address->city = $temp['client-city'];
+        $address->street = $temp['client-address'];
+        $address->zip_code = $temp['client-zip'];
+        $address->save();
+
+        return true;
+        
     }
 
 }

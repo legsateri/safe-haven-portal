@@ -17,7 +17,7 @@ class CreateAddressesTable extends Migration
             $table->increments('id');
             $table->enum('entity_type', ['user', 'organisation', 'client']);
             $table->integer('entity_id');
-            $table->integer('address_type_id')->unsigned();
+            $table->integer('address_type_id')->unsigned()->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->string('zip_code')->nullable();

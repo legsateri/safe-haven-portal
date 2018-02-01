@@ -20,7 +20,7 @@ class CreateApplicationPetsTable extends Migration
             $table->integer('client_id')->unsigned();
             $table->integer('organisation_id')->unsigned();
 
-            $table->text('abuser_visiting_spots');
+            $table->boolean('abuser_visiting_access');
             $table->text('estimated_lenght_of_housing');
             $table->boolean('pet_protective_order');
             $table->boolean('client_legal_owner_of_pet');
