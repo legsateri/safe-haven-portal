@@ -34,4 +34,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function verifyUser()
+    {
+        return $this->hasOne('App\VerifyUser');
+    }
+
 }

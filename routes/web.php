@@ -73,6 +73,7 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 	 * user auth routes
 	 */
 	Auth::routes();
+	Route::get('/user/verify/{token}', 'Auth\RegisterController@verifyUser');
 
 	/**
 	 * auth guard

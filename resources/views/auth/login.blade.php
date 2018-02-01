@@ -7,6 +7,16 @@
                 <div class="col-lg-4 col-md-3">
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    @if (session('warning'))
+                        <div class="alert alert-warning">
+                            {{ session('warning') }}
+                        </div>
+                    @endif
                     @if ($errors->any())
                         <div>
                             <p>invalid credentials</p>
