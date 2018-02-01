@@ -19,7 +19,6 @@ class ClientsController extends Controller
     {
         parent::__construct();
         $this->middleware('auth');
-        $this->_checkVerifiedUser();
     }
 
     
