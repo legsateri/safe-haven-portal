@@ -724,4 +724,231 @@ jQuery(document).ready(function() {
         });
     }
 
+    if ( $('.clients_in_need_cont').length != 0 ) { // if clients in need page
+        /*$('.scrollspy-example').scrollspy({ target: '#list-example' })
+        $('.scrollspy-example').scrollspy({ offset: 150 });*/
+
+        $('.list-group-item').click(function() {
+            console.log('something');
+            $('#list-example').css('padding-top','4rem');
+            $('[id*="list-item-"]').css('padding-top','4rem');
+        });
+
+       $('[id*="list-button-item-"]').click(function() {
+
+            var client_id = $(this).attr('id');
+            console.log(client_id);
+            client_id = client_id.replace("list-button-item-", "");
+            console.log(client_id);
+
+            $('#exampleModal [type=\'hidden\']').val(client_id);
+
+            $('#exampleModal').modal('show');
+        });
+
+        $('#confirm_accept_client').click(function() {
+
+            $('.spinner_cont').css('display','inline');
+            var modal_button_clicked = $(this);
+            modal_button_clicked.addClass('disabled');
+
+            var confirmed_accept_client_id = $('#exampleModal [type=\'hidden\']').val();
+            console.log('confirmed_accept_client_id = ' + confirmed_accept_client_id);
+
+            var ajaxurl = '/application/new/ajax';
+            var token = $('[name="_token"]').val();
+
+            var data = {
+                action: 'accept_client_confirmed',
+                client_id: confirmed_accept_client_id,
+                _token: token
+            };
+
+            jQuery.ajax({
+                method: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function (data, status, response) {
+                    console.log('are we here accept_client_confirmed');
+                    var obj = response.responseJSON;
+                    console.log('are we here accept_client_confirmed 1');
+                    if ( typeof obj.data !== 'undefined' ) {
+                        console.log('obj.message = ' + obj.data.message);
+                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
+                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
+                    }
+                    console.log('are we here2');
+
+
+                    if ( obj.success == true ) {
+                        console.log('super cool');
+
+                        //setTimeout(function(){
+                        $('.spinner_cont').css('display','none');
+                        modal_button_clicked.fadeOut("fast", function () {});
+
+                        $('.modal-body').html('Client has been successfully accepted');
+
+                        console.log('client with id ' + confirmed_accept_client_id + ' to remove;');
+
+                        $('#list-example a[href="#list-item-' + confirmed_accept_client_id + '"]').fadeOut("fast", function () {});
+                        $('.scrollspy-example #list-item-' + confirmed_accept_client_id).fadeOut("fast", function () {});
+
+                        //}, 2000);
+
+
+                    } else {
+                        console.log('not cool');
+
+                        $('.spinner_cont').css('display','none');
+                        modal_button_clicked.fadeOut("fast", function () {});
+
+                        $('.modal-body').html(obj.data.message);
+
+                        //console.log('sh_input_id = ' + sh_input_id);
+
+                        /*jQuery.each(obj.data.message, function (index, value) {
+                            //jQuery('.survey-element-' + value).delay((index + 1) * 200).fadeIn("slow", function () {});
+                            console.log('value = ' + value);
+                            console.log('index = ' + index);
+
+                            $('#' + index).next('.invalid-feedback').html(value);
+
+                            if ( $('#' + index).hasClass('is-valid') ) {
+                                $('#' + index).removeClass('is-valid').addClass('is-invalid');
+                            } else {
+                                $('#' + index).addClass('is-invalid');
+                            }
+
+                        });*/
+                        $('.spinner_cont').css('display','none');
+                        //$('#' + sh_input_id).next('.invalid-feedback').html(obj.data.message);
+
+                        //$('#' + sh_input_id).addClass('is-invalid');
+                        /*if ( $('#' + sh_input_id).hasClass('is-valid') ) {
+                            $('#' + sh_input_id).removeClass('is-valid').addClass('is-invalid');
+                        } else {
+                            $('#' + sh_input_id).addClass('is-invalid');
+                        }*/
+                    }
+
+                },
+                error: function (xml, status, error) {
+                    // do something if there was an error
+                },
+                complete: function (xml, status) {
+                    // do something after success or error no matter what
+                    console.log('completed');
+
+                }
+            });
+
+            //$('#exampleModal').modal('show');
+        });
+
+        $('#exampleModal').on('hidden.bs.modal', function (e) {
+            $('.modal-body').html('Once a client is accepted, emails are sent to Shelters letting them know there are pets in need.' +
+                '                        By clicking \'Confirm Accept Client\' below, your organization is agreeing to work with the Shelters' +
+                '                        and Client to establish a temporary home for the pet or pets.');
+            $('#confirm_accept_client').css('display','inline-block').removeClass('disabled');;
+        })
+
+    };
+
+    if ( $('.current_clients_cont').length != 0 ) { // if clients in need page
+
+        $('.list-group-item').click(function() {
+            console.log('something');
+            $('#list-example').css('padding-top','4rem');
+            $('[id*="list-item-"]').css('padding-top','4rem');
+        });
+
+        $('[id*="list-button-item-"]').click(function() {
+
+            var client_id = $(this).attr('id');
+            console.log(client_id);
+            client_id = client_id.replace("list-button-item-", "");
+            console.log(client_id);
+
+            $('#exampleModal [type=\'hidden\']').val(client_id);
+
+            $('#exampleModal').modal('show');
+        });
+
+        $('#confirm_accept_client').click(function() {
+
+            $('.spinner_cont').css('display','inline');
+            var modal_button_clicked = $(this);
+            modal_button_clicked.addClass('disabled');
+
+            var confirmed_accept_client_id = $('#exampleModal [type=\'hidden\']').val();
+            console.log('confirmed_accept_client_id = ' + confirmed_accept_client_id);
+
+            var ajaxurl = '/application/new/ajax';
+            var token = $('[name="_token"]').val();
+
+            var data = {
+                action: 'accept_client_confirmed',
+                client_id: confirmed_accept_client_id,
+                _token: token
+            };
+
+            jQuery.ajax({
+                method: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function (data, status, response) {
+                    console.log('are we here accept_client_confirmed');
+                    var obj = response.responseJSON;
+                    console.log('are we here accept_client_confirmed 1');
+                    if ( typeof obj.data !== 'undefined' ) {
+                        console.log('obj.message = ' + obj.data.message);
+                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
+                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
+                    }
+                    console.log('are we here2');
+
+                    if ( obj.success == true ) {
+                        console.log('super cool');
+
+                        $('.spinner_cont').css('display','none');
+                        modal_button_clicked.fadeOut("fast", function () {});
+
+                        $('.modal-body').html('Client has been successfully accepted');
+
+                        console.log('client with id ' + confirmed_accept_client_id + ' to remove;');
+
+                        $('#list-example a[href="#list-item-' + confirmed_accept_client_id + '"]').fadeOut("fast", function () {});
+                        $('.scrollspy-example #list-item-' + confirmed_accept_client_id).fadeOut("fast", function () {});
+
+                    } else {
+                        console.log('not cool');
+
+                        $('.spinner_cont').css('display','none');
+                        modal_button_clicked.fadeOut("fast", function () {});
+
+                        $('.modal-body').html(obj.data.message);
+
+                        $('.spinner_cont').css('display','none');
+                    }
+                },
+                error: function (xml, status, error) {
+                    // do something if there was an error
+                },
+                complete: function (xml, status) {
+                    // do something after success or error no matter what
+                    console.log('completed');
+                }
+            });
+        });
+
+        $('#exampleModal').on('hidden.bs.modal', function (e) {
+            $('.modal-body').html('Once a client is accepted, emails are sent to Shelters letting them know there are pets in need.' +
+                '                        By clicking \'Confirm Accept Client\' below, your organization is agreeing to work with the Shelters' +
+                '                        and Client to establish a temporary home for the pet or pets.');
+            $('#confirm_accept_client').css('display','inline-block').removeClass('disabled');;
+        })
+
+    }
+
 })

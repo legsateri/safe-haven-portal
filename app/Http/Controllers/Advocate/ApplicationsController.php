@@ -87,6 +87,15 @@ class ApplicationsController extends Controller
             return;
         }
 
+        if ( $request->action == "accept_client_confirmed" ) {
+            $ajax_response['success'] =true;
+            if ( $ajax_response['success'] != true )
+            {
+                $ajax_response['data']['message'] = 'not good value';
+            }
+            return $ajax_response;
+        }
+
         /**
          * validation for single fields
          */

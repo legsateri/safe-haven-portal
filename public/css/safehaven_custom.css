@@ -96,6 +96,40 @@ body .custom-select {
     width: 100%;
 }
 
+.current_clients_cont .scrollspy-example,
+.clients_in_need_cont .scrollspy-example {
+    position: relative;
+    overflow-y: scroll;
+    height: 800px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.current_clients_cont #list-example,
+.clients_in_need_cont #list-example {
+
+    /*padding-top: 4rem;*/
+}
+
+.current_clients_cont [id*="list-item-"],
+.clients_in_need_cont [id*="list-item-"] {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    /*padding-bottom: 1rem;*/
+
+    /*padding-top: 4rem;*/
+}
+
+.current_clients_cont .spinner_cont.spinner_modal,
+.clients_in_need_cont .spinner_cont.spinner_modal {
+    display: none;
+    width: 41px;
+    height: 26px;
+}
+
+.current_clients_cont #exampleModal .custom-radio {
+    display: block;
+}
+
 footer .sh_social_icons {
     list-style-type: none;
 }
@@ -207,6 +241,13 @@ div[class*="spinner_form_"] {
     display: none;
     color: #28a745;
 }
+
+.current_clients_cont .badge,
+.clients_in_need_cont .badge {
+    padding: .6em .6em;
+}
+
+
 
 
 /******* Responsive views start **********/
