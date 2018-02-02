@@ -134,15 +134,14 @@ class RegisterController extends Controller
              * based on organisation code
              */
             $organisation = Organisation::where('code', $data['organization_code'])->first();
-
+            
             // compare organisation type and desiered user type
             // if not same:  level user type to organisation type
 
             $orgType = ObjectType::where([
                             ['type', '=', 'organisation'],
-                            ['value', '=', $organisation->org_type_id]
+                            ['id', '=', $organisation->org_type_id]
                         ])->first();
-
 
             if ( $data['sign_up_form_user_type'] != $orgType->value )
             {
