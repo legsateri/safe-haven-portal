@@ -17,6 +17,7 @@ class CreateApplicationsTable extends Migration
             $table->increments('id');
             $table->integer('client_id')->unsigned();
             $table->integer('organisation_id')->unsigned();
+            $table->integer('created_by_advocate_id')->unsigned();
             $table->integer('status')->default(0);
 
             $table->boolean('police_involved');
@@ -24,10 +25,14 @@ class CreateApplicationsTable extends Migration
 
             $table->text('abuser_notes');
 
+            $table->integer('release_status_id')->unsigned()->nullable();
+
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients');
             $table->foreign('organisation_id')->references('id')->on('organisations');
+            $table->foreign('created_by_advocate_id')->references('id')->on('users');
+            $table->foreign('release_status_id')->references('id')->on('statuses');
         });
     }
 

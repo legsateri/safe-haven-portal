@@ -36,7 +36,7 @@ class CreatePetsTable extends Migration
             $table->dateTime('released_at')->nullable();
             $table->dateTime('relinguished_at')->nullable();
             $table->boolean('completed')->nullable();
-            $table->integer('release_status_id')->unsigned()->nullable();
+            // $table->integer('release_status_id')->unsigned()->nullable();
             $table->string('slug');
 
             $table->timestamps();
@@ -44,7 +44,7 @@ class CreatePetsTable extends Migration
             $table->foreign('client_id')->references('id')->on('clients');
             $table->foreign('organisation_id')->references('id')->on('organisations');
             $table->foreign('pet_type_id')->references('id')->on('object_types');
-            $table->foreign('release_status_id')->references('id')->on('statuses');
+            // $table->foreign('release_status_id')->references('id')->on('statuses');
         });
     }
 
