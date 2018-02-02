@@ -23,12 +23,12 @@ class CreateClientsTable extends Migration
             $table->text('update_action')->nullable();
             $table->integer('pets_count')->default(0);
             $table->string('slug');
-            $table->integer('realise_status_id')->unsigned()->nullable();
+            $table->integer('release_status_id')->unsigned()->nullable();
 
             $table->timestamps();
 
             $table->foreign('organisation_id')->references('id')->on('organisations');
-            $table->foreign('realise_status_id')->references('id')->on('statuses');
+            $table->foreign('release_status_id')->references('id')->on('statuses');
         });
     }
 

@@ -1,5 +1,16 @@
 @extends('layouts.app')
 
+@section('head.specific.scripts')
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+    <script type="text/javascript">
+      var onloadCallback = function() {
+        grecaptcha.render('html_element_captcha', {
+          'sitekey' : '{{ $config->recaptcha_public_key }}'
+        });
+      };
+    </script>
+@endsection
+
 @section('content')
 
     <!-- Modal Terms of use -->
@@ -197,6 +208,7 @@
                                 </span>
                             </label>
                         </div>
+                        <div id="html_element_captcha"></div>
                         <input id="sign_up_form_user_type" type="hidden" name="sign_up_form_user_type" value="">
                         <button type="submit" class="sh_sign_btn btn btn-primary">Sign up</button>
                     </form>

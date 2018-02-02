@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Code\AppConfig;
+use Auth;
 
 class Controller extends BaseController
 {
@@ -19,4 +20,5 @@ class Controller extends BaseController
     {
         $this->config = AppConfig::get();
     }
+
 }

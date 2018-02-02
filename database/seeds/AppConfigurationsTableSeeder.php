@@ -14,10 +14,8 @@ class AppConfigurationsTableSeeder extends Seeder
     public function run()
     {
         $configuration = [
-            "maintenance_mode" => "0",
-            "email_main" => "safe-haven@test.com",
-            "recaptcha_public_key" => "",
-            "recaptcha_secret_key" => "",
+            "recaptcha_public_key" => "6Lfp9EAUAAAAAM53w3qnn7aM7SMG2XrbSCpaQDbR",
+            "recaptcha_secret_key" => "6Lfp9EAUAAAAADb9Ty7YH53XmEC9Tb8Hb-z-iHnj",
         ];
 
 

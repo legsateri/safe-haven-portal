@@ -40,47 +40,47 @@ class StatusesTableSeeder extends Seeder
                 'description' => ''
             ],
 
-            // client_realise
+            // client_release
             [
-                'type' => 'client_realise',
+                'type' => 'client_release',
                 'value' => 'services-completed',
                 'label' => 'Services Completed',
                 'description' => ''
             ],
             [
-                'type' => 'client_realise',
+                'type' => 'client_release',
                 'value' => 'services-not-provided',
                 'label' => 'Services Not Provided',
                 'description' => ''
             ],
             [
-                'type' => 'client_realise',
+                'type' => 'client_release',
                 'value' => 'services-no-longer-needed',
                 'label' => 'Services No Longer Needed',
                 'description' => ''
             ],
 
-            // pet_realise
+            // pet_release
             [
-                'type' => 'pet_realise',
+                'type' => 'pet_release',
                 'value' => 'released-to-owner',
                 'label' => 'Released to owner',
                 'description' => 'The shelter took physical custody of the pet for agreed amount of time and has returned the pet to its owner.'
             ],
             [
-                'type' => 'pet_realise',
+                'type' => 'pet_release',
                 'value' => 'services-not-provided',
                 'label' => 'Services not provided',
                 'description' => 'The shelter never took physical custody of the pet because the client chose not to move forward.'
             ],
             [
-                'type' => 'pet_realise',
+                'type' => 'pet_release',
                 'value' => 'released-to-adoption-pool',
                 'label' => 'Released to adoption pool',
                 'description' => 'The shelter took physical custody of the pet for the agreed amount of time, and according to the terms of the agreement between the shelter and the client (independent of SHN), the client has relinquished the pet to the shelter.'
             ],
             [
-                'type' => 'pet_realise',
+                'type' => 'pet_release',
                 'value' => 'pets-not-admitted',
                 'label' => 'Pets not admitted',
                 'description' => "The shelter accepted the application and began vetting the client\'s situation and pets, and something learned in that process makes it impossible for the shelter to take custody of the pet."

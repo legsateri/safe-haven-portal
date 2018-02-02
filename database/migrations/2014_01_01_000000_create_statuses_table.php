@@ -15,7 +15,7 @@ class CreateStatusesTable extends Migration
     {
         Schema::create('statuses', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('type',['organisation', 'client_realise', 'pet_realise']);
+            $table->enum('type',['organisation', 'client_release', 'pet_release']);
             $table->string('value');
             $table->string('label')->nullable();
             $table->text('description')->nullable();

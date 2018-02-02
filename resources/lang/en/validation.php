@@ -88,6 +88,8 @@ return [
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => 'The :attribute format is invalid.',
 
+    'recaptcha'=>'Please ensure that you are a human!',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

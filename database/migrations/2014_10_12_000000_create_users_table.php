@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->integer('user_type_id')->unsigned();
             $table->integer('organisation_id')->unsigned()->nullable();
             $table->string('activation_code')->nullable();
-            $table->boolean('activated')->default(false);
+            $table->boolean('verified')->default(false);
             $table->boolean('banned')->default(false);
             $table->rememberToken();
             $table->timestamps();

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserHasPhonesTable extends Migration
+class CreateVerifyUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,12 @@ class CreateUserHasPhonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_has_phones', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('verify_users', function (Blueprint $table) {
             $table->integer('user_id')->unsigned();
-            $table->integer('phone_id')->unsigned();
-
+            $table->string('token');
             $table->timestamps();
 
-            $table->unique(array('user_id', 'phone_id'));
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('phone_id')->references('id')->on('phones');
-
         });
     }
 
@@ -34,6 +29,6 @@ class CreateUserHasPhonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_has_phones');
+        Schema::dropIfExists('verify_users');
     }
 }
