@@ -17,7 +17,7 @@ class CreateOrganisationsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('org_type_id')->unsigned();
-            $table->integer('org_status_id')->unsigned();
+            $table->integer('org_status_id')->unsigned()->nullable();
             $table->integer('address_id')->unsigned()->nullable();
             $table->string('code')->nullable()->unique();
             $table->string('email')->nullable()->unique();
