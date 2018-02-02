@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('head.specific.scripts')
+<?php 
+    // uncomment latter
+    /* 
     <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
     <script type="text/javascript">
       var onloadCallback = function() {
@@ -8,6 +11,8 @@
           'sitekey' : '{{ $config->recaptcha_public_key }}'
         });
       };
+      */
+      ?>
     </script>
 @endsection
 
