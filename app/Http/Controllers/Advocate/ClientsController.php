@@ -55,10 +55,10 @@ class ClientsController extends Controller
                         ['addresses.entity_type', '=', 'client'],
                         ['phones.entity_type', '=', 'client'],
                         ['applications.status', '=', '1'],
-                        ['applications.organisation_id', '=', $currentUser->organisation_id]
+                        ['applications.organisation_id', '=', $currentUser->organisation_id],
+                        ['applications.accepted_by_advocate_id', '=', Auth::user()->id]
                     ])
                     ->paginate(4);
-
 
         return  view('auth.advocate.clientsCurrent', 
                 compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods'));
@@ -93,7 +93,6 @@ class ClientsController extends Controller
                         ['applications.organisation_id', '=', $currentUser->organisation_id]
                     ])
                     ->paginate(4);
-                        // dd($dataEntries);
 
         return  view('auth.advocate.clientsInNeed', 
                 compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods'));
@@ -134,6 +133,7 @@ class ClientsController extends Controller
             {
                 // update client application status
                 $application->status = 1;
+                $application->accepted_by_advocate_id = Auth::user()->id;
                 $application->update();
 
                 return [
