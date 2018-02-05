@@ -96,6 +96,7 @@ body .custom-select {
     width: 100%;
 }
 
+.pets_in_need_cont .scrollspy-example,
 .current_clients_cont .scrollspy-example,
 .clients_in_need_cont .scrollspy-example {
     position: relative;
@@ -105,12 +106,14 @@ body .custom-select {
     padding-right: 10px;
 }
 
+.pets_in_need_cont #list-example,
 .current_clients_cont #list-example,
 .clients_in_need_cont #list-example {
 
     /*padding-top: 4rem;*/
 }
 
+.pets_in_need_cont [id*="list-item-"],
 .current_clients_cont [id*="list-item-"],
 .clients_in_need_cont [id*="list-item-"] {
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
@@ -119,6 +122,7 @@ body .custom-select {
     /*padding-top: 4rem;*/
 }
 
+.pets_in_need_cont .spinner_cont.spinner_modal,
 .current_clients_cont .spinner_cont.spinner_modal,
 .clients_in_need_cont .spinner_cont.spinner_modal {
     display: none;
@@ -126,7 +130,7 @@ body .custom-select {
     height: 26px;
 }
 
-.current_clients_cont #exampleModal .custom-radio {
+.current_clients_cont #currentClientsModal .custom-radio {
     display: block;
 }
 
@@ -242,6 +246,7 @@ div[class*="spinner_form_"] {
     color: #28a745;
 }
 
+.pets_in_need_cont .badge,
 .current_clients_cont .badge,
 .clients_in_need_cont .badge {
     padding: .6em .6em;
