@@ -40,7 +40,17 @@ class PetsController extends Controller
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
 
-        return view('auth.shelter.petsInNeed', compact('currentUser'));
+        $petTypes = ObjectType::where('type', 'pet')->get();
+
+        $dataEntries = DB::table('application_pets')
+                    ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                    ->where([
+                        ['applications.status', '=', '0'],
+                    ])
+                    ->paginate(4);
+
+
+        return view('auth.shelter.petsInNeed', compact('currentUser', 'dataEntries'));
     }
 
 
