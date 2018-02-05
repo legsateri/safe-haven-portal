@@ -78,5 +78,15 @@ class ClientsController extends Controller
     {
 
     }
+
+
+    /**
+     * ajax handler for accepting new client
+     * from clients in need table
+     */
+    public function acceptClient(Request $request)
+    {
+        return "ok";
+    }
     
 }
