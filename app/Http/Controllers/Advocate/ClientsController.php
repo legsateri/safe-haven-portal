@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Auth;
 use DB;
 
+use App\ObjectType;
+use App\State;
+
 use App\Code\UserObject;
 
 class ClientsController extends Controller
@@ -40,16 +43,32 @@ class ClientsController extends Controller
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
 
-        $data = DB::table('applications')
-                    ->where([
-                        ['status', '=', '0']
-                    ])
+        $petTypes = ObjectType::where('type', 'pet')->get();
+        $phoneTypes = ObjectType::where('type', 'phone')->get();
+        $states = State::all();
+        $preferedContactMethods = [
+            'phone' => 'Phone', 
+            'email' => 'Email', 
+            'text_message' => 'Text message'
+        ];
+
+        $dataEntries = DB::table('applications')
                     ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
                     ->join('clients', 'applications.client_id', '=', 'clients.id')
                     ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                    ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+                    ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+                    ->where([
+                        ['addresses.entity_type', '=', 'client'],
+                        ['phones.entity_type', '=', 'client'],
+                        ['applications.status', '=', '0'],
+                        ['applications.organisation_id', '=', $currentUser->organisation_id]
+                    ])
                     ->paginate(4);
-        // dd($data);
-        return view('auth.advocate.clientsInNeed', compact('currentUser'));
+                        // dd($dataEntries);
+
+        return  view('auth.advocate.clientsInNeed', 
+                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods'));
     }
 
     /**
