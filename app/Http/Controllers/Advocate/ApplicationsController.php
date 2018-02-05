@@ -2003,6 +2003,7 @@ class ApplicationsController extends Controller
         $application = new Application();
         $application->client_id = $client->id;
         $application->organisation_id = Auth::user()->organisation_id;
+        $application->created_by_advocate_id = Auth::user()->id;
         if ( in_array($temp['pet-police-involved'], ['yes', 'police_involved_yes']) )
         {
             $application->police_involved = 1;
@@ -2028,6 +2029,7 @@ class ApplicationsController extends Controller
         $application_pet->pet_id = $pet->id;
         $application_pet->client_id = $client->id;
         $application_pet->organisation_id = Auth::user()->organisation_id;
+        $application_pet->created_by_advocate_id = Auth::user()->id;
         if ( in_array($temp['pet-abuser-access'], ['yes', 'abuser_access_yes']) )
         {
             $application_pet->abuser_visiting_access = 1;
