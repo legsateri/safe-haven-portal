@@ -87,7 +87,7 @@ class ApplicationsController extends Controller
             return;
         }
 
-        if ( $request->action == "accept_client_confirmed" ) {
+        if ( $request->action == "accept_pet_confirmed" ) {
             $ajax_response['success'] =true;
             if ( $ajax_response['success'] != true )
             {

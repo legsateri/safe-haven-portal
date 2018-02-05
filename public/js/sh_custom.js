@@ -787,7 +787,7 @@ jQuery(document).ready(function() {
                         $('.spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
 
-                        $('.modal-body').html('Client has been successfully accepted');
+                        $('.modal-body').html('Client has been successfully released');
 
                         console.log('client with id ' + confirmed_accept_client_id + ' to remove;');
 
@@ -870,26 +870,27 @@ jQuery(document).ready(function() {
             client_id = client_id.replace("list-button-item-", "");
             console.log(client_id);
 
-            $('#exampleModal [type=\'hidden\']').val(client_id);
+            $('#currentClientsModal [type=\'hidden\']').val(client_id);
+            $('#currentClientsModal #completed_type').prop('checked',true);
 
-            $('#exampleModal').modal('show');
+            $('#currentClientsModal').modal('show');
         });
 
-        $('#confirm_accept_client').click(function() {
+        $('#confirm_release_client').click(function() {
 
-            $('.spinner_cont').css('display','inline');
+            $('#currentClientsModal .spinner_cont').css('display','inline');
             var modal_button_clicked = $(this);
             modal_button_clicked.addClass('disabled');
 
-            var confirmed_accept_client_id = $('#exampleModal [type=\'hidden\']').val();
-            console.log('confirmed_accept_client_id = ' + confirmed_accept_client_id);
+            var confirmed_release_client_id = $('#currentClientsModal [type=\'hidden\']').val();
+            console.log('confirmed_release_client_id = ' + confirmed_release_client_id);
 
             var ajaxurl = '/application/new/ajax';
             var token = $('[name="_token"]').val();
 
             var data = {
-                action: 'accept_client_confirmed',
-                client_id: confirmed_accept_client_id,
+                action: 'release_client_confirmed',
+                client_id: confirmed_release_client_id,
                 _token: token
             };
 
@@ -898,9 +899,9 @@ jQuery(document).ready(function() {
                 url: ajaxurl,
                 data: data,
                 success: function (data, status, response) {
-                    console.log('are we here accept_client_confirmed');
+                    console.log('are we here release_client_confirmed');
                     var obj = response.responseJSON;
-                    console.log('are we here accept_client_confirmed 1');
+                    console.log('are we here release_client_confirmed 1');
                     if ( typeof obj.data !== 'undefined' ) {
                         console.log('obj.message = ' + obj.data.message);
                         console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
@@ -911,23 +912,24 @@ jQuery(document).ready(function() {
                     if ( obj.success == true ) {
                         console.log('super cool');
 
-                        $('.spinner_cont').css('display','none');
+                        $('#currentClientsModal .spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
 
-                        $('.modal-body').html('Client has been successfully accepted');
+                        $('#currentClientsModal .modal-body .modal_body_text').html('Client has been successfully released');
+                        $('#currentClientsModal .modal-body .modal_body_inputs').fadeOut("fast", function () {});
 
-                        console.log('client with id ' + confirmed_accept_client_id + ' to remove;');
+                        console.log('client with id ' + confirmed_release_client_id + ' to remove;');
 
-                        $('#list-example a[href="#list-item-' + confirmed_accept_client_id + '"]').fadeOut("fast", function () {});
-                        $('.scrollspy-example #list-item-' + confirmed_accept_client_id).fadeOut("fast", function () {});
+                        $('#list-example a[href="#list-item-' + confirmed_release_client_id + '"]').fadeOut("fast", function () {});
+                        $('.scrollspy-example #list-item-' + confirmed_release_client_id).fadeOut("fast", function () {});
 
                     } else {
                         console.log('not cool');
 
-                        $('.spinner_cont').css('display','none');
+                        $('#currentClientsModal .spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
 
-                        $('.modal-body').html(obj.data.message);
+                        $('#currentClientsModal .modal-body').html(obj.data.message);
 
                         $('.spinner_cont').css('display','none');
                     }
@@ -943,11 +945,138 @@ jQuery(document).ready(function() {
         });
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
-            $('.modal-body').html('Once a client is accepted, emails are sent to Shelters letting them know there are pets in need.' +
+            $('#exampleModal .modal-body').html('Once a client is accepted, emails are sent to Shelters letting them know there are pets in need.' +
                 '                        By clicking \'Confirm Accept Client\' below, your organization is agreeing to work with the Shelters' +
                 '                        and Client to establish a temporary home for the pet or pets.');
-            $('#confirm_accept_client').css('display','inline-block').removeClass('disabled');;
+            $('#confirm_release_client').css('display','inline-block').removeClass('disabled');;
         })
+
+        $('#currentClientsModal').on('hidden.bs.modal', function (e) {
+            $('#currentClientsModal .modal-body .modal_body_text').html('Please select the reason for release. A release announcement' +
+                                                                'will be sent out to the appropriate Shelter and Safe Haven volunteers.');
+            $('#currentClientsModal .modal-body .modal_body_inputs').css('display','block');
+            $('#confirm_release_client').css('display','inline-block').removeClass('disabled');;
+        })
+
+    }
+
+    if ( $('.pets_in_need_cont').length != 0 ) {
+
+        $('.list-group-item').click(function() {
+            console.log('something');
+            $('#list-example').css('padding-top','4rem');
+            $('[id*="list-item-"]').css('padding-top','4rem');
+        });
+
+        $('[id*="list-button-item-"]').click(function() {
+
+            var pet_id = $(this).attr('id');
+            console.log(pet_id);
+            pet_id = pet_id.replace("list-button-item-", "");
+            console.log(pet_id);
+
+            $('#petsInNeedModal [type=\'hidden\']').val(pet_id);
+
+            $('#petsInNeedModal').modal('show');
+        });
+
+        $('#confirm_accept_pet').click(function() {
+
+            $('.spinner_cont').css('display','inline');
+            var modal_button_clicked = $(this);
+            modal_button_clicked.addClass('disabled');
+
+            var confirmed_accept_pet_id = $('#petsInNeedModal [type=\'hidden\']').val();
+            console.log('confirmed_accept_pet_id = ' + confirmed_accept_pet_id);
+
+            var ajaxurl = '/application/new/ajax';
+            var token = $('[name="_token"]').val();
+
+            var data = {
+                action: 'accept_pet_confirmed',
+                client_id: confirmed_accept_pet_id,
+                _token: token
+            };
+
+            jQuery.ajax({
+                method: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function (data, status, response) {
+                    console.log('are we here accept_pet_confirmed');
+                    var obj = response.responseJSON;
+                    console.log('are we here accept_pet_confirmed 1');
+                    if ( typeof obj.data !== 'undefined' ) {
+                        console.log('obj.message = ' + obj.data.message);
+                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
+                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
+                    }
+                    console.log('are we here2');
+
+
+                    if ( obj.success == true ) {
+                        console.log('super cool');
+
+
+                        $('.spinner_cont').css('display','none');
+                        modal_button_clicked.fadeOut("fast", function () {});
+
+                        $('#petsInNeedModal .modal-body').html('Pet has been successfully accepted');
+
+                        console.log('client with id ' + confirmed_accept_pet_id + ' to remove;');
+
+                        $('#list-example a[href="#list-item-' + confirmed_accept_pet_id + '"]').fadeOut("fast", function () {});
+                        $('.scrollspy-example #list-item-' + confirmed_accept_pet_id).fadeOut("fast", function () {});
+
+
+
+                    } else {
+                        console.log('not cool');
+
+                        $('.spinner_cont').css('display','none');
+                        modal_button_clicked.fadeOut("fast", function () {});
+
+                        $('#petsInNeedModal .modal-body').html(obj.data.message);
+
+                        //console.log('sh_input_id = ' + sh_input_id);
+
+                        $('.spinner_cont').css('display','none');
+
+                    }
+
+                },
+                error: function (xml, status, error) {
+                    // do something if there was an error
+                },
+                complete: function (xml, status) {
+                    // do something after success or error no matter what
+                    console.log('completed');
+
+                }
+            });
+
+        });
+
+        $('#petsInNeedModal').on('hidden.bs.modal', function (e) {
+            $('#petsInNeedModal .modal-body').html('Once Pets are accepted, emails are sent to Advocates letting them know there is a Safe Haven waiting for them.' +
+                                        'By clicking \'Accept Pet\' below, your organization is agreeing to work with the Advocate' +
+                                        'and Client to establish a temporary home for the pet.');
+            $('#confirm_accept_pet').css('display','inline-block').removeClass('disabled');;
+        })
+
+        $('[id*="list-button-qa-item-"]').click(function() {
+
+            var pet_id = $(this).attr('id');
+            console.log(pet_id);
+            pet_id = pet_id.replace("list-button-qa-item-", "");
+            console.log(pet_id);
+
+            $('#petsInNeedQAModal [type=\'hidden\']').val(pet_id);
+            $('#petsInNeedQAModal #petsInNeedQAModalLabel span').html($(this).closest('a').find('h5').html());
+
+
+            $('#petsInNeedQAModal').modal('show');
+        });
 
     }
 
