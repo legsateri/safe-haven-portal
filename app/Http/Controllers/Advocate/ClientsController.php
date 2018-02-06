@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use DB;
+use Validator;
+
+use App\ObjectType;
+use App\State;
+use App\Client;
+use App\Application;
 
 use App\Code\UserObject;
 
@@ -30,7 +36,32 @@ class ClientsController extends Controller
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
 
-        return view('auth.advocate.clientsCurrent', compact('currentUser'));
+        $petTypes = ObjectType::where('type', 'pet')->get();
+        $phoneTypes = ObjectType::where('type', 'phone')->get();
+        $states = State::all();
+        $preferedContactMethods = [
+            'phone' => 'Phone', 
+            'email' => 'Email', 
+            'text_message' => 'Text message'
+        ];
+
+        $dataEntries = DB::table('applications')
+                    ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
+                    ->join('clients', 'applications.client_id', '=', 'clients.id')
+                    ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                    ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+                    ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+                    ->where([
+                        ['addresses.entity_type', '=', 'client'],
+                        ['phones.entity_type', '=', 'client'],
+                        ['applications.status', '=', '1'],
+                        ['applications.organisation_id', '=', $currentUser->organisation_id],
+                        ['applications.accepted_by_advocate_id', '=', Auth::user()->id]
+                    ])
+                    ->paginate(4);
+
+        return  view('auth.advocate.clientsCurrent', 
+                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods'));
     }
 
     /**
@@ -40,16 +71,31 @@ class ClientsController extends Controller
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
 
-        $data = DB::table('applications')
-                    ->where([
-                        ['status', '=', '0']
-                    ])
+        $petTypes = ObjectType::where('type', 'pet')->get();
+        $phoneTypes = ObjectType::where('type', 'phone')->get();
+        $states = State::all();
+        $preferedContactMethods = [
+            'phone' => 'Phone', 
+            'email' => 'Email', 
+            'text_message' => 'Text message'
+        ];
+
+        $dataEntries = DB::table('applications')
                     ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
                     ->join('clients', 'applications.client_id', '=', 'clients.id')
                     ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                    ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+                    ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+                    ->where([
+                        ['addresses.entity_type', '=', 'client'],
+                        ['phones.entity_type', '=', 'client'],
+                        ['applications.status', '=', '0'],
+                        ['applications.organisation_id', '=', $currentUser->organisation_id]
+                    ])
                     ->paginate(4);
-        // dd($data);
-        return view('auth.advocate.clientsInNeed', compact('currentUser'));
+
+        return  view('auth.advocate.clientsInNeed', 
+                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods'));
     }
 
     /**
@@ -58,6 +104,48 @@ class ClientsController extends Controller
     public function single($id, $slug)
     {
 
+    }
+
+
+    /**
+     * ajax handler for accepting new client
+     * from clients in need table
+     */
+    public function acceptClient(Request $request)
+    {
+        // validate data from request
+        $validator = Validator::make($request->all(), [
+            'client_id' => 'required|integer|exists:applications,id',
+            'action' => 'required|in:accept_client_confirmed'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // check is advocate arganisation created client application
+            $application = Application::where([
+                ['organisation_id', '=', Auth::user()->organisation_id],
+                ['id', '=', $request->client_id],
+                ['status', '=', 0]
+            ])
+            ->first();
+
+            if ($application)
+            {
+                // update client application status
+                $application->status = 1;
+                $application->accepted_by_advocate_id = Auth::user()->id;
+                $application->update();
+
+                return [
+                    'success' => true
+                ];
+            }
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Accepting client application failed'
+        ];
     }
     
 }

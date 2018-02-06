@@ -755,7 +755,7 @@ jQuery(document).ready(function() {
             var confirmed_accept_client_id = $('#exampleModal [type=\'hidden\']').val();
             console.log('confirmed_accept_client_id = ' + confirmed_accept_client_id);
 
-            var ajaxurl = '/application/new/ajax';
+            var ajaxurl = '/clients/accept/ajax';
             var token = $('[name="_token"]').val();
 
             var data = {

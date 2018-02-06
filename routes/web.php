@@ -110,7 +110,7 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		 *  shelter user routes
 		 */
 
-		 // associated pets list page
+		// associated pets list page
 		Route::get('/pets', 'Shelter\PetsController@associatedList')->name('shelter.pets.associated.list');
 		// pets in need list page
 		Route::get('/pets/in-need', 'Shelter\PetsController@inNeedList')->name('shelter.pets-in-need.list');
@@ -119,7 +119,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/pet/{id}/{slug}', 'Shelter\PetsController@single')->name('shelter.pet.single');
 		// single client page (pet owner) - id and slug of client
 		Route::get('/pet-owner/{id}/{slug}', 'Shelter\PetsController@owner')->name('shelter.pet.owner');
-
+		
+		// ajax for accepting new client
+		Route::post('/clients/accept/ajax', 'Advocate\ClientsController@acceptClient')->name('shelter.accept.client');
 
 
 		/**
