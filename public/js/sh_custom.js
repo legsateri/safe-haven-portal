@@ -885,12 +885,15 @@ jQuery(document).ready(function() {
             var confirmed_release_client_id = $('#currentClientsModal [type=\'hidden\']').val();
             console.log('confirmed_release_client_id = ' + confirmed_release_client_id);
 
-            var ajaxurl = '/application/new/ajax';
+            var confirmed_release_reason = $('#currentClientsModal input:checked').val();
+
+            var ajaxurl = '/client/release/ajax';
             var token = $('[name="_token"]').val();
 
             var data = {
                 action: 'release_client_confirmed',
                 client_id: confirmed_release_client_id,
+                confirmed_release_reason: confirmed_release_reason,
                 _token: token
             };
 
@@ -959,6 +962,8 @@ jQuery(document).ready(function() {
         })
 
     }
+
+    /*--------------- pets in need page starts --------------------*/
 
     if ( $('.pets_in_need_cont').length != 0 ) {
 
@@ -1071,13 +1076,218 @@ jQuery(document).ready(function() {
             pet_id = pet_id.replace("list-button-qa-item-", "");
             console.log(pet_id);
 
-            $('#petsInNeedQAModal [type=\'hidden\']').val(pet_id);
+            $('#petsInNeedQAModal #pet_qa_id').val(pet_id);
             $('#petsInNeedQAModal #petsInNeedQAModalLabel span').html($(this).closest('a').find('h5').html());
 
+            var ajaxurl = '/application/new/ajax';
+            var token = $('[name="_token"]').val();
 
-            $('#petsInNeedQAModal').modal('show');
+            var data = {
+                action: 'pet_in_need_get_qa_thread',
+                pet_id: pet_id,
+                _token: token
+            }
+
+            jQuery.ajax({
+                method: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function (data, status, response) {
+                    console.log('are we here pet_in_need_get_qa_thread');
+                    var obj = response.responseJSON;
+                    console.log('are we here pet_in_need_get_qa_thread 1');
+                    if ( typeof obj.data !== 'undefined' ) {
+                        console.log('obj.message = ' + obj.data.message);
+                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
+                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
+                    }
+                    console.log('are we here2 pet_in_need_get_qa_thread');
+
+
+                    if ( obj.success == true ) {
+                        console.log('super cool');
+
+
+                        $('#petsInNeedQAModal .spinner_cont').css('display','none');
+                        modal_button_clicked.removeClass('disabled');
+                        $('#petsInNeedQAModal textarea').val('');
+
+                        var pet_qa_form = '<div class="qa_template_card card mb-2 d-none">\n' +
+                            '                            <div class="card-body">\n' +
+                            '                                <h5 class="card-title">\n' +
+                            '                                </h5>\n' +
+                            '                                <h6 class="card-subtitle shelter_name mb-2 text-muted d-inline-block"></h6> <span class="text-muted">-</span>\n' +
+                            '                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">today</h6>\n' +
+                            '                                <p class="card-text">Not answered yet</p>\n' +
+                            '                                <a href="#" class="card-link">Card link</a>\n' +
+                            '                                <a href="#" class="card-link">Another link</a>\n' +
+                            '                            </div>\n' +
+                            '                        </div>';
+
+                        $( ".pet_qa_form" ).after( pet_qa_form );
+                        var pet_posted_question = $( ".pet_qa_form" ).next('.qa_template_card');
+
+
+                        console.log('pet_in_need_question = ' + pet_in_need_question);
+                        pet_posted_question.find('.card-title').html(pet_in_need_question);
+                        pet_posted_question.find('.shelter_name').html($('.pet_qa_form').find('.shelter_name').html());
+                        pet_posted_question.removeClass('d-none');
+
+
+                        //$( ".pet_qa_form" ).after( '<h2>Success</h2>' );
+
+                        /*$('#petsInNeedModal .modal-body').html('Pet has been successfully accepted');
+
+                        console.log('client with id ' + confirmed_accept_pet_id + ' to remove;');
+
+                        $('#list-example a[href="#list-item-' + confirmed_accept_pet_id + '"]').fadeOut("fast", function () {});
+                        $('.scrollspy-example #list-item-' + confirmed_accept_pet_id).fadeOut("fast", function () {});*/
+
+                        $('#petsInNeedQAModal').modal('show');
+
+                    } else {
+                        console.log('not cool');
+
+                        $('#petsInNeedQAModal .spinner_cont').css('display','none');
+                        modal_button_clicked.removeClass('disabled');
+
+                        $('#petsInNeedQAModal .invalid-feedback').html(obj.data.message);
+                        $('#petsInNeedQAModal .invalid-feedback').fadeIn("slow", function () {});
+
+                        //console.log('sh_input_id = ' + sh_input_id);
+
+                        //$('.spinner_cont').css('display','none');
+
+                    }
+
+                },
+                error: function (xml, status, error) {
+                    // do something if there was an error
+                },
+                complete: function (xml, status) {
+                    // do something after success or error no matter what
+                    console.log('completed');
+
+                }
+            });
+
+
+
+        });
+
+        $('#send_pet_qa').click(function() {
+
+            $('#petsInNeedQAModal .spinner_cont').css('display','inline');
+            var modal_button_clicked = $(this);
+            modal_button_clicked.addClass('disabled');
+
+            var pet_in_need_question = $('#petsInNeedQAModal textarea').val();
+            console.log('pet_in_need_question = ' + pet_in_need_question);
+
+            var pet_in_need_qa_pet_id = $('#petsInNeedQAModal #pet_qa_id').val();
+            console.log('pet_in_need_qa_pet_id = ' + pet_in_need_qa_pet_id);
+
+            var ajaxurl = '/application/new/ajax';
+            var token = $('[name="_token"]').val();
+
+            var organisation_id = $('#petsInNeedQAModal #organisation_id').val();
+
+            var data = {
+                action: 'pet_in_need_question_post',
+                pet_id: pet_in_need_qa_pet_id,
+                organisation_id: organisation_id,
+                pet_in_need_qa: pet_in_need_question,
+                _token: token
+            }
+
+            jQuery.ajax({
+                method: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function (data, status, response) {
+                    console.log('are we here send_pet_qa');
+                    var obj = response.responseJSON;
+                    console.log('are we here send_pet_qa 1');
+                    if ( typeof obj.data !== 'undefined' ) {
+                        console.log('obj.message = ' + obj.data.message);
+                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
+                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
+                    }
+                    console.log('are we here2 send_pet_qa');
+
+
+                    if ( obj.success == true ) {
+                        console.log('super cool');
+
+
+                        $('#petsInNeedQAModal .spinner_cont').css('display','none');
+                        modal_button_clicked.removeClass('disabled');
+                        $('#petsInNeedQAModal textarea').val('');
+
+                         var pet_qa_form = '<div class="qa_template_card card mb-2 d-none">\n' +
+                             '                            <div class="card-body">\n' +
+                             '                                <h5 class="card-title">\n' +
+                             '                                </h5>\n' +
+                             '                                <h6 class="card-subtitle shelter_name mb-2 text-muted d-inline-block"></h6> <span class="text-muted">-</span>\n' +
+                             '                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">today</h6>\n' +
+                             '                                <p class="card-text">Not answered yet</p>\n' +
+                             '                                <a href="#" class="card-link">Card link</a>\n' +
+                             '                                <a href="#" class="card-link">Another link</a>\n' +
+                             '                            </div>\n' +
+                             '                        </div>';
+
+                        $( ".pet_qa_form" ).after( pet_qa_form );
+                        var pet_posted_question = $( ".pet_qa_form" ).next('.qa_template_card');
+
+
+                        console.log('pet_in_need_question = ' + pet_in_need_question);
+                        pet_posted_question.find('.card-title').html(pet_in_need_question);
+                        pet_posted_question.find('.shelter_name').html($('.pet_qa_form').find('.shelter_name').html());
+                        pet_posted_question.removeClass('d-none');
+
+
+                        //$( ".pet_qa_form" ).after( '<h2>Success</h2>' );
+
+                        /*$('#petsInNeedModal .modal-body').html('Pet has been successfully accepted');
+
+                        console.log('client with id ' + confirmed_accept_pet_id + ' to remove;');
+
+                        $('#list-example a[href="#list-item-' + confirmed_accept_pet_id + '"]').fadeOut("fast", function () {});
+                        $('.scrollspy-example #list-item-' + confirmed_accept_pet_id).fadeOut("fast", function () {});*/
+
+
+
+                    } else {
+                        console.log('not cool');
+
+                        $('#petsInNeedQAModal .spinner_cont').css('display','none');
+                        modal_button_clicked.removeClass('disabled');
+
+                        $('#petsInNeedQAModal .invalid-feedback').html(obj.data.message);
+                        $('#petsInNeedQAModal .invalid-feedback').fadeIn("slow", function () {});
+
+                        //console.log('sh_input_id = ' + sh_input_id);
+
+                        //$('.spinner_cont').css('display','none');
+
+                    }
+
+                },
+                error: function (xml, status, error) {
+                    // do something if there was an error
+                },
+                complete: function (xml, status) {
+                    // do something after success or error no matter what
+                    console.log('completed');
+
+                }
+            });
+
+
         });
 
     }
+
+    /*--------------- pets in need page ends --------------------*/
 
 })

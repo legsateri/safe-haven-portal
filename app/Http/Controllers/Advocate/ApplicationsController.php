@@ -87,11 +87,12 @@ class ApplicationsController extends Controller
             return;
         }
 
-        if ( $request->action == "accept_pet_confirmed" ) {
-            $ajax_response['success'] =true;
+        // for testing
+        if ( $request->action == "pet_in_need_question_post" ) {
+            $ajax_response['success'] =false;
             if ( $ajax_response['success'] != true )
             {
-                $ajax_response['data']['message'] = 'not good value';
+                $ajax_response['data']['message'] = 'Can not send an empty message.';
             }
             return $ajax_response;
         }

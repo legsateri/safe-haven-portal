@@ -130,6 +130,16 @@ body .custom-select {
     height: 26px;
 }
 
+.pet_qa_form_buttons_cont {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    /*padding: 15px;*/
+}
+
 .current_clients_cont #currentClientsModal .custom-radio {
     display: block;
 }
@@ -251,7 +261,6 @@ div[class*="spinner_form_"] {
 .clients_in_need_cont .badge {
     padding: .6em .6em;
 }
-
 
 
 
