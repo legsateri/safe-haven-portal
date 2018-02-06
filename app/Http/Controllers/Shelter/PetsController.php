@@ -80,25 +80,6 @@ class PetsController extends Controller
 
 
     /**
-     * single pet page
-     * with pet's details
-     */
-    public function single($id, $slug)
-    {
-        $currentUser = UserObject::get(Auth::user()->email, 'email');
-    }
-
-
-    /**
-     * single client page (pet owner) - id and slug of client
-     */
-    public function owner($id, $slug)
-    {
-        $currentUser = UserObject::get(Auth::user()->email, 'email');
-    }
-
-
-    /**
      * accept pet as shelter
      */
     public function acceptpet(Request $request)
@@ -130,6 +111,7 @@ class PetsController extends Controller
                 $application = Application::where('id', $applicationPet->application_id)->first();
                 if ( $application->status == 1 && $application->accepted_by_advocate_id != null && $application->accepted_by_advocate_id != '' )
                 {
+                    // upate pet application entry
                     $applicationPet->accepted_by_shelter_organisation_id = Auth::user()->organisation_id;
                     $applicationPet->status = 1;
                     $applicationPet->update();

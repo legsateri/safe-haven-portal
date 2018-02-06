@@ -15,7 +15,13 @@ class CreateQuestionConversationMessagesTable extends Migration
     {
         Schema::create('question_conversation_messages', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('conversation_id')->unsigned();
+            $table->integer('sender_user_id')->unsigned();
+            $table->text('message');
             $table->timestamps();
+
+            $table->foreign('conversation_id')->references('id')->on('question_conversations');
+            $table->foreign('sender_user_id')->references('id')->on('users');
         });
     }
 

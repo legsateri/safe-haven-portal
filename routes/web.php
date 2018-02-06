@@ -119,11 +119,6 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		// pets in need list page
 		Route::get('/pets/in-need', 'Shelter\PetsController@inNeedList')->name('shelter.pets-in-need.list');
 
-		// single pet page
-		Route::get('/pet/{id}/{slug}', 'Shelter\PetsController@single')->name('shelter.pet.single');
-		// single client page (pet owner) - id and slug of client
-		Route::get('/pet-owner/{id}/{slug}', 'Shelter\PetsController@owner')->name('shelter.pet.owner');
-
 		// ajax for accepting new pet
 		Route::post('/pet/accept/ajax', 'Shelter\PetsController@acceptpet');
 		
