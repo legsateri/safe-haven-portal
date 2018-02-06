@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Shelter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use DB;
 use Auth;
+
+use App\ObjectType;
 use App\Code\UserObject;
 
 class PetsController extends Controller
@@ -45,12 +48,13 @@ class PetsController extends Controller
         $dataEntries = DB::table('application_pets')
                     ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
                     ->where([
-                        ['applications.status', '=', '0'],
+                        ['application_pets.status', '=', '0'],
                     ])
                     ->paginate(4);
 
 
-        return view('auth.shelter.petsInNeed', compact('currentUser', 'dataEntries'));
+        return  view('auth.shelter.petsInNeed', 
+                compact('currentUser', 'dataEntries', 'petTypes'));
     }
 
 
