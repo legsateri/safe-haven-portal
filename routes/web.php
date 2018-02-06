@@ -121,6 +121,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 
 		// ajax for accepting new pet
 		Route::post('/pet/accept/ajax', 'Shelter\PetsController@acceptpet');
+
+		// ajax for release pet
+		Route::post('/pet/release/ajax', 'Advocate\PetsController@releasePet');
 		
 
 

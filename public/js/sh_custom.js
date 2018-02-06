@@ -850,7 +850,7 @@ jQuery(document).ready(function() {
 
             var confirmed_release_pet_reason = $('#currentPetsModal input:checked').val();
 
-            var ajaxurl = '/application/new/ajax';
+            var ajaxurl = '/pet/release/ajax';
             var token = $('[name="_token"]').val();
 
             var data = {

@@ -130,5 +130,23 @@ class PetsController extends Controller
             'message' => 'Accepting pet application failed'
         ];
 
-    }
+    } // end acceptpet
+
+
+    public function releasePet(Request $request)
+    {
+        // validate data from request
+        $validator = Validator::make($request->all(), [
+            'client_id' => 'required|integer|exists:application_pets,id',
+            'action' => 'required|in:release_pet_confirmed',
+            'confirmed_release_pet_reason' => 'required|in:pet_released_to_owner,pet_services_not_provided,pet_released_to_adoption_pool,pet_not_admitted'
+        ]);
+
+
+        return [
+            'success' => false,
+            'message' => 'Releasing pet failed'
+        ];
+
+    } // end releasePet
 }
