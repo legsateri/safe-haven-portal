@@ -98,6 +98,9 @@ class PetsController extends Controller
     }
 
 
+    /**
+     * accept pet as shelter
+     */
     public function acceptpet(Request $request)
     {
         // validate data from request
@@ -110,10 +113,12 @@ class PetsController extends Controller
         {
             // check is pet application available for accepting
             $applicationPet = ApplicationPet::where([
+                ['id', '=', $request->client_id],
                 ['status', '=', 0],
                 ['accepted_by_shelter_organisation_id' , '=', null]
             ])
             ->orWhere([
+                ['id', '=', $request->client_id],
                 ['status', '=', 0],
                 ['accepted_by_shelter_organisation_id' , '=', '']
             ])
