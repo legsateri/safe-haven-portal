@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use DB;
 use Validator;
+use Mail;
 
 use App\ObjectType;
 use App\State;
@@ -136,6 +137,38 @@ class ClientsController extends Controller
                 $application->status = 1;
                 $application->accepted_by_advocate_id = Auth::user()->id;
                 $application->update();
+
+                /**
+                 * send mass mail to all shelter users
+                 */
+
+                // get shelter user type id
+                $shelterUser = ObjectType::where([
+                    ['type', '=', 'user'],
+                    ['value', '=', 'shelter']
+                ])->first();
+
+                // get email list
+                $shelterUsers = DB::table('users')
+                            ->select('email')
+                            ->where([
+                                ['user_type_id', '=', $shelterUser->id],
+                                ['verified', '=', 1],
+                                ['banned', '=', 0]
+                            ])
+                            ->get();
+
+                $emails = [];
+
+                foreach( $shelterUsers as $shelterUser )
+                {
+                    array_push($emails, $shelterUser->email);
+                }
+
+                Mail::send('emails.welcome', [], function($message) use ($emails)
+                {    
+                    $message->bcc($emails)->subject('This is test e-mail');    
+                });
 
                 return [
                     'success' => true
