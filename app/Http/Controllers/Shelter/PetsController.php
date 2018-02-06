@@ -13,6 +13,7 @@ use App\ObjectType;
 use App\Code\UserObject;
 use App\Application;
 use App\ApplicationPet;
+use App\Status;
 
 class PetsController extends Controller
 {
@@ -142,6 +143,45 @@ class PetsController extends Controller
             'confirmed_release_pet_reason' => 'required|in:pet_released_to_owner,pet_services_not_provided,pet_released_to_adoption_pool,pet_not_admitted'
         ]);
 
+        if ( !$validator->fails() )
+        {
+            // find related pet application
+            $applicationPet = ApplicationPet::where([
+                ['accepted_by_shelter_organisation_id', '=', Auth::user()->organisation_id],
+                ['id', '=', $request->client_id],
+                ['status', '=', 1]
+            ])->first();
+        
+            if ( $applicationPet )
+            {
+                // get release status id
+                $releaseStatus = Status::where([
+                    ['type', '=', 'pet_release'],
+                    ['value', '=', $request->confirmed_release_pet_reason]
+                ])->first();
+
+                // update pet application
+                if ( in_array($request->confirmed_release_pet_reason, ['pet_released_to_owner', 'pet_released_to_adoption_pool', 'pet_services_not_provided']) )
+                {
+                    $applicationPet->status = 2;
+                    $applicationPet->release_status_id = $releaseStatus->id;
+                }
+                else
+                {
+                    $applicationPet->status = 0;
+                    $applicationPet->release_status_id = $releaseStatus->id;
+                    $applicationPet->accepted_by_shelter_organisation_id = null;
+                }
+
+                $applicationPet->update();
+
+                return [
+                    'success' => true
+                ];
+
+            }
+        
+        }
 
         return [
             'success' => false,

@@ -63,25 +63,25 @@ class StatusesTableSeeder extends Seeder
             // pet_release
             [
                 'type' => 'pet_release',
-                'value' => 'released-to-owner',
+                'value' => 'pet_released_to_owner',
                 'label' => 'Released to owner',
                 'description' => 'The shelter took physical custody of the pet for agreed amount of time and has returned the pet to its owner.'
             ],
             [
                 'type' => 'pet_release',
-                'value' => 'services-not-provided',
+                'value' => 'pet_services_not_provided',
                 'label' => 'Services not provided',
                 'description' => 'The shelter never took physical custody of the pet because the client chose not to move forward.'
             ],
             [
                 'type' => 'pet_release',
-                'value' => 'released-to-adoption-pool',
+                'value' => 'pet_released_to_adoption_pool',
                 'label' => 'Released to adoption pool',
                 'description' => 'The shelter took physical custody of the pet for the agreed amount of time, and according to the terms of the agreement between the shelter and the client (independent of SHN), the client has relinquished the pet to the shelter.'
             ],
             [
                 'type' => 'pet_release',
-                'value' => 'pets-not-admitted',
+                'value' => 'pet_not_admitted',
                 'label' => 'Pets not admitted',
                 'description' => "The shelter accepted the application and began vetting the client\'s situation and pets, and something learned in that process makes it impossible for the shelter to take custody of the pet."
             ],

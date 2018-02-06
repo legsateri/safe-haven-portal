@@ -123,7 +123,7 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::post('/pet/accept/ajax', 'Shelter\PetsController@acceptpet');
 
 		// ajax for release pet
-		Route::post('/pet/release/ajax', 'Advocate\PetsController@releasePet');
+		Route::post('/pet/release/ajax', 'Shelter\PetsController@releasePet');
 		
 
 
