@@ -88,8 +88,8 @@ class ApplicationsController extends Controller
         }
 
         // for testing
-        if ( $request->action == "pet_in_need_question_post" ) {
-            $ajax_response['success'] =false;
+        if ( $request->action == "release_pet_confirmed" ) {
+            $ajax_response['success'] =true;
             if ( $ajax_response['success'] != true )
             {
                 $ajax_response['data']['message'] = 'Can not send an empty message.';

@@ -36,69 +36,9 @@
         <div class="card-header">
             <i class="fa fa-heart" aria-hidden="true"></i> Clients in Need</div>
         <div class="card-body">
-
-            {{--<div class="table-responsive">
-                <table class="table table-striped table-hover" width="100%" cellspacing="0">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Client Name</th>
-                        <th scope="col">Application Date</th>
-                        <th scope="col">Zip Code</th>
-                        <th scope="col">Pet Count</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td><a href="">Client 1</a></td>
-                            <td>07/12/2017</td>
-                            <td>90025</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td><a href="">Client 2</a></td>
-                            <td>08/12/2017</td>
-                            <td>11000</td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td><a href="">Client 3</a></td>
-                            <td>07/11/2017</td>
-                            <td>90026</td>
-                            <td>1</td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>--}}
-
-
-            {{--<div class="row">
-                <div class="col-4">
-                    <div id="list-example" class="list-group">
-                        <a class="list-group-item list-group-item-action" href="#list-item-1">Item 1</a>
-                        <a class="list-group-item list-group-item-action" href="#list-item-2">Item2</a>
-                        <a class="list-group-item list-group-item-action active" href="#list-item-3">Item 3</a>
-                        <a class="list-group-item list-group-item-action" href="#list-item-4">Item 4</a>
-                    </div>
-                </div>
-                <div class="col-8">
-                    <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
-                        <h4 id="list-item-1" style="">Item 1</h4>
-                        <p>Ex consequat commodo adipisicing exercitation aute excepteur occaecat ullamco duis aliqua id magna ullamco eu. Do aute ipsum ipsum ullamco cillum consectetur ut et aute consectetur labore. Fugiat laborum incididunt tempor eu consequat enim dolore proident. Qui laborum do non excepteur nulla magna eiusmod consectetur in. Aliqua et aliqua officia quis et incididunt voluptate non anim reprehenderit adipisicing dolore ut consequat deserunt mollit dolore. Aliquip nulla enim veniam non fugiat id cupidatat nulla elit cupidatat commodo velit ut eiusmod cupidatat elit dolore.</p>
-                        <h4 id="list-item-2" style="">Item 2</h4>
-                        <p>Quis magna Lorem anim amet ipsum do mollit sit cillum voluptate ex nulla tempor. Laborum consequat non elit enim exercitation cillum aliqua consequat id aliqua. Esse ex consectetur mollit voluptate est in duis laboris ad sit ipsum anim Lorem. Incididunt veniam velit elit elit veniam Lorem aliqua quis ullamco deserunt sit enim elit aliqua esse irure. Laborum nisi sit est tempor laborum mollit labore officia laborum excepteur commodo non commodo dolor excepteur commodo. Ipsum fugiat ex est consectetur ipsum commodo tempor sunt in proident.</p>
-                        <h4 id="list-item-3" style="">Item 3</h4>
-                        <p>Quis anim sit do amet fugiat dolor velit sit ea ea do reprehenderit culpa duis. Nostrud aliqua ipsum fugiat minim proident occaecat excepteur aliquip culpa aute tempor reprehenderit. Deserunt tempor mollit elit ex pariatur dolore velit fugiat mollit culpa irure ullamco est ex ullamco excepteur.</p>
-                        <h4 id="list-item-4" style="">Item 4</h4>
-                        <p>Quis anim sit do amet fugiat dolor velit sit ea ea do reprehenderit culpa duis. Nostrud aliqua ipsum fugiat minim proident occaecat excepteur aliquip culpa aute tempor reprehenderit. Deserunt tempor mollit elit ex pariatur dolore velit fugiat mollit culpa irure ullamco est ex ullamco excepteur.</p>
-                    </div>
-                </div>
-            </div>--}}
-
+            <div class="paginate_top">
+                {{ $dataEntries->links() }}
+            </div>
             <div class="row">
                 <div class="col-3">
                     <div id="list-example" class="list-group">
@@ -137,9 +77,6 @@
                      * pagination for list
                      */
                     ?>
-                    <div class="paginate">
-                        {{ $dataEntries->links() }}
-                    </div>
                 </div>
                 <div class="col-9">
                     <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
@@ -689,65 +626,14 @@
                          * (code end)
                          */
                         ?>
-                        
-
+                    </div>
+                    <div class="paginate_bottom mt-4">
+                        {{ $dataEntries->links() }}
                     </div>
                 </div>
             </div>
-
-            {{--<div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <small>3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small>Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-            </div>--}}
-
-
         </div>
         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
     </div>
-    {{--<div class="row">
-        <div class="col-lg-8">
-            <!-- Example Bar Chart Card-->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
-                <div class="card-body">
-                    <canvas id="myBarChart" width="100" height="50"></canvas>
-                </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <!-- Example Pie Chart Card-->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-pie-chart"></i> Pie Chart Example</div>
-                <div class="card-body">
-                    <canvas id="myPieChart" width="100%" height="100"></canvas>
-                </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-        </div>
-    </div>--}}
+
 @endsection

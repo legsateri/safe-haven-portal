@@ -3,11 +3,11 @@
 @section('content')
     <div class="card mb-3 current_clients_cont">
 
-        <div class="modal fade" id="currentClientsModal" tabindex="-1" role="dialog" aria-labelledby="currentClientsModal" aria-hidden="true">
+        <div class="modal fade" id="currentClientsModal" tabindex="-1" role="dialog" aria-labelledby="currentClientsModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Client Release</h5>
+                        <h5 class="modal-title" id="currentClientsModalLabel">Client Release</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -20,7 +20,6 @@
                             </div>
                             <div class="row modal_body_inputs">
                                 <div class="form-group col-md-12">
-                                    {{--<label for="">Pet Type</label>--}}
                                     <div style="display: block;" class="radio_custom_group">
                                         <div class="custom-control custom-radio custom-control-inline">
                                             <input id="completed_type" value="completed" name="release_type" class="custom-control-input" type="radio">
@@ -55,7 +54,9 @@
         <div class="card-header">
             <i class="fa fa-users" aria-hidden="true"></i> Current Clients</div>
         <div class="card-body">
-
+            <div class="paginate_top">
+                {{ $dataEntries->links() }}
+            </div>
             <div class="row">
                 <div class="col-3">
                     <div id="list-example" class="list-group">
@@ -246,13 +247,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    {{--<div class="form-row">
-                                        <div class="form-group col-md-12 text-right">
-                                            <button id="next_step_1_2" type="button" class="btn btn-primary">Next Step</button>
-                                            <div class="spinner_cont spinner_form_1"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
-                                        </div>
-                                    </div>--}}
                                 </form>
 
                                 <form id="new_pet_app_form" action="{{ route('register') }}" method="post">
@@ -647,35 +641,13 @@
                          */
                         ?>
                     </div>
+                    <div class="paginate_bottom mt-4">
+                        {{ $dataEntries->links() }}
+                    </div>
                 </div>
             </div>
-
-
         </div>
         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
     </div>
-    {{--<div class="row">
-        <div class="col-lg-8">
-            <!-- Example Bar Chart Card-->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
-                <div class="card-body">
-                    <canvas id="myBarChart" width="100" height="50"></canvas>
-                </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <!-- Example Pie Chart Card-->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-pie-chart"></i> Pie Chart Example</div>
-                <div class="card-body">
-                    <canvas id="myPieChart" width="100%" height="100"></canvas>
-                </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-        </div>
-    </div>--}}
+
 @endsection

@@ -384,55 +384,27 @@ jQuery(document).ready(function() {
         });
 
         $('#next_step_3_4').click(function() { // step 3 to 4
-            console.log('$(\'#i_understand\').attr(\'disabled\') = ' + $('#i_understand').attr('disabled'));
 
             if ( $(this).hasClass('disabled') !== true ) {
                 $('.accordion_section_4 .card-header a').attr('href', '#collapseFour');
                 $('#collapseThree').collapse('hide');
                 $('#collapseFour').collapse('show');
-
             }
-
-            /*if ( pet_info_form_valid() === true ) {*/
-            //if ( $('#i_understand').attr('disabled') === 'disabled' ) {
-                console.log('if true');
-                /*$('#collapseTwo').collapse({
-                    toggle: true
-                })*/
-
-            /*} else {
-
-            }*/
         });
 
         $('#add_another_pet').click(function() { // add another pet
-            /*$(this).css('border','1px solid red');
-            $(this).closest('.form-row').css('border','1px solid red');
-            $(this).closest('.form-row').prev().css('border','1px solid red');*/
+
             var latest_pet_id = $(this).closest('.form-row').prev().find('#pet_application_1').last().attr('id');
-            console.log('latest_pet_id = ' + latest_pet_id);
-
-            /*$(this).css('border','1px solid red');
-            $(this).closest('.form-row').css('border','1px solid red');
-            $(this).closest('.form-row').prev().css('border','1px solid red');
-            $(this).closest('.form-row').prev().find('#pet_application_1').css('border','1px solid red');*/
             $(this).closest('.form-row').prev().find('#pet_application_1').clone().appendTo("#pet_form_cont");
-
         });
 
 
         $('#client_new_application_submit').click(function() { // final submit of whole form
 
             var clicked_button = $(this);
-
-            //var new_client_app_form_data = $( '#new_client_app_form' ).find('input[name!=_token]').serializeArray();
             var new_client_app_form_data = $( '#new_client_app_form' ).serializeArray();
-            //var new_pet_app_form_data = $( '#new_pet_app_form' ).find('input[name!=_token]').serializeArray();
             var new_pet_app_form_data = $( '#new_pet_app_form' ).serializeArray();
-
             full_form_array = new_client_app_form_data.concat(new_pet_app_form_data);
-
-           // console.log(full_form_array);
 
             // fix action key value
             var full_form_array_action = [];
@@ -444,8 +416,6 @@ jQuery(document).ready(function() {
                 full_form_array_action.push(full_form_array[index]);
             });
 
-            //console.log(full_form_array_action);
-
             var ajaxurl = '/application/new/ajax';
 
             jQuery.ajax({
@@ -453,92 +423,38 @@ jQuery(document).ready(function() {
                 url: ajaxurl,
                 data: full_form_array,
                 success: function (data, status, response) {
-                    console.log('are we here final');
                     var obj = response.responseJSON;
-                    console.log('are we here1 final');
-                    if ( typeof obj.data !== 'undefined' ) {
-                        console.log('obj.message = ' + obj.data.message);
-                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
-                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
-                    }
-                    console.log('are we here2 final');
-
 
                     if ( obj.success == true ) {
-                        console.log('super cool');
 
                         setTimeout(function(){
-                            /*$('#collapseTwo').collapse('hide');
-                            $('#collapseThree').collapse('show');*/
-
                             clicked_button.addClass('disabled');
                             $('#client_new_application_start_another').fadeIn("slow", function () {});
-
                             $('.check_4').fadeIn("slow", function () {});
                             $('#client_new_application_submit').html('Application Submitted');
-                            //alert('Final Submit successful');
-
-
                         }, 1000);
-
-
                     } else {
-                        console.log('not cool');
-
 
                         // TODO support email change set
                         var tech_support_message = 'Please contact us at support@ztech.io';
 
-                        alert(obj.data.message + '<br/>' + tech_support_message);
-                        //console.log('sh_input_id = ' + sh_input_id);
-
-                        //to be used
-                        /*jQuery.each(obj.data.message, function (index, value) {
-                            //jQuery('.survey-element-' + value).delay((index + 1) * 200).fadeIn("slow", function () {});
-                            console.log('value = ' + value);
-                            console.log('index = ' + index);
-
-                            $('#' + index).next('.invalid-feedback').html(value);
-
-                            if ( $('#' + index).hasClass('is-valid') ) {
-                                $('#' + index).removeClass('is-valid').addClass('is-invalid');
-                            } else {
-                                $('#' + index).addClass('is-invalid');
-                            }
-
-                        });*/
-
-                        //$('#' + sh_input_id).next('.invalid-feedback').html(obj.data.message);
-
-                        //$('#' + sh_input_id).addClass('is-invalid');
-                        /*if ( $('#' + sh_input_id).hasClass('is-valid') ) {
-                            $('#' + sh_input_id).removeClass('is-valid').addClass('is-invalid');
-                        } else {
-                            $('#' + sh_input_id).addClass('is-invalid');
-                        }*/
+                        alert(obj.message + '<br/>' + tech_support_message);
                     }
 
                 },
                 error: function (xml, status, error) {
-                    // do something if there was an error
                 },
                 complete: function (xml, status) {
-                    // do something after success or error no matter what
-                    console.log('completed');
-
                 }
             });
-
-
         });
     }
 
+    /*--------------- clients in need page starts --------------------*/
+
     if ( $('.clients_in_need_cont').length != 0 ) { // if clients in need page
-        /*$('.scrollspy-example').scrollspy({ target: '#list-example' })
-        $('.scrollspy-example').scrollspy({ offset: 150 });*/
 
         $('.list-group-item').click(function() {
-            console.log('something');
             $('#list-example').css('padding-top','4rem');
             $('[id*="list-item-"]').css('padding-top','4rem');
         });
@@ -546,12 +462,8 @@ jQuery(document).ready(function() {
        $('[id*="list-button-item-"]').click(function() {
 
             var client_id = $(this).attr('id');
-            console.log(client_id);
             client_id = client_id.replace("list-button-item-", "");
-            console.log(client_id);
-
             $('#exampleModal [type=\'hidden\']').val(client_id);
-
             $('#exampleModal').modal('show');
         });
 
@@ -578,81 +490,32 @@ jQuery(document).ready(function() {
                 url: ajaxurl,
                 data: data,
                 success: function (data, status, response) {
-                    console.log('are we here accept_client_confirmed');
-                    var obj = response.responseJSON;
-                    console.log('are we here accept_client_confirmed 1');
-                    if ( typeof obj.data !== 'undefined' ) {
-                        console.log('obj.message = ' + obj.data.message);
-                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
-                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
-                    }
-                    console.log('are we here2');
 
+                    var obj = response.responseJSON;
 
                     if ( obj.success == true ) {
-                        console.log('super cool');
 
-                        //setTimeout(function(){
                         $('.spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
 
                         $('.modal-body').html('Client has been successfully released');
 
-                        console.log('client with id ' + confirmed_accept_client_id + ' to remove;');
-
                         $('#list-example a[href="#list-item-' + confirmed_accept_client_id + '"]').fadeOut("fast", function () {});
                         $('.scrollspy-example #list-item-' + confirmed_accept_client_id).fadeOut("fast", function () {});
-
-                        //}, 2000);
-
-
                     } else {
-                        console.log('not cool');
 
                         $('.spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
+                        $('.modal-body').html(obj.message);
 
-                        $('.modal-body').html(obj.data.message);
-
-                        //console.log('sh_input_id = ' + sh_input_id);
-
-                        /*jQuery.each(obj.data.message, function (index, value) {
-                            //jQuery('.survey-element-' + value).delay((index + 1) * 200).fadeIn("slow", function () {});
-                            console.log('value = ' + value);
-                            console.log('index = ' + index);
-
-                            $('#' + index).next('.invalid-feedback').html(value);
-
-                            if ( $('#' + index).hasClass('is-valid') ) {
-                                $('#' + index).removeClass('is-valid').addClass('is-invalid');
-                            } else {
-                                $('#' + index).addClass('is-invalid');
-                            }
-
-                        });*/
                         $('.spinner_cont').css('display','none');
-                        //$('#' + sh_input_id).next('.invalid-feedback').html(obj.data.message);
-
-                        //$('#' + sh_input_id).addClass('is-invalid');
-                        /*if ( $('#' + sh_input_id).hasClass('is-valid') ) {
-                            $('#' + sh_input_id).removeClass('is-valid').addClass('is-invalid');
-                        } else {
-                            $('#' + sh_input_id).addClass('is-invalid');
-                        }*/
                     }
-
                 },
                 error: function (xml, status, error) {
-                    // do something if there was an error
                 },
                 complete: function (xml, status) {
-                    // do something after success or error no matter what
-                    console.log('completed');
-
                 }
             });
-
-            //$('#exampleModal').modal('show');
         });
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
@@ -661,13 +524,15 @@ jQuery(document).ready(function() {
                 '                        and Client to establish a temporary home for the pet or pets.');
             $('#confirm_accept_client').css('display','inline-block').removeClass('disabled');;
         })
-
     };
+
+    /*--------------- clients in need page ends --------------------*/
+
+    /*--------------- current clients page starts --------------------*/
 
     if ( $('.current_clients_cont').length != 0 ) { // if clients in need page
 
         $('.list-group-item').click(function() {
-            console.log('something');
             $('#list-example').css('padding-top','4rem');
             $('[id*="list-item-"]').css('padding-top','4rem');
         });
@@ -688,12 +553,11 @@ jQuery(document).ready(function() {
         $('#confirm_release_client').click(function() {
 
             $('#currentClientsModal .spinner_cont').css('display','inline');
+
             var modal_button_clicked = $(this);
             modal_button_clicked.addClass('disabled');
 
             var confirmed_release_client_id = $('#currentClientsModal [type=\'hidden\']').val();
-            console.log('confirmed_release_client_id = ' + confirmed_release_client_id);
-
             var confirmed_release_reason = $('#currentClientsModal input:checked').val();
 
             var ajaxurl = '/client/release/ajax';
@@ -711,18 +575,10 @@ jQuery(document).ready(function() {
                 url: ajaxurl,
                 data: data,
                 success: function (data, status, response) {
-                    console.log('are we here release_client_confirmed');
+
                     var obj = response.responseJSON;
-                    console.log('are we here release_client_confirmed 1');
-                    if ( typeof obj.data !== 'undefined' ) {
-                        console.log('obj.message = ' + obj.data.message);
-                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
-                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
-                    }
-                    console.log('are we here2');
 
                     if ( obj.success == true ) {
-                        console.log('super cool');
 
                         $('#currentClientsModal .spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
@@ -730,38 +586,27 @@ jQuery(document).ready(function() {
                         $('#currentClientsModal .modal-body .modal_body_text').html('Client has been successfully released');
                         $('#currentClientsModal .modal-body .modal_body_inputs').fadeOut("fast", function () {});
 
-                        console.log('client with id ' + confirmed_release_client_id + ' to remove;');
-
                         $('#list-example a[href="#list-item-' + confirmed_release_client_id + '"]').fadeOut("fast", function () {});
                         $('.scrollspy-example #list-item-' + confirmed_release_client_id).fadeOut("fast", function () {});
 
                     } else {
-                        console.log('not cool');
 
                         $('#currentClientsModal .spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
 
-                        $('#currentClientsModal .modal-body').html(obj.data.message);
+                        $('#currentClientsModal .modal-body').html(obj.message);
 
                         $('.spinner_cont').css('display','none');
                     }
                 },
                 error: function (xml, status, error) {
-                    // do something if there was an error
                 },
                 complete: function (xml, status) {
-                    // do something after success or error no matter what
-                    console.log('completed');
                 }
             });
         });
 
-        $('#exampleModal').on('hidden.bs.modal', function (e) {
-            $('#exampleModal .modal-body').html('Once a client is accepted, emails are sent to Shelters letting them know there are pets in need.' +
-                '                        By clicking \'Confirm Accept Client\' below, your organization is agreeing to work with the Shelters' +
-                '                        and Client to establish a temporary home for the pet or pets.');
-            $('#confirm_release_client').css('display','inline-block').removeClass('disabled');;
-        })
+
 
         $('#currentClientsModal').on('hidden.bs.modal', function (e) {
             $('#currentClientsModal .modal-body .modal_body_text').html('Please select the reason for release. A release announcement' +
@@ -772,12 +617,13 @@ jQuery(document).ready(function() {
 
     }
 
+    /*--------------- current clients page ends --------------------*/
+
     /*--------------- pets in need page starts --------------------*/
 
     if ( $('.pets_in_need_cont').length != 0 ) {
 
         $('.list-group-item').click(function() {
-            console.log('something');
             $('#list-example').css('padding-top','4rem');
             $('[id*="list-item-"]').css('padding-top','4rem');
         });
@@ -785,9 +631,7 @@ jQuery(document).ready(function() {
         $('[id*="list-button-item-"]').click(function() {
 
             var pet_id = $(this).attr('id');
-            console.log(pet_id);
             pet_id = pet_id.replace("list-button-item-", "");
-            console.log(pet_id);
 
             $('#petsInNeedModal [type=\'hidden\']').val(pet_id);
 
@@ -801,7 +645,6 @@ jQuery(document).ready(function() {
             modal_button_clicked.addClass('disabled');
 
             var confirmed_accept_pet_id = $('#petsInNeedModal [type=\'hidden\']').val();
-            console.log('confirmed_accept_pet_id = ' + confirmed_accept_pet_id);
 
             var ajaxurl = '/pet/accept/ajax';
             var token = $('[name="_token"]').val();
@@ -817,58 +660,34 @@ jQuery(document).ready(function() {
                 url: ajaxurl,
                 data: data,
                 success: function (data, status, response) {
-                    console.log('are we here accept_pet_confirmed');
-                    var obj = response.responseJSON;
-                    console.log('are we here accept_pet_confirmed 1');
-                    if ( typeof obj.data !== 'undefined' ) {
-                        console.log('obj.message = ' + obj.data.message);
-                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
-                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
-                    }
-                    console.log('are we here2');
 
+                    var obj = response.responseJSON;
 
                     if ( obj.success == true ) {
-                        console.log('super cool');
-
 
                         $('.spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
 
                         $('#petsInNeedModal .modal-body').html('Pet has been successfully accepted');
 
-                        console.log('client with id ' + confirmed_accept_pet_id + ' to remove;');
-
                         $('#list-example a[href="#list-item-' + confirmed_accept_pet_id + '"]').fadeOut("fast", function () {});
                         $('.scrollspy-example #list-item-' + confirmed_accept_pet_id).fadeOut("fast", function () {});
 
-
-
                     } else {
-                        console.log('not cool');
 
                         $('.spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
 
-                        $('#petsInNeedModal .modal-body').html(obj.data.message);
-
-                        //console.log('sh_input_id = ' + sh_input_id);
+                        $('#petsInNeedModal .modal-body').html(obj.message);
 
                         $('.spinner_cont').css('display','none');
-
                     }
-
                 },
                 error: function (xml, status, error) {
-                    // do something if there was an error
                 },
                 complete: function (xml, status) {
-                    // do something after success or error no matter what
-                    console.log('completed');
-
                 }
             });
-
         });
 
         $('#petsInNeedModal').on('hidden.bs.modal', function (e) {
@@ -881,9 +700,7 @@ jQuery(document).ready(function() {
         $('[id*="list-button-qa-item-"]').click(function() {
 
             var pet_id = $(this).attr('id');
-            console.log(pet_id);
             pet_id = pet_id.replace("list-button-qa-item-", "");
-            console.log(pet_id);
 
             $('#petsInNeedQAModal #pet_qa_id').val(pet_id);
             $('#petsInNeedQAModal #petsInNeedQAModalLabel span').html($(this).closest('a').find('h5').html());
@@ -902,41 +719,24 @@ jQuery(document).ready(function() {
                 url: ajaxurl,
                 data: data,
                 success: function (data, status, response) {
-                    console.log('are we here pet_in_need_get_qa_thread');
                     var obj = response.responseJSON;
-                    console.log('are we here pet_in_need_get_qa_thread 1');
-                    if ( typeof obj.data !== 'undefined' ) {
-                        console.log('obj.message = ' + obj.data.message);
-                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
-                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
-                    }
-                    console.log('are we here2 pet_in_need_get_qa_thread');
-
 
                     if ( obj.success == true ) {
-                        console.log('super cool');
 
                         $('#petsInNeedQAModal').modal('show');
 
                     } else {
-                        console.log('not cool');
 
                         $('#petsInNeedQAModal .spinner_cont').css('display','none');
                         modal_button_clicked.removeClass('disabled');
 
-                        $('#petsInNeedQAModal .invalid-feedback').html(obj.data.message);
+                        $('#petsInNeedQAModal .invalid-feedback').html(obj.message);
                         $('#petsInNeedQAModal .invalid-feedback').fadeIn("slow", function () {});
-
                     }
-
                 },
                 error: function (xml, status, error) {
-                    // do something if there was an error
                 },
                 complete: function (xml, status) {
-                    // do something after success or error no matter what
-                    console.log('completed');
-
                 }
             });
         });
@@ -944,14 +744,13 @@ jQuery(document).ready(function() {
         $('#send_pet_qa').click(function() {
 
             $('#petsInNeedQAModal .spinner_cont').css('display','inline');
+
             var modal_button_clicked = $(this);
             modal_button_clicked.addClass('disabled');
 
             var pet_in_need_question = $('#petsInNeedQAModal textarea').val();
-            console.log('pet_in_need_question = ' + pet_in_need_question);
 
             var pet_in_need_qa_pet_id = $('#petsInNeedQAModal #pet_qa_id').val();
-            console.log('pet_in_need_qa_pet_id = ' + pet_in_need_qa_pet_id);
 
             var ajaxurl = '/application/new/ajax';
             var token = $('[name="_token"]').val();
@@ -971,19 +770,10 @@ jQuery(document).ready(function() {
                 url: ajaxurl,
                 data: data,
                 success: function (data, status, response) {
-                    console.log('are we here send_pet_qa');
-                    var obj = response.responseJSON;
-                    console.log('are we here send_pet_qa 1');
-                    if ( typeof obj.data !== 'undefined' ) {
-                        console.log('obj.message = ' + obj.data.message);
-                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
-                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
-                    }
-                    console.log('are we here2 send_pet_qa');
 
+                    var obj = response.responseJSON;
 
                     if ( obj.success == true ) {
-                        console.log('super cool');
 
                         $('#petsInNeedQAModal .spinner_cont').css('display','none');
                         modal_button_clicked.removeClass('disabled');
@@ -1004,36 +794,25 @@ jQuery(document).ready(function() {
                         $( ".pet_qa_form" ).after( pet_qa_form );
                         var pet_posted_question = $( ".pet_qa_form" ).next('.qa_template_card');
 
-                        console.log('pet_in_need_question = ' + pet_in_need_question);
                         pet_posted_question.find('.card-title').html(pet_in_need_question);
                         pet_posted_question.find('.shelter_name').html($('.pet_qa_form').find('.shelter_name').html());
                         pet_posted_question.removeClass('d-none');
 
                     } else {
-                        console.log('not cool');
 
                         $('#petsInNeedQAModal .spinner_cont').css('display','none');
                         modal_button_clicked.removeClass('disabled');
 
                         $('#petsInNeedQAModal .invalid-feedback').html(obj.data.message);
                         $('#petsInNeedQAModal .invalid-feedback').fadeIn("slow", function () {});
-
                     }
-
                 },
                 error: function (xml, status, error) {
-                    // do something if there was an error
                 },
                 complete: function (xml, status) {
-                    // do something after success or error no matter what
-                    console.log('completed');
-
                 }
             });
-
-
         });
-
     }
 
     /*--------------- pets in need page ends --------------------*/
@@ -1086,42 +865,25 @@ jQuery(document).ready(function() {
                 url: ajaxurl,
                 data: data,
                 success: function (data, status, response) {
-                    console.log('are we here accept_pet_confirmed');
-                    var obj = response.responseJSON;
-                    console.log('are we here accept_pet_confirmed 1');
-                    if ( typeof obj.data !== 'undefined' ) {
-                        console.log('obj.message = ' + obj.data.message);
-                        console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
-                        console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
-                    }
-                    console.log('are we here2');
 
+                    var obj = response.responseJSON;
 
                     if ( obj.success == true ) {
-                        console.log('super cool');
-
 
                         $('.spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
 
-                        /*$('#petsInNeedModal .modal-body').html('Pet has been successfully accepted');
-
-                        console.log('client with id ' + confirmed_accept_pet_id + ' to remove;');
-
-                        $('#list-example a[href="#list-item-' + confirmed_accept_pet_id + '"]').fadeOut("fast", function () {});
-                        $('.scrollspy-example #list-item-' + confirmed_accept_pet_id).fadeOut("fast", function () {});*/
-
-
+                        $('#currentPetsModal .modal-body .modal_body_text').html('Pet has been successfully released');
+                        $('#currentPetsModal .modal-body .modal_body_inputs').addClass('d-none');
+                        $('#list-example a[href="#list-item-' + confirmed_release_pet_id + '"]').fadeOut("fast", function () {});
+                        $('.scrollspy-example #list-item-' + confirmed_release_pet_id).fadeOut("fast", function () {});
 
                     } else {
-                        console.log('not cool');
 
                         $('.spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
 
-                        $('#petsInNeedModal .modal-body').html(obj.data.message);
-
-                        //console.log('sh_input_id = ' + sh_input_id);
+                        $('#petsInNeedModal .modal-body').html(obj.message);
 
                         $('.spinner_cont').css('display','none');
 
@@ -1138,6 +900,14 @@ jQuery(document).ready(function() {
                 }
             });
 
+        });
+
+        $('#currentPetsModal').on('hidden.bs.modal', function () {
+
+            $('#currentPetsModal .modal-body .modal_body_text').html('Please select the reason for release. A release announcement ' +
+                'will be sent out to the Advocate and Safe Haven volunteers.');
+            $('#currentPetsModal .modal-body .modal_body_inputs').removeClass('d-none');
+            $('#confirm_release_pet').css('display','inline-block').removeClass('disabled');
         })
 
     }

@@ -96,6 +96,7 @@ body .custom-select {
     width: 100%;
 }
 
+.current_pets_cont .scrollspy-example,
 .pets_in_need_cont .scrollspy-example,
 .current_clients_cont .scrollspy-example,
 .clients_in_need_cont .scrollspy-example {
@@ -106,13 +107,7 @@ body .custom-select {
     padding-right: 10px;
 }
 
-.pets_in_need_cont #list-example,
-.current_clients_cont #list-example,
-.clients_in_need_cont #list-example {
-
-    /*padding-top: 4rem;*/
-}
-
+.current_pets_cont [id*="list-item-"],
 .pets_in_need_cont [id*="list-item-"],
 .current_clients_cont [id*="list-item-"],
 .clients_in_need_cont [id*="list-item-"] {
@@ -122,6 +117,7 @@ body .custom-select {
     /*padding-top: 4rem;*/
 }
 
+.current_pets_cont .spinner_cont.spinner_modal,
 .pets_in_need_cont .spinner_cont.spinner_modal,
 .current_clients_cont .spinner_cont.spinner_modal,
 .clients_in_need_cont .spinner_cont.spinner_modal {
@@ -142,6 +138,10 @@ body .custom-select {
 
 .current_clients_cont #currentClientsModal .custom-radio {
     display: block;
+}
+
+[class*='paginate_'] li {
+    margin: 0 .5rem;
 }
 
 footer .sh_social_icons {

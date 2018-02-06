@@ -1,10 +1,10 @@
 @extends('layouts.user-main')
 
 @section('content')
-    <div class="card mb-3 pets_in_need_cont">
+    <div class="card mb-3 current_pets_cont">
 
         <!-- Modal -->
-        <div class="modal fade" id="currentPetsModal" tabindex="-1" role="dialog" aria-labelledby="currentClientsModalLabel" aria-hidden="true">
+        <div class="modal fade" id="currentPetsModal" tabindex="-1" role="dialog" aria-labelledby="currentPetsModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -22,21 +22,20 @@
                             </div>
                             <div class="row modal_body_inputs">
                                 <div class="form-group col-md-12">
-                                    {{--<label for="">Pet Type</label>--}}
                                     <div style="display: block;" class="radio_custom_group">
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input id="pet_released_to_owner_type" value="pet_released_to_owner" name="pet_release_type" class="custom-control-input" type="radio">
+                                        <div class="custom-control custom-radio custom-control-inline d-block">
+                                            <input id="pet_released_to_owner_type" value="pet_released_to_owner" name="pet_release_type" class="custom-control-input" checked="" type="radio">
                                             <label class="custom-control-label" for="pet_released_to_owner_type">Released To Owner</label>
                                         </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input id="pet_services_not_provided_type" value="pet_services_not_provided" name="pet_release_type" class="custom-control-input" checked="" type="radio">
+                                        <div class="custom-control custom-radio custom-control-inline d-block">
+                                            <input id="pet_services_not_provided_type" value="pet_services_not_provided" name="pet_release_type" class="custom-control-input" type="radio">
                                             <label class="custom-control-label" for="pet_services_not_provided_type">Services Not Provided</label>
                                         </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
+                                        <div class="custom-control custom-radio custom-control-inline d-block">
                                             <input id="pet_released_to_adoption_pool_type" value="pet_released_to_adoption_pool" name="pet_release_type" class="custom-control-input" type="radio">
                                             <label class="custom-control-label" for="pet_released_to_adoption_pool_type">Released to Adoption Pool</label>
                                         </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
+                                        <div class="custom-control custom-radio custom-control-inline d-block">
                                             <input id="pet_not_admitted_type" value="pet_not_admitted" name="pet_release_type" class="custom-control-input" type="radio">
                                             <label class="custom-control-label" for="pet_not_admitted_type">Pet Not Admitted</label>
                                         </div>
@@ -49,124 +48,22 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="confirm_release_client" type="button" class="btn btn-primary">Confirm Release Client</button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal Q&A-->
-        <div class="modal fade" id="petsInNeedQAModal" tabindex="-1" role="dialog" aria-labelledby="petsInNeedQAModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="petsInNeedQAModalLabel"><span></span> - Questions and Answers </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card mb-2 pet_qa_form">
-                            <div class="card-body">
-                                <h5 class="card-title">Post a questions to  pet's advocate.</h5>
-                                <h6 class="card-subtitle shelter_name mb-2 text-muted d-inline-block">Shelter 2{{--TODO Milos - pass shelter name to blade here--}}</h6>
-                                <span class="text-muted">-</span>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">today</h6>
-                                <form>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-12">
-                                            {{--<label for="pet_qa">Description</label>--}}
-                                            <textarea class="form-control" id="pet_qa" name="pet_qa" rows="1"></textarea>                                                                                                    </textarea>
-                                            <div class="invalid-feedback">More example invalid feedback text</div>
-                                            <input id="organisation_id" type="hidden" value="{{Auth::user()->organisation_id}}"/>
-                                            <input id="pet_qa_id" type="hidden" value=""/>
-                                        </div>
-                                    </div>
-                                    {{--<a href="#" class="card-link float-right">Card link</a>--}}
-                                    <div class="pet_qa_form_buttons_cont">
-                                        <button id="send_pet_qa" type="button" class="btn btn-primary">Send</button>
-                                        <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        {{--<div id="qa_template_card" class="qa_template_card card mb-2 d-none">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                </h5>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block"></h6> <span class="text-muted">-</span>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block"></h6>
-                                <p class="card-text"></p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div>--}}
-                        <div class="card mb-2">
-                            <div class="card-body">
-                                <h5 class="card-title">Question 4 vestibulum tincidunt, lacus finibus ultrices dictum, quam massa dapibus ligula,
-                                    feugiat sollicitudin nisi enim et ante?
-                                </h5>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Shelter 2</h6> <span class="text-muted">-</span>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">01/02/2018</h6>
-                                <p class="card-text">Morbi tempor augue nec nisi luctus commodo. Fusce a nisl lacus.</p>
-                                {{--<a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>--}}
-                            </div>
-                        </div>
-                        <div class="card mb-2">
-                            <div class="card-body">
-                                <h5 class="card-title">Question 3 vestibulum tincidunt, lacus finibus ultrices dictum, quam massa dapibus ligula,
-                                    feugiat sollicitudin nisi enim et ante?
-                                </h5>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Shelter 2</h6> <span class="text-muted">-</span>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">01/02/2018</h6>
-                                <p class="card-text">Morbi tempor augue nec nisi luctus commodo. Fusce a nisl lacus.</p>
-                                {{--<a href="#" class="card-link">Card link</a>--}}
-                                {{--<a href="#" class="card-link">Another link</a>--}}
-                            </div>
-                        </div>
-                        <div class="card mb-2">
-                            <div class="card-body">
-                                <h5 class="card-title">Question 2 integer varius eu odio in ultricies?</h5>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Shelter 1</h6> <span class="text-muted">-</span>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">10/01/2018</h6>
-                                <p class="card-text">Fusce viverra aliquet tristique.</p>
-                                {{--<a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>--}}
-                            </div>
-                        </div>
-                        <div class="card mb-2">
-                            <div class="card-body">
-                                <h5 class="card-title">Question 1 in accumsan sit amet magna congue faucibus?</h5>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Shelter 3</h6> <span class="text-muted">-</span>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">09/01/2018</h6>
-                                <p class="card-text">Suspendisse vitae aliquet lectus. Aenean ullamcorper commodo feugiat.</p>
-                                {{--<a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>--}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        {{--<button id="confirm_accept_pet_qa" type="button" class="btn btn-primary">Send</button>--}}
+                        <button id="confirm_release_pet" type="button" class="btn btn-primary">Confirm Release Pet</button>
                         <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
                         <input type="hidden" value=""/>
                     </div>
+
                 </div>
             </div>
         </div>
 
-
-
         <div class="card-header">
-            <i class="fa fa-heart"></i> Pets in Need</div>
+            <i class="fa fa-home"></i> Currently Accepted Pets</div>
         <div class="card-body">
 
             <div class="row">
                 <div class="col-3">
                     <div id="list-example" class="list-group">
-
 
                         <?php
                         /**
@@ -181,12 +78,11 @@
                                     <small>{{ date('M/d/Y', strtotime($dataEntry->created_at)) }}</small>
                                 </div>
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
-                                    <p class="mb-1"><span class="mr-1">{{$dataEntry->zip_code}}</span><small>{{$dataEntry->city}}</small></p>
-                                    <!-- <span class="badge badge-primary badge-pill">1</span> -->
+                                    <p class="mb-1"><span class="mr-1">{{$dataEntry->zip_code}}</span></p>
                                 </div>
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
-                                    <button id="list-button-qa-item-{{$dataEntry->id}}" type="button" class="btn-sm btn-primary">Q & A</button>
-                                    <button id="list-button-item-{{$dataEntry->id}}" type="button" class="btn-sm btn-primary">Accept Pet</button>
+                                    <small>{{$dataEntry->city}}</small>
+                                    <button id="list-button-item-{{$dataEntry->id}}" type="button" class="btn-sm btn-primary">Release Pet</button>
                                 </div>
                             </a>
                         @endforeach
