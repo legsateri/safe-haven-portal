@@ -104,6 +104,10 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 
 		Route::post('/application/new/ajax', 'Advocate\ApplicationsController@ajaxHandler')->name('advocate.application.ajax.handler');
 
+		// ajax for accepting new client
+		Route::post('/clients/accept/ajax', 'Advocate\ClientsController@acceptClient');
+		// ajax for release client
+		Route::post('/client/release/ajax', 'Advocate\ClientsController@releaseClient');
 
 
 		/**
@@ -119,9 +123,11 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/pet/{id}/{slug}', 'Shelter\PetsController@single')->name('shelter.pet.single');
 		// single client page (pet owner) - id and slug of client
 		Route::get('/pet-owner/{id}/{slug}', 'Shelter\PetsController@owner')->name('shelter.pet.owner');
+
+		// ajax for accepting new pet
+		Route::post('/pet/accept/ajax', 'Shelter\PetsController@acceptpet');
 		
-		// ajax for accepting new client
-		Route::post('/clients/accept/ajax', 'Advocate\ClientsController@acceptClient')->name('shelter.accept.client');
+
 
 
 		/**

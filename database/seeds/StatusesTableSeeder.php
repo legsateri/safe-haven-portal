@@ -43,19 +43,19 @@ class StatusesTableSeeder extends Seeder
             // client_release
             [
                 'type' => 'client_release',
-                'value' => 'services-completed',
+                'value' => 'completed',
                 'label' => 'Services Completed',
                 'description' => ''
             ],
             [
                 'type' => 'client_release',
-                'value' => 'services-not-provided',
+                'value' => 'not_provided',
                 'label' => 'Services Not Provided',
                 'description' => ''
             ],
             [
                 'type' => 'client_release',
-                'value' => 'services-no-longer-needed',
+                'value' => 'no_longer_needed',
                 'label' => 'Services No Longer Needed',
                 'description' => ''
             ],
