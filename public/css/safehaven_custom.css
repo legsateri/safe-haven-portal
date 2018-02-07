@@ -85,6 +85,10 @@ body,
     flex-wrap: wrap;
 }
 
+.org_account_cont .signup_form_row {
+    display: flex;
+}
+
 body .custom-select {
     border-top: none;
     border-right: none;
@@ -92,6 +96,7 @@ body .custom-select {
     border-bottom: 1px solid #777777;
 }
 
+.org_account_cont select,
 .new_client_form_row select {
     width: 100%;
 }

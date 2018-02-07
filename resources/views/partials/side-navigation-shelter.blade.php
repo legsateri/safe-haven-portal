@@ -25,7 +25,7 @@
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSettings" data-parent="#exampleAccordion">
             <i class="fa fa-sliders" aria-hidden="true"></i>
-            <span class="nav-link-text"> Settings</span>
+            <span class="nav-link-text"> My Settings</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseSettings">
             <li>
@@ -37,6 +37,12 @@
                 My Account</a>
             </li>
           </ul>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+            <a href="mailto:webmaster@example.com" class="nav-link" >
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span class="nav-link-text"> Contact SHN</span>
+            </a>
         </li>
       </ul>
       <ul class="navbar-nav sidenav-toggler">
