@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 use App\ObjectType;
 use App\User;
 use App\Organisation;
+use App\OrganisationAdmin;
 
 
 class UsersTableSeeder extends Seeder
@@ -133,6 +134,12 @@ class UsersTableSeeder extends Seeder
             $row->organisation_id = $organisation->id;
             $row->verified = true;
             $row->save();
+
+            // make user organisation admin
+            $orgAdmin = new OrganisationAdmin();
+            $orgAdmin->user_id = $row->id;
+            $orgAdmin->organisation_id = $organisation->id;
+            $orgAdmin->save();
         }
 
     }

@@ -11,6 +11,9 @@ use App\Pet;
 use App\Phone;
 use App\Address;
 use App\User;
+use App\QuestionConversation;
+use App\QuestionConversationMessage;
+
 
 class ClientApplicationsSeeder extends Seeder
 {
@@ -21,10 +24,15 @@ class ClientApplicationsSeeder extends Seeder
      */
     public function run()
     {
-        // get organisation type id for advocate
+        // get organisation type id for advocate and shelters
         $advocateTypeOrg = ObjectType::where([
                             ['type', '=', 'organisation'],
                             ['value', '=', 'advocate']
+                        ])->first();
+
+        $shelterTypeOrg = ObjectType::where([
+                            ['type', '=', 'organisation'],
+                            ['value', '=', 'shelter']
                         ])->first();
         
         // get list of advocate organisations
@@ -1224,6 +1232,37 @@ class ClientApplicationsSeeder extends Seeder
 
 
         } // end foreach organisation
+
+
+
+
+        // add Q&A for each pet application with dummy answer
+        $organisations = Organisation::where('org_type_id', $advocateTypeOrg->id)->get();
+
+        foreach ($organisations as $organisation) 
+        {
+            $application_pets = ApplicationPet::all();
+            $advocateUser = User::where('user_type_id', '1')->first();
+
+            foreach( $application_pets as $application_pet )
+            {
+                $question = new QuestionConversation();
+                $question->application_pet_id = $application_pet->id;
+                $question->pet_id = $application_pet->pet_id;
+                $question->shelter_organisation_id = $organisation->id;
+                $question->title = str_random(5) . ' ' . str_random(12) . ' ' . str_random(16);
+                $question->save();
+
+                $answer = new QuestionConversationMessage();
+                $answer->conversation_id = $question->id;
+                $answer->sender_user_id = $advocateUser->id;
+                $answer->message = str_random(8) . ' ' . str_random(10) . ' ' . str_random(15);
+                $answer->save();
+
+            }
+        }
+        
+
 
 
     }

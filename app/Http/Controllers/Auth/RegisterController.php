@@ -15,6 +15,7 @@ use App\ObjectType;
 use App\Organisation;
 use App\Phone;
 use App\VerifyUser;
+use App\OrganisationAdmin;
 
 use App\Mail\VerifyMail;
 
@@ -189,6 +190,15 @@ class RegisterController extends Controller
             'token' => str_random(40)
         ]);
  
+        // make user organisation admin if new organisation is created
+        if ( !isset( $data['already_with_org'] ) )
+        {
+            $orgAdmin = new OrganisationAdmin();
+            $orgAdmin->user_id = $user->id;
+            $orgAdmin->organisation_id = $organisation->id;
+            $orgAdmin->save();
+        }
+
         Mail::to($user->email)->send(new VerifyMail($user));
 
         return $user;
