@@ -35,6 +35,7 @@ class AccountController extends Controller
     public function index()
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
+
         $userPhone = Phone::where([
             ['entity_type', '=', 'user'],
             ['entity_id', '=', $currentUser->id]
@@ -46,8 +47,10 @@ class AccountController extends Controller
         ])->first();
 
         $states = State::all();
+
+        $phoneTypes = ObjectType::where('type', 'phone')->get();
         
-        return view('auth.shared.userAccount', compact('currentUser', 'userPhone', 'userAddress', 'states'));
+        return view('auth.shared.userAccount', compact('currentUser', 'userPhone', 'userAddress', 'states', 'phoneTypes'));
     }
 
     /**
@@ -58,15 +61,15 @@ class AccountController extends Controller
 
             //validate data from form
             $validator = Validator::make($request->all(),[          
-            'first_name'    => 'required|max:255',
-            'last_name'     => 'required|max:255',                         
-            'email'         => 'required|email|max:255',
-            'phone_number'  => 'required|max:10',
-            'street'        => 'nullable|max:255',
-            'number'        => 'nullable|max:255',
-            'city'          => 'nullable|max:255',
-            'zip_code'      => 'nullable|integer',
-            'state'         => 'nullable',
+            'first_name'        => 'required|max:255',
+            'last_name'         => 'required|max:255',                         
+            'email'             => 'required|email|max:255',
+            'phone_number'      => 'required|max:10',
+            'phone_number_type' => 'nullable',
+            'street'            => 'nullable|max:255',
+            'city'              => 'nullable|max:255',
+            'zip_code'          => 'nullable|integer',
+            'state'             => 'nullable',
 
             ]);
             
@@ -94,9 +97,19 @@ class AccountController extends Controller
                         ['entity_id', '=', $user->id]
                     ])->first();
 
-                    $user_phone->number = $request->phone_number;
-                    $user_phone->update(); 
-                    
+                    if ($user_phone){
+                        $user_phone->number = $request->phone_number;
+                        $user_phone->phone_type_id = $request->phone_number_type;
+                        $user_phone->update();
+                    } else {
+                        $user_phone = new Phone();
+                        $user_phone->entity_type = 'user';
+                        $user_phone->entity_id = $user->id;
+                        $user_phone->number = $request->phone_number;
+                        $user_phone->phone_type_id = $request->phone_number_type;
+                        $user_phone->save();
+                    }
+                                       
                     $address_type = ObjectType::where([
                         ['type', '=', 'address'],
                         ['value', '=', 'office']                        
@@ -115,7 +128,6 @@ class AccountController extends Controller
                     }
                         $user_address->address_type_id = $address_type->id;
                         $user_address->street = $request->street;
-                        $user_address->number = $request->number;
                         $user_address->state = $request->state;
                         $user_address->city = $request->city;
                         $user_address->zip_code = $request->zip_code;
