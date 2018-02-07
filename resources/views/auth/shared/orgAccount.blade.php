@@ -24,23 +24,50 @@
                         <div class="form-row">
                             <div id="sign_up_org_name_half_row" class="form-group col-md-6">
                                 <label for="org_name">Organization Name</label>
-                                <input type="text" class="form-control" id="org_name" maxlength="40" name="org_name" value="{{ old('org_name') }}">
+                                <input  type="text" class="form-control"
+                                        id="org_name" name="org_name"  maxlength="40" 
+                                        value="<?php
+                                                if (isset($organisation->name)):
+                                                echo $organisation->name;
+                                                endif;
+                                                ?>">
                             </div>
                             <div id="sign_up_org_code_half_row" class="form-group col-md-6">
                                 <label for="org_code">Organization Code</label>
-                                <input type="text" class="form-control" id="org_code" placeholder="" name="organization_code" value="{{ old('organization_code') }}">
+                                <input  type="text" class="form-control"
+                                        id="org_code" name="organization_code" placeholder="" 
+                                        value="<?php
+                                                if (isset($organisation->code)):
+                                                echo $organisation->code;
+                                                endif;
+                                                ?>">
                             </div>
                         </div>
                         <div id="sign_up_tax_id_row" class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="tax_id">Tax ID (EIN) - (9 digits)</label>
-                                <input type="text" class="form-control" id="tax_id" maxlength="10" name="tax_id" pattern="^\d{2}-\d{7}$" value="{{ old('tax_id') }}" placeholder="">
+                                <input  type="text" class="form-control"
+                                        id="tax_id" name="tax_id"
+                                        maxlength="10" pattern="^\d{2}-\d{7}$" placeholder=""
+                                        value="<?php
+                                                if (isset($organisation->tax_id)):
+                                                echo $organisation->tax_id;
+                                                endif;
+                                                ?>">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="org_services">Services offered</label>
-                                <input type="text" class="form-control" id="org_services" maxlength="50" required="" value="{{ old('org_services') }}" name="services" placeholder="">
+                                <input  type="text" class="form-control"
+                                        id="org_services" name="services"
+                                        maxlength="50" required=""  placeholder=""
+                                        value="<?php
+                                                if (isset($organisation->services)):
+                                                echo $organisation->services;
+                                                endif;
+                                                ?>">
                             </div>
                         </div>
+                        <!-- sutra! -->
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="">Office Hours</label>
@@ -68,27 +95,58 @@
                                 </div>
                                 <div class="invalid-feedback">More example invalid feedback text</div>
                             </div>
+                            <!-- ... -->
+
                             <div class="form-group col-md-6">
                                 <label for="org_website_url">Website URL</label>
-                                <input type="text" class="form-control" id="org_website_url" maxlength="25" required="" value="{{ old('org_website_url') }}" name="website_url" placeholder="">
+                                <input  type="text" class="form-control"
+                                        id="org_website_url" name="website_url" 
+                                        maxlength="25" required="" placeholder=""
+                                        value="<?php
+                                                if (isset($organisation->website)):
+                                                echo $organisation->website;
+                                                endif;
+                                                ?>">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="org_geo_service_area">Geographic Service Area</label>
-                                <input type="text" class="form-control" id="org_geo_service_area" maxlength="25" required="" value="{{ old('org_geo_service_area') }}" name="geo_service_area" placeholder="">
+                                <input  type="text" class="form-control"
+                                        id="org_geo_service_area" name="geo_service_area"
+                                        maxlength="25" required="" placeholder=""
+                                        value="<?php
+                                                if (isset($organisation->geographic_area_served)):
+                                                echo $organisation->geographic_area_served;
+                                                endif;
+                                                ?>">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="org_admin">Organization Admin</label>
-                                <input type="text" class="form-control" id="org_admin" maxlength="25" required="" value="{{ old('org_admin') }}" name="org_admin" placeholder="">
+                                <input  type="text" class="form-control"
+                                        id="org_admin" name="org_admin"
+                                        maxlength="25" required=""  placeholder=""
+                                        value="<?php
+                                                if (isset($organisationAdmin->email)):
+                                                echo $organisationAdmin->email;
+                                                endif;
+                                                ?>"
+                                        disabled>
                             </div>
                         </div>
+
                         <hr class="my-4">
+                        <!-- sutra! -->
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="contact_phone_num">Contact Phone Number</label>
-                                <input type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}\d{3}\d{4}$" placeholder="XXXXXXXXXX" required="" value="{{ old('contact_phone_number') }}">
+                                <input  type="phone" class="form-control"
+                                        id="contact_phone_num" name="contact_phone_number"
+                                        maxlength="10" pattern="^\d{3}\d{3}\d{4}$" placeholder="XXXXXXXXXX" 
+                                        value=""
+                                        required>
                             </div>
+
                             <div class="form-group col-md-6">
                                 <label for="inputEmail4">Email</label>
                                 <input type="email" maxlength="45" class="form-control" id="inputEmail4" name="email" placeholder="e.g. yourname@yourmail.com" required="" value="{{ old('email') }}">
