@@ -43,7 +43,17 @@ class MassMailer
 
     protected function _emailSender()
     {
-        
+        try
+        {
+            Mail::send('emails.welcome', [], function($message) use ($emails)
+            {    
+                $message->bcc($emails)->subject('This is test e-mail');    
+            });
+        } 
+        catch (Exception $e) 
+        {
+            // alternative action if sending emails fails
+        }
     }
 
 }
