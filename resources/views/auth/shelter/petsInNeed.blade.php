@@ -48,14 +48,12 @@
                                 <form>
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
-                                            {{--<label for="pet_qa">Description</label>--}}
                                             <textarea class="form-control" id="pet_qa" name="pet_qa" rows="1"></textarea>                                                                                                    </textarea>
                                             <div class="invalid-feedback">More example invalid feedback text</div>
                                             <input id="organisation_id" type="hidden" value="{{Auth::user()->organisation_id}}"/>
                                             <input id="pet_qa_id" type="hidden" value=""/>
                                         </div>
                                     </div>
-                                    {{--<a href="#" class="card-link float-right">Card link</a>--}}
                                     <div class="pet_qa_form_buttons_cont">
                                         <button id="send_pet_qa" type="button" class="btn btn-primary">Send</button>
                                         <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
@@ -63,17 +61,6 @@
                                 </form>
                             </div>
                         </div>
-                        {{--<div id="qa_template_card" class="qa_template_card card mb-2 d-none">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                </h5>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block"></h6> <span class="text-muted">-</span>
-                                <h6 class="card-subtitle mb-2 text-muted d-inline-block"></h6>
-                                <p class="card-text"></p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div>--}}
                         <div class="card mb-2">
                             <div class="card-body">
                                 <h5 class="card-title">Question 4 vestibulum tincidunt, lacus finibus ultrices dictum, quam massa dapibus ligula,
@@ -82,8 +69,6 @@
                                 <h6 class="card-subtitle mb-2 text-muted d-inline-block">Shelter 2</h6> <span class="text-muted">-</span>
                                 <h6 class="card-subtitle mb-2 text-muted d-inline-block">01/02/2018</h6>
                                 <p class="card-text">Morbi tempor augue nec nisi luctus commodo. Fusce a nisl lacus.</p>
-                                {{--<a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>--}}
                             </div>
                         </div>
                         <div class="card mb-2">
@@ -94,8 +79,6 @@
                                 <h6 class="card-subtitle mb-2 text-muted d-inline-block">Shelter 2</h6> <span class="text-muted">-</span>
                                 <h6 class="card-subtitle mb-2 text-muted d-inline-block">01/02/2018</h6>
                                 <p class="card-text">Morbi tempor augue nec nisi luctus commodo. Fusce a nisl lacus.</p>
-                                {{--<a href="#" class="card-link">Card link</a>--}}
-                                {{--<a href="#" class="card-link">Another link</a>--}}
                             </div>
                         </div>
                         <div class="card mb-2">
@@ -104,8 +87,6 @@
                                 <h6 class="card-subtitle mb-2 text-muted d-inline-block">Shelter 1</h6> <span class="text-muted">-</span>
                                 <h6 class="card-subtitle mb-2 text-muted d-inline-block">10/01/2018</h6>
                                 <p class="card-text">Fusce viverra aliquet tristique.</p>
-                                {{--<a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>--}}
                             </div>
                         </div>
                         <div class="card mb-2">
@@ -114,8 +95,6 @@
                                 <h6 class="card-subtitle mb-2 text-muted d-inline-block">Shelter 3</h6> <span class="text-muted">-</span>
                                 <h6 class="card-subtitle mb-2 text-muted d-inline-block">09/01/2018</h6>
                                 <p class="card-text">Suspendisse vitae aliquet lectus. Aenean ullamcorper commodo feugiat.</p>
-                                {{--<a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>--}}
                             </div>
                         </div>
                     </div>
@@ -128,18 +107,15 @@
                 </div>
             </div>
         </div>
-
-
-
         <div class="card-header">
             <i class="fa fa-heart"></i> Pets in Need</div>
         <div class="card-body">
-
+            <div class="paginate_top">
+                {{ $dataEntries->links() }}
+            </div>
             <div class="row">
                 <div class="col-3">
                     <div id="list-example" class="list-group">
-
-
                         <?php
                         /**
                          * generate left selection menu
@@ -174,9 +150,6 @@
                      * pagination for list
                      */
                     ?>
-                    <div class="paginate">
-                        {{ $dataEntries->links() }}
-                    </div>
                 </div>
                 <div class="col-9">
                     <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
@@ -581,8 +554,9 @@
                          * (code end)
                          */
                         ?>
-
-                        
+                    </div>
+                    <div class="paginate_bottom mt-4">
+                        {{ $dataEntries->links() }}
                     </div>
                 </div>
             </div>
@@ -591,30 +565,4 @@
         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
     </div>
 
-
-
-    {{--<div class="row">
-        <div class="col-lg-8">
-            <!-- Example Bar Chart Card-->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
-                <div class="card-body">
-                    <canvas id="myBarChart" width="100" height="50"></canvas>
-                </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <!-- Example Pie Chart Card-->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-pie-chart"></i> Pie Chart Example</div>
-                <div class="card-body">
-                    <canvas id="myPieChart" width="100%" height="100"></canvas>
-                </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-        </div>
-    </div>--}}
 @endsection

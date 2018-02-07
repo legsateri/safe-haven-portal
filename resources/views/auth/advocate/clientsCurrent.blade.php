@@ -95,9 +95,6 @@
                      * pagination for list
                      */
                     ?>
-                    <div class="paginate">
-                        {{ $dataEntries->links() }}
-                    </div>
                 </div>
                 <div class="col-9">
                     <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">

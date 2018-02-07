@@ -38,25 +38,14 @@
   </nav>
   <div class="content-wrapper">
     <div class="container-fluid">
-      <!-- Breadcrumbs-->
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="#">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item active">Charts</li>
-      </ol>
-      <!-- Area Chart Example-->
-
         @yield('content')
-
-
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
-          <small>Copyright © Your Website 2017</small>
+          <small>Copyright © The Safe Haven Network <?php echo date("Y"); ?></small>
         </div>
       </div>
     </footer>

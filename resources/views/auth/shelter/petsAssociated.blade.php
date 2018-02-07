@@ -15,7 +15,6 @@
                         </button>
                     </div>
                     <div class="modal-body">
-
                         <div class="container-fluid">
                             <div class="row mb-3 modal_body_text">
                                 Please select the reason for release. A release announcement will be sent out to the Advocate and Safe Haven volunteers.
@@ -60,7 +59,9 @@
         <div class="card-header">
             <i class="fa fa-home"></i> Currently Accepted Pets</div>
         <div class="card-body">
-
+            <div class="paginate_top">
+                {{ $dataEntries->links() }}
+            </div>
             <div class="row">
                 <div class="col-3">
                     <div id="list-example" class="list-group">
@@ -98,9 +99,6 @@
                      * pagination for list
                      */
                     ?>
-                    <div class="paginate">
-                        {{ $dataEntries->links() }}
-                    </div>
                 </div>
                 <div class="col-9">
                     <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
@@ -505,8 +503,9 @@
                          * (code end)
                          */
                         ?>
-
-
+                    </div>
+                    <div class="paginate_bottom mt-4">
+                        {{ $dataEntries->links() }}
                     </div>
                 </div>
             </div>
@@ -514,31 +513,4 @@
         </div>
         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
     </div>
-
-
-
-    {{--<div class="row">
-        <div class="col-lg-8">
-            <!-- Example Bar Chart Card-->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
-                <div class="card-body">
-                    <canvas id="myBarChart" width="100" height="50"></canvas>
-                </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <!-- Example Pie Chart Card-->
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fa fa-pie-chart"></i> Pie Chart Example</div>
-                <div class="card-body">
-                    <canvas id="myPieChart" width="100%" height="100"></canvas>
-                </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-            </div>
-        </div>
-    </div>--}}
 @endsection
