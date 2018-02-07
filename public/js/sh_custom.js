@@ -705,7 +705,7 @@ jQuery(document).ready(function() {
             $('#petsInNeedQAModal #pet_qa_id').val(pet_id);
             $('#petsInNeedQAModal #petsInNeedQAModalLabel span').html($(this).closest('a').find('h5').html());
 
-            var ajaxurl = '/application/new/ajax';
+            var ajaxurl = '/pet/get_thread/ajax';
             var token = $('[name="_token"]').val();
 
             var data = {
