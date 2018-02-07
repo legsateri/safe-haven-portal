@@ -159,16 +159,25 @@ class ClientsController extends Controller
                             ->get();
 
                 $emails = [];
-
+                
+                // create array with email lists
                 foreach( $shelterUsers as $shelterUser )
                 {
                     array_push($emails, $shelterUser->email);
                 }
 
-                Mail::send('emails.welcome', [], function($message) use ($emails)
-                {    
-                    $message->bcc($emails)->subject('This is test e-mail');    
-                });
+                // try sending emails
+                try
+                {
+                    Mail::send('emails.welcome', [], function($message) use ($emails)
+                    {    
+                        $message->bcc($emails)->subject('This is test e-mail');    
+                    });
+                } 
+                catch (Exception $e) 
+                {
+                    // alternative action if sending emails fails
+                }
 
                 return [
                     'success' => true
@@ -183,7 +192,9 @@ class ClientsController extends Controller
     }
 
 
-
+    /**
+     * release client ajax handler
+     */
     public function releaseClient(Request $request)
     {
         // validate data from request
