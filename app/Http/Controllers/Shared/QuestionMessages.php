@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Auth;
+use Validator;
+use DB;
+use App\ApplicationPet;
+use App\QuestionConversation;
+use App\QuestionConversationMessage;
 
 class QuestionMessages extends Controller
 {
@@ -23,12 +28,46 @@ class QuestionMessages extends Controller
     
     public function petListGetModal(Request $request)
     {
-        $html = view('auth.render.questionsPetListModal')->render();
-        
-        return $html;
+        // validate request data
+        $validator = Validator::make($request->all(), [
+            'pet_id' => 'required|integer|exists:application_pets,id',
+            'action' => 'required|in:pet_in_need_get_qa_thread'
+        ]);
 
-        // return [
-        //     'modal' => $html
-        // ];
-    }
+        if ( !$validator->fails() )
+        {
+            // check pet application id
+            $application_pet = ApplicationPet::where([
+                ['id', '=', $request->pet_id]
+            ])
+            ->first();
+
+            if ($application_pet)
+            {
+                // get conversation/messages collection
+                $conversations = DB::table('question_conversations')
+                                ->join('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+                                ->join('users', 'question_conversation_messages.sender_user_id', '=', 'users.id')
+                                ->join('organisations', 'users.organisation_id', '=', 'organisations.id')
+                                ->select(
+                                    'question_conversations.title as title',
+                                    'question_conversation_messages.message as message',
+                                    'question_conversation_messages.created_at as answer_date',
+                                    'organisations.name as organisation_name'
+                                )
+                                ->where([
+                                    ['question_conversations.pet_id', '=', $application_pet->pet_id]
+                                ])
+                                ->get();
+                // dd($conversations);
+                $html = view('auth.render.questionsPetListModal', ['conversations' => $conversations])->render();
+                return $html;
+            }
+
+
+        }
+        
+        return false;
+
+    } // end petListGetModal
 }

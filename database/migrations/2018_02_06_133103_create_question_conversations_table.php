@@ -18,7 +18,7 @@ class CreateQuestionConversationsTable extends Migration
             $table->integer('application_pet_id')->unsigned();
             $table->integer('pet_id')->unsigned();
             $table->integer('shelter_organisation_id')->unsigned();
-            $table->string('title');
+            $table->text('title');
             $table->timestamps();
 
             $table->foreign('application_pet_id')->references('id')->on('application_pets');
