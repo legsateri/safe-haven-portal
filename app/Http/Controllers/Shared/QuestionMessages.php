@@ -61,13 +61,18 @@ class QuestionMessages extends Controller
                                 ->get();
                 // dd($conversations);
                 $html = view('auth.render.questionsPetListModal', ['conversations' => $conversations])->render();
-                return $html;
+                return [
+                    'success' => true,
+                    'data' => $html
+                ];
             }
 
 
         }
         
-        return false;
+        return [
+            'success' => false
+        ];
 
     } // end petListGetModal
 }
