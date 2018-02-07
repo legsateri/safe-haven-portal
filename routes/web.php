@@ -124,6 +124,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 
 		// ajax for release pet
 		Route::post('/pet/release/ajax', 'Shelter\PetsController@releasePet');
+
+		// ajax request for oppening modal for Q&A
+		Route::post('/pet/get_thread/ajax', 'Shared\QuestionMessages@petListGetModal');
 		
 
 

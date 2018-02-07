@@ -41,6 +41,8 @@ class MassMailer
         return $emails;
     }
 
+    
+
     protected function _emailSender()
     {
         try
