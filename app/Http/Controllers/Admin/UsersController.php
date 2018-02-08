@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\ObjectType;
+use Validator;
+use App\Phone;
+use App\User;
 use DB;
 
 class UsersController extends Controller
@@ -87,9 +90,77 @@ class UsersController extends Controller
         return view('admin.users.user_add.add_user', compact('userTypes', 'organisations'));
     }
 
+    /**
+     * Submit add user page (form)
+     */
     public function addSubmit(Request $request)
     {
+        //validate data from form
+        $validator = Validator::make($request->all(),[
+            'first_name'        => 'required|string|max:25',
+            'last_name'         => 'required|string|max:25',                         
+            'user_type'         => 'exists:object_types,id',
+            'email'             => 'required|email|max:255|unique:users,email',
+            'phone'             => 'required|regex:/^\d{3}\d{3}\d{4}$/',
+            'password'          => 'required|string|min:6|max:40',
+            'repeat-password'   => 'required|same:password',
+            'organisation'      => 'exists:organisations,id'
+        ]);
+
+        if (!($validator->fails())){
+
+            //check if user type fits organisation type
+
+            $userType = ObjectType::where([
+                ['id', '=', $request->user_type],
+                ['type', '=', 'user']
+            ])->first();
+
+            $organisationType = ObjectType::where([
+                ['id', '=', $request->organisation],
+                ['type', '=', 'organisation']
+            ])->first();
+
+            if($userType->value == $organisationType->value) {
+                
+                //save user info
+                $user = new User();
+                $user->first_name = $request->first_name;
+                $user->last_name = $request->last_name;
+                $user->type_id = $request->user_type;
+                $user->organisation_id = $request->organisation;
+                $user->email = $request->email;
+                
+                //save password
+                $user->password = Hash::make($request->password);
+
+                $user->save();
+
+                //save user phone
+                $userPhoneType = ObjectType::where([
+                    ['type', '=', 'phone'],
+                    ['value', '=', 'office']                        
+                ])->first();
+
+                $userPhone = new Phone();
+                $userPhone->entity_type = 'user';
+                $userPhone->entity_id = $user->id;
+                $userPhone->number = $request->phone;
+                $userPhone->phone_type_id = $userPhoneType->id;
+                $userPhone->save();
+
+                return redirect()->back()->with('success', 'User account successfully created!');
+            } else {
+                return redirect()->back()->with('error', 'User type and Organisation type must match!');
+            }
+                        
+        }  
+
+        // invalid entries
+        $errors = $validator->errors();
+        return redirect()->back()->with('error', $errors->all());
         
-    }
+        
+    } 
 
 }
