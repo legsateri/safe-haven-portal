@@ -41,10 +41,10 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
 
 		// user pages
-		Route::get('/users/users-all', 'Admin\UsersController@index')->name('admin.users.users_all.list');
 		Route::get('/users/advocates', 'Admin\UsersController@advocates')->name('admin.users.advocates.list');
 		Route::get('/users/shelters', 'Admin\UsersController@shelters')->name('admin.users.shelters.list');
 		Route::get('/users/user-add', 'Admin\UsersController@add')->name('admin.users.user_add.list');
+		Route::post('/users/user-add', 'Admin\UsersController@addSubmit')->name('admin.users.user_add.submit');
 
 		// client pages
 		Route::get('/clients/clients-all', 'Admin\ClientsController@index')->name('admin.clients.clients_all.list');
