@@ -147,9 +147,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::post('/account/update/password', 'Shared\AccountController@updatePassword')->name('user.account.update.password');
 
 		// user Organization page
-		Route::get('/organization', 'Shared\OrganizationController@index')->name('user.organization.page');
+		Route::get('/organization', 'Shared\OrganizationController@index')->name('user.organisation.page');
 
 		//Update Organization info
-		Route::post('/organization/update/info', 'Shared\OrganizationController@updateInfo')->name('user.organization.update.info');
+		Route::post('/organization/update/info', 'Shared\OrganizationController@updateInfo')->name('user.organisation.update.info');
 
 	});
