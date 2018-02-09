@@ -41,10 +41,21 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
 
 		// user pages
-		Route::get('/users/users-all', 'Admin\UsersController@index')->name('admin.users.users_all.list');
 		Route::get('/users/advocates', 'Admin\UsersController@advocates')->name('admin.users.advocates.list');
 		Route::get('/users/shelters', 'Admin\UsersController@shelters')->name('admin.users.shelters.list');
 		Route::get('/users/user-add', 'Admin\UsersController@add')->name('admin.users.user_add.list');
+		Route::post('/users/user-add', 'Admin\UsersController@addSubmit')->name('admin.users.user_add.submit');
+
+		// edit user page
+		Route::get('/user/{id}/{slug}', 'Admin\UserEditController@editUserPage')->name('admin.user.edit.page');
+		// edit user form submits
+		Route::post('/user/{id}/{slug}/edit/general', 'Admin\UserEditController@submitGeneral')->name('admin.user.edit.submit.general');
+		Route::post('/user/{id}/{slug}/edit/contact', 'Admin\UserEditController@submitContact')->name('admin.user.edit.submit.contact');
+		Route::post('/user/{id}/{slug}/edit/password', 'Admin\UserEditController@submitPassword')->name('admin.user.edit.submit.password');
+		Route::post('/user/{id}/{slug}/edit/verified', 'Admin\UserEditController@submitVerified')->name('admin.user.edit.submit.verified');
+		Route::post('/user/{id}/{slug}/edit/ban', 'Admin\UserEditController@submitBan')->name('admin.user.edit.submit.ban');
+
+
 
 		// client pages
 		Route::get('/clients/clients-all', 'Admin\ClientsController@index')->name('admin.clients.clients_all.list');
@@ -147,9 +158,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::post('/account/update/password', 'Shared\AccountController@updatePassword')->name('user.account.update.password');
 
 		// user Organization page
-		Route::get('/organization', 'Shared\OrganizationController@index')->name('user.organization.page');
+		Route::get('/organization', 'Shared\OrganizationController@index')->name('user.organisation.page');
 
 		//Update Organization info
-		Route::post('/organization/update/info', 'Shared\OrganizationController@updateInfo')->name('user.organization.update.info');
+		Route::post('/organization/update/info', 'Shared\OrganizationController@updateInfo')->name('user.organisation.update.info');
 
 	});

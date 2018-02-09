@@ -11,6 +11,16 @@
 </div>
 @endif
 
+@if (session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session('error') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+
     <!-- My Account -->
     <div class="card mb-3">
         <div class="card-header"><i class="fa fa-user-o"></i> My Account</div>
@@ -30,7 +40,12 @@
                                 <label for="first-name">First name</label>
                                 <input  type="text" class="form-control"
                                         id="first-name" name="first_name"
-                                        placeholder="Enter first name" value="{{ $currentUser->first_name }}"
+                                        placeholder="Enter first name"
+                                        value="<?php
+                                                if (isset($currentUser->first_name)):
+                                                echo $currentUser->first_name;
+                                                endif;
+                                                ?>"
                                         required>
                             </div>
                                     
@@ -38,7 +53,12 @@
                                 <label for="last-name">Last name</label>
                                 <input  type="text" class="form-control"
                                         id="last-name" name="last_name"
-                                        placeholder="Enter last name" value="{{ $currentUser->last_name }}"
+                                        placeholder="Enter last name"
+                                        value="<?php
+                                                if (isset($currentUser->last_name)):
+                                                echo $currentUser->last_name;
+                                                endif;
+                                                ?>"
                                         required>
                             </div>
                         </div> 
@@ -48,7 +68,12 @@
                                 <label for="email">Email address</label>
                                 <input  type="email" class="form-control"
                                         id="email" name="email"
-                                        placeholder="email@example.com" value="{{ $currentUser->email }}">
+                                        placeholder="email@example.com"
+                                        value="<?php
+                                                if (isset($currentUser->email)):
+                                                echo $currentUser->email;
+                                                endif;
+                                                ?>">
                             </div>
                                         
                             <div class="col-md-4 mb-3">
@@ -81,13 +106,18 @@
                         </div>
                                 
                         <div class="form-row">
-                            <div class="col-md-12 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="street">Address</label>
                                 <input  type="text" class="form-control"
                                         id="street" name="street"
-                                        placeholder="Street"
-                                        value="{{ $userAddress['street'] }}">
+                                        placeholder="Enter your address"
+                                        value="<?php
+                                                if (isset($userAddress->street)):
+                                                echo $userAddress->street;
+                                                endif;
+                                                ?>">
                             </div>
+                            <div class="col-md-6 mb-3"></div>
                         </div>
 
                         <div class="form-row">
@@ -111,7 +141,11 @@
                                     <input  type="text" class="form-control"
                                             id="city" name="city"
                                             placeholder="City"
-                                            value="{{ $userAddress['city'] }}">
+                                            value="<?php
+                                                if (isset($userAddress->city)):
+                                                echo $userAddress->city;
+                                                endif;
+                                                ?>">
                             </div>
 
                             <div class="col-md-3 mb-3">
@@ -119,13 +153,17 @@
                                 <input  type="text" class="form-control"
                                         id="zip" name="zip_code"
                                         placeholder="Zip/Postal Code"
-                                        value="{{ $userAddress['zip_code'] }}">
+                                        value="<?php
+                                                if (isset($userAddress->zip_code)):
+                                                echo $userAddress->zip_code;
+                                                endif;
+                                                ?>">
                             </div>
                         </div>
                         <br>
 
                         <div class="form-row">
-                            <button class="btn btn-outline-primary" type="submit">Update</button>
+                            <button type="submit" class="sh_save_btn btn btn-outline-primary float-right">Save</button>
                         </div>
                     </div>
                 </div>
@@ -192,8 +230,8 @@
                         </div>  
                         <br>
 
-                        <div class="form-row">
-                            <button class="btn btn-outline-primary" type="submit">Update</button>
+                        <div class="form-row" >
+                            <button type="submit" class="sh_save_btn btn btn-outline-primary float-right">Save</button>
                         </div>
                     </div>
                 </div>

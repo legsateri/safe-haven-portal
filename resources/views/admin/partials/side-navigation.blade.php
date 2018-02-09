@@ -14,16 +14,13 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseUsers">
             <li>
-              <a href="/admin/users/users-all"><i class="fa fa-users" aria-hidden="true"></i> All Users</a>
+              <a href="{{ route('admin.users.advocates.list') }}"><i class="fa fa-balance-scale"></i> Advocates</a>
             </li>
             <li>
-              <a href="/admin/users/advocates"><i class="fa fa-balance-scale"></i> Advocates</a>
+              <a href="{{ route('admin.users.shelters.list') }}"><i class="fa fa-home"></i> Shelters</a>
             </li>
             <li>
-              <a href="/admin/users/shelters"><i class="fa fa-home"></i> Shelters</a>
-            </li>
-            <li>
-              <a href="/admin/users/user-add"><i class="fa fa-user-plus" aria-hidden="true"></i>
+              <a href="{{ route('admin.users.user_add.list') }}"><i class="fa fa-user-plus" aria-hidden="true"></i>
                  Add User</a>
             </li>
           </ul>
