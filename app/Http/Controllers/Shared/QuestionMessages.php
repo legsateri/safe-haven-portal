@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Validator;
 use DB;
+use App\Application;
 use App\ApplicationPet;
 use App\QuestionConversation;
 use App\QuestionConversationMessage;
@@ -75,4 +76,66 @@ class QuestionMessages extends Controller
         ];
 
     } // end petListGetModal
+
+
+    public function clientsListGetModal(Request $request)
+    {
+        
+        // validate request data
+        $validator = Validator::make($request->all(), [
+            'client_id' => 'required|integer|exists:applications,id',
+            'action' => 'required|in:current_client_get_qa_thread'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // check is current advocate organisation
+            // owner of client application
+            $application = Application::where([
+                ['id', '=', $request->client_id],
+                ['organisation_id', '=', Auth::user()->organisation_id]
+            ])
+            ->first();
+
+            if ($application)
+            {
+                $questions = DB::table('applications')
+                ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
+                ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+                ->leftJoin('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+                ->join('organisations', 'question_conversations.shelter_organisation_id', '=', 'organisations.id')
+                ->where([
+                    ['applications.organisation_id', '=', Auth::user()->organisation_id],
+                    ['applications.id', '=', $request->client_id]
+                ])
+                ->select([
+                    'question_conversations.id as id',
+                    'question_conversations.title as question',
+                    'question_conversations.created_at as question_time',
+                    'question_conversation_messages.message as answer',
+                    'question_conversation_messages.created_at as answer_time',
+                    'organisations.name as shelter_name'
+                ])
+                ->get();
+
+                $advocateOrganisation = DB::table('organisations')->where('id', Auth::user()->organisation_id)->select('name')->first();
+
+                // dd($questions);
+
+                $html = view('auth.render.questionsClientListModal', compact('questions', 'advocateOrganisation'))->render();
+                // return $html;
+                return [
+                    'success' => true,
+                    'data' => $html
+                ];
+
+            }
+
+        }
+        
+        return [
+            'success' => false
+        ];
+
+    } // end clientsListGetModal
 }
