@@ -46,6 +46,17 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/users/user-add', 'Admin\UsersController@add')->name('admin.users.user_add.list');
 		Route::post('/users/user-add', 'Admin\UsersController@addSubmit')->name('admin.users.user_add.submit');
 
+		// edit user page
+		Route::get('/user/{id}/{slug}', 'Admin\UserEditController@editUserPage')->name('admin.user.edit.page');
+		// edit user form submits
+		Route::post('/user/{id}/{slug}/edit/general', 'Admin\UserEditController@submitGeneral')->name('admin.user.edit.submit.general');
+		Route::post('/user/{id}/{slug}/edit/contact', 'Admin\UserEditController@submitContact')->name('admin.user.edit.submit.contact');
+		Route::post('/user/{id}/{slug}/edit/password', 'Admin\UserEditController@submitPassword')->name('admin.user.edit.submit.password');
+		Route::post('/user/{id}/{slug}/edit/verified', 'Admin\UserEditController@submitVerified')->name('admin.user.edit.submit.verified');
+		Route::post('/user/{id}/{slug}/edit/ban', 'Admin\UserEditController@submitBan')->name('admin.user.edit.submit.ban');
+
+
+
 		// client pages
 		Route::get('/clients/clients-all', 'Admin\ClientsController@index')->name('admin.clients.clients_all.list');
 		Route::get('/clients/client-add', 'Admin\ClientsController@add')->name('admin.clients.client_add.list');

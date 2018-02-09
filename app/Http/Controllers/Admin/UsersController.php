@@ -87,7 +87,7 @@ class UsersController extends Controller
 
         // dd($organisations);
         
-        return view('admin.users.user_add.add_user', compact('userTypes', 'organisations'));
+        return view('admin.users.user.add_user', compact('userTypes', 'organisations'));
     }
 
     /**

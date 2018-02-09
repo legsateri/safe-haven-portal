@@ -51,7 +51,7 @@
                                 No 
                             @endif
                             </td>
-                        <td><a href="">edit user</a></td>
+                        <td><a href="{{ route('admin.user.edit.page', ['id'=> $user->id, 'slug'=> $user->slug]) }}">edit user</a></td>
                     </tr>
                     <?php $counter++; ?>
                 @endforeach
