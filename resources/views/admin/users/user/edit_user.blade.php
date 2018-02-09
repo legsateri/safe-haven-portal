@@ -45,7 +45,7 @@
                 <input  type="text" class="form-control"
                         id="first_name" name="first_name" 
                         maxlength="40" 
-                        value="{{ old('first_name') }}">
+                        value="{{ $user->first_name }}">
             </div>
 
             <div class="form-group col-md-4">
@@ -53,7 +53,7 @@
                 <input  type="text" class="form-control"
                         id="last_name" name="last_name" 
                         maxlength="40" 
-                        value="{{ old('last_name') }}">
+                        value="{{ $user->last_name }}">
             </div>
         </div>
 
@@ -64,7 +64,7 @@
                 <input  type="email" class="form-control"
                         id="email" name="email" 
                         maxlength="40" 
-                        value="{{ old('email') }}">
+                        value="{{ $user->email }}">
             </div>
         </div>
         <div class="form row">
@@ -73,7 +73,11 @@
                 <select name="organisation" id="organsation">
                     <option value="">Select organisation</option>
                     @foreach( $organisations as $organisation )
-                        <option value="{{ $organisation->id }}">
+                        <option value="{{ $organisation->id }}"
+                            @if ( $user->organisation_id == $organisation->id )
+                                selected
+                            @endif
+                        >
                             {{ $organisation->name }}
                         </option>
                     @endforeach
@@ -108,7 +112,13 @@
                 <select name="organisation" id="organsation">
                     <option value="">Select</option>
                     @foreach( $phoneTypes as $phoneType )
-                        <option value="{{ $phoneType->id }}">
+                        <option value="{{ $phoneType->id }}"
+                        @if ( isset($userPhone->phone_type_id) )
+                            @if ( $userPhone->phone_type_id == $phoneType->id )
+                                selected
+                            @endif
+                        @endif
+                        >
                             {{ $phoneType->label }}
                         </option>
                     @endforeach
@@ -122,7 +132,10 @@
                 <input  type="text" class="form-control"
                         id="phone" name="phone" 
                         maxlength="40" 
-                        value="">
+                        @if ( isset($userPhone->number) )
+                            value="{{ $userPhone->number }}"
+                        @endif
+                        >
             </div>
         </div>
 
@@ -132,7 +145,13 @@
                 <select name="organisation" id="organsation">
                     <option value="">Select</option>
                     @foreach( $addressTypes as $addressType )
-                        <option value="{{ $addressType->id }}">
+                        <option value="{{ $addressType->id }}"
+                            @if( isset($userAddress->type_id) )
+                                @if( $userAddress->type_id == $addressType->id )
+                                    selected
+                                @endif
+                            @endif
+                        >
                             {{ $addressType->label }}
                         </option>
                     @endforeach
@@ -140,7 +159,62 @@
             </div>
         </div>
 
-        
+        <div class="form row">
+            <div class="form-group col-md-5 offset-md-2">
+                <label for="phone">City</label>
+                <input  type="text" class="form-control"
+                        id="city" name="city" 
+                        maxlength="40"
+                        @if( isset($userAddress->city) )
+                            value="{{ $userAddress->city }}"
+                        @endif
+                        >
+            </div>
+            <div class="form-group col-md-3">
+                <label for="phone">Zip</label>
+                <input  type="text" class="form-control"
+                        id="zip_code" name="zip_code" 
+                        maxlength="40" 
+                        @if( isset($userAddress->zip_code) )
+                            value="{{ $userAddress->zip_code }}"
+                        @endif
+                        >
+            </div>
+        </div>
+
+        <div class="form row">
+            <div class="form-group col-md-5 offset-md-2">
+                <label for="phone">Street</label>
+                <input  type="text" class="form-control"
+                        id="street" name="street" 
+                        maxlength="100" 
+                        @if( isset($userAddress->street) )
+                            value="{{ $userAddress->street }}"
+                        @endif
+                        >
+            </div>
+        </div>
+
+        <div class="form row">
+            <div class="form-group col-md-4 offset-md-2">
+                <label for="organisation">State</label>
+                <select name="organisation" id="organsation">
+                    <option value="">Select</option>
+                    @foreach( $states as $state )
+                        <option value="{{ $state->id }}"
+                        @if( isset($userAddress->state) )
+                            @if( $userAddress->state == $state->name )
+                                selected
+                            @endif
+                        @endif
+                        >
+                            {{ $state->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
 
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">

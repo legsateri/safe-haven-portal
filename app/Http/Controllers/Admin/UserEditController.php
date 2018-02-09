@@ -9,6 +9,7 @@ use DB;
 use App\Phone;
 use App\Address;
 use App\ObjectType;
+use App\State;
 
 class UserEditController extends Controller
 {
@@ -71,8 +72,10 @@ class UserEditController extends Controller
             ['type', '=', 'address']
         ])->get();
 
+        $states = State::all();
+
         return  view('admin.users.user.edit_user', 
-                compact('user', 'userPhone', 'userAddress', 'organisations', 'phoneTypes', 'addressTypes'));
+                compact('user', 'userPhone', 'userAddress', 'organisations', 'phoneTypes', 'addressTypes', 'states'));
     }
 
 
