@@ -606,14 +606,180 @@ jQuery(document).ready(function() {
             });
         });
 
-
-
         $('#currentClientsModal').on('hidden.bs.modal', function (e) {
             $('#currentClientsModal .modal-body .modal_body_text').html('Please select the reason for release. A release announcement' +
                                                                 'will be sent out to the appropriate Shelter and Safe Haven volunteers.');
             $('#currentClientsModal .modal-body .modal_body_inputs').css('display','block');
             $('#confirm_release_client').css('display','inline-block').removeClass('disabled');;
-        })
+        });
+
+        $('[id*="list-button-qa-item-"]').click(function() {
+
+            //$('#currentClientsQAModal textarea').val('');
+
+            var client_id = $(this).attr('id');
+            client_id = client_id.replace("list-button-qa-item-", "");
+
+            $('#currentClientsQAModal #client_qa_id').val(client_id);
+            $('#currentClientsQAModal #currentClientsQAModalLabel span').html($(this).closest('a').find('h5').html());
+
+            //var ajaxurl = '/client/get_thread/ajax';
+            var ajaxurl = '/client/get_thread/ajax';
+            var token = $('[name="_token"]').val();
+
+            var data = {
+                action: 'current_client_get_qa_thread',
+                client_id: client_id,
+                _token: token
+            }
+
+            jQuery.ajax({
+                method: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function (data, status, response) {
+                    var obj = response.responseJSON;
+
+                    if ( obj.success == true ) {
+
+                        //$('#petsInNeedQAModal .modal-body').html('');
+                        console.log('super cool');
+                        /*$('#petsInNeedQAModal .modal-body').append(obj.data);*/
+
+                        $('#currentClientsQAModal').modal('show');
+
+                    } else {
+
+                        $('#currentClientsQAModal .spinner_cont').css('display','none');
+                        modal_button_clicked.removeClass('disabled');
+
+                        $('#currentClientsQAModal .invalid-feedback').html(obj.message);
+                        $('#currentClientsQAModal .invalid-feedback').fadeIn("slow", function () {});
+                    }
+                },
+                error: function (xml, status, error) {
+                },
+                complete: function (xml, status) {
+                }
+            });
+        });
+
+
+        $('.client_qa_edit').click(function() {
+
+           console.log('edit clicked');
+            var container = $(this).closest('.card-body');
+            var answer_content = container.find('.card-text').html();
+            console.log('answer_content = ' + answer_content);
+
+            container.find('.invalid-feedback').css('display','none');
+            $(this).fadeOut("fast", function () {});
+            container.find('.card-text').fadeOut("fast", function () {
+                container.find('textarea').val(answer_content);
+                container.find('.client_qa_edit_cancel').css('display','block');
+                container.find('form').fadeIn("fast", function () {});
+            });
+        });
+
+        $('.client_qa_edit_cancel').click(function() {
+
+            var container = $(this).closest('.card-body');
+            //var answer_content = container.find('.card-text').html();
+            container.find('form').fadeOut("fast", function () {
+                container.find('.card-text').fadeIn("fast", function () {});
+                container.find('.client_qa_edit').fadeIn("fast", function () {});
+            });
+        });
+
+        $('.send_client_qa_answer').click(function() {
+
+            var modal_button_clicked = $(this);
+            modal_button_clicked.next('.spinner_cont').css('display','inline');
+            modal_button_clicked.addClass('disabled');
+
+            var invalid_feedback_container = modal_button_clicked.closest('form').find('.invalid-feedback');
+            invalid_feedback_container.fadeOut("fast", function () {});
+
+            var this_form = modal_button_clicked.closest('form');
+
+            var client_current_qa_answer = this_form.find('textarea').val();
+
+            var client_current_qa_id = this_form.find('.qa_id').val();
+
+            var ajaxurl = '/client/send_answer/ajax';
+            var token = $('[name="_token"]').val();
+
+           // var organisation_id = $('#petsInNeedQAModal #organisation_id').val();
+
+            var data = {
+                action: 'current_client_answer_post',
+                client_current_qa_id: client_current_qa_id,
+                client_current_qa_answer: client_current_qa_answer,
+                _token: token
+            }
+
+            jQuery.ajax({
+                method: "POST",
+                url: ajaxurl,
+                data: data,
+                success: function (data, status, response) {
+
+                    var obj = response.responseJSON;
+
+                    if ( obj.success == true ) {
+
+                        console.log('super cool');
+
+                        modal_button_clicked.next('.spinner_cont').css('display','none');
+                        modal_button_clicked.removeClass('disabled');
+
+
+                        /*var pet_qa_form = '<div class="qa_template_card card mb-2 d-none">\n' +
+                            '                            <div class="card-body">\n' +
+                            '                                <h5 class="card-title">\n' +
+                            '                                </h5>\n' +
+                            '                                <h6 class="card-subtitle shelter_name mb-2 text-muted d-inline-block"></h6> <span class="text-muted">-</span>\n' +
+                            '                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">today</h6>\n' +
+                            '                                <p class="card-text">Not answered yet</p>\n' +
+                            '                            </div>\n' +
+                            '                        </div>';*/
+
+
+                        var container = modal_button_clicked.closest('.card-body');
+                        var answer_content = container.find('textarea').val();
+                        container.find('.card-text').html(answer_content);
+                        this_form.find('textarea').val('');
+                        container.find('form').fadeOut("fast", function () {
+                            container.find('.card-text').fadeIn("fast", function () {});
+                            container.find('.client_qa_edit').fadeIn("fast", function () {});
+                        });
+
+                        /*$( ".pet_qa_form" ).after( pet_qa_form );
+                        var pet_posted_question = $( ".pet_qa_form" ).next('.qa_template_card');
+
+                        pet_posted_question.find('.card-title').html(pet_in_need_question);
+                        pet_posted_question.find('.shelter_name').html($('.pet_qa_form').find('.shelter_name').html());
+                        pet_posted_question.removeClass('d-none');*/
+
+                    } else {
+
+                        modal_button_clicked.next('.spinner_cont').css('display','none');
+                        modal_button_clicked.removeClass('disabled');
+
+                        //var invalid_feedback_container = modal_button_clicked.closest('form').find('.invalid-feedback');
+                        invalid_feedback_container.html(obj.data.message);
+                        invalid_feedback_container.fadeIn("slow", function () {});
+
+                        //$('#petsInNeedQAModal .invalid-feedback').html(obj.data.message);
+                        //$('#petsInNeedQAModal .invalid-feedback').fadeIn("slow", function () {});
+                    }
+                },
+                error: function (xml, status, error) {
+                },
+                complete: function (xml, status) {
+                }
+            });
+        });
 
     }
 
@@ -723,6 +889,10 @@ jQuery(document).ready(function() {
 
                     if ( obj.success == true ) {
 
+                        //$('#petsInNeedQAModal .modal-body').html('');
+
+                        $('#petsInNeedQAModal .modal-body').append(obj.data);
+
                         $('#petsInNeedQAModal').modal('show');
 
                     } else {
@@ -752,7 +922,7 @@ jQuery(document).ready(function() {
 
             var pet_in_need_qa_pet_id = $('#petsInNeedQAModal #pet_qa_id').val();
 
-            var ajaxurl = '/application/new/ajax';
+            var ajaxurl = '/pet/send_question/ajax';
             var token = $('[name="_token"]').val();
 
             var organisation_id = $('#petsInNeedQAModal #organisation_id').val();
@@ -786,8 +956,6 @@ jQuery(document).ready(function() {
                              '                                <h6 class="card-subtitle shelter_name mb-2 text-muted d-inline-block"></h6> <span class="text-muted">-</span>\n' +
                              '                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">today</h6>\n' +
                              '                                <p class="card-text">Not answered yet</p>\n' +
-                             '                                <a href="#" class="card-link">Card link</a>\n' +
-                             '                                <a href="#" class="card-link">Another link</a>\n' +
                              '                            </div>\n' +
                              '                        </div>';
 

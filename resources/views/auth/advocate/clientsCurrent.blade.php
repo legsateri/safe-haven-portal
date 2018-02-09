@@ -50,6 +50,131 @@
             </div>
         </div>
 
+        <!-- Modal Q&A-->
+        <div class="modal fade" id="currentClientsQAModal" tabindex="-1" role="dialog" aria-labelledby="currentClientsQAModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="currentClientsQAModalLabel"><span></span> - Questions and Answers </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- NOTE to Milos - type 1 template - not answered yet - starts -->
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Nino Shelter 1</h6> <span class="text-muted">-</span>
+                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Feb/07/2018</h6>
+                                <h5 class="card-title">nJMJd Fo8s4q27uz7Y mXVW1wAcWaVJyoTC?</h5>
+                                <p class="card-text"></p>
+                                <form>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <textarea class="form-control" name="client_qa" rows="1" placeholder="Not answered yet"></textarea>                                                                                                    </textarea>
+                                            <div class="invalid-feedback">More example invalid feedback text</div>
+                                            {{--<input id="organisation_id" type="hidden" value="{{Auth::user()->organisation_id}}"/>--}}
+                                            <input class="qa_id" type="hidden" value="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="pet_qa_form_buttons_cont">
+                                        <button type="button" style="display: none;" class="btn btn-primary mr-2 client_qa_edit_cancel">Cancel</button>
+                                        <button type="button" class="send_client_qa_answer btn btn-primary">Send</button>
+                                        <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
+                                    </div>
+                                </form>
+                                <button type="button" style="display: none;" class="client_qa_edit btn btn-primary float-right">Edit Answer</button>
+                            </div>
+                        </div>
+                        <!-- NOTE to Milos - type 1 template - not answered yet - ends -->
+                        <!-- NOTE to Milos - type 1 template - not answered yet - just a copy - starts -->
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Nino Shelter 2</h6> <span class="text-muted">-</span>
+                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Feb/05/2018</h6>
+                                <h5 class="card-title">nJMJd Fo8s4q27uz7Y mXVW1wAcWaVJyoTC?</h5>
+                                <p class="card-text"></p>
+                                <form>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <textarea class="form-control" name="client_qa" rows="1" placeholder="Not answered yet"></textarea>                                                                                                    </textarea>
+                                            <div class="invalid-feedback">More example invalid feedback text</div>
+                                            {{--<input id="organisation_id" type="hidden" value="{{Auth::user()->organisation_id}}"/>--}}
+                                            <input class="qa_id" type="hidden" value="2"/>
+                                        </div>
+                                    </div>
+                                    <div class="client_qa_form_buttons_cont">
+                                        <button type="button" style="display: none;" class="btn btn-primary mr-2 client_qa_edit_cancel">Cancel</button>
+                                        <button type="button" class="send_client_qa_answer btn btn-primary">Send</button>
+                                        <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
+                                    </div>
+                                </form>
+                                <button type="button" style="display: none;" class="client_qa_edit btn btn-primary float-right">Edit Answer</button>
+                            </div>
+                        </div>
+                        <!-- NOTE to Milos - type 1 template - not answered yet - just a copy - ends -->
+                        <!-- NOTE to Milos - type 2 template - already answered - starts -->
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Nino Shelter 2</h6> <span class="text-muted">-</span>
+                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Feb/04/2018</h6>
+                                <h5 class="card-title">nJMJd Fo8s4q27uz7Y mXVW1wAcWaVJyoTC?</h5>
+                                <p class="card-text">GS5bY2mY i8UIfxLS7A 3WQOvOCElF08esu</p>
+                                <form style="display: none;">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <textarea class="form-control" name="client_qa" rows="1" placeholder="Not answered yet"></textarea>                                                                                                    </textarea>
+                                            <div class="invalid-feedback">More example invalid feedback text</div>
+                                            {{--<input id="organisation_id" type="hidden" value="{{Auth::user()->organisation_id}}"/>--}}
+                                            <input class="qa_id" type="hidden" value="3"/>
+                                        </div>
+                                    </div>
+                                    <div class="client_qa_form_buttons_cont">
+                                        <button type="button" class="btn btn-primary mr-2 client_qa_edit_cancel">Cancel</button>
+                                        <button type="button" class="send_client_qa_answer btn btn-primary">Send</button>
+                                        <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
+                                    </div>
+                                </form>
+                                <button type="button" class="client_qa_edit btn btn-primary float-right">Edit Answer</button>
+                            </div>
+                        </div>
+                        <!-- NOTE to Milos - type 2 template - already answered - ends -->
+                        <!-- NOTE to Milos - type 2 template - already answered - just a copy - starts -->
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Nino Shelter 1</h6> <span class="text-muted">-</span>
+                                <h6 class="card-subtitle mb-2 text-muted d-inline-block">Feb/03/2018</h6>
+                                <h5 class="card-title">nJMJd Fo8s4q27uz7Y mXVW1wAcWaVJyoTC?</h5>
+                                <p class="card-text">GS5bY2mY i8UIfxLS7A 3WQOvOCElF08esu</p>
+                                <form style="display: none;">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <textarea class="form-control" name="client_qa" rows="1" placeholder="Not answered yet"></textarea>                                                                                                    </textarea>
+                                            <div class="invalid-feedback">More example invalid feedback text</div>
+                                            {{--<input id="organisation_id" type="hidden" value="{{Auth::user()->organisation_id}}"/>--}}
+                                            <input class="qa_id" type="hidden" value="4"/>
+                                        </div>
+                                    </div>
+                                    <div class="client_qa_form_buttons_cont">
+                                        <button type="button" class="btn btn-primary mr-2 client_qa_edit_cancel">Cancel</button>
+                                        <button type="button" class="send_client_qa_answer btn btn-primary">Send</button>
+                                        <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
+                                    </div>
+                                </form>
+                                <button type="button" class="client_qa_edit btn btn-primary float-right">Edit Answer</button>
+                            </div>
+                        </div>
+                        <!-- NOTE to Milos - type 2 template - already answered - just a copy - ends -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        {{--<button id="confirm_accept_pet_qa" type="button" class="btn btn-primary">Send</button>--}}
+                        <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
+                        <input type="hidden" value=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="card-header">
             <i class="fa fa-users" aria-hidden="true"></i> Current Clients</div>
@@ -75,10 +200,12 @@
                                 </div>
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
                                     <p class="mb-1">{{ $dataEntry->zip_code }}</p>
+                                    <small>{{ $dataEntry->city }}</small>
                                     <span class="badge badge-primary badge-pill">{{ $dataEntry->pets_count }}</span>
                                 </div>
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
-                                    <small>{{ $dataEntry->city }}</small>
+                                     {{--TODO Milos check blade vars--}}
+                                    <button id="list-button-qa-item-{{$dataEntry->application_id}}" type="button" class="btn-sm btn-primary">Q & A</button>
                                     <button id="list-button-item-{{ $dataEntry->application_id }}" type="button" class="btn-sm btn-primary">Release Client</button>
                                 </div>
                             </a>
@@ -644,7 +771,6 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
     </div>
 
 @endsection

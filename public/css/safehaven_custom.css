@@ -131,6 +131,7 @@ body .custom-select {
     height: 26px;
 }
 
+.client_qa_form_buttons_cont,
 .pet_qa_form_buttons_cont {
     display: -ms-flexbox;
     display: flex;

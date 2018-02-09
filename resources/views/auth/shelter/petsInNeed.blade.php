@@ -95,7 +95,6 @@
                                 </div>
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
                                     <p class="mb-1"><span class="mr-1">{{$dataEntry->zip_code}}</span><small>{{$dataEntry->city}}</small></p>
-                                    <!-- <span class="badge badge-primary badge-pill">1</span> -->
                                 </div>
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
                                     <button id="list-button-qa-item-{{$dataEntry->id}}" type="button" class="btn-sm btn-primary">Q & A</button>
@@ -527,7 +526,6 @@
             </div>
 
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
     </div>
 
 @endsection
