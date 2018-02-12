@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="inner_pages_html">
 
 <head>
   <meta charset="utf-8">
@@ -18,10 +18,11 @@
     <link href="{{url('/')}}/css/safehaven_custom.css" rel="stylesheet">
 </head>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<?php /*<body class="fixed-nav sticky-footer bg-dark" id="page-top">*/ ?>
+<body class="sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html"><img src="{{url('/')}}/img/SHN-side-logo-2-ce9fc412115910e6ac7df874d95a98c9.png" class="logo"/></a>
+    <a class="navbar-brand" href="{{ route('user.dashboard') }}"><img src="{{url('/')}}/img/SHN-side-logo-2-ce9fc412115910e6ac7df874d95a98c9.png" class="logo logo_mobile"/></a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -32,7 +33,7 @@
         @elseif( $currentUser->type == "advocate" )
             @include('partials.side-navigation-advocate')
         @endif
-        @include('partials.user-main-navigation')
+        {{--@include('partials.user-main-navigation')--}}
 
     </div>
   </nav>

@@ -1,4 +1,10 @@
 <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item nav_item_logo_cont">
+         <a class="navbar-brand pl-3" href="{{ route('user.dashboard') }}">
+             <img src="{{url('/')}}/img/SHN-side-logo-2-ce9fc412115910e6ac7df874d95a98c9.png" class="logo nav-link-text"/>
+             <img src="{{url('/')}}/img/SHN-side-logo-3-small.png" class="logo logo_collapsed_visible"/>
+         </a>
+        </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
           <a class="nav-link" href="{{ route('user.dashboard') }}">
             <i class="fa fa-fw fa-dashboard"></i>
@@ -43,6 +49,10 @@
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                 <span class="nav-link-text"> Contact SHN</span>
             </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="modal" data-target="#logOutModal">
+                <i class="fa fa-fw fa-sign-out"></i><span class="nav-link-text">Logout</span></a>
         </li>
       </ul>
       <ul class="navbar-nav sidenav-toggler">
