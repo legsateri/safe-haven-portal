@@ -365,39 +365,39 @@ div[class*="spinner_form_"] {
 
 /******* Borders for breakpoints visibility start **********/
 /*
-!*Extra small devices (portrait phones, less than 576px)*!
+!*!*Extra small devices (portrait phones, less than 576px)*!*!
 @media (max-width: 575.99px) {
 
 }
 
 @media (min-width: 320px) and (max-width: 575.99px) {
-    main {
+    .content-wrapper {
         border: 1px solid orange;
     }
 }
 
- !*Small devices (landscape phones, 576px and up)*!
+!* !*Small devices (landscape phones, 576px and up)*!*!
 @media (min-width: 576px) and (max-width: 767.99px) {
-    main {
+    .content-wrapper {
         border: 1px solid green;
     }
 }
 
- !*Medium devices (tablets, 768px and up)*!
+!* !*Medium devices (tablets, 768px and up)*!*!
 @media (min-width: 768px) and (max-width: 991.99px) {
-    main {
+    .content-wrapper {
         border: 1px solid blue;
     }
 }
 
- !*Large devices (desktops, 992px and up)*!
+!* !*Large devices (desktops, 992px and up)*!*!
 @media (min-width: 992px) and (max-width: 1199.99px) {
-    main {
+    .content-wrapper {
         border: 1px solid red;
     }
 }
 
- !*Extra large devices (large desktops, 1200px and up)*!
+!* !*Extra large devices (large desktops, 1200px and up)*!*!
 @media (min-width: 1200px) {
 
 }*/

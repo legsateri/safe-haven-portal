@@ -665,7 +665,7 @@ jQuery(document).ready(function() {
         });
 
 
-        $('.client_qa_edit').click(function() {
+        $('#currentClientsQAModal').on('click', '.client_qa_edit',function() {
 
            console.log('edit clicked');
             var container = $(this).closest('.card-body');
@@ -681,7 +681,7 @@ jQuery(document).ready(function() {
             });
         });
 
-        $('.client_qa_edit_cancel').click(function() {
+        $('#currentClientsQAModal').on('click', '.client_qa_edit_cancel',function() {
 
             var container = $(this).closest('.card-body');
             //var answer_content = container.find('.card-text').html();
@@ -691,7 +691,7 @@ jQuery(document).ready(function() {
             });
         });
 
-        $('.send_client_qa_answer').click(function() {
+        $('#currentClientsQAModal').on('click', '.send_client_qa_answer',function() {
 
             var modal_button_clicked = $(this);
             modal_button_clicked.next('.spinner_cont').css('display','inline');
