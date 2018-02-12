@@ -172,7 +172,7 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         {{--<button id="confirm_accept_pet_qa" type="button" class="btn btn-primary">Send</button>--}}
                         <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
-                        <input type="hidden" value=""/>
+                        <input id="client_qa_id" type="hidden" value=""/>
                     </div>
                 </div>
             </div>
@@ -181,8 +181,51 @@
         <div class="card-header">
             <i class="fa fa-users" aria-hidden="true"></i> Current Clients</div>
         <div class="card-body">
-            <div class="paginate_top">
-                {{ $dataEntries->links() }}
+            <div class="row">
+                {{--<div class="form-group col-md-2">
+                    <label for="phone_number_type">Type</label>
+                    <div class="input-group mb-3 invalid_message_correction">
+                        <select class="custom-select" name="phone_number_type" id="phone_number_type">
+                            <option value="" selected>Choose...</option>
+                            --}}{{--@foreach( $phoneTypes as $phoneType )
+                                <option value="{{$phoneType->value}}"
+                                        @if ($dataEntry->phone_type_id == $phoneType->id )
+                                        selected
+                                        @endif
+                                >{{$phoneType->label}}</option>
+                            @endforeach--}}{{--
+                            <option value="pet_type">pet_type</option>
+                            <option value="unanswered">unanswered</option>
+                            <option value="weight">weight</option>
+                        </select>
+                    </div>
+                </div>--}}
+                <div class="col-6">
+                    <div class="paginate_top">
+                        {{ $dataEntries->links() }}
+                    </div>
+                </div>
+                <div class="col-6">
+                    <form class="form-inline float-right">
+                        <div class="form-group">
+                            <label for="inputPassword6">Filter by: </label>
+                            {{--<input type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">--}}
+                            <select class="custom-select" name="phone_number_type" id="phone_number_type">
+                                <option value="" selected>Choose...</option>
+                                {{--@foreach( $phoneTypes as $phoneType )
+                                    <option value="{{$phoneType->value}}"
+                                            @if ($dataEntry->phone_type_id == $phoneType->id )
+                                            selected
+                                            @endif
+                                    >{{$phoneType->label}}</option>
+                                @endforeach--}}
+                                <option value="pet_type">pet_type</option>
+                                <option value="unanswered">unanswered</option>
+                                <option value="weight">weight</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="row">
                 <div class="col-3">
@@ -203,11 +246,13 @@
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
                                     <p class="mb-1">{{ $dataEntry->zip_code }}</p>
                                     <small>{{ $dataEntry->city }}</small>
-                                    <span class="badge badge-primary badge-pill">{{ $dataEntry->pets_count }}</span>
+                                    {{--<span class="badge badge-primary badge-pill">{{ $dataEntry->pets_count }}</span>--}}
                                 </div>
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
                                      {{--TODO Milos check blade vars--}}
-                                    <button id="list-button-qa-item-{{$dataEntry->application_id}}" type="button" class="btn-sm btn-primary">Q & A</button>
+                                    <button id="list-button-qa-item-{{$dataEntry->application_id}}" type="button" class="btn-sm btn-primary">
+                                        Q & A <span class="badge badge-light ml-1">4</span><span class="sr-only">unanswered messages</span>
+                                    </button>
                                     <button id="list-button-item-{{ $dataEntry->application_id }}" type="button" class="btn-sm btn-primary">Release Client</button>
                                 </div>
                             </a>
