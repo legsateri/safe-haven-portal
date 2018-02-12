@@ -27,6 +27,10 @@ class QuestionMessages extends Controller
     }
     
     
+    /**
+     * ajax handler
+     * response when shelter open Q&A modal
+     */
     public function petListGetModal(Request $request)
     {
         // validate request data
@@ -78,6 +82,10 @@ class QuestionMessages extends Controller
     } // end petListGetModal
 
 
+    /**
+     * ajax handler
+     * response when advocate open Q&A modal
+     */
     public function clientsListGetModal(Request $request)
     {
         
@@ -138,4 +146,51 @@ class QuestionMessages extends Controller
         ];
 
     } // end clientsListGetModal
+
+
+    /**
+     * ajax handler
+     * response when shelter post question
+     * in Q&A modal
+     */
+    public function sendQuestion(Request $request)
+    {
+        // validate request data
+        $validator = Validator::make($request->all(), [
+            'pet_id' => 'required|integer|exists:application_pets,id',
+            'organisation_id' => 'required|integer|exists:organisations,id|in:' . Auth::user()->organisation_id,
+            'action' => 'required|in:pet_in_need_question_post',
+            'pet_in_need_qa' => 'required|string|max:1000'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // find related pet application
+            $application_pet = ApplicationPet::where([
+                ['id', '=', $request->pet_id]
+            ])->first();
+
+            // if pet application is found, post question
+            if ($application_pet)
+            {
+                // post new question
+                $question = new QuestionConversation();
+                $question->application_pet_id = $application_pet->id;
+                $question->pet_id = $application_pet->pet_id;
+                $question->shelter_organisation_id = Auth::user()->organisation_id;
+                $question->title = $request->pet_in_need_qa;
+                $question->save();
+
+                return [
+                    'success' => true
+                ];
+            }
+
+        }
+
+        return [
+            'success' => false
+        ];
+
+    } // end sendQuestion
 }

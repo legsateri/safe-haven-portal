@@ -61,6 +61,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                    <?php /*
                         <!-- NOTE to Milos - type 1 template - not answered yet - starts -->
                         <div class="card mb-2">
                             <div class="card-body">
@@ -165,6 +166,7 @@
                             </div>
                         </div>
                         <!-- NOTE to Milos - type 2 template - already answered - just a copy - ends -->
+                        */ ?>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
