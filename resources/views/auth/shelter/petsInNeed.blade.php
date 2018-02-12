@@ -42,7 +42,7 @@
                         <div class="card mb-2 pet_qa_form">
                             <div class="card-body">
                                 <h5 class="card-title">Post a questions to  pet's advocate.</h5>
-                                <h6 class="card-subtitle shelter_name mb-2 text-muted d-inline-block">Shelter 2{{--TODO Milos - pass shelter name to blade here--}}</h6>
+                                <h6 class="card-subtitle shelter_name mb-2 text-muted d-inline-block">{{ $currentShelter->name }}</h6>
                                 <span class="text-muted">-</span>
                                 <h6 class="card-subtitle mb-2 text-muted d-inline-block">today</h6>
                                 <form>
@@ -61,6 +61,8 @@
                                 </form>
                             </div>
                         </div>
+
+                        <div class="modal-body-inner-cont"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

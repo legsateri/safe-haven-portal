@@ -880,9 +880,9 @@ jQuery(document).ready(function() {
 
                     if ( obj.success == true ) {
 
-                        //$('#petsInNeedQAModal .modal-body').html('');
+                        $('#petsInNeedQAModal .modal-body-inner-cont').html('');
 
-                        $('#petsInNeedQAModal .modal-body').append(obj.data);
+                        $('#petsInNeedQAModal .modal-body-inner-cont').append(obj.data);
 
                         $('#petsInNeedQAModal').modal('show');
 

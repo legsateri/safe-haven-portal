@@ -14,6 +14,7 @@ use App\Code\UserObject;
 use App\Application;
 use App\ApplicationPet;
 use App\Status;
+use App\Organisation;
 
 class PetsController extends Controller
 {
@@ -63,6 +64,8 @@ class PetsController extends Controller
 
         $petTypes = ObjectType::where('type', 'pet')->get();
 
+        $currentShelter = Organisation::where('id', Auth::user()->organisation_id)->first();
+
         $dataEntries = DB::table('application_pets')
                     ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
                     ->join('applications', 'application_pets.application_id', '=', 'applications.id')
@@ -76,7 +79,7 @@ class PetsController extends Controller
                     ->paginate(4);
 
         return  view('auth.shelter.petsInNeed', 
-                compact('currentUser', 'dataEntries', 'petTypes'));
+                compact('currentUser', 'dataEntries', 'petTypes', 'currentShelter'));
     }
 
 
