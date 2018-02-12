@@ -88,11 +88,22 @@ class ApplicationsController extends Controller
         }
 
         // for testing
-        if ( $request->action == "release_pet_confirmed" ) {
+        if ( $request->action == "current_client_get_qa_thread" ) {
             $ajax_response['success'] =true;
             if ( $ajax_response['success'] != true )
             {
-                $ajax_response['data']['message'] = 'Can not send an empty message.';
+                $ajax_response['data']['message'] = 'Not good value ';
+            }
+            return $ajax_response;
+        }
+
+        // for testing
+        if ( $request->action == "current_client_answer_post" ) {
+            $ajax_response['success'] =true;
+            $ajax_response['data']['message'] = '3';
+            if ( $ajax_response['success'] != true )
+            {
+                $ajax_response['data']['message'] = '32';
             }
             return $ajax_response;
         }
