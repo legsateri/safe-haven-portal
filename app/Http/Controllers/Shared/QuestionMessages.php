@@ -195,4 +195,72 @@ class QuestionMessages extends Controller
         ];
 
     } // end sendQuestion
+
+
+
+    /**
+     * ajax handler
+     * response when advocate post answer tp question
+     * in Q&A modal
+     */
+    public function clientSendAnswer(Request $request)
+    {
+        // validate request data
+        $validator = Validator::make($request->all(), [
+            'client_current_qa_id' => 'required|integer|exists:question_conversations,id',
+            'action' => 'required|in:current_client_answer_post',
+            'client_current_qa_answer' => 'required|string|max:1000'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // check is application made by this advocate organisation
+            $petApplication = DB::table('application_pets')
+            ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+            ->where([
+                ['organisation_id', '=', Auth::user()->organisation_id],
+                ['question_conversations.id', '=', $request->client_current_qa_id]
+            ])
+            ->select([
+                'application_pets.id as application_pet_id',
+                'question_conversations.id as conversation_id',
+                'question_conversations.shelter_organisation_id as shelter_organisation_id'
+            ])
+            ->first();
+
+            if ( isset( $petApplication->conversation_id ) )
+            {
+                // check is there answer on this question already
+                $answer = QuestionConversationMessage::where('conversation_id', $petApplication->conversation_id)->first();
+
+                if (isset($answer->id))
+                {
+                    // update existing answer
+                    $answer->sender_user_id = Auth::user()->id;
+                    $answer->message = $request->client_current_qa_answer;
+                    $answer->update();
+                }
+                else
+                {
+                    // insert new answer
+                    $answer = new QuestionConversationMessage();
+                    $answer->conversation_id = $petApplication->conversation_id;
+                    $answer->sender_user_id = Auth::user()->id;
+                    $answer->message = $request->client_current_qa_answer;
+                    $answer->save();
+                }
+
+                return [
+                    'success' => true
+                ];
+
+            }
+            
+        }
+
+        return [
+            'success' => false
+        ];
+
+    } // end clientSendAnswer
 }

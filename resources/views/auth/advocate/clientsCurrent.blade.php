@@ -248,7 +248,10 @@
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
                                      {{--TODO Milos check blade vars--}}
                                     <button id="list-button-qa-item-{{$dataEntry->application_id}}" type="button" class="btn-sm btn-primary">
-                                        Q & A <span class="badge badge-light ml-1">4</span><span class="sr-only">unanswered messages</span>
+                                        Q & A 
+                                        @if( $qa_badge[$dataEntry->id] > 0 )
+                                            <span class="badge badge-light ml-1">{{$qa_badge[$dataEntry->id]}}</span><span class="sr-only">unanswered messages</span>
+                                        @endif
                                     </button>
                                     <button id="list-button-item-{{ $dataEntry->application_id }}" type="button" class="btn-sm btn-primary">Release Client</button>
                                 </div>
