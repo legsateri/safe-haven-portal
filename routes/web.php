@@ -123,6 +123,8 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		// ajax request for oppening modal for Q&A
 		Route::post('/client/get_thread/ajax', 'Shared\QuestionMessages@clientsListGetModal');
 
+		// ajax request sending answer to question
+		Route::post('/client/send_answer/ajax', 'Shared\QuestionMessages@clientSendAnswer');
 
 		/**
 		 *  shelter user routes

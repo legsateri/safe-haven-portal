@@ -65,7 +65,7 @@ class ClientsController extends Controller
 
         // get Q&A unanswered questions number
         $qa_badge = [];
-        // $temp = [];
+
         foreach( $dataEntries as $dataEntry )
         {
             $qa_badge[$dataEntry->id] = 0;
