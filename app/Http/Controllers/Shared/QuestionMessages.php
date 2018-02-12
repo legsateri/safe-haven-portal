@@ -12,6 +12,7 @@ use App\Application;
 use App\ApplicationPet;
 use App\QuestionConversation;
 use App\QuestionConversationMessage;
+use App\SeenMessage;
 
 class QuestionMessages extends Controller
 {
@@ -57,6 +58,8 @@ class QuestionMessages extends Controller
                                 ->select(
                                     'question_conversations.title as title',
                                     'question_conversations.created_at as question_created_at',
+                                    'question_conversations.shelter_organisation_id as shelter_id',
+                                    'question_conversation_messages.id as message_id',
                                     'question_conversation_messages.message as message',
                                     'question_conversation_messages.created_at as answer_date',
                                     'organisations.name as organisation_name'
@@ -66,7 +69,30 @@ class QuestionMessages extends Controller
                                 ])
                                 ->orderBy('question_conversations.created_at', 'desc')
                                 ->get();
-                // dd($conversations);
+                
+                // set messagee as seen by current user for messages posted
+                // by shelter where he belongs
+                foreach( $conversations as $conversation )
+                {
+                    if ( $conversation->shelter_id == Auth::user()->organisation_id && $conversation->message_id != null )
+                    {
+                        $checkSeen = SeenMessage::where([
+                            ['user_id', '=', Auth::user()->id],
+                            ['conversation_message_id', '=', $conversation->message_id]
+                        ])->first();
+
+                        if(!isset($checkSeen->id))
+                        {
+                            $checkSeen = new SeenMessage();
+                            $checkSeen->user_id = Auth::user()->id;
+                            $checkSeen->conversation_message_id = $conversation->message_id;
+                            $checkSeen->save();
+                        }
+                    }
+                    
+                }
+
+                // return view
                 $html = view('auth.render.questionsPetListModal', ['conversations' => $conversations])->render();
                 return [
                     'success' => true,
@@ -239,6 +265,15 @@ class QuestionMessages extends Controller
                     $answer->sender_user_id = Auth::user()->id;
                     $answer->message = $request->client_current_qa_answer;
                     $answer->update();
+
+                    // remove seen status for this question
+                    $seens = SeenMessage::where([
+                        ['conversation_message_id', '=', $answer->id]
+                    ])->get();
+                    foreach( $seens as $seen )
+                    {
+                        $seen->delete();
+                    }
                 }
                 else
                 {

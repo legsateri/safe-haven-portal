@@ -78,8 +78,39 @@ class PetsController extends Controller
                     ])
                     ->paginate(4);
 
+        // get number of messages that are not seen by current user
+        // and where question is posted by user's shelter
+        $qa_badge = [];
+        foreach( $dataEntries as $dataEntry )
+        {
+            $qa_badge[$dataEntry->id] = 0;
+
+            $checkNewMessages = DB::table('question_conversations')
+            ->leftJoin('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+            ->leftJoin('seen_messages', 'question_conversation_messages.id', '=', 'seen_messages.conversation_message_id')
+            ->where([
+                ['question_conversations.application_pet_id', '=', $dataEntry->id],
+                ['question_conversation_messages.message', '<>', null]
+                // ['question_conversations.shelter_organisation_id', '=', Auth::user()->organisation_id],
+                // ['seen_messages.user_id', '=', Auth::user()->id]
+            ])
+            ->select([
+                'seen_messages.id as seen_messages_id',
+                'seen_messages.user_id as seen_messages_user_id'
+            ])
+            ->get();
+
+            foreach( $checkNewMessages as $checkNewMessage )
+            {
+                if ( $checkNewMessage->seen_messages_id == null )
+                {
+                    $qa_badge[$dataEntry->id] = $qa_badge[$dataEntry->id] + 1;
+                }
+            }
+        }
+
         return  view('auth.shelter.petsInNeed', 
-                compact('currentUser', 'dataEntries', 'petTypes', 'currentShelter'));
+                compact('currentUser', 'dataEntries', 'petTypes', 'currentShelter', 'qa_badge'));
     }
 
 

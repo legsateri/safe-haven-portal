@@ -139,7 +139,12 @@
                                     <p class="mb-1"><span class="mr-1">{{$dataEntry->zip_code}}</span><small>{{$dataEntry->city}}</small></p>
                                 </div>
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
-                                    <button id="list-button-qa-item-{{$dataEntry->id}}" type="button" class="btn-sm btn-primary">Q & A</button>
+                                    <button id="list-button-qa-item-{{$dataEntry->id}}" type="button" class="btn-sm btn-primary">
+                                        Q & A
+                                        @if( $qa_badge[$dataEntry->id] > 0 )
+                                            <span class="badge badge-light ml-1">{{$qa_badge[$dataEntry->id]}}</span><span class="sr-only">unanswered messages</span>
+                                        @endif
+                                    </button>
                                     <button id="list-button-item-{{$dataEntry->id}}" type="button" class="btn-sm btn-primary">Accept Pet</button>
                                 </div>
                             </a>

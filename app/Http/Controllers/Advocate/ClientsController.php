@@ -71,7 +71,7 @@ class ClientsController extends Controller
             $qa_badge[$dataEntry->id] = 0;
             
             $questions = DB::table('application_pets')
-            ->leftJoin('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+            ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
             ->leftJoin('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
             ->where([
                 ['application_pets.application_id', '=', $dataEntry->id]
