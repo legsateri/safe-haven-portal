@@ -47,6 +47,7 @@ class ClientsController extends Controller
             'text_message' => 'Text message'
         ];
 
+        // get client list
         $dataEntries = DB::table('applications')
                     ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
                     ->join('clients', 'applications.client_id', '=', 'clients.id')
@@ -62,8 +63,32 @@ class ClientsController extends Controller
                     ])
                     ->paginate(4);
 
+        // get Q&A unanswered questions number
+        $qa_badge = [];
+        // $temp = [];
+        foreach( $dataEntries as $dataEntry )
+        {
+            $qa_badge[$dataEntry->id] = 0;
+            
+            $questions = DB::table('application_pets')
+            ->leftJoin('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+            ->leftJoin('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+            ->where([
+                ['application_pets.application_id', '=', $dataEntry->id]
+            ])
+            ->get();
+                
+            foreach( $questions as $question )
+            {
+                if( $question->message == null )
+                {
+                    $qa_badge[$dataEntry->id] =  $qa_badge[$dataEntry->id] + 1;
+                }
+            }
+        }
+
         return  view('auth.advocate.clientsCurrent', 
-                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods'));
+                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'qa_badge'));
     }
 
     /**
