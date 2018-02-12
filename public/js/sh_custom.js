@@ -642,9 +642,9 @@ jQuery(document).ready(function() {
 
                     if ( obj.success == true ) {
 
-                        //$('#petsInNeedQAModal .modal-body').html('');
+                        $('#currentClientsQAModal .modal-body').html('');
                         console.log('super cool');
-                        /*$('#petsInNeedQAModal .modal-body').append(obj.data);*/
+                        $('#currentClientsQAModal .modal-body').append(obj.data);
 
                         $('#currentClientsQAModal').modal('show');
 

@@ -120,6 +120,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		// ajax for release client
 		Route::post('/client/release/ajax', 'Advocate\ClientsController@releaseClient');
 
+		// ajax request for oppening modal for Q&A
+		Route::post('/client/get_thread/ajax', 'Shared\QuestionMessages@clientsListGetModal');
+
 
 		/**
 		 *  shelter user routes
@@ -138,6 +141,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 
 		// ajax request for oppening modal for Q&A
 		Route::post('/pet/get_thread/ajax', 'Shared\QuestionMessages@petListGetModal');
+
+		// ajax request when shelter ask question in Q&A modal
+		Route::post('/pet/send_question/ajax', 'Shared\QuestionMessages@sendQuestion');
 		
 
 
