@@ -59,8 +59,48 @@
         <div class="card-header">
             <i class="fa fa-home"></i> Currently Accepted Pets</div>
         <div class="card-body">
-            <div class="paginate_top">
-                {{ $dataEntries->links() }}
+            <div class="row">
+                <div class="col-md-5 col-sm-12 order-sm-2 order-2 order-md-1">
+                    <div class="paginate_top">
+                        {{ $dataEntries->links() }}
+                    </div>
+                </div>
+                <div class="col-md-7 col-sm-12 order-sm-1 order-1 order-md-2 mb-2">
+                    <form class="form-inline float-right">
+                        <div class="form-group mr-2">
+                            <label class="mr-2" for="order_by_select_type">Order by</label>
+                            <select class="custom-select" name="order_by_select" id="order_by_select_type">
+                                <option value="latest" selected>Latest</option>
+                                {{--@foreach( $phoneTypes as $phoneType )
+                                    <option value="{{$phoneType->value}}"
+                                            @if ($dataEntry->phone_type_id == $phoneType->id )
+                                            selected
+                                            @endif
+                                    >{{$phoneType->label}}</option>
+                                @endforeach--}}
+                                <option value="oldest">Oldest</option>
+                            </select>
+                        </div>
+                        <div class="form-group mr-2">
+                            <label for="filter_select_type"></label>
+                            <select class="custom-select" name="filter_select" id="filter_select_type">
+                                <option value="display_all" selected>Display All</option>
+                                {{--@foreach( $phoneTypes as $phoneType )
+                                    <option value="{{$phoneType->value}}"
+                                            @if ($dataEntry->phone_type_id == $phoneType->id )
+                                            selected
+                                            @endif
+                                    >{{$phoneType->label}}</option>
+                                @endforeach--}}
+                                <option value="answered">Answered</option>
+                                <option value="unanswered">Unanswered</option>
+                                <option value="pet_type">Pet type</option>
+                            </select>
+                        </div>
+                        <input id="page_type" type="hidden" value=""/>
+                        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
             </div>
             <div class="row">
                 <div class="col-3">

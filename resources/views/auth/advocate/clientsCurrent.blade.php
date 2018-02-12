@@ -182,36 +182,17 @@
             <i class="fa fa-users" aria-hidden="true"></i> Current Clients</div>
         <div class="card-body">
             <div class="row">
-                {{--<div class="form-group col-md-2">
-                    <label for="phone_number_type">Type</label>
-                    <div class="input-group mb-3 invalid_message_correction">
-                        <select class="custom-select" name="phone_number_type" id="phone_number_type">
-                            <option value="" selected>Choose...</option>
-                            --}}{{--@foreach( $phoneTypes as $phoneType )
-                                <option value="{{$phoneType->value}}"
-                                        @if ($dataEntry->phone_type_id == $phoneType->id )
-                                        selected
-                                        @endif
-                                >{{$phoneType->label}}</option>
-                            @endforeach--}}{{--
-                            <option value="pet_type">pet_type</option>
-                            <option value="unanswered">unanswered</option>
-                            <option value="weight">weight</option>
-                        </select>
-                    </div>
-                </div>--}}
-                <div class="col-6">
+                <div class="col-md-5 col-sm-12 order-sm-2 order-2 order-md-1">
                     <div class="paginate_top">
                         {{ $dataEntries->links() }}
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-md-7 col-sm-12 order-sm-1 order-1 order-md-2 mb-2">
                     <form class="form-inline float-right">
-                        <div class="form-group">
-                            <label for="inputPassword6">Filter by: </label>
-                            {{--<input type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">--}}
-                            <select class="custom-select" name="phone_number_type" id="phone_number_type">
-                                <option value="" selected>Choose...</option>
+                        <div class="form-group mr-2">
+                            <label class="mr-2" for="order_by_select_type">Order by</label>
+                            <select class="custom-select" name="order_by_select" id="order_by_select_type">
+                                <option value="latest" selected>Latest</option>
                                 {{--@foreach( $phoneTypes as $phoneType )
                                     <option value="{{$phoneType->value}}"
                                             @if ($dataEntry->phone_type_id == $phoneType->id )
@@ -219,11 +200,27 @@
                                             @endif
                                     >{{$phoneType->label}}</option>
                                 @endforeach--}}
-                                <option value="pet_type">pet_type</option>
-                                <option value="unanswered">unanswered</option>
-                                <option value="weight">weight</option>
+                                <option value="oldest">Oldest</option>
                             </select>
                         </div>
+                        <div class="form-group mr-2">
+                            <label for="filter_select_type"></label>
+                            <select class="custom-select" name="filter_select" id="filter_select_type">
+                                <option value="display_all" selected>Display All</option>
+                                {{--@foreach( $phoneTypes as $phoneType )
+                                    <option value="{{$phoneType->value}}"
+                                            @if ($dataEntry->phone_type_id == $phoneType->id )
+                                            selected
+                                            @endif
+                                    >{{$phoneType->label}}</option>
+                                @endforeach--}}
+                                <option value="answered">Answered</option>
+                                <option value="unanswered">Unanswered</option>
+                                <option value="pet_type">Pet type</option>
+                            </select>
+                        </div>
+                        <input id="page_type" type="hidden" value=""/>
+                        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i></button>
                     </form>
                 </div>
             </div>
