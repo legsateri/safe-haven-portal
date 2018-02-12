@@ -4,10 +4,35 @@ html {
     background-size: cover;
 }
 
+/*html.inner_pages_html {
+    background-image: none;
+    background-color: #343A40;
+}
+
+#mainNav {
+    background-color: transparent !important;
+}
+
+.logo_collapsed_visible {
+    display: none;
+}
+
+.sidenav-toggled .logo_collapsed_visible {
+    display: block;
+}
+
+.logo.logo_collapsed_visible {
+    height: 22px;
+}*/
+
 body,
 .jumbotron {
     background-color: transparent
 }
+
+/*body.sticky-footer .content-wrapper {
+    min-height: calc(100vh - 56px);
+}*/
 
 #logoA {
     display: inline-block;
@@ -347,6 +372,68 @@ div[class*="spinner_form_"] {
 
 }
 
+@media (max-width: 991.99px) {
+
+    .content-wrapper {
+        padding-top: 5rem;
+    }
+
+    .nav_item_logo_cont {
+        display: none;
+    }
+
+    .logo,
+    .logo_collapsed_visible {
+        display: none;
+    }
+
+    .logo_mobile {
+        display: block;
+    }
+
+}
+
+@media (min-width: 992px) {
+
+    html.inner_pages_html {
+        background-image: none;
+        background-color: #343A40;
+    }
+
+    #mainNav {
+        background-color: transparent !important;
+    }
+
+    .logo_collapsed_visible {
+        display: none;
+    }
+
+    .sidenav-toggled .logo_collapsed_visible {
+        display: block;
+    }
+
+    .logo.logo_collapsed_visible {
+        height: 22px;
+    }
+
+    .logo_mobile {
+        display: none;
+    }
+
+    body.sticky-footer .content-wrapper {
+        min-height: calc(100vh - 56px);
+    }
+
+    #mainNav .navbar-collapse .navbar-sidenav {
+        margin-top: 10px;
+    }
+
+    #mainNav.fixed-top .navbar-sidenav {
+        height: calc(100vh - 66px);
+    }
+
+}
+
 /*Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) and (max-width: 1199.99px) {
 
@@ -365,7 +452,6 @@ div[class*="spinner_form_"] {
 
 /******* Borders for breakpoints visibility start **********/
 /*
-!*!*Extra small devices (portrait phones, less than 576px)*!*!
 @media (max-width: 575.99px) {
 
 }
@@ -376,28 +462,24 @@ div[class*="spinner_form_"] {
     }
 }
 
-!* !*Small devices (landscape phones, 576px and up)*!*!
 @media (min-width: 576px) and (max-width: 767.99px) {
     .content-wrapper {
         border: 1px solid green;
     }
 }
 
-!* !*Medium devices (tablets, 768px and up)*!*!
 @media (min-width: 768px) and (max-width: 991.99px) {
     .content-wrapper {
         border: 1px solid blue;
     }
 }
 
-!* !*Large devices (desktops, 992px and up)*!*!
 @media (min-width: 992px) and (max-width: 1199.99px) {
     .content-wrapper {
         border: 1px solid red;
     }
 }
 
-!* !*Extra large devices (large desktops, 1200px and up)*!*!
 @media (min-width: 1200px) {
 
 }*/
