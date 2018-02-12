@@ -51,11 +51,12 @@ class QuestionMessages extends Controller
             {
                 // get conversation/messages collection
                 $conversations = DB::table('question_conversations')
-                                ->join('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
-                                ->join('users', 'question_conversation_messages.sender_user_id', '=', 'users.id')
-                                ->join('organisations', 'users.organisation_id', '=', 'organisations.id')
+                                ->leftJoin('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+                                ->leftJoin('users', 'question_conversation_messages.sender_user_id', '=', 'users.id')
+                                ->leftJoin('organisations', 'users.organisation_id', '=', 'organisations.id')
                                 ->select(
                                     'question_conversations.title as title',
+                                    'question_conversations.created_at as question_created_at',
                                     'question_conversation_messages.message as message',
                                     'question_conversation_messages.created_at as answer_date',
                                     'organisations.name as organisation_name'
@@ -63,6 +64,7 @@ class QuestionMessages extends Controller
                                 ->where([
                                     ['question_conversations.pet_id', '=', $application_pet->pet_id]
                                 ])
+                                ->orderBy('question_conversations.created_at', 'desc')
                                 ->get();
                 // dd($conversations);
                 $html = view('auth.render.questionsPetListModal', ['conversations' => $conversations])->render();
