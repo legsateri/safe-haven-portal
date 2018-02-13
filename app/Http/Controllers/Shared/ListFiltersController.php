@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Validator;
+use Auth;
 
 use App\Code\TempObject;
 
@@ -22,12 +23,18 @@ class ListFiltersController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * valid filter names
+     */
     protected $_validFilterNames = [
         'clients_in_need',
         'current_clients'
     ];
 
 
+    /**
+     * submit request for applying new filter rule
+     */
     public function submit($uenc, Request $request)
     {
         // validate filter name from request
@@ -39,6 +46,9 @@ class ListFiltersController extends Controller
                 {
                     case 'clients_in_need':
                         $this->_clientsInNeedFilter($request);
+                        break;
+                    case 'current_clients':
+                        $this->_currentClientsFilter($request);
                         break;
 
                 } // end switch
@@ -53,6 +63,10 @@ class ListFiltersController extends Controller
     } // end submit
 
 
+    /**
+     * handle update filter rules
+     * for clients in need list
+     */
     protected function _clientsInNeedFilter($request)
     {
         // validate request data
@@ -63,10 +77,42 @@ class ListFiltersController extends Controller
 
         if ( !$validator->fails() )
         {
-            // save filter in temp data for current user
+            // save filter rules in temp data
+            $temp = TempObject::get(Auth::user()->id, 'list-filters');
+            $temp['clients_in_need'] = [
+                'order_by' => $request->order_by,
+                'filter_by_answered' => $request->filter_by_answered
+            ];
+            TempObject::set(Auth::user()->id, 'list-filters', $temp);
         } 
 
     } // end _clientsInNeedFilter
+
+
+    /**
+     * handle update filter rules
+     * for current clients list
+     */
+    protected function _currentClientsFilter($request)
+    {
+        // validate request data
+        $validator = Validator::make($request->all(), [
+            'order_by' => 'required|in:asc,desc',
+            'filter_by_answered' => 'required|in:all,answered,unanswered'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // save filter rules in temp data
+            $temp = TempObject::get(Auth::user()->id, 'list-filters');
+            $temp['current_clients'] = [
+                'order_by' => $request->order_by,
+                'filter_by_answered' => $request->filter_by_answered
+            ];
+            TempObject::set(Auth::user()->id, 'list-filters', $temp);
+        } 
+
+    } // end _currentClientsFilter
 
 
 
