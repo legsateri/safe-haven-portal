@@ -120,8 +120,8 @@
                     </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-3">
+            <div class="row main_cont">
+                <div class="col-xl-3 col-lg-4 col-md-4 col-5">
                     <div id="list-example" class="list-group">
                         <?php
                         /**
@@ -138,7 +138,7 @@
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
                                     <p class="mb-1"><span class="mr-1">{{$dataEntry->zip_code}}</span><small>{{$dataEntry->city}}</small></p>
                                 </div>
-                                <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
+                                <div class="justify-content-between d-flex city_pet_number_cont mt-3">
                                     <button id="list-button-qa-item-{{$dataEntry->id}}" type="button" class="btn-sm btn-primary">
                                         Q & A
                                         @if( $qa_badge[$dataEntry->id] > 0 )
@@ -162,7 +162,7 @@
                      */
                     ?>
                 </div>
-                <div class="col-9">
+                <div class="col-xl-9 col-lg-8 col-md-8 col-7">
                     <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
                         <?php
                         /**

@@ -48,7 +48,7 @@
                      * listing filters
                      * (start)
                      */
-                    ?>
+                    ?> 
                     <form   class="form-inline float-right"
                             action="{{ route('list-filters.submit', ['uenc' => base64_encode( route( Route::current()->getName() ) )]) }}"
                             method="post">
@@ -59,18 +59,20 @@
                             <select class="custom-select" 
                                     name="order_by" 
                                     id="order_by_select_type">
-                                <option value="desc" selected>Latest</option>
-                                <option value="asc">Oldest</option>
-                            </select>
-                        </div>
-                        <div class="form-group mr-2">
-                            <label for="filter_by_answered"></label>
-                            <select class="custom-select" 
-                                    name="filter_by_answered" 
-                                    id="filter_by_answered">
-                                <option value="all" selected>Display All</option>
-                                <option value="answered">Answered</option>
-                                <option value="unanswered">Unanswered</option>
+                                <option value="desc"
+                                        @if( isset( $filter_rules['order_by'] ) )
+                                            @if ( $filter_rules['order_by'] == 'desc' )
+                                                selected
+                                            @endif
+                                        @endif
+                                >Latest</option>
+                                <option value="asc"
+                                        @if( isset( $filter_rules['order_by'] ) )
+                                            @if ( $filter_rules['order_by'] == 'asc' )
+                                                selected
+                                            @endif
+                                        @endif
+                                >Oldest</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i></button>
@@ -83,8 +85,8 @@
                     ?>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-3">
+            <div class="row main_cont">
+                <div class="col-xl-3 col-lg-4 col-md-4 col-5">
                     <div id="list-example" class="list-group">
                         <?php
                         /**
@@ -101,9 +103,9 @@
                                 </div>
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
                                     <p class="mb-1">{{ $dataEntry->zip_code }}</p>
-                                    <span class="badge badge-primary badge-pill">{{ $dataEntry->pets_count }}</span>
+                                    <?php /*<span class="badge badge-primary badge-pill">{{ $dataEntry->pets_count }}</span>*/ ?>
                                 </div>
-                                <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
+                                <div class="justify-content-between d-flex city_pet_number_cont mt-3">
                                     <small>{{ $dataEntry->city }}</small>
                                     <button id="list-button-item-{{ $dataEntry->application_id }}" type="button" class="btn-sm btn-primary">Accept Client</button>
                                 </div>
@@ -122,7 +124,7 @@
                      */
                     ?>
                 </div>
-                <div class="col-9">
+                <div class="col-xl-9 col-lg-8 col-md-8 col-7">
                     <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
                         <?php
                         /**
