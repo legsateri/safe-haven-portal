@@ -79,8 +79,7 @@ class ListFiltersController extends Controller
             // save filter rules in temp data
             $temp = TempObject::get(Auth::user()->id, 'list-filters');
             $temp['clients_in_need'] = [
-                'order_by' => $request->order_by,
-                'filter_by_answered' => $request->filter_by_answered
+                'order_by' => $request->order_by
             ];
             TempObject::set(Auth::user()->id, 'list-filters', $temp);
         } 
