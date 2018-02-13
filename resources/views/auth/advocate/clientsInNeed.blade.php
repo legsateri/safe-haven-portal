@@ -75,34 +75,6 @@
                                 >Oldest</option>
                             </select>
                         </div>
-                        <div class="form-group mr-2">
-                            <label for="filter_by_answered"></label>
-                            <select class="custom-select" 
-                                    name="filter_by_answered" 
-                                    id="filter_by_answered">
-                                <option value="all"
-                                        @if( isset( $filter_rules['filter_by_answered'] ) )
-                                            @if ( $filter_rules['filter_by_answered'] == 'all' )
-                                                selected
-                                            @endif
-                                        @endif
-                                >Display All</option>
-                                <option value="answered"
-                                        @if( isset( $filter_rules['filter_by_answered'] ) )
-                                            @if ( $filter_rules['filter_by_answered'] == 'answered' )
-                                                selected
-                                            @endif
-                                        @endif
-                                >Answered</option>
-                                <option value="unanswered"
-                                        @if( isset( $filter_rules['filter_by_answered'] ) )
-                                            @if ( $filter_rules['filter_by_answered'] == 'unanswered' )
-                                                selected
-                                            @endif
-                                        @endif
-                                >Unanswered</option>
-                            </select>
-                        </div>
                         <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i></button>
                     </form>
                     <?php 

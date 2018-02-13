@@ -107,6 +107,16 @@ class ClientsController extends Controller
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
 
+        // get list filter rules
+        $filter_rules = [];
+        $temp = TempObject::get(Auth::user()->id, 'list-filters');
+        if ( isset($temp['clients_in_need']) ) 
+        {
+            $filter_rules = $temp['clients_in_need'];
+        }
+        // defaults for filter
+        if ( !isset( $filter_rules['order_by'] ) ) { $filter_rules['order_by'] = 'asc'; }
+
         $petTypes = ObjectType::where('type', 'pet')->get();
         $phoneTypes = ObjectType::where('type', 'phone')->get();
         $states = State::all();
@@ -128,15 +138,8 @@ class ClientsController extends Controller
                 ['applications.status', '=', '0'],
                 ['applications.organisation_id', '=', $currentUser->organisation_id]
             ])
+            ->orderBy('applications.created_at', $filter_rules['order_by'])
             ->paginate(4);
-
-        // get list filter rules
-        $filter_rules = [];
-        $temp = TempObject::get(Auth::user()->id, 'list-filters');
-        if ( isset($temp['clients_in_need']) ) 
-        {
-            $filter_rules = $temp['clients_in_need'];
-        }
 
         return  view('auth.advocate.clientsInNeed', 
                 compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'filter_rules'));

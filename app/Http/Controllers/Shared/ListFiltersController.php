@@ -71,8 +71,7 @@ class ListFiltersController extends Controller
     {
         // validate request data
         $validator = Validator::make($request->all(), [
-            'order_by' => 'required|in:asc,desc',
-            'filter_by_answered' => 'required|in:all,answered,unanswered'
+            'order_by' => 'required|in:asc,desc'
         ]);
 
         if ( !$validator->fails() )
