@@ -32,7 +32,7 @@
       </ul>
     </li>
 
-    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="My Settings">
       <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSettings" data-parent="#exampleAccordion">
         <i class="fa fa-sliders" aria-hidden="true"></i>
         <span class="nav-link-text"> Settings</span>
@@ -48,13 +48,13 @@
         </li>
       </ul>
     </li>
-    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Contact SHN">
         <a href="mailto:webmaster@example.com" class="nav-link" >
             <i class="fa fa-envelope" aria-hidden="true"></i>
             <span class="nav-link-text"> Contact SHN</span>
         </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Logout">
         <a class="nav-link" data-toggle="modal" data-target="#logOutModal">
             <i class="fa fa-fw fa-sign-out"></i><span class="nav-link-text">Logout</span></a>
     </li>
