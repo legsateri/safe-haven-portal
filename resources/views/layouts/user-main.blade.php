@@ -19,7 +19,7 @@
 </head>
 
 <?php /*<body class="fixed-nav sticky-footer bg-dark" id="page-top">*/ ?>
-<body class="sticky-footer bg-dark" id="page-top">
+<body class="sticky-footer bg-dark sidenav-toggled" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="{{ route('user.dashboard') }}"><img src="{{url('/')}}/img/SHN-side-logo-2-ce9fc412115910e6ac7df874d95a98c9.png" class="logo logo_mobile"/></a>
