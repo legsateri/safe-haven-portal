@@ -226,7 +226,7 @@ class QuestionMessages extends Controller
 
     /**
      * ajax handler
-     * response when advocate post answer tp question
+     * response when advocate post answer to question
      * in Q&A modal
      */
     public function clientSendAnswer(Request $request)
@@ -249,6 +249,7 @@ class QuestionMessages extends Controller
             ])
             ->select([
                 'application_pets.id as application_pet_id',
+                'application_pets.application_id as application_id',
                 'question_conversations.id as conversation_id',
                 'question_conversations.shelter_organisation_id as shelter_organisation_id'
             ])
@@ -274,6 +275,10 @@ class QuestionMessages extends Controller
                     {
                         $seen->delete();
                     }
+
+                    return [
+                        'success' => true
+                    ];
                 }
                 else
                 {
@@ -283,11 +288,35 @@ class QuestionMessages extends Controller
                     $answer->sender_user_id = Auth::user()->id;
                     $answer->message = $request->client_current_qa_answer;
                     $answer->save();
+
+                    // count how many unanswered questions are left
+                    $unanswered_count = 0;
+                    
+                    $questions = DB::table('application_pets')
+                    ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+                    ->leftJoin('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+                    ->where([
+                        ['application_pets.application_id', '=', $petApplication->application_id]
+                    ])
+                    ->get();
+                        
+                    foreach( $questions as $question )
+                    {
+                        if( $question->message == null )
+                        {
+                            $unanswered_count++;
+                        }
+                    }
+
+                    return [
+                        'success' => true,
+                        'application_id' => $petApplication->application_id,
+                        'unanswered_count' => $unanswered_count
+                    ];
+
                 }
 
-                return [
-                    'success' => true
-                ];
+
 
             }
             

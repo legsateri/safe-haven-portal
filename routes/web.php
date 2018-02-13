@@ -147,6 +147,7 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		// ajax request when shelter ask question in Q&A modal
 		Route::post('/pet/send_question/ajax', 'Shared\QuestionMessages@sendQuestion');
 		
+		
 
 
 
@@ -170,5 +171,13 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 
 		//Update Organization info
 		Route::post('/organization/update/info', 'Shared\OrganizationController@updateInfo')->name('user.organisation.update.info');
+
+
+		/**
+		 *  filters and other
+		 */
+
+		// submit listing filter - advocate clients in need
+		Route::post('/list-filters/{uenc}', 'Shared\ListFiltersController@submit')->name('list-filters.submit');
 
 	});
