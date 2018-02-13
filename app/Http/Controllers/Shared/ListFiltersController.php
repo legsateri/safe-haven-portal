@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use Validator;
 use Auth;
+use DB;
 
 use App\Code\TempObject;
 
@@ -28,7 +29,8 @@ class ListFiltersController extends Controller
      */
     protected $_validFilterNames = [
         'clients_in_need',
-        'current_clients'
+        'current_clients',
+        'pets_in_need'
     ];
 
 
@@ -49,6 +51,9 @@ class ListFiltersController extends Controller
                         break;
                     case 'current_clients':
                         $this->_currentClientsFilter($request);
+                        break;
+                    case 'pets_in_need':
+                        $this->_petsInNeedFilter($request);
                         break;
 
                 } // end switch
@@ -111,6 +116,42 @@ class ListFiltersController extends Controller
         } 
 
     } // end _currentClientsFilter
+
+
+
+
+    /**
+     * handle update filter rules
+     * for pets in need page
+     */
+    protected function _petsInNeedFilter($request)
+    {
+        // get all pet types
+        $pet_types = "";
+        $pet_types_db = DB::table('object_types')->where('type', 'pet')->select('id')->get();
+        foreach( $pet_types_db as $pet_type_db )
+        {
+            $pet_types .= ',' . (string)$pet_type_db->id;
+        }
+        
+        // validate request data
+        $validator = Validator::make($request->all(), [
+            'order_by' => 'required|in:asc,desc',
+            'pet_type' => 'required|in:all' . $pet_types
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // save filter rules in temp data
+            $temp = TempObject::get(Auth::user()->id, 'list-filters');
+            $temp['pets_in_need'] = [
+                'order_by' => $request->order_by,
+                'pet_type' => $request->pet_type
+            ];
+            TempObject::set(Auth::user()->id, 'list-filters', $temp);
+        }
+
+    } // end _petsInNeedFilter
 
 
 
