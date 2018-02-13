@@ -75,6 +75,54 @@ class ClientsController extends Controller
                 ['applications.organisation_id', '=', $currentUser->organisation_id],
                 ['applications.accepted_by_advocate_id', '=', Auth::user()->id]
             ])
+            ->select(
+                'applications.id as id',
+                'clients.id as client_id',
+                'applications.created_by_advocate_id as created_by_advocate_id',
+                'applications.accepted_by_advocate_id as accepted_by_advocate_id',
+                'applications.status as status',
+                'applications.police_involved as police_involved',
+                'applications.protective_order as protective_order',
+                'applications.abuser_notes as abuser_notes',
+                'applications.release_status_id as release_status_id',
+                'applications.created_at as created_at',
+                'applications.id as application_id',
+                'application_pets.pet_id as pet_id',
+                'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
+                'application_pets.abuser_visiting_access as abuser_visiting_access',
+                'application_pets.estimated_lenght_of_housing as estimated_lenght_of_housing',
+                'application_pets.pet_protective_order as pet_protective_order',
+                'application_pets.client_legal_owner_of_pet as client_legal_owner_of_pet',
+                'application_pets.abuser_legal_owner_of_pet as abuser_legal_owner_of_pet',
+                'application_pets.explored_boarding_options as explored_boarding_options',
+                'clients.first_name as first_name',
+                'clients.last_name as last_name',
+                'clients.email as email',
+                'clients.best_way_to_reach as best_way_to_reach',
+                'clients.pets_count as pets_count',
+                'pets.slug as slug',
+                'pets.pet_type_id as pet_type_id',
+                'pets.name as name',
+                'pets.breed as breed',
+                'pets.weight as weight',
+                'pets.age as age',
+                'pets.reported as reported',
+                'pets.description as description',
+                'pets.microchipped as microchipped',
+                'pets.vaccinations as vaccinations',
+                'pets.sprayed as sprayed',
+                'pets.objection_to_spray as objection_to_spray',
+                'pets.dietary_needs as dietary_needs',
+                'pets.vet_needs as vet_needs',
+                'pets.temperament as temperament',
+                'pets.aditional_info as aditional_info',
+                'addresses.state as state',
+                'addresses.city as city',
+                'addresses.zip_code as zip_code',
+                'addresses.street as street',
+                'phones.number as number',
+                'phones.phone_type_id as phone_type_id'
+            )
             ->orderBy('applications.created_at', $filter_rules['order_by'])
             ->paginate(4);
         }
@@ -96,6 +144,54 @@ class ClientsController extends Controller
                 ['applications.accepted_by_advocate_id', '=', Auth::user()->id],
                 ['question_conversation_messages.message', '<>', null]
             ])
+            ->select(
+                'applications.id as id',
+                'clients.id as client_id',
+                'applications.created_by_advocate_id as created_by_advocate_id',
+                'applications.accepted_by_advocate_id as accepted_by_advocate_id',
+                'applications.status as status',
+                'applications.police_involved as police_involved',
+                'applications.protective_order as protective_order',
+                'applications.abuser_notes as abuser_notes',
+                'applications.release_status_id as release_status_id',
+                'applications.created_at as created_at',
+                'applications.id as application_id',
+                'application_pets.pet_id as pet_id',
+                'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
+                'application_pets.abuser_visiting_access as abuser_visiting_access',
+                'application_pets.estimated_lenght_of_housing as estimated_lenght_of_housing',
+                'application_pets.pet_protective_order as pet_protective_order',
+                'application_pets.client_legal_owner_of_pet as client_legal_owner_of_pet',
+                'application_pets.abuser_legal_owner_of_pet as abuser_legal_owner_of_pet',
+                'application_pets.explored_boarding_options as explored_boarding_options',
+                'clients.first_name as first_name',
+                'clients.last_name as last_name',
+                'clients.email as email',
+                'clients.best_way_to_reach as best_way_to_reach',
+                'clients.pets_count as pets_count',
+                'pets.slug as slug',
+                'pets.pet_type_id as pet_type_id',
+                'pets.name as name',
+                'pets.breed as breed',
+                'pets.weight as weight',
+                'pets.age as age',
+                'pets.reported as reported',
+                'pets.description as description',
+                'pets.microchipped as microchipped',
+                'pets.vaccinations as vaccinations',
+                'pets.sprayed as sprayed',
+                'pets.objection_to_spray as objection_to_spray',
+                'pets.dietary_needs as dietary_needs',
+                'pets.vet_needs as vet_needs',
+                'pets.temperament as temperament',
+                'pets.aditional_info as aditional_info',
+                'addresses.state as state',
+                'addresses.city as city',
+                'addresses.zip_code as zip_code',
+                'addresses.street as street',
+                'phones.number as number',
+                'phones.phone_type_id as phone_type_id'
+            )
             ->orderBy('applications.created_at', $filter_rules['order_by'])
             ->paginate(4);
         }
@@ -117,6 +213,54 @@ class ClientsController extends Controller
                 ['applications.accepted_by_advocate_id', '=', Auth::user()->id],
                 ['question_conversation_messages.message', '=', null]
             ])
+            ->select(
+                'applications.id as id',
+                'clients.id as client_id',
+                'applications.created_by_advocate_id as created_by_advocate_id',
+                'applications.accepted_by_advocate_id as accepted_by_advocate_id',
+                'applications.status as status',
+                'applications.police_involved as police_involved',
+                'applications.protective_order as protective_order',
+                'applications.abuser_notes as abuser_notes',
+                'applications.release_status_id as release_status_id',
+                'applications.created_at as created_at',
+                'applications.id as application_id',
+                'application_pets.pet_id as pet_id',
+                'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
+                'application_pets.abuser_visiting_access as abuser_visiting_access',
+                'application_pets.estimated_lenght_of_housing as estimated_lenght_of_housing',
+                'application_pets.pet_protective_order as pet_protective_order',
+                'application_pets.client_legal_owner_of_pet as client_legal_owner_of_pet',
+                'application_pets.abuser_legal_owner_of_pet as abuser_legal_owner_of_pet',
+                'application_pets.explored_boarding_options as explored_boarding_options',
+                'clients.first_name as first_name',
+                'clients.last_name as last_name',
+                'clients.email as email',
+                'clients.best_way_to_reach as best_way_to_reach',
+                'clients.pets_count as pets_count',
+                'pets.slug as slug',
+                'pets.pet_type_id as pet_type_id',
+                'pets.name as name',
+                'pets.breed as breed',
+                'pets.weight as weight',
+                'pets.age as age',
+                'pets.reported as reported',
+                'pets.description as description',
+                'pets.microchipped as microchipped',
+                'pets.vaccinations as vaccinations',
+                'pets.sprayed as sprayed',
+                'pets.objection_to_spray as objection_to_spray',
+                'pets.dietary_needs as dietary_needs',
+                'pets.vet_needs as vet_needs',
+                'pets.temperament as temperament',
+                'pets.aditional_info as aditional_info',
+                'addresses.state as state',
+                'addresses.city as city',
+                'addresses.zip_code as zip_code',
+                'addresses.street as street',
+                'phones.number as number',
+                'phones.phone_type_id as phone_type_id'
+            )
             ->orderBy('applications.created_at', $filter_rules['order_by'])
             ->paginate(4);
         }
@@ -140,6 +284,7 @@ class ClientsController extends Controller
                     ['application_pets.application_id', '=', $dataEntry->id]
                 ])
                 ->get();
+                // dd($questions);
                 
             foreach( $questions as $question )
             {
@@ -149,7 +294,7 @@ class ClientsController extends Controller
                 }
             }
         }
-
+// dd($qa_badge);
         return  view('auth.advocate.clientsCurrent', 
                 compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'qa_badge', 'filter_rules'));
     }
