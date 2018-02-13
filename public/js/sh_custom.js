@@ -1,6 +1,11 @@
 
 jQuery(document).ready(function() {
 
+    // correction for responsive menu behavior
+    $('#navbarResponsive').on('show.bs.collapse', function () {
+        $('body').removeClass('sidenav-toggled');
+    })
+
     if ( $('.sh_signup').length != 0 ) { // if sign up page
 
         $('input:checkbox').prop('checked', false); // browser remembers last checkbox state, clear it
@@ -745,15 +750,14 @@ jQuery(document).ready(function() {
                         });
 
                         //update Q&A button badge
-                        if ( typeof obj.data !== 'undefined' ) {
-                            //console.log('counting');
-                            if ( parseInt(obj.data.message) === 0 ){
+                        if ( typeof obj.unanswered_count !== 'undefined' ) {
+
+                            if ( parseInt(obj.unanswered_count) === 0 ){
                                 $('#list-button-qa-item-' + client_id + ' .badge').fadeOut("fast", function () {});
                             } else {
-                                $('#list-button-qa-item-' + client_id + ' .badge').html(obj.data.message);
+                                $('#list-button-qa-item-' + client_id + ' .badge').html(obj.unanswered_count);
                             }
                         } else {
-                            //console.log('not counting');
                         }
 
                     } else {
@@ -885,6 +889,8 @@ jQuery(document).ready(function() {
                         $('#petsInNeedQAModal .modal-body-inner-cont').append(obj.data);
 
                         $('#petsInNeedQAModal').modal('show');
+
+                        $('#list-button-qa-item-' + pet_id + ' .badge').fadeOut("fast", function () {});
 
                     } else {
 
