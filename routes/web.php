@@ -105,8 +105,6 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/clients', 'Advocate\ClientsController@associatedList')->name('advocate.clients.associated.list');
 		// clients in need list page
 		Route::get('/clients/in-need', 'Advocate\ClientsController@inNeedList')->name('advocate.clients-in-need.list');
-		// single client page
-		Route::get('/client/{id}/{slug}', 'Advocate\ClientsController@single')->name('advocate.client.single');
 
 		// new client application page (form)
 		Route::get('/application/new', 'Advocate\ApplicationsController@newApplication')->name('advocate.application.new.form');
@@ -177,7 +175,7 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		 *  filters and other
 		 */
 
-		// submit listing filter - advocate clients in need
+		// submit list filters
 		Route::post('/list-filters/{uenc}', 'Shared\ListFiltersController@submit')->name('list-filters.submit');
 
 	});

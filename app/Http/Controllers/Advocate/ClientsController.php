@@ -16,6 +16,7 @@ use App\Application;
 use App\Status;
 
 use App\Code\UserObject;
+use App\Code\TempObject;
 
 class ClientsController extends Controller
 {
@@ -38,6 +39,17 @@ class ClientsController extends Controller
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
 
+        // get list filter rules
+        $filter_rules = [];
+        $temp = TempObject::get(Auth::user()->id, 'list-filters');
+        if ( isset($temp['current_clients']) ) 
+        {
+            $filter_rules = $temp['current_clients'];
+        }
+        // defaults for filter
+        if ( !isset( $filter_rules['order_by'] ) ) { $filter_rules['order_by'] = 'asc'; }
+        if ( !isset( $filter_rules['filter_by_answered'] ) ) { $filter_rules['filter_by_answered'] = 'all'; }
+
         $petTypes = ObjectType::where('type', 'pet')->get();
         $phoneTypes = ObjectType::where('type', 'phone')->get();
         $states = State::all();
@@ -48,20 +60,71 @@ class ClientsController extends Controller
         ];
 
         // get client list
-        $dataEntries = DB::table('applications')
-                    ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
-                    ->join('clients', 'applications.client_id', '=', 'clients.id')
-                    ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
-                    ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
-                    ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
-                    ->where([
-                        ['addresses.entity_type', '=', 'client'],
-                        ['phones.entity_type', '=', 'client'],
-                        ['applications.status', '=', '1'],
-                        ['applications.organisation_id', '=', $currentUser->organisation_id],
-                        ['applications.accepted_by_advocate_id', '=', Auth::user()->id]
-                    ])
-                    ->paginate(4);
+        if ( $filter_rules['filter_by_answered'] == 'all' )
+        {
+            $dataEntries = DB::table('applications')
+            ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
+            ->join('clients', 'applications.client_id', '=', 'clients.id')
+            ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+            ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+            ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+            ->where([
+                ['addresses.entity_type', '=', 'client'],
+                ['phones.entity_type', '=', 'client'],
+                ['applications.status', '=', '1'],
+                ['applications.organisation_id', '=', $currentUser->organisation_id],
+                ['applications.accepted_by_advocate_id', '=', Auth::user()->id]
+            ])
+            ->orderBy('applications.created_at', $filter_rules['order_by'])
+            ->paginate(4);
+        }
+        elseif( $filter_rules['filter_by_answered'] == 'answered' )
+        {
+            $dataEntries = DB::table('applications')
+            ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
+            ->join('clients', 'applications.client_id', '=', 'clients.id')
+            ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+            ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+            ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+            ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+            ->join('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+            ->where([
+                ['addresses.entity_type', '=', 'client'],
+                ['phones.entity_type', '=', 'client'],
+                ['applications.status', '=', '1'],
+                ['applications.organisation_id', '=', $currentUser->organisation_id],
+                ['applications.accepted_by_advocate_id', '=', Auth::user()->id],
+                ['question_conversation_messages.message', '<>', null]
+            ])
+            ->orderBy('applications.created_at', $filter_rules['order_by'])
+            ->paginate(4);
+        }
+        elseif( $filter_rules['filter_by_answered'] == 'unanswered' )
+        {
+            $dataEntries = DB::table('applications')
+            ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
+            ->join('clients', 'applications.client_id', '=', 'clients.id')
+            ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+            ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+            ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+            ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+            ->leftJoin('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+            ->where([
+                ['addresses.entity_type', '=', 'client'],
+                ['phones.entity_type', '=', 'client'],
+                ['applications.status', '=', '1'],
+                ['applications.organisation_id', '=', $currentUser->organisation_id],
+                ['applications.accepted_by_advocate_id', '=', Auth::user()->id],
+                ['question_conversation_messages.message', '=', null]
+            ])
+            ->orderBy('applications.created_at', $filter_rules['order_by'])
+            ->paginate(4);
+        }
+        else
+        {
+            die('internal error');
+        }
+        // dd($dataEntries);
 
         // get Q&A unanswered questions number
         $qa_badge = [];
@@ -71,12 +134,12 @@ class ClientsController extends Controller
             $qa_badge[$dataEntry->id] = 0;
             
             $questions = DB::table('application_pets')
-            ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
-            ->leftJoin('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
-            ->where([
-                ['application_pets.application_id', '=', $dataEntry->id]
-            ])
-            ->get();
+                ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+                ->leftJoin('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+                ->where([
+                    ['application_pets.application_id', '=', $dataEntry->id]
+                ])
+                ->get();
                 
             foreach( $questions as $question )
             {
@@ -88,7 +151,7 @@ class ClientsController extends Controller
         }
 
         return  view('auth.advocate.clientsCurrent', 
-                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'qa_badge'));
+                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'qa_badge', 'filter_rules'));
     }
 
     /**
@@ -97,6 +160,16 @@ class ClientsController extends Controller
     public function inNeedList()
     {
         $currentUser = UserObject::get(Auth::user()->email, 'email');
+
+        // get list filter rules
+        $filter_rules = [];
+        $temp = TempObject::get(Auth::user()->id, 'list-filters');
+        if ( isset($temp['clients_in_need']) ) 
+        {
+            $filter_rules = $temp['clients_in_need'];
+        }
+        // defaults for filter
+        if ( !isset( $filter_rules['order_by'] ) ) { $filter_rules['order_by'] = 'asc'; }
 
         $petTypes = ObjectType::where('type', 'pet')->get();
         $phoneTypes = ObjectType::where('type', 'phone')->get();
@@ -108,30 +181,24 @@ class ClientsController extends Controller
         ];
 
         $dataEntries = DB::table('applications')
-                    ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
-                    ->join('clients', 'applications.client_id', '=', 'clients.id')
-                    ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
-                    ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
-                    ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
-                    ->where([
-                        ['addresses.entity_type', '=', 'client'],
-                        ['phones.entity_type', '=', 'client'],
-                        ['applications.status', '=', '0'],
-                        ['applications.organisation_id', '=', $currentUser->organisation_id]
-                    ])
-                    ->paginate(4);
+            ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
+            ->join('clients', 'applications.client_id', '=', 'clients.id')
+            ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+            ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+            ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+            ->where([
+                ['addresses.entity_type', '=', 'client'],
+                ['phones.entity_type', '=', 'client'],
+                ['applications.status', '=', '0'],
+                ['applications.organisation_id', '=', $currentUser->organisation_id]
+            ])
+            ->orderBy('applications.created_at', $filter_rules['order_by'])
+            ->paginate(4);
 
         return  view('auth.advocate.clientsInNeed', 
-                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods'));
+                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'filter_rules'));
     }
 
-    /**
-     * single client page
-     */
-    public function single($id, $slug)
-    {
-
-    }
 
 
     /**
