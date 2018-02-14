@@ -111,15 +111,23 @@ class Mailer
         // send email to single address
         if ( $this->_email != "" )
         {
-            Mail::raw($body, function ($message) {
-                $message->to($this->_email)->subject($this->_emailSubject);
+            // Mail::raw($body, function ($message) {
+            //     $message->to($this->_email)->subject($this->_emailSubject);
+            // });
+
+            Mail::send($this->_emailTemplate, $data, function ($message) {
+                $message->attachData($data)->to($this->_email)->subject($this->_emailSubject);
             });
         }
 
         // send email to multiple addresses
         if ( count($this->_emailList) > 0 )
         {
-            Mail::raw($body, function ($message) {
+            // Mail::send($body, function ($message) {
+            //     $message->bcc($this->_emailList)->subject($this->_emailSubject);
+            // });
+
+            Mail::render($this->_emailTemplate, $data = $this->_emailData, function ($message) {
                 $message->bcc($this->_emailList)->subject($this->_emailSubject);
             });
         }

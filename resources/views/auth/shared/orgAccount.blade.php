@@ -25,8 +25,13 @@
                     
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         
-                        <form action="{{ route('user.organisation.update.info') }}" method="post">
-                            {{ csrf_field() }}
+                        <form   @if(isset($checkOrganisationAdmin->id))
+                                    action="{{ route('user.organisation.update.info') }}" method="post"
+                                @endif >
+                        
+                            @if(isset($checkOrganisationAdmin->id))
+                                {{ csrf_field() }}
+                            @endif
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -39,7 +44,11 @@
                                                     echo $organisation->name;
                                                     endif;
                                                     ?>"
-                                            required>
+                                            required
+                                            @if(!isset($checkOrganisationAdmin->id))
+                                                disabled
+                                            @endif
+                                            >
                                     <!-- error message -->
                                     @if ($errors->has('name'))
                                         <div class="text-danger">
@@ -56,7 +65,11 @@
                                                     if (isset($organisation->code)):
                                                     echo $organisation->code;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
                                     <!-- error message -->
                                     @if ($errors->has('code'))
                                         <div class="text-danger">
@@ -77,7 +90,11 @@
                                                     echo $organisation->tax_id;
                                                     endif;
                                                     ?>"
-                                            required>
+                                            required
+                                            @if(!isset($checkOrganisationAdmin->id))
+                                                disabled
+                                            @endif
+                                            >
                                     <!-- error message -->
                                     @if ($errors->has('tax_id'))
                                         <div class="text-danger">
@@ -95,7 +112,11 @@
                                                     if (isset($organisation->services)):
                                                     echo $organisation->services;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
                                     <!-- error message -->
                                     @if ($errors->has('services'))
                                         <div class="text-danger">
@@ -117,7 +138,11 @@
                                                     if ($organisation->have_office_hours == 1):
                                                     echo "checked";
                                                     endif;
-                                                    ?>>
+                                                    ?>
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
 
                                             <label class="custom-control-label" for="org_office_hours_yes">Yes</label>
                                         </div>
@@ -131,7 +156,11 @@
                                                     if ($organisation->have_office_hours == 0):
                                                     echo "checked";
                                                     endif;
-                                                    ?>>
+                                                    ?>
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
 
                                             <label class="custom-control-label" for="org_office_hours_no">No</label>
                                         </div>
@@ -153,7 +182,11 @@
                                                     if (isset($organisation->website)):
                                                     echo $organisation->website;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
                                     <!-- error message -->
                                     @if ($errors->has('website'))
                                         <div class="text-danger">
@@ -173,7 +206,11 @@
                                                     if (isset($organisation->geographic_area_served)):
                                                     echo $organisation->geographic_area_served;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
                                     <!-- error message -->
                                     @if ($errors->has('geographic_area_served'))
                                         <div class="text-danger">
@@ -215,7 +252,11 @@
                                                     echo $organisationPhone->number;
                                                     endif;
                                                     ?>"
-                                            required>
+                                            required
+                                            @if(!isset($checkOrganisationAdmin->id))
+                                                disabled
+                                            @endif
+                                            >
                                     <!-- error message -->
                                     @if ($errors->has('phone_number'))
                                         <div class="text-danger">
@@ -234,7 +275,11 @@
                                                     echo $organisation->email;
                                                     endif;
                                                     ?>"
-                                            required>
+                                            required
+                                            @if(!isset($checkOrganisationAdmin->id))
+                                                disabled
+                                            @endif
+                                            >
                                     <!-- error message -->
                                     @if ($errors->has('email'))
                                         <div class="text-danger">
@@ -254,7 +299,11 @@
                                                     if (isset($organisationAddress->street)):
                                                     echo $organisationAddress->street;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
                                     <!-- error message -->
                                     @if ($errors->has('street'))
                                         <div class="text-danger">
@@ -275,7 +324,11 @@
                                                     if (isset($organisationAddress->city)):
                                                     echo $organisationAddress->city;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
                                     <!-- error message -->
                                     @if ($errors->has('city'))
                                         <div class="text-danger">
@@ -286,7 +339,11 @@
 
                                 <div class="form-group col-md-4">
                                     <label for="state">State</label>
-                                    <select class="form-control" id="state" name="state">
+                                    <select class="form-control" id="state" name="state"
+                                            @if(!isset($checkOrganisationAdmin->id))
+                                                disabled
+                                            @endif
+                                    >
                                         <option value="">Select State</option>
                                         @foreach($states as $state)
                                         <option value="{{$state->id}}"
@@ -314,7 +371,11 @@
                                                     if (isset($organisation->zip_codecity)):
                                                     echo $organisation->zip_code;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
                                     <!-- error message -->
                                     @if ($errors->has('zip_code'))
                                         <div class="text-danger">
@@ -324,7 +385,9 @@
                                 </div>
                             </div>
                             <br>
-                            <button type="submit" class="sh_save_btn btn btn-outline-primary float-right">Save</button>
+                            @if(isset($checkOrganisationAdmin->id))
+                                <button type="submit" class="sh_save_btn btn btn-outline-primary float-right">Save</button>
+                            @endif
                         </form>
                     </div>
                     <div class="col-lg-2 col-md-2">

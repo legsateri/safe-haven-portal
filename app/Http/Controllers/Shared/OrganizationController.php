@@ -57,8 +57,8 @@ class OrganizationController extends Controller
         $phoneTypes = ObjectType::where('type', 'phone')->get();
 
         $checkOrganisationAdmin = OrganisationAdmin::where([
-        ['user_id', '=', $currentUser->id],
-        ['organisation_id', '=', $organisation->id]
+            ['user_id', '=', $currentUser->id],
+            ['organisation_id', '=', $organisation->id]
         ])->first();
         
         $organisationAdmin = DB::table('users')
@@ -69,7 +69,8 @@ class OrganizationController extends Controller
             ->select('users.email')
             ->first();
 
-        return view('auth.shared.orgAccount', compact('currentUser', 'states', 'organisation', 'organisationPhone','organisationAddress', 'phoneTypes', 'organisationAdmin', 'checkOrganisationAdmin' ));
+        return  view('auth.shared.orgAccount', 
+                compact('currentUser', 'states', 'organisation', 'organisationPhone','organisationAddress', 'phoneTypes', 'organisationAdmin', 'checkOrganisationAdmin' ));
     }
 
 

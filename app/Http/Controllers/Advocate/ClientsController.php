@@ -17,6 +17,9 @@ use App\Status;
 
 use App\Code\UserObject;
 use App\Code\TempObject;
+use App\Code\Mailer;
+
+use App\Mail\NewPetInNeedMail;
 
 class ClientsController extends Controller
 {
@@ -378,43 +381,24 @@ class ClientsController extends Controller
                 /**
                  * send mass mail to all shelter users
                  */
-
-                // // get shelter user type id
-                // $shelterUser = ObjectType::where([
-                //     ['type', '=', 'user'],
-                //     ['value', '=', 'shelter']
-                // ])->first();
-
-                // // get email list
-                // $shelterUsers = DB::table('users')
-                //             ->select('email')
-                //             ->where([
-                //                 ['user_type_id', '=', $shelterUser->id],
-                //                 ['verified', '=', 1],
-                //                 ['banned', '=', 0]
-                //             ])
-                //             ->get();
-
-                // $emails = [];
-                
-                // // create array with email lists
-                // foreach( $shelterUsers as $shelterUser )
-                // {
-                //     array_push($emails, $shelterUser->email);
-                // }
-
-                // // try sending emails
-                // try
-                // {
-                //     // Mail::send('emails.welcome', [], function($message) use ($emails)
-                //     // {    
-                //     //     $message->bcc($emails)->subject('This is test e-mail');    
-                //     // });
-                // } 
-                // catch (Exception $e) 
-                // {
-                //     // alternative action if sending emails fails
-                // }
+                // get data from database for filling email template
+                $data = DB::table('application_pets')
+                ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
+                ->join('organisations', 'application_pets.organisation_id', '=', 'organisations.id')
+                ->where([
+                    ['application_pets.application_id', '=', $application->id]
+                ])
+                ->select(
+                    'pets.name as name',
+                    'pets.age as age',
+                    'object_types.label as type',
+                    'pets.breed as breed',
+                    'organisations.name as adv_organisation_name'
+                )
+                ->first();
+                // send email notification
+                Mail::bcc($this->_getActiveShelterUsers())->send(new NewPetInNeedMail($data));
 
                 return [
                     'success' => true
@@ -487,6 +471,33 @@ class ClientsController extends Controller
             'success' => false,
             'message' => 'Releasing client failed'
         ];
+    }
+
+    /**
+     * create array with emails
+     * for shelter users
+     */
+    protected function _getActiveShelterUsers()
+    {
+        $users = DB::table('users')
+        ->join('object_types', 'users.user_type_id', '=', 'object_types.id')
+        ->where([
+            ['object_types.type', '=', 'user'],
+            ['object_types.value', '=', 'shelter'],
+            ['users.verified', '=', 1],
+            ['users.banned', '=', 0]
+        ])
+        ->select('users.email')
+        ->get();
+
+        // create array with email lists
+        $emails = [];
+        foreach( $users as $user )
+        {
+            array_push($emails, $user->email);
+        }
+
+        return $emails;
     }
     
 }
