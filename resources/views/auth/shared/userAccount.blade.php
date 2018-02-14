@@ -3,23 +3,13 @@
 @section('content')
 
 @if (session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 @endif
-
-@if (session('error'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('error') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-@endif
-
 
     <!-- My Account -->
     <div class="card mb-3">
@@ -47,6 +37,13 @@
                                                 endif;
                                                 ?>"
                                         required>
+                                <!-- error message -->
+                                @if ($errors->has('first_name'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('first_name') }}
+                                    </div>
+                                @endif
+                                        
                             </div>
                                     
                             <div class="col-md-6 mb-3">
@@ -60,6 +57,12 @@
                                                 endif;
                                                 ?>"
                                         required>
+                                <!-- error message -->
+                                @if ($errors->has('last_name'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('last_name') }}
+                                    </div>
+                                @endif
                             </div>
                         </div> 
                                             
@@ -74,6 +77,12 @@
                                                 echo $currentUser->email;
                                                 endif;
                                                 ?>">
+                                <!-- error message -->
+                                @if ($errors->has('email'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('email') }}
+                                    </div>
+                                @endif
                             </div>
                                         
                             <div class="col-md-4 mb-3">
@@ -87,6 +96,12 @@
                                                 endif;
                                                 ?>"
                                         required>
+                                 <!-- error message -->
+                                @if ($errors->has('phone_number'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('phone_number') }}
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="col-md-2 mb-3">
@@ -100,8 +115,14 @@
                                                     @endif                                               
                                                     >{{$phoneType->label}}
                                                 </option>
-                                    @endforeach
+                                                @endforeach
                                 </select>
+                                <!-- error message -->
+                                @if ($errors->has('phone_number_type'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('phone_number_type') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
                                 
@@ -116,6 +137,12 @@
                                                 echo $userAddress->street;
                                                 endif;
                                                 ?>">
+                                <!-- error message -->
+                                @if ($errors->has('street'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('street') }}
+                                    </div>
+                                @endif
                             </div>
                             <div class="col-md-6 mb-3"></div>
                         </div>
@@ -134,6 +161,12 @@
                                     </option>
                                     @endforeach                           
                                 </select>
+                                <!-- error message -->
+                                @if ($errors->has('street'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('street') }}
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="col-md-3 mb-3">
@@ -146,6 +179,12 @@
                                                 echo $userAddress->city;
                                                 endif;
                                                 ?>">
+                                <!-- error message -->
+                                @if ($errors->has('city'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('city') }}
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="col-md-3 mb-3">
@@ -158,6 +197,12 @@
                                                 echo $userAddress->zip_code;
                                                 endif;
                                                 ?>">
+                                <!-- error message -->
+                                @if ($errors->has('zip_code'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('zip_code') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <br>
@@ -204,6 +249,12 @@
                                         aria-describedby="passHelp"
                                         placeholder="Enter old password"
                                         required>
+                                <!-- error message -->
+                                @if ($errors->has('old_password'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('old_password') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -215,6 +266,12 @@
                                         aria-describedby="passHelp"
                                         placeholder="Enter new password"
                                         required>
+                                <!-- error message -->
+                                @if ($errors->has('new_password'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('new_password') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
@@ -226,6 +283,12 @@
                                         aria-describedby="passHelp"
                                         placeholder="Repeat new password"
                                         required>
+                                <!-- error message -->
+                                @if ($errors->has('repeat_new_password'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('repeat_new_password') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>  
                         <br>

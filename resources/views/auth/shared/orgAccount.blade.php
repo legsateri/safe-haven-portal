@@ -3,21 +3,12 @@
 @section('content')
 
 @if (session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-@endif
-
-@if (session('error'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('error') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 @endif
 
     <div class="card mb-3 org_account_cont">
@@ -49,7 +40,14 @@
                                                     endif;
                                                     ?>"
                                             required>
+                                    <!-- error message -->
+                                    @if ($errors->has('name'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('name') }}
+                                        </div>
+                                    @endif
                                 </div>
+
                                 <div id="sign_up_org_code_half_row" class="form-group col-md-6">
                                     <label for="org_code">Organization Code</label>
                                     <input  type="text" class="form-control"
@@ -59,6 +57,12 @@
                                                     echo $organisation->code;
                                                     endif;
                                                     ?>">
+                                    <!-- error message -->
+                                    @if ($errors->has('code'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('code') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -74,6 +78,12 @@
                                                     endif;
                                                     ?>"
                                             required>
+                                    <!-- error message -->
+                                    @if ($errors->has('tax_id'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('tax_id') }}
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -86,6 +96,12 @@
                                                     echo $organisation->services;
                                                     endif;
                                                     ?>">
+                                    <!-- error message -->
+                                    @if ($errors->has('services'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('services') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             
@@ -106,6 +122,7 @@
                                             <label class="custom-control-label" for="org_office_hours_yes">Yes</label>
                                         </div>
 
+
                                         <div class="custom-control custom-radio custom-control-inline">
                                             <input  type="radio" class="custom-control-input"
                                                     id="org_office_hours_no" name="have_office_hours"
@@ -119,6 +136,12 @@
                                             <label class="custom-control-label" for="org_office_hours_no">No</label>
                                         </div>
                                     </div>
+                                    <!-- error message -->
+                                    @if ($errors->has('have_office_hours'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('have_office_hours') }}
+                                        </div>
+                                    @endif
                                 </div>
                                 
                                 <div class="form-group col-md-6">
@@ -131,8 +154,15 @@
                                                     echo $organisation->website;
                                                     endif;
                                                     ?>">
+                                    <!-- error message -->
+                                    @if ($errors->has('website'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('website') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
+
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="org_geo_service_area">Geographic Service Area</label>
@@ -144,7 +174,14 @@
                                                     echo $organisation->geographic_area_served;
                                                     endif;
                                                     ?>">
+                                    <!-- error message -->
+                                    @if ($errors->has('geographic_area_served'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('geographic_area_served') }}
+                                        </div>
+                                    @endif
                                 </div>
+
                                 <div class="form-group col-md-6">
                                     <label for="org_admin">Organization Admin</label>
                                     <input  type="text" class="form-control"
@@ -156,6 +193,12 @@
                                                     endif;
                                                     ?>"
                                             disabled>
+                                    <!-- error message -->
+                                    @if ($errors->has('org_admin'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('org_admin') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -173,6 +216,12 @@
                                                     endif;
                                                     ?>"
                                             required>
+                                    <!-- error message -->
+                                    @if ($errors->has('phone_number'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('phone_number') }}
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -186,6 +235,12 @@
                                                     endif;
                                                     ?>"
                                             required>
+                                    <!-- error message -->
+                                    @if ($errors->has('email'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('email') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -199,8 +254,13 @@
                                                     if (isset($organisationAddress->street)):
                                                     echo $organisationAddress->street;
                                                     endif;
-                                                    ?>"
-                                            >                                        
+                                                    ?>">
+                                    <!-- error message -->
+                                    @if ($errors->has('street'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('street') }}
+                                        </div>
+                                    @endif                                        
                                 </div>
                                 <div class="form-group col-md-6"></div>
                             </div>
@@ -215,8 +275,13 @@
                                                     if (isset($organisationAddress->city)):
                                                     echo $organisationAddress->city;
                                                     endif;
-                                                    ?>"
-                                            >
+                                                    ?>">
+                                    <!-- error message -->
+                                    @if ($errors->has('city'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('city') }}
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="form-group col-md-4">
@@ -232,6 +297,12 @@
                                         </option>
                                         @endforeach                           
                                     </select>
+                                    <!-- error message -->
+                                    @if ($errors->has('state'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('state') }}
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="form-group col-md-2">
@@ -243,8 +314,13 @@
                                                     if (isset($organisation->zip_codecity)):
                                                     echo $organisation->zip_code;
                                                     endif;
-                                                    ?>"
-                                            >                                
+                                                    ?>">
+                                    <!-- error message -->
+                                    @if ($errors->has('zip_code'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('zip_code') }}
+                                        </div>
+                                    @endif                                
                                 </div>
                             </div>
                             <br>
