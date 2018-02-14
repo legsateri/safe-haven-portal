@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use Auth;
 use Validator;
+use Mail;
 
 use App\ObjectType;
 use App\Code\UserObject;
@@ -15,6 +16,8 @@ use App\Application;
 use App\ApplicationPet;
 use App\Status;
 use App\Organisation;
+
+use App\Mail\AcceptedPetNotificationMail;
 
 use App\Code\TempObject;
 
@@ -245,6 +248,48 @@ class PetsController extends Controller
                     $applicationPet->status = 1;
                     $applicationPet->update();
     
+                    // email notification for advocate
+                    // that is working on client case
+                    $advocate = DB::table('users')
+                    ->join('applications', 'users.id', '=', 'applications.accepted_by_advocate_id')
+                    ->where([
+                        ['applications.id', '=', $application->id]
+                    ])
+                    ->select(
+                        'users.email as email'
+                    )
+                    ->first();
+
+                    $data = DB::table('application_pets')
+                    ->join('applications', 'application_pets.application_id', '=', 'applications.id')
+                    ->join('clients', 'applications.client_id', '=', 'clients.id')
+                    ->join('organisations', 'application_pets.accepted_by_shelter_organisation_id', '=', 'organisations.id')
+                    ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                    ->where([
+                        ['application_pets.id', '=', $applicationPet->id]
+                    ])
+                    ->select(
+                        'clients.first_name as client_first_name',
+                        'clients.last_name as client_last_name',
+                        'organisations.name as shelter_name',
+                        'pets.name as pet_name'
+                    )
+                    ->first();
+
+                    $shelterAgent = DB::table('users')
+                    ->where([
+                        ['users.id', '=', Auth::user()->id]
+                    ])
+                    ->select(
+                        'users.first_name as shelter_user_first_name',
+                        'users.last_name as shelter_user_last_name',
+                        'users.email as shelter_user_email'
+                    )
+                    ->first();
+
+                    // send notification
+                    Mail::to($advocate->email)->send(new AcceptedPetNotificationMail($data, $shelterAgent));
+
                     return [
                         'success' => true
                     ];
