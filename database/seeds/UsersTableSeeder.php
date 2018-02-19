@@ -62,55 +62,55 @@ class UsersTableSeeder extends Seeder
                     'org_type_id' => $shelterTypeOrg->id
 
                 ]
-            ],
-            [
-                'first_name' => 'Ninoslav',
-                'last_name' => 'Stojcic',
-                'email' => 'nstojcic@ztech.rs',
-                'type' => $advocateTypeUser->id,
-                'organisation' => [
-                    'name' => 'Nino Adv.',
-                    'tax_id'=> '11-4811484',
-                    'org_type_id' => $advocateTypeOrg->id
-
-                ]
-            ],
-            [
-                'first_name' => 'Ninoslav',
-                'last_name' => 'Stojcic',
-                'email' => 'nstojcic@ztech.io',
-                'type' => $shelterTypeUser->id,
-                'organisation' => [
-                    'name' => 'Nino Shelter',
-                    'tax_id'=> '11-4845433',
-                    'org_type_id' => $shelterTypeOrg->id
-
-                ]
-            ],
-            [
-                'first_name' => 'Milica',
-                'last_name' => 'Dundic',
-                'email' => 'mdundic@ztech.io',
-                'type' => $advocateTypeUser->id,
-                'organisation' => [
-                    'name' => 'Milica Adv.',
-                    'tax_id'=> '11-4125484',
-                    'org_type_id' => $advocateTypeOrg->id
-
-                ]
-            ],
-            [
-                'first_name' => 'Milica',
-                'last_name' => 'Dundic',
-                'email' => 'mdundic@ztech.rs',
-                'type' => $shelterTypeUser->id,
-                'organisation' => [
-                    'name' => 'Milica Shelter',
-                    'tax_id'=> '11-4849874',
-                    'org_type_id' => $shelterTypeOrg->id
-
-                ]
             ]
+            // [
+            //     'first_name' => 'Ninoslav',
+            //     'last_name' => 'Stojcic',
+            //     'email' => 'nstojcic@ztech.rs',
+            //     'type' => $advocateTypeUser->id,
+            //     'organisation' => [
+            //         'name' => 'Nino Adv.',
+            //         'tax_id'=> '11-4811484',
+            //         'org_type_id' => $advocateTypeOrg->id
+
+            //     ]
+            // ],
+            // [
+            //     'first_name' => 'Ninoslav',
+            //     'last_name' => 'Stojcic',
+            //     'email' => 'nstojcic@ztech.io',
+            //     'type' => $shelterTypeUser->id,
+            //     'organisation' => [
+            //         'name' => 'Nino Shelter',
+            //         'tax_id'=> '11-4845433',
+            //         'org_type_id' => $shelterTypeOrg->id
+
+            //     ]
+            // ],
+            // [
+            //     'first_name' => 'Milica',
+            //     'last_name' => 'Dundic',
+            //     'email' => 'mdundic@ztech.io',
+            //     'type' => $advocateTypeUser->id,
+            //     'organisation' => [
+            //         'name' => 'Milica Adv.',
+            //         'tax_id'=> '11-4125484',
+            //         'org_type_id' => $advocateTypeOrg->id
+
+            //     ]
+            // ],
+            // [
+            //     'first_name' => 'Milica',
+            //     'last_name' => 'Dundic',
+            //     'email' => 'mdundic@ztech.rs',
+            //     'type' => $shelterTypeUser->id,
+            //     'organisation' => [
+            //         'name' => 'Milica Shelter',
+            //         'tax_id'=> '11-4849874',
+            //         'org_type_id' => $shelterTypeOrg->id
+
+            //     ]
+            // ]
         ];
 
         foreach ( $users as $user )
