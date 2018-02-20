@@ -6,6 +6,30 @@
           </a>
         </li>
 
+
+
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Organizations">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseOrganizations" data-parent="#exampleAccordion">
+            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+
+            <span class="nav-link-text">Organizations</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseOrganizations">
+            <li>
+              <a href="{{ route('admin.organisations.advocates.list') }}"><i class="fa fa-balance-scale"></i> Advocates</a>
+            </li>
+            <li>
+              <a href="{{ route('admin.organisations.shelters.list') }}"><i class="fa fa-home"></i> Shelters</a>
+            </li>
+            <li>
+              <a href="{{ route('admin.organisation.add.page') }}"><i class="fa fa-user-plus" aria-hidden="true"></i>
+                 Add Organization</a>
+            </li>
+          </ul>
+        </li>
+
+
+
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseUsers" data-parent="#exampleAccordion">
             <i class="fa fa-handshake-o" aria-hidden="true"></i>

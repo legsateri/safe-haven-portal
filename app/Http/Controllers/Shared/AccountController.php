@@ -142,36 +142,7 @@ class AccountController extends Controller
         // invalid entries
         $errors = $validator->errors();
 
-        if ( $errors->first('first_name') != null ){
-            return redirect()->back()->with('error', $errors->first('first_name'));
-        }
-        if ( $errors->first('last_name') != null ){
-            return redirect()->back()->with('error', $errors->first('last_name'));
-        }
-        if ( $errors->first('email') != null ){
-            return redirect()->back()->with('error', $errors->first('email'));
-        }
-        if ( $errors->first('phone_number') != null ){
-            return redirect()->back()->with('error', $errors->first('phone_number'));
-        }
-        if ( $errors->first('phone_number_type') != null ){
-            return redirect()->back()->with('error', $errors->first('phone_number_type'));
-        }
-        if ( $errors->first('email') != null ){
-            return redirect()->back()->with('error', $errors->first('repeat_new_password'));
-        }
-        if ( $errors->first('street') != null ){
-            return redirect()->back()->with('error', $errors->first('street'));
-        }
-        if ( $errors->first('city') != null ){
-            return redirect()->back()->with('error', $errors->first('city'));
-        }
-        if ( $errors->first('zip_code') != null ){
-            return redirect()->back()->with('error', $errors->first('zip_code'));
-        }
-        if ( $errors->first('state') != null ){
-            return redirect()->back()->with('error', $errors->first('state'));
-        }
+        return redirect()->back()->withErrors($validator)->withInput();
     
     }
 

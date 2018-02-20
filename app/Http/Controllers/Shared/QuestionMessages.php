@@ -8,11 +8,15 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Validator;
 use DB;
+use Mail;
 use App\Application;
 use App\ApplicationPet;
 use App\QuestionConversation;
 use App\QuestionConversationMessage;
 use App\SeenMessage;
+
+use App\Mail\NewQuestionAboutPetMail;
+use App\Mail\NewAnswerAboutPetMail;
 
 class QuestionMessages extends Controller
 {
@@ -209,6 +213,28 @@ class QuestionMessages extends Controller
                 $question->title = $request->pet_in_need_qa;
                 $question->save();
 
+                // email notification to advocate organisaton
+                // that they have new question
+                $data = DB::table('application_pets')
+                ->join('applications', 'application_pets.application_id', '=', 'applications.id')
+                ->join('clients', 'applications.client_id', '=', 'clients.id')
+                ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+                ->where([
+                    ['application_pets.id', '=', $application_pet->id],
+                    ['question_conversations.id', '=', $question->id]
+                ])
+                ->select(
+                    'applications.organisation_id as adv_organisation_id',
+                    'clients.first_name as client_first_name',
+                    'clients.last_name as client_last_name',
+                    'pets.name as pet_name',
+                    'question_conversations.title as question'
+                )
+                ->first();
+                // send notification
+                Mail::bcc($this->_getActiveUsersFromOrg($data->adv_organisation_id))->send(new NewQuestionAboutPetMail($data));
+
                 return [
                     'success' => true
                 ];
@@ -276,6 +302,26 @@ class QuestionMessages extends Controller
                         $seen->delete();
                     }
 
+                    // send email notification
+                    // to shelter that have posted question
+                    $data = DB::table('application_pets')
+                    ->join('applications', 'application_pets.application_id', '=', 'applications.id')
+                    ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                    ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+                    ->join('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+                    ->where([
+                        ['question_conversation_messages.id', '=', $answer->id]
+                    ])
+                    ->select(
+                        'applications.organisation_id as shelter_organisation_id',
+                        'pets.name as pet_name',
+                        'question_conversations.title as question',
+                        'question_conversation_messages.message as answer'
+                    )
+                    ->first();
+                    // send notification
+                    Mail::bcc($this->_getActiveUsersFromOrg($data->shelter_organisation_id))->send(new NewAnswerAboutPetMail($data));
+
                     return [
                         'success' => true
                     ];
@@ -308,6 +354,26 @@ class QuestionMessages extends Controller
                         }
                     }
 
+                    // send email notification
+                    // to shelter that have posted question
+                    $data = DB::table('application_pets')
+                    ->join('applications', 'application_pets.application_id', '=', 'applications.id')
+                    ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                    ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+                    ->join('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+                    ->where([
+                        ['question_conversation_messages.id', '=', $answer->id]
+                    ])
+                    ->select(
+                        'applications.organisation_id as shelter_organisation_id',
+                        'pets.name as pet_name',
+                        'question_conversations.title as question',
+                        'question_conversation_messages.message as answer'
+                    )
+                    ->first();
+                    // send notification
+                    Mail::bcc($this->_getActiveUsersFromOrg($data->shelter_organisation_id))->send(new NewAnswerAboutPetMail($data));
+
                     return [
                         'success' => true,
                         'application_id' => $petApplication->application_id,
@@ -327,4 +393,27 @@ class QuestionMessages extends Controller
         ];
 
     } // end clientSendAnswer
+
+
+    protected function _getActiveUsersFromOrg($organisation_id)
+    {
+        $users = DB::table('users')
+        ->join('organisations', 'users.organisation_id', '=', 'organisations.id')
+        ->where([
+            ['organisations.id', '=', $organisation_id],
+            ['users.verified', '=', 1],
+            ['users.banned', '=', 0]
+        ])
+        ->select('users.email')
+        ->get();
+
+        // create array with email lists
+        $emails = [];
+        foreach( $users as $user )
+        {
+            array_push($emails, $user->email);
+        }
+
+        return $emails;
+    }
 }

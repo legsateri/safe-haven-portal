@@ -37,11 +37,11 @@ class ObjectTypesTableSeeder extends Seeder
                 'value' => 'shelter',
                 'label' => 'Shelter'
             ],
-            [
-                'type' => 'organisation',
-                'value' => 'foster',
-                'label' => 'Foster'
-            ],
+            // [
+            //     'type' => 'organisation',
+            //     'value' => 'foster',
+            //     'label' => 'Foster'
+            // ],
 
             // pet types
             [

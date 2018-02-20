@@ -10,6 +10,8 @@ use App\Phone;
 use App\Address;
 use App\ObjectType;
 use App\State;
+use Validator;
+use App\User;
 
 class UserEditController extends Controller
 {
@@ -83,9 +85,50 @@ class UserEditController extends Controller
      * submit action
      * update user general information
      */
-    public function submitGeneral(Request $request)
-    {
+    public function submitGeneral($id, $slug, Request $request)
+    {   
+        //validate data from form
+        $validator = Validator::make($request->all(),[
+            'first_name'    => 'required|string|max:25',
+            'last_name'     => 'required|string|max:25',
+            'email'         => 'required|email|max:255',
+            'organisation'  => 'exists:organisations,id'
+        ]);
+            
+        if (!($validator->fails())){
+            
+            //find user to edit
+            $user = User::where([
+                ['id', '=', $id],
+                ['slug', '=', $slug]
+            ])->first();
 
+            //check if email from request allready exists for some other user
+            $checkEmail = User::where('email', $request->email)->first();
+            
+            if($checkEmail == null || ($checkEmail != null && $checkEmail->id == $user->id)){
+                
+                //update user
+                $user->first_name = $request->first_name;
+                $user->last_name = $request->last_name;
+                $user->email = $request->email;
+                $user->organisation_id = $request->organisation;
+                //kada updateujemo tip organizacije moramo da updateujemo i tip usera
+
+                $user->slug = str_slug($user['first_name'] . ' ' . $user['last_name'], '-');
+                
+                $user->update();
+
+                return redirect()
+                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->with('success-general', ' General information successfully changed!');
+
+            } elseif ($checkEmail->id != $user->id) {
+                return redirect()->back()->with('email-error-general', 'User with this email address already exists.');
+            }
+        }
+        // invalid entries
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
 
@@ -93,9 +136,69 @@ class UserEditController extends Controller
      * submit action
      * update user contact information
      */
-    public function submitContact(Request $request)
-    {
+    public function submitContact($id, $slug, Request $request)
+    {  
+        //validate data from form
+        $validator = Validator::make($request->all(),[
+            'phone_type'    => 'nullable|exists:object_types,id',
+            'phone_number'  => 'required|regex:/^\d{3}\d{3}\d{4}$/',
+            'address_type'  => 'nullable|exists:object_types,id',  
+            'city'          => 'nullable|string|max:255',
+            'zip_code'      => 'nullable|integer|regex:/^\d{5}$/',
+            'street'        => 'nullable|string|max:255',
+            'state'         => 'nullable|exists:states,id',             
+        ]);
+        
+        if (!($validator->fails())){
 
+            //find user to edit
+            $user = User::where([
+                ['id', '=', $id],
+                ['slug', '=', $slug]
+            ])->first();
+
+            //update user's phone
+            $userPhone = Phone::where([
+                ['entity_type', '=', 'user'],
+                ['entity_id', '=', $user->id]
+            ])->first();
+
+            if (!isset($userPhone->id)){
+                $userPhone = new Phone();
+                $userPhone->entity_type = 'user';
+                $userPhone->entity_id = $user->id;
+            } 
+                $userPhone->number = $request->phone_number;
+                $userPhone->phone_type_id = $request->phone_type;
+                $userPhone->save();
+
+            //update user's address
+            $userAddress = Address::where([
+                ['entity_type', '=', 'user'],
+                ['entity_id', '=', $user->id]
+            ])->first();
+
+            $userState = State::where('id', $request->state)->first();
+            
+            if(!isset($userAddress->id)){
+                $userAddress = new Address();
+                $userAddress->entity_type = 'user';
+                $userAddress->entity_id = $user->id;
+            }
+                $userAddress->address_type_id = $request->address_type;
+                $userAddress->street = $request->street;
+                $userAddress->state = $userState->name;
+                $userAddress->city = $request->city;
+                $userAddress->zip_code = $request->zip_code;
+                $userAddress->save();
+            
+                return redirect()
+                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->with('success-contact', ' Contact information successfully changed!');
+        }
+        
+        // invalid entries
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
 
@@ -103,7 +206,7 @@ class UserEditController extends Controller
      * submit action
      * reset user password
      */
-    public function submitPassword(Request $request)
+    public function submitPassword($id, $slug, Request $request)
     {
 
     }
@@ -113,7 +216,7 @@ class UserEditController extends Controller
      * submit action
      * verify/unverify user email address
      */
-    public function submitVerified(Request $request)
+    public function submitVerified($id, $slug, Request $request)
     {
 
     }

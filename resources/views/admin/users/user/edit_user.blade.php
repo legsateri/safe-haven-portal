@@ -2,28 +2,41 @@
 
 @section('content')
 
-@if (session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+<!--general success message -->
+@if (session('success-general'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success-general') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 @endif
 
-@if (session('error'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('error') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+<!--contact success message -->
+@if (session('success-contact'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success-contact') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 @endif
+
+<!--password success message -->
+@if (session('success-password'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success-password') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
 
 
 <div class="card mb-3">
 <div class="card-header">
-    <i class="fa fa-area-chart"></i> Edit {{ $user->first_name }} {{ $user->last_name }}</div>
+    <i class="fa fa-user"></i> Edit {{ $user->first_name }} {{ $user->last_name }}</div>
 <div class="card-body">
     <?php
     /**
@@ -46,6 +59,12 @@
                         id="first_name" name="first_name" 
                         maxlength="40" 
                         value="{{ $user->first_name }}">
+                <!-- error message -->
+                @if ($errors->has('first_name'))
+                    <div class="text-danger">
+                        {{ $errors->first('first_name') }}
+                    </div>
+                @endif
             </div>
 
             <div class="form-group col-md-4">
@@ -54,9 +73,14 @@
                         id="last_name" name="last_name" 
                         maxlength="40" 
                         value="{{ $user->last_name }}">
+                <!-- error message -->
+                @if ($errors->has('last_name'))
+                    <div class="text-danger">
+                        {{ $errors->first('last_name') }}
+                    </div>
+                @endif
             </div>
         </div>
-
 
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
@@ -65,6 +89,18 @@
                         id="email" name="email" 
                         maxlength="40" 
                         value="{{ $user->email }}">
+                <!-- error message 1 -->
+                @if ($errors->has('email'))
+                    <div class="text-danger">
+                        {{ $errors->first('email') }}
+                    </div>
+                @endif
+                <!-- error message 2 -->
+                @if (session('email-error-general'))
+                    <div class="text-danger">
+                        {{ session('email-error-general') }}
+                    </div>
+                @endif
             </div>
         </div>
         <div class="form row">
@@ -82,6 +118,12 @@
                         </option>
                     @endforeach
                 </select>
+                <!-- error message -->
+                @if ($errors->has('organsation'))
+                    <div class="text-danger">
+                        {{ $errors->first('organsation') }}
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -91,6 +133,7 @@
             </div>
         </div>
     </form>
+
     <?php
     /**
      * update contact information form
@@ -98,7 +141,7 @@
     ?>
     <br>
     <div class="form row">
-        <div class="form-group col-md-8 offset-md-2"> 
+        <div id="contact" class="form-group col-md-8 offset-md-2"> 
             <h5>Contact information</h5>
             <hr>
         </div>
@@ -108,8 +151,8 @@
 
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
-                <label for="organisation">Phone type</label>
-                <select name="organisation" id="organsation">
+                <label for="phone_type">Phone type</label>
+                <select name="phone_type" id="phone_type">
                     <option value="">Select</option>
                     @foreach( $phoneTypes as $phoneType )
                         <option value="{{ $phoneType->id }}"
@@ -123,6 +166,12 @@
                         </option>
                     @endforeach
                 </select>
+                <!-- error message -->
+                @if ($errors->has('phone_type'))
+                    <div class="text-danger">
+                        {{ $errors->first('phone_type') }}
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -130,24 +179,30 @@
             <div class="form-group col-md-4 offset-md-2">
                 <label for="phone">Phone number</label>
                 <input  type="text" class="form-control"
-                        id="phone" name="phone" 
+                        id="phone_number" name="phone_number" 
                         maxlength="40" 
                         @if ( isset($userPhone->number) )
                             value="{{ $userPhone->number }}"
                         @endif
                         >
+                <!-- error message -->
+                @if ($errors->has('phone_number'))
+                    <div class="text-danger">
+                        {{ $errors->first('phone_number') }}
+                    </div>
+                @endif
             </div>
         </div>
 
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
-                <label for="organisation">Address type</label>
-                <select name="organisation" id="organsation">
+                <label for="address">Address type</label>
+                <select name="address_type" id="address">
                     <option value="">Select</option>
                     @foreach( $addressTypes as $addressType )
                         <option value="{{ $addressType->id }}"
-                            @if( isset($userAddress->type_id) )
-                                @if( $userAddress->type_id == $addressType->id )
+                            @if( isset($userAddress->address_type_id) )
+                                @if( $userAddress->address_type_id == $addressType->id )
                                     selected
                                 @endif
                             @endif
@@ -156,12 +211,18 @@
                         </option>
                     @endforeach
                 </select>
+                <!-- error message -->
+                @if ($errors->has('address_type'))
+                    <div class="text-danger">
+                        {{ $errors->first('address_type') }}
+                    </div>
+                @endif
             </div>
         </div>
 
         <div class="form row">
             <div class="form-group col-md-5 offset-md-2">
-                <label for="phone">City</label>
+                <label for="city">City</label>
                 <input  type="text" class="form-control"
                         id="city" name="city" 
                         maxlength="40"
@@ -169,9 +230,16 @@
                             value="{{ $userAddress->city }}"
                         @endif
                         >
+                <!-- error message -->
+                @if ($errors->has('city'))
+                    <div class="text-danger">
+                        {{ $errors->first('city') }}
+                    </div>
+                @endif
             </div>
+
             <div class="form-group col-md-3">
-                <label for="phone">Zip</label>
+                <label for="zip_code">Zip</label>
                 <input  type="text" class="form-control"
                         id="zip_code" name="zip_code" 
                         maxlength="40" 
@@ -179,12 +247,18 @@
                             value="{{ $userAddress->zip_code }}"
                         @endif
                         >
+                <!-- error message -->
+                @if ($errors->has('zip_code'))
+                    <div class="text-danger">
+                        {{ $errors->first('zip_code') }}
+                    </div>
+                @endif
             </div>
         </div>
 
         <div class="form row">
             <div class="form-group col-md-5 offset-md-2">
-                <label for="phone">Street</label>
+                <label for="street">Street</label>
                 <input  type="text" class="form-control"
                         id="street" name="street" 
                         maxlength="100" 
@@ -192,13 +266,19 @@
                             value="{{ $userAddress->street }}"
                         @endif
                         >
+                <!-- error message -->
+                @if ($errors->has('street'))
+                    <div class="text-danger">
+                        {{ $errors->first('street') }}
+                    </div>
+                @endif
             </div>
         </div>
 
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
-                <label for="organisation">State</label>
-                <select name="organisation" id="organsation">
+                <label for="state">State</label>
+                <select name="state" id="state">
                     <option value="">Select</option>
                     @foreach( $states as $state )
                         <option value="{{ $state->id }}"
@@ -212,6 +292,12 @@
                         </option>
                     @endforeach
                 </select>
+                <!-- error message -->
+                @if ($errors->has('state'))
+                    <div class="text-danger">
+                        {{ $errors->first('state') }}
+                    </div>
+                @endif
             </div>
         </div>
 

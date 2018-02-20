@@ -110,7 +110,6 @@ class UsersController extends Controller
         if (!($validator->fails())){
 
             //check if user type fits organisation type
-
             $userType = ObjectType::where([
                 ['id', '=', $request->user_type],
                 ['type', '=', 'user']
@@ -121,7 +120,7 @@ class UsersController extends Controller
                 ['type', '=', 'organisation']
             ])->first();
 
-            if($userType->value == $organisationType->value) {
+            if($userType['value'] == $organisationType['value']) {
                 
                 //save user info
                 $user = new User();
@@ -152,13 +151,11 @@ class UsersController extends Controller
                 return redirect()->back()->with('success', 'User account successfully created!');
             } else {
                 return redirect()->back()->with('error', 'User type and Organisation type must match!');
-            }
-                        
+            }            
         }  
 
         // invalid entries
-        $errors = $validator->errors();
-        return redirect()->back()->with('error', $errors->all());
+        return redirect()->back()->withErrors($validator)->withInput();
         
         
     } 

@@ -57,8 +57,8 @@ class OrganizationController extends Controller
         $phoneTypes = ObjectType::where('type', 'phone')->get();
 
         $checkOrganisationAdmin = OrganisationAdmin::where([
-        ['user_id', '=', $currentUser->id],
-        ['organisation_id', '=', $organisation->id]
+            ['user_id', '=', $currentUser->id],
+            ['organisation_id', '=', $organisation->id]
         ])->first();
         
         $organisationAdmin = DB::table('users')
@@ -69,7 +69,8 @@ class OrganizationController extends Controller
             ->select('users.email')
             ->first();
 
-        return view('auth.shared.orgAccount', compact('currentUser', 'states', 'organisation', 'organisationPhone','organisationAddress', 'phoneTypes', 'organisationAdmin', 'checkOrganisationAdmin' ));
+        return  view('auth.shared.orgAccount', 
+                compact('currentUser', 'states', 'organisation', 'organisationPhone','organisationAddress', 'phoneTypes', 'organisationAdmin', 'checkOrganisationAdmin' ));
     }
 
 
@@ -195,46 +196,6 @@ class OrganizationController extends Controller
 
         } 
         // invalid entries
-        $errors = $validator->errors();
-        
-        if ( $errors->first('name') != null ){
-            return redirect()->back()->with('error', $errors->first('name'));
-        }
-        if ( $errors->first('code') != null ){
-            return redirect()->back()->with('error', $errors->first('code'));
-        }
-        if ( $errors->first('tax_id') != null ){
-            return redirect()->back()->with('error', $errors->first('tax_id'));
-        }
-        if ( $errors->first('services') != null ){
-            return redirect()->back()->with('error', $errors->first('services'));
-        }
-        if ( $errors->first('have_office_hours') != null ){
-            return redirect()->back()->with('error', $errors->first('have_office_hours'));
-        }
-        if ( $errors->first('website') != null ){
-            return redirect()->back()->with('error', $errors->first('website'));
-        }
-        if ( $errors->first('geographic_area_served') != null ){
-            return redirect()->back()->with('error', $errors->first('geographic_area_served'));
-        }
-        if ( $errors->first('email') != null ){
-            return redirect()->back()->with('error', $errors->first('email'));
-        }
-        if ( $errors->first('phone_number') != null ){
-            return redirect()->back()->with('error', $errors->first('phone_number'));
-        }
-        if ( $errors->first('street') != null ){
-            return redirect()->back()->with('error', $errors->first('street'));
-        }
-        if ( $errors->first('city') != null ){
-            return redirect()->back()->with('error', $errors->first('city'));
-        }
-        if ( $errors->first('zip_code') != null ){
-            return redirect()->back()->with('error', $errors->first('zip_code'));
-        }
-        if ( $errors->first('state') != null ){
-            return redirect()->back()->with('error', $errors->first('state'));
-        }
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 }

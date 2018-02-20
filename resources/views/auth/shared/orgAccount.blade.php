@@ -3,21 +3,12 @@
 @section('content')
 
 @if (session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-@endif
-
-@if (session('error'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session('error') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 @endif
 
     <div class="card mb-3 org_account_cont">
@@ -34,8 +25,13 @@
                     
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         
-                        <form action="{{ route('user.organisation.update.info') }}" method="post">
-                            {{ csrf_field() }}
+                        <form   @if(isset($checkOrganisationAdmin->id))
+                                    action="{{ route('user.organisation.update.info') }}" method="post"
+                                @endif >
+                        
+                            @if(isset($checkOrganisationAdmin->id))
+                                {{ csrf_field() }}
+                            @endif
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -48,8 +44,19 @@
                                                     echo $organisation->name;
                                                     endif;
                                                     ?>"
-                                            required>
+                                            required
+                                            @if(!isset($checkOrganisationAdmin->id))
+                                                disabled
+                                            @endif
+                                            >
+                                    <!-- error message -->
+                                    @if ($errors->has('name'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('name') }}
+                                        </div>
+                                    @endif
                                 </div>
+
                                 <div id="sign_up_org_code_half_row" class="form-group col-md-6">
                                     <label for="org_code">Organization Code</label>
                                     <input  type="text" class="form-control"
@@ -58,7 +65,17 @@
                                                     if (isset($organisation->code)):
                                                     echo $organisation->code;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
+                                    <!-- error message -->
+                                    @if ($errors->has('code'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('code') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -73,7 +90,17 @@
                                                     echo $organisation->tax_id;
                                                     endif;
                                                     ?>"
-                                            required>
+                                            required
+                                            @if(!isset($checkOrganisationAdmin->id))
+                                                disabled
+                                            @endif
+                                            >
+                                    <!-- error message -->
+                                    @if ($errors->has('tax_id'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('tax_id') }}
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -85,7 +112,17 @@
                                                     if (isset($organisation->services)):
                                                     echo $organisation->services;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
+                                    <!-- error message -->
+                                    @if ($errors->has('services'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('services') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             
@@ -101,10 +138,15 @@
                                                     if ($organisation->have_office_hours == 1):
                                                     echo "checked";
                                                     endif;
-                                                    ?>>
+                                                    ?>
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
 
                                             <label class="custom-control-label" for="org_office_hours_yes">Yes</label>
                                         </div>
+
 
                                         <div class="custom-control custom-radio custom-control-inline">
                                             <input  type="radio" class="custom-control-input"
@@ -114,11 +156,21 @@
                                                     if ($organisation->have_office_hours == 0):
                                                     echo "checked";
                                                     endif;
-                                                    ?>>
+                                                    ?>
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
 
                                             <label class="custom-control-label" for="org_office_hours_no">No</label>
                                         </div>
                                     </div>
+                                    <!-- error message -->
+                                    @if ($errors->has('have_office_hours'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('have_office_hours') }}
+                                        </div>
+                                    @endif
                                 </div>
                                 
                                 <div class="form-group col-md-6">
@@ -130,9 +182,20 @@
                                                     if (isset($organisation->website)):
                                                     echo $organisation->website;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
+                                    <!-- error message -->
+                                    @if ($errors->has('website'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('website') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
+
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="org_geo_service_area">Geographic Service Area</label>
@@ -143,8 +206,19 @@
                                                     if (isset($organisation->geographic_area_served)):
                                                     echo $organisation->geographic_area_served;
                                                     endif;
-                                                    ?>">
+                                                    ?>"
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
+                                    <!-- error message -->
+                                    @if ($errors->has('geographic_area_served'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('geographic_area_served') }}
+                                        </div>
+                                    @endif
                                 </div>
+
                                 <div class="form-group col-md-6">
                                     <label for="org_admin">Organization Admin</label>
                                     <input  type="text" class="form-control"
@@ -156,6 +230,12 @@
                                                     endif;
                                                     ?>"
                                             disabled>
+                                    <!-- error message -->
+                                    @if ($errors->has('org_admin'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('org_admin') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -172,7 +252,17 @@
                                                     echo $organisationPhone->number;
                                                     endif;
                                                     ?>"
-                                            required>
+                                            required
+                                            @if(!isset($checkOrganisationAdmin->id))
+                                                disabled
+                                            @endif
+                                            >
+                                    <!-- error message -->
+                                    @if ($errors->has('phone_number'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('phone_number') }}
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -185,7 +275,17 @@
                                                     echo $organisation->email;
                                                     endif;
                                                     ?>"
-                                            required>
+                                            required
+                                            @if(!isset($checkOrganisationAdmin->id))
+                                                disabled
+                                            @endif
+                                            >
+                                    <!-- error message -->
+                                    @if ($errors->has('email'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('email') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -200,7 +300,16 @@
                                                     echo $organisationAddress->street;
                                                     endif;
                                                     ?>"
-                                            >                                        
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
+                                    <!-- error message -->
+                                    @if ($errors->has('street'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('street') }}
+                                        </div>
+                                    @endif                                        
                                 </div>
                                 <div class="form-group col-md-6"></div>
                             </div>
@@ -216,12 +325,25 @@
                                                     echo $organisationAddress->city;
                                                     endif;
                                                     ?>"
-                                            >
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
+                                    <!-- error message -->
+                                    @if ($errors->has('city'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('city') }}
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label for="state">State</label>
-                                    <select class="form-control" id="state" name="state">
+                                    <select class="form-control" id="state" name="state"
+                                            @if(!isset($checkOrganisationAdmin->id))
+                                                disabled
+                                            @endif
+                                    >
                                         <option value="">Select State</option>
                                         @foreach($states as $state)
                                         <option value="{{$state->id}}"
@@ -232,6 +354,12 @@
                                         </option>
                                         @endforeach                           
                                     </select>
+                                    <!-- error message -->
+                                    @if ($errors->has('state'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('state') }}
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="form-group col-md-2">
@@ -244,11 +372,22 @@
                                                     echo $organisation->zip_code;
                                                     endif;
                                                     ?>"
-                                            >                                
+                                                    @if(!isset($checkOrganisationAdmin->id))
+                                                        disabled
+                                                    @endif
+                                                    >
+                                    <!-- error message -->
+                                    @if ($errors->has('zip_code'))
+                                        <div class="text-danger">
+                                            {{ $errors->first('zip_code') }}
+                                        </div>
+                                    @endif                                
                                 </div>
                             </div>
                             <br>
-                            <button type="submit" class="sh_save_btn btn btn-outline-primary float-right">Save</button>
+                            @if(isset($checkOrganisationAdmin->id))
+                                <button type="submit" class="sh_save_btn btn btn-outline-primary float-right">Save</button>
+                            @endif
                         </form>
                     </div>
                     <div class="col-lg-2 col-md-2">

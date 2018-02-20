@@ -40,6 +40,17 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		// admin panel dashboard page
 		Route::get('/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
 
+		// organisation pages
+		Route::get('/organizations/advocates', 'Admin\OrganisationController@advocates')->name('admin.organisations.advocates.list');
+		Route::get('/organizations/shelters', 'Admin\OrganisationController@shelters')->name('admin.organisations.shelters.list');
+		Route::get('/organization/add', 'Admin\OrganisationController@add')->name('admin.organisation.add.page');
+		Route::post('/organization/add', 'Admin\OrganisationController@addSubmit')->name('admin.organisation.add.submit');
+		// edit organisation page
+		Route::get('/organization/{id}/{slug}', 'Admin\OrganisationEditController@editOrganisationPage')->name('admin.organisation.edit.page');
+		// edit organisation form submits
+		Route::post('/user/{id}/{slug}/edit/general', 'Admin\OrganisationEditController@submitGeneral')->name('admin.organisation.edit.submit.general');
+		Route::post('/user/{id}/{slug}/edit/contact', 'Admin\OrganisationEditController@submitContact')->name('admin.organisation.edit.submit.contact');
+
 		// user pages
 		Route::get('/users/advocates', 'Admin\UsersController@advocates')->name('admin.users.advocates.list');
 		Route::get('/users/shelters', 'Admin\UsersController@shelters')->name('admin.users.shelters.list');
