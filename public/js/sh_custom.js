@@ -894,11 +894,11 @@ jQuery(document).ready(function() {
 
                     } else {
 
-                        $('#petsInNeedQAModal .spinner_cont').css('display','none');
+                        /*$('#petsInNeedQAModal .spinner_cont').css('display','none');
                         modal_button_clicked.removeClass('disabled');
 
                         $('#petsInNeedQAModal .invalid-feedback').html(obj.message);
-                        $('#petsInNeedQAModal .invalid-feedback').fadeIn("slow", function () {});
+                        $('#petsInNeedQAModal .invalid-feedback').fadeIn("slow", function () {});*/
                     }
                 },
                 error: function (xml, status, error) {

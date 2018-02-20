@@ -694,7 +694,7 @@
                                 <div class="form-row">
 
                                     <div class="form-group col-md-12 text-right">
-                                        <button id="add_another_pet" type="button" class="btn btn-primary">Add Another Pet</button>
+                                        <?php /*<button id="add_another_pet" type="button" class="btn btn-primary">Add Another Pet</button>*/ ?>
                                         <button id="next_step_2_3" type="button" class="btn btn-primary">Next Step</button>
                                         <div class="spinner_cont spinner_form_2"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
                                     </div>
@@ -765,7 +765,7 @@
                         <div class="form-group col-md-12 text-center">
 
                             <button id="client_new_application_submit" type="button" class="btn btn-primary">Submit Application</button>
-                            <button id="client_new_application_start_another" type="button" class="btn btn-primary">Start another Application</button>
+                            <a href="/application/new" id="client_new_application_start_another" type="button" class="btn btn-primary">Start another Application</a>
                         </div>
                     </div>
                 </div>
