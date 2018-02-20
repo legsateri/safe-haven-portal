@@ -14,12 +14,16 @@
 <div class="card mb-3">
 <div class="card-header">
     <i class="fa fa-area-chart"></i> Edit {{ $organisation->name }}</div>
+
+@include('admin.organisations.edit_organisation_submenu_partial')
+
 <div class="card-body">
-    <form action="" method="post">
+    <form   action="{{ route('admin.organisation.edit.submit.general', ['id' => $organisation->id, 'slug' => $organisation->slug]) }}" 
+            method="post">
         {{ csrf_field() }}
 
         <div class="form row">
-            <div class="form-group col-md-8 offset-md-2">
+            <div class="form-group col-md-8 offset-md-2">   
                 <h4>General information</h4>
                 <hr> 
             </div>
@@ -63,28 +67,7 @@
 
         </div>
 
-        <div class="form row">
-            <div class="form-group col-md-4  offset-md-2">
-                <label for="organisation_type">Organisation type</label>
-                <select name="organisation_type" id="organisation_type">
-                    <option value="">Select type</option>
-                    @foreach ( $organisationTypes as $organisationType )
-                        <option value="{{ $organisationType->id }}"
-                            @if( $organisationType->id == $organisation->type_id )
-                                selected
-                            @endif
-                        >
-                            {{ $organisationType->label }} 
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            @if ($errors->has('organisation_type'))
-                <div class="text-danger">
-                    {{ $errors->first('organisation_type') }}
-                </div>
-            @endif
-        </div>
+
 
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
@@ -94,7 +77,8 @@
     </form>
 
 
-    <form action="" method="post">
+    <form   action="{{ route('admin.organisation.edit.submit.contact', ['id' => $organisation->id, 'slug' => $organisation->slug]) }}" 
+            method="post">
         {{ csrf_field() }}
 
         <div class="form row">

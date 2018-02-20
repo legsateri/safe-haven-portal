@@ -1,5 +1,6 @@
 
       <ul class="navbar-nav ml-auto">
+        <?php /*
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-fw fa-envelope"></i>
@@ -89,6 +90,7 @@
             </div>
           </form>
         </li>
+        */  ?>
         <li class="nav-item">
           <a class="nav-link" data-toggle="modal" data-target="#logOutModal">
             <i class="fa fa-fw fa-sign-out"></i>Logout</a>

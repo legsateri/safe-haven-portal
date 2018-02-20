@@ -3,7 +3,9 @@
 @section('content')
 <div class="card mb-3">
 <div class="card-header">
-    <i class="fa fa-area-chart"></i> Organizations</div>
+    <i class="fa fa-area-chart"></i> 
+    {{ $type->label }} Organizations
+</div>
 <div class="card-body">
     <?php
         // defines row counter for results in table
@@ -24,16 +26,18 @@
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
-                    <th scope="col"></th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Tax ID</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach( $organisations as $organisation )
                     <tr>
                         <th scope="row">{{ $counter }}</th>
-                        <td>{{ $organisation->name }}</td>
+                        <td><a href="{{ route('admin.organisation.edit.general.page', ['id'=> $organisation->id, 'slug'=> $organisation->slug]) }}">{{ $organisation->name }}</a></td>
                         <td>{{ $organisation->email }}</td>
-                        <td><a href="{{ route('admin.organisation.edit.page', ['id'=> $organisation->id, 'slug'=> $organisation->slug]) }}">edit organization</a></td>
+                        <td>{{ $organisation->code }}</td>
+                        <td>{{ $organisation->tax_id }}</td>
                     </tr>
                     <?php $counter++; ?>
                 @endforeach

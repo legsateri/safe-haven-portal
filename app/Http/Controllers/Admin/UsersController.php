@@ -9,6 +9,7 @@ use Validator;
 use App\Phone;
 use App\User;
 use DB;
+use Hash;
 
 class UsersController extends Controller
 {
@@ -20,7 +21,7 @@ class UsersController extends Controller
     {
         $users = DB::table('users')
         ->join('object_types', 'users.user_type_id', '=', 'object_types.id')
-        ->join('organisations', 'users.organisation_id', '=', 'organisations.id')
+        ->leftJoin('organisations', 'users.organisation_id', '=', 'organisations.id')
         ->where([
             ['object_types.type', '=', 'user'],
             ['object_types.value', '=', 'advocate'],
@@ -49,7 +50,7 @@ class UsersController extends Controller
     {
         $users = DB::table('users')
         ->join('object_types', 'users.user_type_id', '=', 'object_types.id')
-        ->join('organisations', 'users.organisation_id', '=', 'organisations.id')
+        ->leftJoin('organisations', 'users.organisation_id', '=', 'organisations.id')
         ->where([
             ['object_types.type', '=', 'user'],
             ['object_types.value', '=', 'shelter'],
@@ -126,7 +127,8 @@ class UsersController extends Controller
                 $user = new User();
                 $user->first_name = $request->first_name;
                 $user->last_name = $request->last_name;
-                $user->type_id = $request->user_type;
+                $user->slug = str_slug($request->first_name . ' ' . $request->last_name, '-');
+                $user->user_type_id = $userType->id;
                 $user->organisation_id = $request->organisation;
                 $user->email = $request->email;
                 
@@ -147,8 +149,14 @@ class UsersController extends Controller
                 $userPhone->number = $request->phone;
                 $userPhone->phone_type_id = $userPhoneType->id;
                 $userPhone->save();
-
-                return redirect()->back()->with('success', 'User account successfully created!');
+                
+                // redirect to user edit page with success message
+                return redirect()
+                    ->route('admin.user.edit.page', [
+                        'id' => $user->id,
+                        'slug' => $user->slug
+                    ])
+                    ->with('success', 'User account successfully created!');
             } else {
                 return redirect()->back()->with('error', 'User type and Organisation type must match!');
             }            

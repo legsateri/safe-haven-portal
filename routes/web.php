@@ -46,10 +46,21 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/organization/add', 'Admin\OrganisationController@add')->name('admin.organisation.add.page');
 		Route::post('/organization/add', 'Admin\OrganisationController@addSubmit')->name('admin.organisation.add.submit');
 		// edit organisation page
-		Route::get('/organization/{id}/{slug}', 'Admin\OrganisationEditController@editOrganisationPage')->name('admin.organisation.edit.page');
+		Route::get('/organization/{id}/{slug}/general', 'Admin\OrganisationEditController@editGeneral')->name('admin.organisation.edit.general.page');
+		Route::get('/organization/{id}/{slug}/profile', 'Admin\OrganisationEditController@editProfile')->name('admin.organisation.edit.profile.page');
+		Route::get('/organization/{id}/{slug}/contact', 'Admin\OrganisationEditController@editContact')->name('admin.organisation.edit.contact.page');
+		Route::get('/organization/{id}/{slug}/users', 'Admin\OrganisationEditController@editUsers')->name('admin.organisation.edit.users.page');
+		Route::get('/organization/{id}/{slug}/admins', 'Admin\OrganisationEditController@editAdmins')->name('admin.organisation.edit.admins.page');
+		
 		// edit organisation form submits
-		Route::post('/user/{id}/{slug}/edit/general', 'Admin\OrganisationEditController@submitGeneral')->name('admin.organisation.edit.submit.general');
-		Route::post('/user/{id}/{slug}/edit/contact', 'Admin\OrganisationEditController@submitContact')->name('admin.organisation.edit.submit.contact');
+		Route::post('/organization/{id}/{slug}/edit/general', 'Admin\OrganisationEditController@submitGeneral')->name('admin.organisation.edit.submit.general');
+		Route::post('/organization/{id}/{slug}/edit/contact', 'Admin\OrganisationEditController@submitContact')->name('admin.organisation.edit.submit.contact');
+
+		Route::post('/organization/{id}/{slug}/remove/user', 'Admin\OrganisationEditController@removeUserSubmit')->name('admin.organisation.edit.submit.remove.user');
+		Route::post('/organization/{id}/{slug}/remove/admin', 'Admin\OrganisationEditController@removeAdminSubmit')->name('admin.organisation.edit.submit.remove.admin');
+		Route::post('/organization/{id}/{slug}/add/admin', 'Admin\OrganisationEditController@addAdminSubmit')->name('admin.organisation.edit.submit.add.admin');
+
+
 
 		// user pages
 		Route::get('/users/advocates', 'Admin\UsersController@advocates')->name('admin.users.advocates.list');

@@ -22,7 +22,7 @@ class UserEditController extends Controller
     {
         // get user data
         $user = DB::table('users')
-        ->join('organisations', 'users.organisation_id', '=', 'organisations.id')
+        ->leftJoin('organisations', 'users.organisation_id', '=', 'organisations.id')
         ->where([
             ['users.id', '=', $id],
             ['users.slug', '=', $slug]

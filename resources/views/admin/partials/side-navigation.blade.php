@@ -49,7 +49,7 @@
             </li>
           </ul>
         </li>
-
+        <?php /*
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Clients">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseClients" data-parent="#exampleAccordion">
 
@@ -75,7 +75,7 @@
             </li>
           </ul>
         </li>
-
+        */ ?>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Clients">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSettings" data-parent="#exampleAccordion">
 

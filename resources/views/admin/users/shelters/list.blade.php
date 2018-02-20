@@ -27,31 +27,33 @@
                     <th scope="col">Organization</th>
                     <th scope="col">Verified</th>
                     <th scope="col">Banned</th>
-                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach( $users as $user )
                     <tr>
                         <th scope="row">{{ $counter }}</th>
-                        <td>{{ $user->first_name }} {{ $user->last_name }}</td>
+                        <td><a href="{{ route('admin.user.edit.page', ['id'=> $user->id, 'slug'=> $user->slug]) }}">{{ $user->first_name }} {{ $user->last_name }}</a></td>
                         <td>{{ $user->email }}</td>
-                        <td><a href="">{{ $user->organisation_name }}</a></td>
+                        @if( $user->organisation_name != null )
+                            <td><a href="{{ route('admin.organisation.edit.general.page', ['id' => $user->organisation_id, 'slug' => $user->organisation_slug]) }}">{{ $user->organisation_name }}</a></td>
+                        @else
+                            <td></td>
+                        @endif
                         <td>
                             @if ( $user->verified == 1 )
-                                Yes 
+                                <span style="color:green">Yes</span>
                             @else
-                                No 
+                                <span style="color:red">No</span>
                             @endif
                         </td>
                         <td>
                             @if ( $user->banned == 1 )
-                                Yes 
+                                <span style="color:red">Yes</span>
                             @else
-                                No 
+                                <span style="color:green">No</span>
                             @endif
-                            </td>
-                        <td><a href="{{ route('admin.user.edit.page', ['id'=> $user->id, 'slug'=> $user->slug]) }}">edit user</a></td>
+                        </td>
                     </tr>
                     <?php $counter++; ?>
                 @endforeach

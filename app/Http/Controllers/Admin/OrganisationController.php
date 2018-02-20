@@ -21,9 +21,15 @@ class OrganisationController extends Controller
     public function advocates()
     {
         $organisations = $this->_getListItems('advocate');
+        $type = DB::table('object_types')
+        ->where([
+            ['type', '=', 'organisation'],
+            ['value', '=', 'advocate']
+        ])
+        ->first();
         
         return  view('admin.organisations.list', 
-                compact('organisations'));
+                compact('organisations', 'type'));
     }
 
 
@@ -33,9 +39,15 @@ class OrganisationController extends Controller
     public function shelters()
     {
         $organisations = $this->_getListItems('shelter');
+        $type = DB::table('object_types')
+        ->where([
+            ['type', '=', 'organisation'],
+            ['value', '=', 'shelter']
+        ])
+        ->first();
 
         return  view('admin.organisations.list', 
-                compact('organisations'));
+                compact('organisations', 'type'));
     }
 
 
@@ -178,7 +190,7 @@ class OrganisationController extends Controller
 
             // redirect to edit organisation page
             return redirect()
-                    ->route('admin.organisation.edit.page', [
+                    ->route('admin.organisation.edit.general.page', [
                         'id' => $organisation->id,
                         'slug' => $organisation->slug
                     ])
@@ -208,7 +220,8 @@ class OrganisationController extends Controller
             'organisations.name as name',
             'organisations.email as email',
             'organisations.code as code',
-            'organisations.org_type_id as type_id'
+            'organisations.org_type_id as type_id',
+            'organisations.tax_id as tax_id'
         )
         ->paginate(10);
 
