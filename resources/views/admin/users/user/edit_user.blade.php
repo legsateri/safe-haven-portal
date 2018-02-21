@@ -32,10 +32,9 @@
     </div>
 @endif
 
-<!--success message -->
-@if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
+@if (session('error-old-password'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error-old-password') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -333,28 +332,46 @@
         {{ csrf_field() }}
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
-                <label for="password">New User Password</label>
-                <input type="password" class="form-control"
-                id="password" name="password" 
-                maxlength="40" 
-                value="">
+                <label for="new_password">New User Password</label>
+                <input  type="password" class="form-control"
+                        id="new_password" name="new_password" 
+                        maxlength="40" 
+                        value="">
+                <!-- error message -->
+                @if ($errors->has('new_password'))
+                    <div class="text-danger">
+                        {{ $errors->first('new_password') }}
+                    </div>
+                @endif
             </div>
 
             <div class="form-group col-md-4">
-                <label for="repeat-password">Repeat Password</label>
-                <input type="password" class="form-control"
-                id="repeat-password"  name="repeat-password" 
-                maxlength="40"
-                value="">
+                <label for="repeat_new_password">Repeat Password</label>
+                <input  type="password" class="form-control"
+                        id="repeat_new_password"  name="repeat_new_password" 
+                        maxlength="40"
+                        value="">
+                <!-- error message -->
+                @if ($errors->has('repeat_new_password'))
+                    <div class="text-danger">
+                        {{ $errors->first('repeat_new_password') }}
+                    </div>
+                @endif
             </div>
         </div>
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
-                <label for="your_password">Your password</label>
-                <input type="your_password" class="form-control"
-                id="your_password" name="your_password" 
-                maxlength="40" 
-                value="">
+                <label for="old_password">Your password</label>
+                <input  type="password" class="form-control"
+                        id="old_password" name="old_password" 
+                        maxlength="40" 
+                        value="">
+                <!-- error message -->
+                @if ($errors->has('old_password'))
+                    <div class="text-danger">
+                        {{ $errors->first('old_password') }}
+                    </div>
+                @endif
             </div>
         </div>
         <div class="form row">

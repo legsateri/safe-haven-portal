@@ -12,6 +12,7 @@ use App\ObjectType;
 use App\State;
 use Validator;
 use App\User;
+use Hash;
 
 class UserEditController extends Controller
 {
@@ -208,6 +209,41 @@ class UserEditController extends Controller
      */
     public function submitPassword($id, $slug, Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'old_password'  =>  'required|string|min:6|max:40',
+            'new_password'  =>  'required|string|min:6|max:40',
+            'repeat_new_password' =>  'required|same:new_password',
+        ]);
+
+        if (!($validator->fails()))
+        {
+            //find user to edit
+             $user = User::where([
+                ['id', '=', $id],
+                ['slug', '=', $slug]
+            ])->first();
+
+            // check if old password is valid
+            if (Hash::check($request->old_password, $user->password)){ 
+
+                // update database
+                $hashed = Hash::make($request->new_password);
+                $user->password = $hashed;
+                $user->update();
+                
+                return redirect()
+                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->with('success-password', ' Password was successfully changed!');
+
+            } else {
+                // invalid old password
+                return redirect()->back()->with('error-old-password', 'Invalid old password!');
+            }
+        } else {
+
+            // invalid entries in password fields
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
     }
 
