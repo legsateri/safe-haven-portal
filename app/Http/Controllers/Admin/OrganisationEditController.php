@@ -10,6 +10,11 @@ use Validator;
 
 use App\User;
 use App\OrganisationAdmin;
+use App\State;
+use App\Phone;
+use App\Address;
+use App\Organisation;
+use App\ObjectType;
 
 class OrganisationEditController extends Controller
 {
@@ -36,10 +41,26 @@ class OrganisationEditController extends Controller
      */
     public function editContact($id, $slug)
     {
+        // get organisation basin data
         $organisation = $this->_getOrganisationInfo($id, $slug);
-        
+        // get states list
+        $states = State::all();
+
+        // get organisation phone
+        $phone = Phone::where([
+            ['entity_type', '=', 'organisation'],
+            ['entity_id', '=', $organisation->id]
+        ])
+        ->first();
+        // get organisation address
+        $address = Address::where([
+            ['entity_type', '=', 'organisation'],
+            ['entity_id', '=', $organisation->id]
+        ])
+        ->first();
+
         return  view('admin.organisations.edit_organisation_contact', 
-                compact('organisation'));
+                compact('organisation', 'states', 'phone','address'));
     } // end editContact
 
 
@@ -138,12 +159,13 @@ class OrganisationEditController extends Controller
         $organisation = DB::table('organisations')
         ->where([
             ['organisations.id', '=', $id],
-            ['organisations.slug', '=', $slug],
+            ['organisations.slug', '=', $slug]
         ])
         ->select(
             'organisations.id as id',
             'organisations.slug as slug',
             'organisations.name as name',
+            'organisations.email as email',
             'organisations.org_type_id as type_id',
             'organisations.tax_id as tax_id'
         )
@@ -154,16 +176,155 @@ class OrganisationEditController extends Controller
 
 
 
+    /**
+     * submit edit organisation general information
+     */
     public function submitGeneral($id, $slug, Request $request)
     {
+        $organisation = $this->_getOrganisationInfo($id, $slug);
+        if( !isset($organisation->id) )
+        {
+            // if no organisation is found, return back to page
+            return redirect()->route('admin.organisation.edit.general.page', [ 'id' => $id, 'slug' => $slug ]);
+        }
+
+        // validate entries from request
+        $validator = Validator::make($request->all(),[
+            'name'     => 'required|string|max:45',
+            'code'     => 'nullable|string|max:10',
+            'tax_id'   => 'nullable|exists:states,name',
+            'type'     => 'required',
+        ]);
+
+        if (!($validator->fails()))
+        {
+
+        }
+
+        // return to edit page
+        return redirect()
+        ->route('admin.organisation.edit.contact.page', [
+            'id' => $id,
+            'slug' => $slug
+        ])
+        ->withErrors($validator)
+        ->withInput();
 
     } // end submitGeneral
 
     
 
-
+    /**
+     * submit edit organisation contact information
+     */
     public function submitContact($id, $slug, Request $request)
     {
+        $organisation = $this->_getOrganisationInfo($id, $slug);
+        if( !isset($organisation->id) )
+        {
+            // if no organisation is found, return back to page
+            return redirect()->route('admin.organisation.edit.contact.page', [ 'id' => $id, 'slug' => $slug ]);
+        }
+        
+        // validate data from request
+        $validator = Validator::make($request->all(),[
+            'email'     => 'nullable|email|max:45',
+            'phone'     => 'nullable|string|max:10',
+            'state'     => 'nullable|exists:states,name',
+            'city'      => 'nullable|string|max:45',
+            'zip_code'  => 'nullable|string|max:5',
+            'street'    => 'nullable|string|max:65',
+        ]);
+
+        if (!($validator->fails()))
+        {
+            // update email
+            if ( $organisation->email != $request->email )
+            {
+                $organisation = Organisation::where('id', $organisation->id)->first();
+                $organisation->email = $request->email;
+                $organisation->update();
+            }
+
+            // update phone (or add if not found)
+            $phone = Phone::where([
+                ['entity_type', '=', 'organisation'],
+                ['entity_id', '=', $organisation->id]
+            ])->first();
+            
+            if ( isset($phone->id) )
+            {   
+                // update phone entry
+                $phone->number = $request->phone;
+                $phone->update();
+            }
+            else
+            {
+                // get new phone type id
+                $phoneType = ObjectType::where([
+                    ['type', '=', 'phone'],
+                    ['value', '=', 'office']
+                ])->first();
+                // insert new phone entry
+                $phone = new Phone();
+                $phone->entity_type = 'organisation';
+                $phone->entity_id = $organisation->id;
+                $phone->phone_type_id = $phoneType->id;
+                $phone->number = $request->phone;
+                $phone->save();
+            }
+
+            // update address (or add if not found)
+            $address = Address::where([
+                ['entity_type', '=', 'organisation'],
+                ['entity_id', '=', $organisation->id]
+            ])->first();
+
+            if ( isset($address->id) )
+            {
+                // update address entry
+                $address->state = $request->state;
+                $address->city = $request->city;
+                $address->zip_code = $request->zip_code;
+                $address->street = $request->street;
+                $address->update();
+            }
+            else
+            {
+                // get new address type id
+                $addressType = ObjectType::where([
+                    ['type', '=', 'address'],
+                    ['value', '=', 'office']
+                ])->first();
+                // inser new address entry
+                $address = new Address();
+                $address->entity_type = 'organisation';
+                $address->entity_id = $addressType->id;
+                $address->state = $request->state;
+                $address->city = $request->city;
+                $address->zip_code = $request->zip_code;
+                $address->street = $request->street;
+                $address->save();
+            }
+
+            // return redirect to list page with success message
+            return redirect()
+                    ->route('admin.organisation.edit.contact.page', [
+                        'id' => $id,
+                        'slug' => $slug
+                    ])
+                    ->with('success', 'Contact information successfully updated!');
+
+        }
+
+        // return to edit page
+        return redirect()
+        ->route('admin.organisation.edit.contact.page', [
+            'id' => $id,
+            'slug' => $slug
+        ])
+        ->withErrors($validator)
+        ->withInput();
 
     } // end submitContact
 

@@ -36,7 +36,11 @@
                 <input  type="email" class="form-control"
                         id="email" name="email" 
                         maxlength="40" 
-                        value="{{ old('email') }}"
+                        @if( isset( $organisation->email ) )
+                            value="{{ $organisation->email }}"
+                        @else
+                            value="{{ old('email') }}"
+                        @endif
                         >
                 <!-- error message -->
                 @if ($errors->has('email'))
@@ -51,7 +55,11 @@
                 <input  type="text" class="form-control"
                         id="phone" name="phone" 
                         maxlength="40" 
-                        value="{{ old('phone') }}"
+                        @if( isset( $phone->number ) )
+                            value="{{ $phone->number }}"
+                        @else
+                            value="{{ old('phone') }}"
+                        @endif
                         >
                 <!-- error message -->
                 @if ($errors->has('phone'))
@@ -62,6 +70,31 @@
             </div>
         </div>
 
+        <div class="form row">
+            <div class="form-group col-md-4 offset-md-2">
+                <label for="state">State</label>
+                <select name="state" id="state">
+                    <option value="">Select</option>
+                    @foreach( $states as $state )
+                        <option value="{{ $state->name }}"
+                        @if( isset($address->state) )
+                            @if( $address->state == $state->name )
+                                selected
+                            @endif
+                        @endif
+                        >
+                            {{ $state->name }}
+                        </option>
+                    @endforeach
+                </select>
+                <!-- error message -->
+                @if ($errors->has('state'))
+                    <div class="text-danger">
+                        {{ $errors->first('state') }}
+                    </div>
+                @endif
+            </div>
+        </div>
 
         <div class="form row">
             <div class="form-group col-md-5 offset-md-2">
@@ -69,7 +102,11 @@
                 <input  type="text" class="form-control"
                         id="city" name="city" 
                         maxlength="40"
-                        value="{{ old('city') }}"
+                        @if( isset( $address->city ) )
+                            value="{{ $address->city }}"
+                        @else
+                            value="{{ old('city') }}"
+                        @endif
                         >
                 <!-- error message -->
                 @if ($errors->has('city'))
@@ -84,7 +121,11 @@
                 <input  type="text" class="form-control"
                         id="zip_code" name="zip_code" 
                         maxlength="40" 
-                        value="{{ old('zip_code') }}"
+                        @if( isset( $address->zip_code ) )
+                            value="{{ $address->zip_code }}"
+                        @else
+                            value="{{ old('zip_code') }}"
+                        @endif
                         >
                 <!-- error message -->
                 @if ($errors->has('zip_code'))
@@ -101,7 +142,11 @@
                 <input  type="text" class="form-control"
                         id="street" name="street" 
                         maxlength="100" 
-                        value="{{ old('street') }}"
+                        @if( isset( $address->street ) )
+                            value="{{ $address->street }}"
+                        @else
+                            value="{{ old('street') }}"
+                        @endif
                         >
                 <!-- error message -->
                 @if ($errors->has('street'))

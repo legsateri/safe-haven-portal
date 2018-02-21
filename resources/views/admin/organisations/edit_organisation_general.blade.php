@@ -18,24 +18,24 @@
 @include('admin.organisations.edit_organisation_submenu_partial')
 
 <div class="card-body">
-    <form   action="{{ route('admin.organisation.edit.submit.general', ['id' => $organisation->id, 'slug' => $organisation->slug]) }}" 
+    <form   action="{{ route('admin.organisation.edit.submit.general', ['id' => $organisation->id, 'slug' => $organisation->slug]) }}"
             method="post">
         {{ csrf_field() }}
 
         <div class="form row">
-            <div class="form-group col-md-8 offset-md-2">   
+            <div class="form-group col-md-8 offset-md-2">
                 <h4>General information</h4>
-                <hr> 
+                <hr>
             </div>
         </div>
 
         <div class="form row">
 
-            <div class="form-group col-md-4 offset-md-2"> 
+            <div class="form-group col-md-4 offset-md-2">
                 <label for="name">Name</label>
                 <input  type="text" class="form-control"
-                        id="name" name="name" 
-                        maxlength="40" 
+                        id="name" name="name"
+                        maxlength="40"
                         @if( isset($organisation->name) )
                             value="{{ $organisation->name }}"
                         @endif
@@ -49,18 +49,18 @@
             </div>
 
             <div class="form-group col-md-4">
-                <label for="organisation_code">Organization code</label>
+                <label for="code">Organization code</label>
                 <input  type="text" class="form-control"
-                        id="organisation_code" name="organisation_code" 
-                        maxlength="40" 
+                        id="code" name="code"
+                        maxlength="40"
                         @if( isset($organisation->code) )
                             value="{{ $organisation->code }}"
                         @endif
                         >
                 <!-- error message -->
-                @if ($errors->has('organisation_code'))
+                @if ($errors->has('code'))
                     <div class="text-danger">
-                        {{ $errors->first('organisation_code') }}
+                        {{ $errors->first('code') }}
                     </div>
                 @endif
             </div>
@@ -69,11 +69,11 @@
 
         <div class="form row">
 
-            <div class="form-group col-md-4 offset-md-2"> 
+            <div class="form-group col-md-4 offset-md-2">
                 <label for="tax_id">Tax ID</label>
                 <input  type="text" class="form-control"
-                        id="tax_id" name="tax_id" 
-                        maxlength="40" 
+                        id="tax_id" name="tax_id"
+                        maxlength="40"
                         @if( isset($organisation->tax_id) )
                             value="{{ $organisation->tax_id }}"
                         @endif
@@ -90,8 +90,8 @@
 
         <div class="form row">
             <div class="form-group col-md-4  offset-md-2">
-                <label for="organisation_type">Organisation type</label>
-                <select name="organisation_type" id="organisation_type">
+                <label for="type">Organisation type</label>
+                <select name="type" id="type">
                     <option value="">Select type</option>
                     @foreach ( $organisationTypes as $organisationType )
                         <option value="{{ $organisationType->id }}"
@@ -99,14 +99,14 @@
                                 selected
                             @endif
                         >
-                            {{ $organisationType->label }} 
+                            {{ $organisationType->label }}
                         </option>
                     @endforeach
                 </select>
             </div>
-            @if ($errors->has('organisation_type'))
+            @if ($errors->has('type'))
                 <div class="text-danger">
-                    {{ $errors->first('organisation_type') }}
+                    {{ $errors->first('type') }}
                 </div>
             @endif
         </div>
