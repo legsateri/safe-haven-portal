@@ -191,8 +191,8 @@ class OrganisationEditController extends Controller
         // validate entries from request
         $validator = Validator::make($request->all(),[
             'name'     => 'required|string|max:45',
-            'code'     => 'nullable|string|max:10',
-            'tax_id'   => 'nullable|exists:states,name',
+            'code'     => 'nullable',
+            'tax_id'   => 'nullable',
             'type'     => 'required',
         ]);
 
@@ -203,7 +203,7 @@ class OrganisationEditController extends Controller
 
         // return to edit page
         return redirect()
-        ->route('admin.organisation.edit.contact.page', [
+        ->route('admin.organisation.edit.general.page', [
             'id' => $id,
             'slug' => $slug
         ])
@@ -211,6 +211,45 @@ class OrganisationEditController extends Controller
         ->withInput();
 
     } // end submitGeneral
+
+
+
+
+    /**
+     * submit edit organisation profile information
+     */
+    public function submitProfile($id, $slug, Request $request)
+    {
+        $organisation = $this->_getOrganisationInfo($id, $slug);
+        if( !isset($organisation->id) )
+        {
+            // if no organisation is found, return back to page
+            return redirect()->route('admin.organisation.edit.contact.page', [ 'id' => $id, 'slug' => $slug ]);
+        }
+
+        // validate data from request
+        $validator = Validator::make($request->all(),[
+            'services'     => 'nullable',
+            'office_hours'     => 'nullable',
+            'website'     => 'nullable',
+            'geographic_area_served'      => 'nullable',
+        ]);
+
+        if (!($validator->fails()))
+        {
+
+        }
+
+        // return to edit page
+        return redirect()
+        ->route('admin.organisation.edit.profile.page', [
+            'id' => $id,
+            'slug' => $slug
+        ])
+        ->withErrors($validator)
+        ->withInput();
+        
+    } // end submitProfile
 
     
 

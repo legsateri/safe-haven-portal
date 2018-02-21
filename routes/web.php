@@ -55,6 +55,7 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		// edit organisation form submits
 		Route::post('/organization/{id}/{slug}/edit/general', 'Admin\OrganisationEditController@submitGeneral')->name('admin.organisation.edit.submit.general');
 		Route::post('/organization/{id}/{slug}/edit/contact', 'Admin\OrganisationEditController@submitContact')->name('admin.organisation.edit.submit.contact');
+		Route::post('/organization/{id}/{slug}/edit/profile', 'Admin\OrganisationEditController@submitProfile')->name('admin.organisation.edit.submit.profile');
 
 		Route::post('/organization/{id}/{slug}/remove/user', 'Admin\OrganisationEditController@removeUserSubmit')->name('admin.organisation.edit.submit.remove.user');
 		Route::post('/organization/{id}/{slug}/remove/admin', 'Admin\OrganisationEditController@removeAdminSubmit')->name('admin.organisation.edit.submit.remove.admin');

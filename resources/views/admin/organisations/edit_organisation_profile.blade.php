@@ -18,84 +18,30 @@
 @include('admin.organisations.edit_organisation_submenu_partial')
 
 <div class="card-body">
-    <form   action="{{ route('admin.organisation.edit.submit.general', ['id' => $organisation->id, 'slug' => $organisation->slug]) }}" 
+    <form   action="{{ route('admin.organisation.edit.submit.profile', ['id' => $organisation->id, 'slug' => $organisation->slug]) }}" 
             method="post">
         {{ csrf_field() }}
 
         <div class="form row">
             <div class="form-group col-md-8 offset-md-2">   
-                <h4>General information</h4>
+                <h4>Profile information</h4>
                 <hr> 
             </div>
         </div>
 
-        <div class="form row">
-
-            <div class="form-group col-md-4 offset-md-2"> 
-                <label for="name">Name</label>
-                <input  type="text" class="form-control"
-                        id="name" name="name" 
-                        maxlength="40" 
-                        @if( isset($organisation->name) )
-                            value="{{ $organisation->name }}"
-                        @endif
-                        >
-                <!-- error message -->
-                @if ($errors->has('name'))
-                    <div class="text-danger">
-                        {{ $errors->first('name') }}
-                    </div>
-                @endif
-            </div>
-
-            <div class="form-group col-md-4">
-                <label for="organisation_code">Organization code</label>
-                <input  type="text" class="form-control"
-                        id="organisation_code" name="organisation_code" 
-                        maxlength="40" 
-                        @if( isset($organisation->code) )
-                            value="{{ $organisation->code }}"
-                        @endif
-                        >
-                <!-- error message -->
-                @if ($errors->has('organisation_code'))
-                    <div class="text-danger">
-                        {{ $errors->first('organisation_code') }}
-                    </div>
-                @endif
-            </div>
-
-        </div>
-
-
 
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
-                <button type="submit" class="sh_save_btn btn btn-primary">Update General Information</button>
-            </div>
-        </div>
-    </form>
-
-
-    <form   action="{{ route('admin.organisation.edit.submit.contact', ['id' => $organisation->id, 'slug' => $organisation->slug]) }}" 
-            method="post">
-        {{ csrf_field() }}
-
-        <div class="form row">
-            <div class="form-group col-md-8 offset-md-2">
-                <h4>Contact information</h4> 
-                <hr>
-            </div>
-        </div>
-
-        <div class="form row">
-            <div class="form-group col-md-4 offset-md-2">
-                <label for="email">Email</label>
-                <input  type="email" class="form-control"
-                        id="email" name="email" 
-                        maxlength="40" 
-                        value="{{ old('email') }}"
-                        >
+                <label for="services">Services</label>
+                    <textarea   name="services" 
+                                id="services"
+                                rows="2"
+                                class="form-control"
+                        >@if( isset( $organisation->services ) )
+                            {{ $organisation->services }}
+                        @else
+                            {{ old('services') }}
+                        @endif</textarea>
                 <!-- error message -->
                 @if ($errors->has('email'))
                     <div class="text-danger">
@@ -105,90 +51,72 @@
             </div>
 
             <div class="form-group col-md-4">
-                <label for="phone">Office Phone</label>
-                <input  type="text" class="form-control"
-                        id="phone" name="phone" 
-                        maxlength="40" 
-                        value="{{ old('phone') }}"
-                        >
+                <label for="office_hours">Office hours</label>
+                <textarea   name="office_hours" 
+                            id="office_hours"
+                            rows="2"
+                            class="form-control"
+                    >@if( isset( $organisation->have_office_hours ) )
+                        {{ $organisation->have_office_hours }}
+                    @else
+                        {{ old('office_hours') }}
+                    @endif</textarea>
                 <!-- error message -->
-                @if ($errors->has('phone'))
+                @if ($errors->has('office_hours'))
                     <div class="text-danger">
-                        {{ $errors->first('phone') }}
+                        {{ $errors->first('office_hours') }}
                     </div>
                 @endif
             </div>
         </div>
 
-
         <div class="form row">
-            <div class="form-group col-md-5 offset-md-2">
-                <label for="city">City</label>
+            <div class="form-group col-md-4 offset-md-2">
+                <label for="website">Website</label>
                 <input  type="text" class="form-control"
-                        id="city" name="city" 
+                        id="website" name="website" 
                         maxlength="40"
-                        value="{{ old('city') }}"
+                        @if( isset( $address->website ) )
+                            value="{{ $address->website }}"
+                        @else
+                            value="{{ old('website') }}"
+                        @endif
                         >
                 <!-- error message -->
-                @if ($errors->has('city'))
+                @if ($errors->has('website'))
                     <div class="text-danger">
-                        {{ $errors->first('city') }}
+                        {{ $errors->first('website') }}
                     </div>
                 @endif
             </div>
 
-            <div class="form-group col-md-3">
-                <label for="zip_code">Zip</label>
-                <input  type="text" class="form-control"
-                        id="zip_code" name="zip_code" 
-                        maxlength="40" 
-                        value="{{ old('zip_code') }}"
-                        >
+            <div class="form-group col-md-4">
+                <label for="geographic_area_served">geographic_area_served</label>
+                <textarea   name="geographic_area_served" 
+                            id="geographic_area_served"
+                            rows="2"
+                            class="form-control"
+                    >@if( isset( $organisation->geographic_area_served ) )
+                        {{ $organisation->geographic_area_served }}
+                    @else
+                        {{ old('geographic_area_served') }}
+                    @endif</textarea>
                 <!-- error message -->
-                @if ($errors->has('zip_code'))
+                @if ($errors->has('geographic_area_served'))
                     <div class="text-danger">
-                        {{ $errors->first('zip_code') }}
-                    </div>
-                @endif
-            </div>
-        </div>
-
-        <div class="form row">
-            <div class="form-group col-md-5 offset-md-2">
-                <label for="street">Street</label>
-                <input  type="text" class="form-control"
-                        id="street" name="street" 
-                        maxlength="100" 
-                        value="{{ old('street') }}"
-                        >
-                <!-- error message -->
-                @if ($errors->has('street'))
-                    <div class="text-danger">
-                        {{ $errors->first('street') }}
+                        {{ $errors->first('geographic_area_served') }}
                     </div>
                 @endif
             </div>
         </div>
-
-
 
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
-                <button type="submit" class="sh_save_btn btn btn-primary">Update Contact Information</button>
+                <button type="submit" class="sh_save_btn btn btn-primary">Update Profile Information</button>
             </div>
         </div>
     </form>
 
 
-    <form action="" method="post">
-        {{ csrf_field() }}
-
-
-        <div class="form row">
-            <div class="form-group col-md-4 offset-md-2">
-                <button type="submit" class="sh_save_btn btn btn-primary">Save</button>
-            </div>
-        </div>
-    </form>
 </div>
 @endsection
