@@ -32,9 +32,80 @@
     </div>
 @endif
 
-@if (session('error-old-password'))
+<!-- verify 1 success message -->
+@if (session('success-verify1'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success-verify1') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- verify 0 success message -->
+@if (session('success-verify0'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ session('success-verify0') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- ban 1 success message -->
+@if (session('success-ban1'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ session('error-old-password') }}
+        {{ session('success-ban1') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- ban 0 success message -->
+@if (session('success-ban0'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success-ban0') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- verify admin password error message -->
+@if ($errors->has('admin_password_verify'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ $errors->first('admin_password_verify') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- verify admin password error message -->
+@if (session('error-admin-password-verify'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error-admin-password-verify') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- ban admin password error message -->
+@if ($errors->has('admin_password_ban'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ $errors->first('admin_password_ban') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- ban admin password error message -->
+@if (session('error-admin-password-ban'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error-admin-password-ban') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -97,13 +168,13 @@
                         id="email" name="email" 
                         maxlength="40" 
                         value="{{ $user->email }}">
-                <!-- error message 1 -->
+                <!-- error messages -->
                 @if ($errors->has('email'))
                     <div class="text-danger">
                         {{ $errors->first('email') }}
                     </div>
                 @endif
-                <!-- error message 2 -->
+                
                 @if (session('email-error-general'))
                     <div class="text-danger">
                         {{ session('email-error-general') }}
@@ -316,6 +387,8 @@
             </div>
         </div>
     </form>
+
+
     <?php
     /**
      * reset user password form
@@ -361,35 +434,46 @@
         </div>
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
-                <label for="old_password">Your password</label>
+                <label for="admin_password">Your password</label>
                 <input  type="password" class="form-control"
-                        id="old_password" name="old_password" 
+                        id="admin_password" name="admin_password" 
                         maxlength="40" 
                         value="">
-                <!-- error message -->
-                @if ($errors->has('old_password'))
+
+                <!-- error messages -->
+                @if ($errors->has('admin_password'))
                     <div class="text-danger">
-                        {{ $errors->first('old_password') }}
+                        {{ $errors->first('admin_password') }}
+                    </div>
+                @endif
+
+                @if (session('error-admin-password'))
+                    <div class="text-danger">
+                        {{ session('error-admin-password') }}
                     </div>
                 @endif
             </div>
         </div>
+
         <div class="form row">
             <div class="form-group col-md-4 offset-md-2">
                 <button type="submit" class="sh_save_btn btn btn-primary">Reset password</button>
             </div>
         </div>
     </form>
+
     <?php
     /**
      * service actions on user profile
      */
     ?>
     <br>
+    
     <div class="form row">
         <div class="form-group col-md-8 offset-md-2"> 
             <h5>Services</h5>
             <hr>
+            
             <!-- Button trigger modal -->
             <button type="button" 
                     class="btn 
@@ -407,6 +491,7 @@
                         User email is not verified
                     @endif
             </button>
+
             <!-- Modal -->
             <div class="modal fade" id="email_verification_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -417,6 +502,9 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    
+
+                    <!-- verify user email form -->
                     <form action="{{ route('admin.user.edit.submit.verified', ['id' => $user->id, 'slug' => $user->slug]) }}" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="new_verified_value" id="new_verified_value"
@@ -426,6 +514,7 @@
                                     value="1"
                                 @endif
                             >
+            
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="form-group col-md-12">
@@ -439,15 +528,18 @@
                                     </div>
                                 </div>
                             </div>
+            
                             <div class="row">
                                 <div class="form-group col-md-12">
-                                    <label for="your_password">Your password</label>
-                                    <input type="your_password" class="form-control"
-                                    id="your_password" name="your_password" 
-                                    maxlength="40" 
-                                    value="">
+                                    <label for="admin_password_verify">Your password</label>
+                                    <input  type="password" class="form-control"
+                                            id="admin_password_verify" name="admin_password_verify" 
+                                            maxlength="40" 
+                                            value="">
+
                                 </div>
                             </div>
+            
                             <div class="modal-footer">
                                 <div class="row">
                                     <div class="col-sm">
@@ -467,6 +559,7 @@
                     </div>
                 </div>
             </div><!-- end modal -->
+
             <!-- Button trigger modal -->
             <button type="button" 
                     class="btn 
@@ -484,6 +577,7 @@
                         Account is banned
                     @endif
             </button>
+            
             <!-- Modal -->
             <div class="modal fade" id="user_ban_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -501,6 +595,8 @@
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+
+                        <!-- User ban form -->
                         <form action="{{ route('admin.user.edit.submit.ban', ['id' => $user->id, 'slug' => $user->slug]) }}" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="new_ban_value" id="new_ban_value"
@@ -510,6 +606,7 @@
                                     value="1"
                                 @endif
                             >
+            
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="form-group col-md-12">
@@ -523,15 +620,17 @@
                                     </div>
                                 </div>
                             </div>
+            
                             <div class="row">
                                 <div class="form-group col-md-12">
-                                    <label for="your_password">Your password</label>
-                                    <input type="your_password" class="form-control"
-                                    id="your_password" name="your_password" 
-                                    maxlength="40" 
-                                    value="">
+                                    <label for="admin-password">Your password</label>
+                                    <input  type="password" class="form-control"
+                                            id="admin-password" name="admin_password_ban" 
+                                            maxlength="40" 
+                                            value="">
                                 </div>
                             </div>
+            
                             <div class="modal-footer">
                                 <div class="row">
                                     <div class="col-sm">

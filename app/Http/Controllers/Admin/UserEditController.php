@@ -210,7 +210,7 @@ class UserEditController extends Controller
     public function submitPassword($id, $slug, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'old_password'  =>  'required|string|min:6|max:40',
+            'admin_password'  =>  'required|string|min:6|max:40',
             'new_password'  =>  'required|string|min:6|max:40',
             'repeat_new_password' =>  'required|same:new_password',
         ]);
@@ -223,10 +223,13 @@ class UserEditController extends Controller
                 ['slug', '=', $slug]
             ])->first();
 
-            // check if old password is valid
-            if (Hash::check($request->old_password, $user->password)){ 
+            //find admin
+            $currentAdmin = Auth('admin')->user()->email;
 
-                // update database
+            // check if admin password is valid
+            if (Hash::check($request->admin_password, $currentAdmin->password)){ 
+
+                // update password for user
                 $hashed = Hash::make($request->new_password);
                 $user->password = $hashed;
                 $user->update();
@@ -236,25 +239,68 @@ class UserEditController extends Controller
                     ->with('success-password', ' Password was successfully changed!');
 
             } else {
-                // invalid old password
-                return redirect()->back()->with('error-old-password', 'Invalid old password!');
+                // invalid admin password
+                return redirect()->back()->with('error-admin-password', 'Invalid admin password!');
             }
         } else {
-
             // invalid entries in password fields
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
     }
 
-
     /**
      * submit action
      * verify/unverify user email address
      */
     public function submitVerified($id, $slug, Request $request)
-    {
+    {   
+        // dd($request);
+        //validate data from form
+        $validator = Validator::make($request->all(), [
+            'new_verified_value'    => 'boolean',
+            'admin_password_verify' => 'required|string|min:6|max:40',
+        ]);
 
+        if (!($validator->fails())){
+
+            //find user to edit
+            $user = User::where([
+                ['id', '=', $id],
+                ['slug', '=', $slug]
+            ])->first();
+
+            //find admin
+            $currentAdmin = Auth('admin')->user();
+            // dd($currentAdmin);
+
+            // check if admin password is valid
+            if (Hash::check($request->admin_password_verify, $currentAdmin->password)){
+
+                $user->verified = $request->new_verified_value;
+                $user->update();
+                
+                // dd($user);
+
+                if ($user->verified == "1") {
+                    return redirect()
+                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->with('success-verify1', 'User set as verified');
+                } else {
+                    return redirect()
+                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->with('success-verify0', 'User set as not verified');
+                }
+                
+            } else {
+                // invalid admin password
+                return redirect()->back()->with('error-admin-password-verify', 'Invalid admin password!');
+            }
+        } else {
+            // invalid entries in password fields
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        
     }
 
 
@@ -262,8 +308,53 @@ class UserEditController extends Controller
      * submit action
      * ban/unbun user
      */
-    public function submitBan(Request $request)
+    public function submitBan($id, $slug, Request $request)
     {
+        // dd($request);
+        //validate data from form
+        $validator = Validator::make($request->all(), [
+            'new_ban_value'    => 'boolean',
+            'admin_password_ban' => 'required|string|min:6|max:40',
+        ]);
+
+        if (!($validator->fails())){
+
+            //find user to edit
+            $user = User::where([
+                ['id', '=', $id],
+                ['slug', '=', $slug]
+            ])->first();
+
+            //find admin
+            $currentAdmin = Auth('admin')->user();
+            // dd($currentAdmin);
+
+            // check if admin password is valid
+            if (Hash::check($request->admin_password_ban, $currentAdmin->password)){
+
+                $user->banned = $request->new_ban_value;
+                $user->update();
+                
+                // dd($user);
+
+                if ($user->banned == "1") {
+                    return redirect()
+                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->with('success-ban1', 'User set as banned!');
+                } else {
+                    return redirect()
+                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->with('success-ban0', 'User set as not banned');
+                }
+                
+            } else {
+                // invalid admin password
+                return redirect()->back()->with('error-admin-password-ban', 'Invalid admin password!');
+            }
+        } else {
+            // invalid entries in password fields
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
     }
 }
