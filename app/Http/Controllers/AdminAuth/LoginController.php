@@ -59,6 +59,13 @@ class LoginController extends Controller
      */
     protected function guard()
     {
+        if (  isset(Auth('admin')->user()->active) )
+        {
+            if ( Auth('admin')->user()->active == 0 )
+            {
+                session()->flush();
+            }
+        }
         return Auth::guard('admin');
     }
 
@@ -69,4 +76,5 @@ class LoginController extends Controller
     public function logoutToPath() {
         return route('admin.login');
     }
+ 
 }

@@ -229,10 +229,10 @@ class OrganisationEditController extends Controller
 
         // validate data from request
         $validator = Validator::make($request->all(),[
-            'services'     => 'nullable',
-            'office_hours'     => 'nullable',
-            'website'     => 'nullable',
-            'geographic_area_served'      => 'nullable',
+            'services'                  => 'nullable',
+            'office_hours'              => 'nullable',
+            'website'                   => 'nullable',
+            'geographic_area_served'    => 'nullable',
         ]);
 
         if (!($validator->fails()))
@@ -338,7 +338,8 @@ class OrganisationEditController extends Controller
                 // inser new address entry
                 $address = new Address();
                 $address->entity_type = 'organisation';
-                $address->entity_id = $addressType->id;
+                $address->entity_id = $organisation->id;
+                $address->address_type_id = $addressType->id;
                 $address->state = $request->state;
                 $address->city = $request->city;
                 $address->zip_code = $request->zip_code;

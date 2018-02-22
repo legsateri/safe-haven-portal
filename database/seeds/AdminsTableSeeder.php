@@ -28,6 +28,22 @@ class AdminsTableSeeder extends Seeder
             [
                 'name' => 'Milica Dundic',
                 'email' => 'mdundic@ztech.io',
+            ],
+            [
+                'name' => 'Radoslav Didic',
+                'email' => 'rdidic@ztech.io',
+            ],
+            [
+                'name' => 'Snjezana Bukelic',
+                'email' => 'sbukelic@ztech.io',
+            ],
+            [
+                'name' => 'Jessica',
+                'email' => 'safe@thesafehavennetwork.org',
+            ],
+            [
+                'name' => 'Viral',
+                'email' => 'viral@viralmehta.com',
             ]
         ];
 

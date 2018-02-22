@@ -8,8 +8,16 @@
 @section('content')
     <div class="card mb-3">
         <div class="card-header">
-            <i class="fa fa-area-chart"></i> Admin Users</div>
+            <i class="fa fa-area-chart"></i> Admin Users
+            <a  href="{{ route('admin.settings.admin-user.add') }}"
+                class="btn btn-primary"
+                style="float:right"
+                >Add new admin user</a>    
+        </div>
         <div class="card-body">
+            
+
+            
             <?php
                 // defines row counter for results in table
                 $counter = 1;
@@ -29,16 +37,22 @@
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
-                            <th scope="col"></th>
+                            <th scope="col">Active</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach( $admins as $admin )
                             <tr>
                                 <th scope="row">{{ $counter }}</th>
-                                <td>{{ $admin->name }}</td>
+                                <td><a href="{{ route('admin.settings.admin-user.single', ['id' => $admin->id]) }}">{{ $admin->name }}</a></td>
                                 <td>{{ $admin->email }}</td>
-                                <td><a href="{{ route('admin.settings.admin-user.single', ['id' => $admin->id]) }}">edit user</a></td>
+                                <td>
+                                    @if( $admin->active == 1 )
+                                        <span style="color:green">Yes</span>
+                                    @else
+                                        <span style="color:red">No</span>
+                                    @endif
+                                </td>
                             </tr>
                             <?php $counter++; ?>
                         @endforeach
@@ -51,6 +65,5 @@
             </nav>
 
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
     </div>
 @endsection
