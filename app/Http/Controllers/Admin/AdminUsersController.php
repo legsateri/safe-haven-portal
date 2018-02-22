@@ -92,4 +92,35 @@ class AdminUsersController extends Controller
         // invalid entries
         return redirect()->back()->withErrors($validator)->withInput();
     }
+
+
+    /**
+     * submit update admin user
+     * general information
+     */
+    public function submitGeneral($id, Request $request)
+    {
+
+    }
+
+
+    /**
+     * submit update admin user
+     * password
+     */    
+    public function submitPassword($id, Request $request)
+    {
+
+    }
+
+
+    /**
+     * submit update admin user
+     * active status
+     */
+    public function submitActiveStatus($id, Request $request)
+    {
+
+    }
+    
 }

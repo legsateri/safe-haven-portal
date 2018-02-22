@@ -94,6 +94,11 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/settings/application', 'Admin\ApplicationSettingsController@index')->name('admin.settings.application');
 		Route::get('/settings/admin-users', 'Admin\AdminUsersController@index')->name('admin.settings.admin-users');
 		Route::get('/settings/admin-user/{id}', 'Admin\AdminUsersController@single')->name('admin.settings.admin-user.single');
+
+		Route::post('/settings/admin-user/{id}/general', 'Admin\AdminUsersController@submitGeneral')->name('admin.settings.admin-user.update-general.submit');
+		Route::post('/settings/admin-user/{id}/password', 'Admin\AdminUsersController@submitPassword')->name('admin.settings.admin-user.update-password.submit');
+		Route::post('/settings/admin-user/{id}/active-status', 'Admin\AdminUsersController@submitActiveStatus')->name('admin.settings.admin-user.update-active-status.submit');
+
 		Route::get('/settings/admin-user-add', 'Admin\AdminUsersController@add')->name('admin.settings.admin-user.add');
 		Route::post('/settings/admin-user-add', 'Admin\AdminUsersController@addSubmit')->name('admin.settings.admin-user.add.submit');
 		Route::get('/settings/account', 'Admin\AccountSettingsController@index')->name('admin.settings.account');
