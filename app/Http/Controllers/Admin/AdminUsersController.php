@@ -100,6 +100,26 @@ class AdminUsersController extends Controller
      */
     public function submitGeneral($id, Request $request)
     {
+        // validate entry from request
+        $validator = Validator::make($request->all(),[
+            'name'              => 'required|string|max:50',
+            'email'             => 'required|email|max:60',
+            'password'          => 'required|string|max:40|min:6',
+        ]);
+
+        if (!($validator->fails()))
+        {
+            // check current user password
+            // check is current admin password correct
+            $check_id = Auth('admin')->user()->id;
+            $currentAdmin = Admin::where('id', $check_id)->first();
+            if (Hash::check($request->your_password, $currentAdmin->password))
+            {
+                
+            }
+        }
+        dd($validator->errors());
+        die('nije validno');
 
     }
 
