@@ -28,6 +28,7 @@
                     <th scope="col">Email</th>
                     <th scope="col">Code</th>
                     <th scope="col">Tax ID</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +39,7 @@
                         <td>{{ $organisation->email }}</td>
                         <td>{{ $organisation->code }}</td>
                         <td>{{ $organisation->tax_id }}</td>
+                        <td>{{ $organisation->org_status_label }}</td>
                     </tr>
                     <?php $counter++; ?>
                 @endforeach

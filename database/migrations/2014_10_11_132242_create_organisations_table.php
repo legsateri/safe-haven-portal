@@ -26,7 +26,7 @@ class CreateOrganisationsTable extends Migration
             $table->text('website')->nullable();
             $table->text('geographic_area_served')->nullable();
             $table->string('slug');
-            $table->string('tax_id')->unique();
+            $table->string('tax_id')->unique()->nullable();
 
             $table->timestamps();
 

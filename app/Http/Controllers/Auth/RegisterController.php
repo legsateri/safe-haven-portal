@@ -16,6 +16,7 @@ use App\Organisation;
 use App\Phone;
 use App\VerifyUser;
 use App\OrganisationAdmin;
+use App\Status;
 
 use App\Mail\VerifyMail;
 
@@ -111,11 +112,17 @@ class RegisterController extends Controller
                         ['value', '=', $data['sign_up_form_user_type']]
                     ])->first();
 
+            // get submitted organization status
+            $org_status = Status::where([
+                ['type', '=', 'organisation'],
+                ['value', '=', 'submitted']
+            ])->first();
+
             // create new organisation entry
             $organisation = new Organisation();
             $organisation->name = $data['org_name'];
             $organisation->org_type_id = $orgType->id;
-            $organisation->org_status_id = 1;
+            $organisation->org_status_id = $org_status->id;
             $organisation->slug = str_slug($data['org_name'], '-');
             $organisation->tax_id = $data['tax_id'];
             $organisation->save();
@@ -174,6 +181,14 @@ class RegisterController extends Controller
         $user->password = bcrypt($data['password']);
         $user->user_type_id = $userType->id;
         $user->organisation_id = $organisation->id;
+        if ( !isset( $data['already_with_org'] ) )
+        {
+            $user->banned = 1;
+        }
+        else
+        {
+            $user->banned = 0;
+        }
         $user->save();
 
 

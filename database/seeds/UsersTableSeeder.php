@@ -6,6 +6,7 @@ use App\ObjectType;
 use App\User;
 use App\Organisation;
 use App\OrganisationAdmin;
+use App\Status;
 
 
 class UsersTableSeeder extends Seeder
@@ -113,6 +114,13 @@ class UsersTableSeeder extends Seeder
             // ]
         ];
 
+        // get active organization status
+        $org_status = Status::where([
+            ['type', '=', 'organisation'],
+            ['value', '=', 'approved']
+        ])->first();
+        
+
         foreach ( $users as $user )
         {
             // create organisation
@@ -121,6 +129,7 @@ class UsersTableSeeder extends Seeder
             $organisation->org_type_id = $user['organisation']['org_type_id'];
             $organisation->tax_id = $user['organisation']['tax_id'];
             $organisation->slug = str_slug($user['organisation']['name'], '-');
+            $organisation->org_status_id = $org_status->id;
             $organisation->save();
             
             // create user

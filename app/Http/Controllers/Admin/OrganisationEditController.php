@@ -157,6 +157,7 @@ class OrganisationEditController extends Controller
     private function _getOrganisationInfo($id, $slug)
     {
         $organisation = DB::table('organisations')
+        ->join('statuses', 'organisations.org_status_id', '=', 'statuses.id')
         ->where([
             ['organisations.id', '=', $id],
             ['organisations.slug', '=', $slug]
@@ -167,7 +168,10 @@ class OrganisationEditController extends Controller
             'organisations.name as name',
             'organisations.email as email',
             'organisations.org_type_id as type_id',
-            'organisations.tax_id as tax_id'
+            'organisations.tax_id as tax_id',
+            'statuses.id as org_status_id',
+            'statuses.value as org_status_value',
+            'statuses.label as org_status_label'
         )
         ->first();
 

@@ -12,6 +12,7 @@ use App\State;
 use App\Organisation;
 use App\Phone;
 use App\Address;
+use App\Status;
 
 class OrganisationController extends Controller
 {
@@ -103,6 +104,12 @@ class OrganisationController extends Controller
 
         if (!($validator->fails()))
         {
+            // get submitted organization status
+            $org_status = Status::where([
+                ['type', '=', 'organisation'],
+                ['value', '=', 'submitted']
+            ])->first();
+
             // insert new organisation in database
             $organisation = new Organisation();
             $organisation->name = $request->name;
@@ -120,6 +127,7 @@ class OrganisationController extends Controller
             { 
                 $organisation->email = $request->email;
             }
+            $organisation->org_status_id = $org_status->id;
             $organisation->save();
 
             // save phone if is set
@@ -210,6 +218,7 @@ class OrganisationController extends Controller
     {
         $organisations = DB::table('organisations')
         ->join('object_types', 'organisations.org_type_id', '=', 'object_types.id')
+        ->join('statuses', 'organisations.org_status_id', '=', 'statuses.id')
         ->where([
             ['object_types.type', '=', 'organisation'],
             ['object_types.value', '=', $type],
@@ -221,7 +230,10 @@ class OrganisationController extends Controller
             'organisations.email as email',
             'organisations.code as code',
             'organisations.org_type_id as type_id',
-            'organisations.tax_id as tax_id'
+            'organisations.tax_id as tax_id',
+            'statuses.id as org_status_id',
+            'statuses.value as org_status_value',
+            'statuses.label as org_status_label'
         )
         ->paginate(10);
 

@@ -27,12 +27,12 @@ class StatusesTableSeeder extends Seeder
                 'label' => 'Approved',
                 'description' => ''
             ],
-            [
-                'type' => 'organisation',
-                'value' => 'review',
-                'label' => 'Review',
-                'description' => ''
-            ],
+            // [
+            //     'type' => 'organisation',
+            //     'value' => 'review',
+            //     'label' => 'Review',
+            //     'description' => ''
+            // ],
             [
                 'type' => 'organisation',
                 'value' => 'suspended',

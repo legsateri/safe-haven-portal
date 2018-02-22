@@ -12,9 +12,7 @@
 @endif
 
 <div class="card mb-3">
-<div class="card-header">
-    <i class="fa fa-area-chart"></i> Edit {{ $organisation->name }}</div>
-
+@include('admin.organisations.edit_organisation_header')
 @include('admin.organisations.edit_organisation_submenu_partial')
 
 <div class="card-body">
