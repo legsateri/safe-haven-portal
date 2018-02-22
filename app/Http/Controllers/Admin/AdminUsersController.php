@@ -95,32 +95,55 @@ class AdminUsersController extends Controller
 
 
     /**
-     * submit update admin user
-     * general information
+     *  submit update admin user
+     *  general information
      */
+
     public function submitGeneral($id, Request $request)
     {
-        // validate entry from request
+        // dd($request);
+        // validate data from request
         $validator = Validator::make($request->all(),[
             'name'              => 'required|string|max:50',
             'email'             => 'required|email|max:60',
-            'password'          => 'required|string|max:40|min:6',
+            'password_general'  => 'required|string|max:40|min:6',
         ]);
 
         if (!($validator->fails()))
         {
-            // check current user password
-            // check is current admin password correct
-            $check_id = Auth('admin')->user()->id;
-            $currentAdmin = Admin::where('id', $check_id)->first();
-            if (Hash::check($request->your_password, $currentAdmin->password))
-            {
+            // find admin user to change
+            $adminUser = Admin::where('id', $id)->first();
+            // dd($adminUser);
+
+            // find current admin
+            $currentAdmin = Auth('admin')->user();
+            // dd($currentAdmin);
+
+            // check email from request
+            $checkEmail =Admin::where('email', $request->email)->first();
+
+            // check if admin password is valid and
+            if ((Hash::check($request->password_general, $currentAdmin->password))) {
                 
+                // check if email from request allready exists for some other admin user
+                if ($checkEmail == null || ($checkEmail != null && $checkEmail->id == $adminUser->id)) {
+                    $adminUser->name = $request->name;
+                    $adminUser->email = $request->email;
+                    $adminUser->update();
+
+                    return redirect()
+                        ->route('admin.settings.admin-user.single', ['id' => $adminUser->id])
+                        ->with('success-general', ' General information successfully changed!');
+
+                } else {
+                    return redirect()->back()->with('email-error-general', 'User with this email address already exists.');
+                }
+            } else {
+                return redirect()->back()->with('password-error-general', 'Wrong admin password. Please try again!.');
             }
         }
-        dd($validator->errors());
-        die('nije validno');
-
+        // invalid entries 
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
 
@@ -130,7 +153,43 @@ class AdminUsersController extends Controller
      */    
     public function submitPassword($id, Request $request)
     {
+        // dd($request);
+        $validator = Validator::make($request->all(), [
+            'admin_password'    =>  'required|string|min:6|max:40',
+            'new_password'      =>  'required|string|min:6|max:40',
+            'repeat_password'   =>  'required|same:new_password',
+        ]);
 
+        if (!($validator->fails()))
+        {
+            //find admin user to edit
+            $adminUser = Admin::where('id', $id)->first();
+            // dd($adminUser);
+
+            // find current admin
+            $currentAdmin = Auth('admin')->user();
+            // dd($currentAdmin);
+
+            // check if admin password is valid
+            if (Hash::check($request->admin_password, $currentAdmin->password)){ 
+
+                // update password for admin user
+                $hashed = Hash::make($request->new_password);
+                $adminUser->password = $hashed;
+                $adminUser->update();
+                // dd($adminUser);
+
+                return redirect()
+                    ->route('admin.settings.admin-user.single', ['id' => $adminUser->id])
+                    ->with('success-password', ' Password successfully changed!');
+
+            } else {
+                // invalid admin password
+                return redirect()->back()->with('error-admin-password', 'Invalid admin password!');
+            }
+        }
+        // invalid entries in password fields
+        return redirect()->back()->withErrors($validator)->withInput();
     }
 
 
@@ -140,7 +199,52 @@ class AdminUsersController extends Controller
      */
     public function submitActiveStatus($id, Request $request)
     {
+        // dd($request);
+        
+        //validate data from form
+        $validator = Validator::make($request->all(), [
+            'new_active_value'    => 'boolean',
+            'password_ban' => 'required|string|min:6|max:40',
+        ]);
 
-    }
+        if (!($validator->fails())){
+
+            // find admin user to edit
+            $adminUser = Admin::where('id', $id)->first();
+            // dd($adminUser);
+
+            // find current admin
+            $currentAdmin = Auth('admin')->user();
+            // dd($currentAdmin);
+
+            // check if admin password is valid
+            if (Hash::check($request->password_ban, $currentAdmin->password)){
+
+                $adminUser->active = $request->new_active_value;
+                $adminUser->update();
+                
+                // dd($user);
+
+                if ($adminUser->active == "0") {
+                    return redirect()
+                    ->route('admin.settings.admin-user.single', ['id' => $adminUser->id])
+                    ->with('success-active0', 'Admin user deactivated!');
+                } else {
+                    return redirect()
+                    ->route('admin.settings.admin-user.single', ['id' => $adminUser->id])
+                    ->with('success-active1', 'Admin user activated!');
+                }
+                
+            } else {
+                // invalid admin password
+                return redirect()->back()->with('error-admin-password-ban', 'Invalid admin password!');
+            }
+        } else {
+            // invalid entries in password fields
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+    }    
     
+
 }

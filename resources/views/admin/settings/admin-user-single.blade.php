@@ -7,6 +7,68 @@
 @extends('admin.layout.main')
 
 @section('content')
+
+<!--general success message -->
+@if (session('success-general'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success-general') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!--password success message -->
+@if (session('success-password'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success-password') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- activation 0 success message -->
+@if (session('success-active0'))
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ session('success-active0') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- activation 1 success message -->
+@if (session('success-active1'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success-active1') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- activation admin password error message -->
+@if (session('error-admin-password-ban'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error-admin-password-ban') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+<!-- activation admin password error message -->
+@if ($errors->has('password_ban'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ $errors->first('password_ban') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+
     <div class="card mb-3">
         <div class="card-header">
             <i class="fa fa-area-chart"></i> Edit Admin User {{ $admin->name }}
@@ -30,6 +92,7 @@
             </button>    
         </div>
         <div class="card-body">
+
 
             <?php
             /**
@@ -70,12 +133,20 @@
                                 maxlength="40" 
                                 placeholder="email"
                                 value="{{ $admin->email }}">
-                        <!-- error message -->
+
+                        <!-- error messages -->
                         @if ($errors->has('email'))
                             <div class="text-danger">
                                 {{ $errors->first('email') }}
                             </div>
                         @endif
+
+                        @if (session('email-error-general'))
+                            <div class="text-danger">
+                                {{ session('email-error-general') }}
+                            </div>
+                        @endif
+
                     </div>
 
                 </div>
@@ -85,18 +156,20 @@
                     <div class="form-group col-md-4 offset-md-2"> 
                         <label for="your_password">Your Password</label>
                         <input  type="password" class="form-control"
-                                id="your_password" name="your_password" 
+                                id="your_password" name="password_general" 
                                 maxlength="40"
                                 placeholder="Your password" 
                                 >
-                        <!-- error message -->
-                        @if ($errors->has('your_password'))
+                        <!-- error messages -->
+                        @if (session('password-error-general'))
                             <div class="text-danger">
-                                {{ $errors->first('your_password') }}
+                                {{ session('password-error-general') }}
                             </div>
-                        @elseif ( session('your_password_error') != null)
+                        @endif
+
+                        @if ($errors->has('password_general'))
                             <div class="text-danger">
-                                {{ session('your_password_error') }}
+                                {{ $errors->first('password_general') }}
                             </div>
                         @endif
                     </div>
@@ -138,9 +211,9 @@
                                 placeholder="new admin password" 
                                 >
                         <!-- error message -->
-                        @if ($errors->has('password'))
+                        @if ($errors->has('new_password'))
                             <div class="text-danger">
-                                {{ $errors->first('password') }}
+                                {{ $errors->first('new_password') }}
                             </div>
                         @endif
                     </div>
@@ -163,24 +236,26 @@
                 </div>
 
                 <div class="form row">
-
                     <div class="form-group col-md-4 offset-md-2"> 
                         <label for="your_password">Your Password</label>
                         <input  type="password" class="form-control"
-                                id="your_password" name="your_password" 
+                                id="your_password" name="admin_password" 
                                 maxlength="40"
                                 placeholder="Your password" 
                                 >
-                        <!-- error message -->
-                        @if ($errors->has('your_password'))
+                        <!-- error messages -->
+                        @if ($errors->has('admin_password'))
                             <div class="text-danger">
-                                {{ $errors->first('your_password') }}
-                            </div>
-                        @elseif ( session('your_password_error') != null)
-                            <div class="text-danger">
-                                {{ session('your_password_error') }}
+                                {{ $errors->first('admin_password') }}
                             </div>
                         @endif
+
+                        @if ( session('error-admin-password'))
+                            <div class="text-danger">
+                                {{ session('error-admin-password') }}
+                            </div>
+                        @endif
+
                     </div>
 
                 </div>
@@ -203,6 +278,8 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+
+                    <!-- user ban form -->
                     <form action="{{ route('admin.settings.admin-user.update-active-status.submit', ['id' => $admin->id]) }}" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="new_active_value" id="new_active_value"
@@ -229,7 +306,7 @@
                                 <div class="form-group col-md-12">
                                     <label for="password">Your password</label>
                                     <input type="password" class="form-control"
-                                    id="your_password" name="your_password" 
+                                    id="your_password" name="password_ban" 
                                     maxlength="40" 
                                     value="">
                                 </div>

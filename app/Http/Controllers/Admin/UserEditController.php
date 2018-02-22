@@ -340,11 +340,11 @@ class UserEditController extends Controller
                 if ($user->banned == "1") {
                     return redirect()
                     ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
-                    ->with('success-ban1', 'User set as banned!');
+                    ->with('success-ban1', 'User is banned!');
                 } else {
                     return redirect()
                     ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
-                    ->with('success-ban0', 'User set as not banned');
+                    ->with('success-ban0', 'User is active');
                 }
                 
             } else {
