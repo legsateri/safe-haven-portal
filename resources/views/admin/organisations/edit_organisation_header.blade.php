@@ -53,7 +53,7 @@
                     <div class="row">
                         <div class="form-group col-md-12">
                             @if( $organisation->org_status_value == 'approved' )
-                                Are you sure that you want to suspennd <b>{{ $organisation->name }}</b> organization?<br>
+                                Are you sure that you want to suspend <b>{{ $organisation->name }}</b> organization?<br>
                                 This action will suspend all users related to this organization from future usage of this application.<br>
                                 Please verify your action with your password.
                             @else
