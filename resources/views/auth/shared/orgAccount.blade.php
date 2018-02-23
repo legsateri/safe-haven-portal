@@ -69,7 +69,12 @@
                                                         ?>"
                                                         >
                                     @else
-                                        <p>For organization code please contact your organization administrator</p>
+                                        <input  type="text" class="form-control"
+                                                id="org_code" name="code" placeholder="" 
+                                                value="For organization code contact your admin"
+                                                disabled
+                                                >
+
                                     @endif
                                     <!-- error message -->
                                     @if ($errors->has('code'))

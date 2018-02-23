@@ -11,6 +11,15 @@
     </div>
 @endif
 
+@if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
     <!-- My Account -->
     <div class="card mb-3">
         <div class="card-header"><i class="fa fa-user-o"></i> My Account</div>
@@ -153,8 +162,8 @@
                                 <select class="form-control" id="state" name="state">
                                     <option>Select State</option>
                                     @foreach($states as $state)
-                                    <option value="{{$state->id}}"
-                                            @if($state->id == $userAddress['state'])
+                                    <option value="{{$state->name}}"
+                                            @if($state->name == $userAddress['state'])
                                             selected
                                             @endif                                               
                                             >{{$state->name}}

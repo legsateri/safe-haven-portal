@@ -62,13 +62,13 @@ class AccountController extends Controller
         $validator = Validator::make($request->all(),[          
         'first_name'        => 'required|string|max:25',
         'last_name'         => 'required|string|max:25',                         
-        'email'             => 'required|string|email|max:45',
+        'email'             => 'required|string|email|max:45|unique:users,email,'.Auth()->user()->id,
         'phone_number'      => 'required|regex:/^\d{3}\d{3}\d{4}$/',
         'phone_number_type' => 'nullable|exists:object_types,id',
         'street'            => 'nullable|string|max:255',
         'city'              => 'nullable|string|max:255',
         'zip_code'          => 'nullable|integer|regex:/^\d{5}$/',
-        'state'             => 'nullable|exists:states,id',
+        'state'             => 'nullable|exists:states,name',
 
         ]);
             
@@ -86,6 +86,7 @@ class AccountController extends Controller
                 //update user's info
                 $user->first_name = $request->first_name;
                 $user->last_name = $request->last_name;
+                $user->slug = str_slug($request->first_name . ' ' . $request->last_name, '-');
                 $user->email = $request->email;
                 $user->update();
 
@@ -124,7 +125,7 @@ class AccountController extends Controller
                     $userAddress->entity_type = 'user';
                     $userAddress->entity_id = $user->id;
                 }
-                    $userAddress->address_type_id = $address_type->id;
+                    $userAddress->address_type_id = $addressType->id;
                     $userAddress->street = $request->street;
                     $userAddress->state = $request->state;
                     $userAddress->city = $request->city;
