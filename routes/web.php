@@ -60,6 +60,7 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::post('/organization/{id}/{slug}/remove/user', 'Admin\OrganisationEditController@removeUserSubmit')->name('admin.organisation.edit.submit.remove.user');
 		Route::post('/organization/{id}/{slug}/remove/admin', 'Admin\OrganisationEditController@removeAdminSubmit')->name('admin.organisation.edit.submit.remove.admin');
 		Route::post('/organization/{id}/{slug}/add/admin', 'Admin\OrganisationEditController@addAdminSubmit')->name('admin.organisation.edit.submit.add.admin');
+		Route::post('/organization/{id}/{slug}/status', 'Admin\OrganisationEditController@updateStatusSubmit')->name('admin.organisation.edit.submit.status');
 
 
 

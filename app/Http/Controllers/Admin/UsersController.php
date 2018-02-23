@@ -10,6 +10,7 @@ use App\Phone;
 use App\User;
 use DB;
 use Hash;
+use App\Organisation;
 
 class UsersController extends Controller
 {
@@ -85,8 +86,6 @@ class UsersController extends Controller
             'organisations.id as id'
         ])
         ->get();
-
-        // dd($organisations);
         
         return view('admin.users.user.add_user', compact('userTypes', 'organisations'));
     }
@@ -100,12 +99,12 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(),[
             'first_name'        => 'required|string|max:25',
             'last_name'         => 'required|string|max:25',                         
-            'user_type'         => 'exists:object_types,id',
+            'user_type'         => 'required|exists:object_types,id',
             'email'             => 'required|email|max:255|unique:users,email',
             'phone'             => 'required|regex:/^\d{3}\d{3}\d{4}$/',
             'password'          => 'required|string|min:6|max:40',
             'repeat-password'   => 'required|same:password',
-            'organisation'      => 'exists:organisations,id'
+            'organisation'      => 'required|exists:organisations,id'
         ]);
 
         if (!($validator->fails())){
@@ -116,8 +115,11 @@ class UsersController extends Controller
                 ['type', '=', 'user']
             ])->first();
 
+            // get organisation data
+            $organisation = Organisation::where('id', $request->organisation)->first();
+
             $organisationType = ObjectType::where([
-                ['id', '=', $request->organisation],
+                ['id', '=', $organisation->org_type_id],
                 ['type', '=', 'organisation']
             ])->first();
 
@@ -130,6 +132,8 @@ class UsersController extends Controller
                 $user->slug = str_slug($request->first_name . ' ' . $request->last_name, '-');
                 $user->user_type_id = $userType->id;
                 $user->organisation_id = $request->organisation;
+                $user->verified = 1;
+                $user->banned = 1;
                 $user->email = $request->email;
                 
                 //save password

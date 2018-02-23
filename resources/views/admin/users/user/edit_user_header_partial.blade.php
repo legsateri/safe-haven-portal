@@ -17,7 +17,7 @@
             @if( $user->banned == 0 )
                 Account is active
             @else
-                Account is banned
+                Account is suspended
             @endif
     </button>
 
@@ -143,9 +143,9 @@
                 <h5 class="modal-title" 
                     id="exampleModalLabel">
                 @if( $user->banned == 1 )
-                    Remove ban for {{ $user->first_name }} {{ $user->last_name }}?
+                    Activate {{ $user->first_name }} {{ $user->last_name }}?
                 @else
-                    Ban {{ $user->first_name }} {{ $user->last_name }}?
+                    Suspend {{ $user->first_name }} {{ $user->last_name }}?
                 @endif
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -168,10 +168,10 @@
                     <div class="row">
                         <div class="form-group col-md-12">
                             @if( $user->banned == 1 )
-                                Are you sure that you want to remove ban for {{ $user->first_name }} {{ $user->last_name }}?<br>
+                                Are you sure that you want to activate <b>{{ $user->first_name }} {{ $user->last_name }}</b>?<br>
                                 Please verify your action with your password.
                             @else
-                                Are you sure that you want to ban {{ $user->first_name }} {{ $user->last_name }}?<br>
+                                Are you sure that you want to suspend <b>{{ $user->first_name }} {{ $user->last_name }}</b>?<br>
                                 Please verify your action with your password.
                             @endif
                         </div>
@@ -196,9 +196,9 @@
                         <div class="col-sm">
                             <button type="submit" class="btn btn-primary btn-block"         
                                 >@if( $user->banned == 1 )
-                                    Remove ban
+                                    Activate
                                 @else
-                                    Ban user
+                                    Suspend
                                 @endif</button>
                         </div>
                     </div>

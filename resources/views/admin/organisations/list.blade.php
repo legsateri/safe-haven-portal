@@ -5,6 +5,10 @@
 <div class="card-header">
     <i class="fa fa-area-chart"></i> 
     {{ $type->label }} Organizations
+    <a  href="{{ route('admin.organisation.add.page') }}"
+        class="btn btn-primary"
+        style="float:right;"
+    >Add new organization</a>
 </div>
 <div class="card-body">
     <?php

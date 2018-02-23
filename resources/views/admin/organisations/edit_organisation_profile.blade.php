@@ -35,11 +35,11 @@
                                 id="services"
                                 rows="2"
                                 class="form-control"
-                        >@if( isset( $organisation->services ) )
-                            {{ $organisation->services }}
-                        @else
-                            {{ old('services') }}
-                        @endif</textarea>
+                        >@if( isset( $organisation->services ) ){{ 
+                            $organisation->services 
+                        }}@else{{ 
+                            old('services') 
+                        }}@endif</textarea>
                 <!-- error message -->
                 @if ($errors->has('email'))
                     <div class="text-danger">
@@ -54,11 +54,11 @@
                             id="office_hours"
                             rows="2"
                             class="form-control"
-                    >@if( isset( $organisation->have_office_hours ) )
-                        {{ $organisation->have_office_hours }}
-                    @else
-                        {{ old('office_hours') }}
-                    @endif</textarea>
+                    >@if( isset( $organisation->office_hours ) ){{ 
+                        $organisation->office_hours 
+                    }}@else{{ 
+                        old('office_hours') 
+                    }}@endif</textarea>
                 <!-- error message -->
                 @if ($errors->has('office_hours'))
                     <div class="text-danger">
@@ -74,8 +74,8 @@
                 <input  type="text" class="form-control"
                         id="website" name="website" 
                         maxlength="40"
-                        @if( isset( $address->website ) )
-                            value="{{ $address->website }}"
+                        @if( isset( $organisation->website ) )
+                            value="{{ $organisation->website }}"
                         @else
                             value="{{ old('website') }}"
                         @endif
@@ -89,16 +89,16 @@
             </div>
 
             <div class="form-group col-md-4">
-                <label for="geographic_area_served">geographic_area_served</label>
+                <label for="geographic_area_served">Geographic area served</label>
                 <textarea   name="geographic_area_served" 
                             id="geographic_area_served"
                             rows="2"
                             class="form-control"
-                    >@if( isset( $organisation->geographic_area_served ) )
-                        {{ $organisation->geographic_area_served }}
-                    @else
-                        {{ old('geographic_area_served') }}
-                    @endif</textarea>
+                    >@if( isset( $organisation->geographic_area_served ) ){{ 
+                        $organisation->geographic_area_served
+                    }}@else{{ 
+                        old('geographic_area_served') 
+                    }}@endif</textarea>
                 <!-- error message -->
                 @if ($errors->has('geographic_area_served'))
                     <div class="text-danger">

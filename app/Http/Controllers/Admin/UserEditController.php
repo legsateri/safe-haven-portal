@@ -357,8 +357,8 @@ class UserEditController extends Controller
             // dd($currentAdmin);
 
             // check if admin password is valid
-            if (Hash::check($request->admin_password_ban, $currentAdmin->password)){
-
+            if (Hash::check($request->admin_password_ban, $currentAdmin->password))
+            {
                 $user->banned = $request->new_ban_value;
                 $user->update();
                 
@@ -368,12 +368,12 @@ class UserEditController extends Controller
                     return redirect()
                     // ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
                     ->back()
-                    ->with('success-ban1', 'User is banned!');
+                    ->with('success-ban1', 'User is suspended!');
                 } else {
                     return redirect()
                     // ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
                     ->back()
-                    ->with('success-ban0', 'User is active');
+                    ->with('success-ban0', 'User is actived!');
                 }
                 
             } else {

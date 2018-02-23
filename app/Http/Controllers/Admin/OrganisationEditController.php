@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use DB;
 use Validator;
+use Hash;
 
 use App\User;
 use App\OrganisationAdmin;
@@ -15,6 +16,7 @@ use App\Phone;
 use App\Address;
 use App\Organisation;
 use App\ObjectType;
+use App\Status;
 
 class OrganisationEditController extends Controller
 {
@@ -169,6 +171,11 @@ class OrganisationEditController extends Controller
             'organisations.email as email',
             'organisations.org_type_id as type_id',
             'organisations.tax_id as tax_id',
+            'organisations.services as services',
+            'organisations.office_hours as office_hours',
+            'organisations.website as website',
+            'organisations.code as code',
+            'organisations.geographic_area_served as geographic_area_served',
             'statuses.id as org_status_id',
             'statuses.value as org_status_value',
             'statuses.label as org_status_label'
@@ -192,17 +199,39 @@ class OrganisationEditController extends Controller
             return redirect()->route('admin.organisation.edit.general.page', [ 'id' => $id, 'slug' => $slug ]);
         }
 
+        // organisation type ids
+        $orgTypes = ObjectType::where([
+            ['type', '=', 'organisation']
+        ])->get();
+        $orgTypeIds = "";
+        foreach( $orgTypes as $orgType )
+        {
+            if ( $orgTypeIds != "" ) { $orgTypeIds .= ','; }
+            $orgTypeIds .= (string)$orgType->id;
+        }
+
         // validate entries from request
         $validator = Validator::make($request->all(),[
             'name'     => 'required|string|max:45',
-            'code'     => 'nullable',
-            'tax_id'   => 'nullable',
-            'type'     => 'required',
+            'code'     => 'nullable|string|max:45|unique:organisations,code,'.$organisation->id,
+            'tax_id'   => 'nullable|regex:/^\d{2}-\d{7}$/|unique:organisations,tax_id,'.$organisation->id,
+            'type'     => 'required|in:'.$orgTypeIds,
         ]);
 
         if (!($validator->fails()))
         {
+            $organisation = Organisation::where('id', $organisation->id)->first();
+            $organisation->name = $request->name;
+            $organisation->slug = str_slug($request->name, '-');
+            $organisation->code = $request->code;
+            $organisation->tax_id = $request->tax_id;
+            $organisation->org_type_id = $request->type;
+            $organisation->update();
 
+            // retun with message
+            return redirect()
+            ->route('admin.organisation.edit.general.page', [ 'id' => $organisation->id, 'slug' => $organisation->slug ])
+            ->with('success', 'General information successfully updated!');
         }
 
         // return to edit page
@@ -228,20 +257,31 @@ class OrganisationEditController extends Controller
         if( !isset($organisation->id) )
         {
             // if no organisation is found, return back to page
-            return redirect()->route('admin.organisation.edit.contact.page', [ 'id' => $id, 'slug' => $slug ]);
+            return redirect()->route('admin.organisation.edit.profile.page', [ 'id' => $id, 'slug' => $slug ]);
         }
 
         // validate data from request
         $validator = Validator::make($request->all(),[
-            'services'                  => 'nullable',
-            'office_hours'              => 'nullable',
-            'website'                   => 'nullable',
-            'geographic_area_served'    => 'nullable',
+            'services'                  => 'nullable|string|max:1000',
+            'office_hours'              => 'nullable|string|max:1000',
+            'website'                   => 'nullable|url|max:60',
+            'geographic_area_served'    => 'nullable|string|max:1000',
         ]);
 
         if (!($validator->fails()))
         {
+            // update organisation data
+            $organisation = Organisation::where('id', $organisation->id)->first();
+            $organisation->services = $request->services;
+            $organisation->office_hours = $request->office_hours;
+            $organisation->website = $request->website;
+            $organisation->geographic_area_served = $request->geographic_area_served;
+            $organisation->update();
 
+            // retun with message
+            return redirect()
+            ->route('admin.organisation.edit.profile.page', [ 'id' => $id, 'slug' => $slug ])
+            ->with('success', 'Profile information successfully updated!');
         }
 
         // return to edit page
@@ -271,8 +311,8 @@ class OrganisationEditController extends Controller
         
         // validate data from request
         $validator = Validator::make($request->all(),[
-            'email'     => 'nullable|email|max:45',
-            'phone'     => 'nullable|string|max:10',
+            'email'     => 'nullable|email|max:45|unique:organisations,email,'.$organisation->id,
+            'phone'     => 'nullable|regex:/^\d{3}\d{3}\d{4}$/',
             'state'     => 'nullable|exists:states,name',
             'city'      => 'nullable|string|max:45',
             'zip_code'  => 'nullable|string|max:5',
@@ -580,4 +620,75 @@ class OrganisationEditController extends Controller
                     'slug' => $slug
                 ]);
     } // end addAdminSubmit
+
+
+
+    /**
+     * update organisation status
+     */
+    public function updateStatusSubmit($id, $slug, Request $request)
+    {
+        $organisation = Organisation::where([
+            ['id', '=', $id],
+            ['slug', '=', $slug]
+        ])->first();
+        if( !isset($organisation->id) )
+        {
+            // if no organisation is found, return back to page
+            return redirect()->back();
+        }
+
+        // validate data from request
+        $validator = Validator::make($request->all(),[
+            'new_org_status_value'  => 'required|in:approved,suspended',
+            'admin_password_verify' => 'required',
+        ]);
+
+        if (!($validator->fails()))
+        {
+            // validate current admin password
+            $currentAdmin = Auth('admin')->user();
+            if (Hash::check($request->admin_password_verify, $currentAdmin->password))
+            {
+                // get new organisation status id
+                $newStatus = Status::where([
+                    ['type', '=', 'organisation'],
+                    ['value', '=', $request->new_org_status_value]
+                ])->first();
+                // update organisation
+                $organisation->org_status_id = $newStatus->id;
+                $organisation->update();
+
+                // suspend arganisation users
+                // if organsation new status is suspended
+                if ( $request->new_org_status_value == "suspended" )
+                {    
+                    DB::table('users')
+                    ->where('organisation_id', $organisation->id)
+                    ->update(['banned' => 1]);               
+                }
+
+                // generate success message
+                if ( $request->new_org_status_value == "suspended" )
+                {
+                    $message = "Organization is suspended with all users in it!";
+                }
+                else
+                {
+                    $message = "Organisation is approved! You still need to approve users that belongs to this organization.";
+                }
+                // return back with message
+                return redirect()->back()->with('success', $message);
+
+            }
+            else
+            {
+                // return back with current admin password error message
+                return redirect()->back()->with('error', 'Your password is not valid!');
+            }
+        }
+
+        return redirect()->back();
+
+    } // end updateStatusSubmit
 }

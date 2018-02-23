@@ -3,7 +3,12 @@
 @section('content')
 <div class="card mb-3">
 <div class="card-header">
-    <i class="fa fa-area-chart"></i> Advocate Users</div>
+    <i class="fa fa-area-chart"></i> Advocate Users
+    <a  href="{{ route('admin.users.user_add.list') }}"
+        class="btn btn-primary"
+        style="float:right;"
+        >Add new user</a>  
+</div>
 <div class="card-body">
     <?php
         // defines row counter for results in table

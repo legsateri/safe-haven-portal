@@ -22,7 +22,8 @@ class CreateOrganisationsTable extends Migration
             $table->string('code')->nullable()->unique();
             $table->string('email')->nullable()->unique();
             $table->text('services')->nullable();
-            $table->boolean('have_office_hours')->nullable();
+            // $table->boolean('have_office_hours')->nullable();
+            $table->text('office_hours')->nullable();
             $table->text('website')->nullable();
             $table->text('geographic_area_served')->nullable();
             $table->string('slug');
