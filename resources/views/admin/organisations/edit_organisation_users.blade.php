@@ -49,7 +49,7 @@
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Verified</th>
-                            <th scope="col">Banned</th>
+                            <th scope="col">Suspended</th>
                             <th scope="col">Org. Admin</th>
                             <th></th>
                         </tr>

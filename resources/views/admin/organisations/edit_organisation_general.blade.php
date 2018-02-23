@@ -75,6 +75,7 @@
                         @if( isset($organisation->tax_id) )
                             value="{{ $organisation->tax_id }}"
                         @endif
+                        placeholder="e.g. 12-1234567"
                         >
                 <!-- error message -->
                 @if ($errors->has('tax_id'))

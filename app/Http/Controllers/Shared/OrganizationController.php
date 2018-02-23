@@ -61,16 +61,20 @@ class OrganizationController extends Controller
             ['organisation_id', '=', $organisation->id]
         ])->first();
         
-        $organisationAdmin = DB::table('users')
+        $organisationAdmins = DB::table('users')
             ->join('organisation_admins', 'users.id', '=', 'organisation_admins.user_id')
             ->where([
                 ['organisation_admins.organisation_id', '=', $currentUser->organisation_id]
             ])
-            ->select('users.email')
-            ->first();
+            ->select(
+                'users.email',
+                'users.first_name',
+                'users.last_name'
+            )
+            ->get();
 
         return  view('auth.shared.orgAccount', 
-                compact('currentUser', 'states', 'organisation', 'organisationPhone','organisationAddress', 'phoneTypes', 'organisationAdmin', 'checkOrganisationAdmin' ));
+                compact('currentUser', 'states', 'organisation', 'organisationPhone','organisationAddress', 'phoneTypes', 'organisationAdmins', 'checkOrganisationAdmin' ));
     }
 
 
@@ -84,17 +88,17 @@ class OrganizationController extends Controller
             'name'                  => 'required|string|max:255',
             'code'                  => 'nullable|string|max:20',
             'tax_id'                => 'nullable|regex:/^\d{2}-\d{7}$/',
-            'services'              => 'nullable|max:3000',
-            'have_office_hours'     => 'required|in:1,0',
+            'services'              => 'nullable|string|max:3000',
+            'office_hours'          => 'nullable|string|max:1000',
             'website'               => 'nullable|max:100|url',
-            'geographic_area_served'=> 'nullable|max:3000',
+            'geographic_area_served'=> 'nullable|string|max:3000',
             // 'org_admin'          => '',
             'email'                 => 'required|email|max:255',
             'phone_number'          => 'required|regex:/^\d{3}\d{3}\d{4}$/',
             'street'                => 'nullable|string|max:255',
             'city'                  => 'nullable|string|max:255',
-            'zip_code'              => 'nullable|integer|regex:/^\d{5}$/',
-            'state'                 => 'nullable|exists:states,id',
+            'zip_code'              => 'nullable|regex:/^\d{5}$/',
+            'state'                 => 'nullable|exists:states,name',
 
             ]);
         
@@ -123,10 +127,11 @@ class OrganizationController extends Controller
 
                 //update organisation info
                 $organisation->name = $request->name;
+                $organisation->slug = str_slug($request->name, '-');
                 $organisation->code = $request->code;
                 $organisation->tax_id = $request->tax_id;
                 $organisation->services = $request->services;
-                $organisation->have_office_hours = $request->have_office_hours;
+                $organisation->office_hours = $request->office_hours;
                 $organisation->website = $request->website;
                 $organisation->geographic_area_served = $request->geographic_area_served;
                 $organisation->email = $request->email;

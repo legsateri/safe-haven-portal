@@ -43,7 +43,13 @@
                         <td>{{ $organisation->email }}</td>
                         <td>{{ $organisation->code }}</td>
                         <td>{{ $organisation->tax_id }}</td>
-                        <td>{{ $organisation->org_status_label }}</td>
+                        <td>
+                            @if( $organisation->org_status_value == 'approved' )
+                                <span style="color:green;">{{ $organisation->org_status_label }}</span>
+                            @else
+                                <span style="color:red;">{{ $organisation->org_status_label }}</span>
+                            @endif
+                        </td>
                     </tr>
                     <?php $counter++; ?>
                 @endforeach

@@ -59,17 +59,18 @@
 
                                 <div id="sign_up_org_code_half_row" class="form-group col-md-6">
                                     <label for="org_code">Organization Code</label>
-                                    <input  type="text" class="form-control"
-                                            id="org_code" name="code" placeholder="" 
-                                            value="<?php
-                                                    if (isset($organisation->code)):
-                                                    echo $organisation->code;
-                                                    endif;
-                                                    ?>"
-                                                    @if(!isset($checkOrganisationAdmin->id))
-                                                        disabled
-                                                    @endif
-                                                    >
+                                    @if(isset($checkOrganisationAdmin->id))
+                                        <input  type="text" class="form-control"
+                                                id="org_code" name="code" placeholder="" 
+                                                value="<?php
+                                                        if (isset($organisation->code)):
+                                                        echo $organisation->code;
+                                                        endif;
+                                                        ?>"
+                                                        >
+                                    @else
+                                        <p>For organization code please contact your organization administrator</p>
+                                    @endif
                                     <!-- error message -->
                                     @if ($errors->has('code'))
                                         <div class="text-danger">
@@ -127,52 +128,25 @@
                             </div>
                             
                             <div class="form-row">
+
                                 <div class="form-group col-md-6">
-                                    <label for="">Office Hours</label>
-                                    <div style="display: block;" class="radio_custom_group">
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input  type="radio" class="custom-control-input"
-                                                    id="org_office_hours_yes" name="have_office_hours"
-                                                    value="1"
-                                                    <?php
-                                                    if ($organisation->have_office_hours == 1):
-                                                    echo "checked";
-                                                    endif;
-                                                    ?>
-                                                    @if(!isset($checkOrganisationAdmin->id))
-                                                        disabled
-                                                    @endif
-                                                    >
-
-                                            <label class="custom-control-label" for="org_office_hours_yes">Yes</label>
-                                        </div>
-
-
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input  type="radio" class="custom-control-input"
-                                                    id="org_office_hours_no" name="have_office_hours"
-                                                    value="0"
-                                                    <?php
-                                                    if ($organisation->have_office_hours == 0):
-                                                    echo "checked";
-                                                    endif;
-                                                    ?>
-                                                    @if(!isset($checkOrganisationAdmin->id))
-                                                        disabled
-                                                    @endif
-                                                    >
-
-                                            <label class="custom-control-label" for="org_office_hours_no">No</label>
-                                        </div>
-                                    </div>
+                                    <label for="office_hours">Office Hours</label>
+                                    <textarea   name="office_hours" 
+                                                id="office_hours" 
+                                                rows="2" 
+                                                class="form-control"
+                                                @if(!isset($checkOrganisationAdmin->id))
+                                                    disabled
+                                                @endif
+                                    >{{ $organisation->office_hours }}</textarea>
                                     <!-- error message -->
-                                    @if ($errors->has('have_office_hours'))
+                                    @if ($errors->has('office_hours'))
                                         <div class="text-danger">
-                                            {{ $errors->first('have_office_hours') }}
+                                            {{ $errors->first('office_hours') }}
                                         </div>
                                     @endif
                                 </div>
-                                
+
                                 <div class="form-group col-md-6">
                                     <label for="org_website_url">Website URL</label>
                                     <input  type="text" class="form-control"
@@ -220,16 +194,13 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label for="org_admin">Organization Admin</label>
+                                    <label for="org_admin">Organization Admins</label>
+                                    @foreach( $organisationAdmins as $organisationAdmin )
                                     <input  type="text" class="form-control"
                                             id="org_admin" name="org_admin"
-                                            maxlength="25" placeholder=""
-                                            value="<?php
-                                                    if (isset($organisationAdmin->email)):
-                                                    echo $organisationAdmin->email;
-                                                    endif;
-                                                    ?>"
+                                            value="{{ $organisationAdmin->first_name }} {{ $organisationAdmin->last_name }}: {{ $organisationAdmin->email }}"
                                             disabled>
+                                    @endforeach
                                     <!-- error message -->
                                     @if ($errors->has('org_admin'))
                                         <div class="text-danger">
@@ -336,7 +307,8 @@
                                         </div>
                                     @endif
                                 </div>
-
+                                
+                                @if ( ($organisationAddress['state'] != "" || $organisationAddress['state'] != null) || isset($checkOrganisationAdmin->id) )
                                 <div class="form-group col-md-4">
                                     <label for="state">State</label>
                                     <select class="form-control" id="state" name="state"
@@ -346,8 +318,8 @@
                                     >
                                         <option value="">Select State</option>
                                         @foreach($states as $state)
-                                        <option value="{{$state->id}}"
-                                                @if($state->id == $organisationAddress['state'])
+                                        <option value="{{$state->name}}"
+                                                @if($state->name == $organisationAddress['state'])
                                                 selected
                                                 @endif                                               
                                                 >{{$state->name}}
@@ -361,6 +333,7 @@
                                         </div>
                                     @endif
                                 </div>
+                                @endif
 
                                 <div class="form-group col-md-2">
                                     <label for="zip">Zip (5 digits)</label>
@@ -368,8 +341,8 @@
                                             id="zip" name="zip_code"
                                             maxlength="5" placeholder="XXXXX" 
                                             value="<?php
-                                                    if (isset($organisation->zip_codecity)):
-                                                    echo $organisation->zip_code;
+                                                    if (isset($organisationAddress['zip_code'])):
+                                                    echo $organisationAddress['zip_code'];
                                                     endif;
                                                     ?>"
                                                     @if(!isset($checkOrganisationAdmin->id))

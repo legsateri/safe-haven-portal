@@ -31,7 +31,7 @@
                     <th scope="col">Email</th>
                     <th scope="col">Organization</th>
                     <th scope="col">Verified</th>
-                    <th scope="col">Banned</th>
+                    <th scope="col">Suspended</th>
                 </tr>
             </thead>
             <tbody>

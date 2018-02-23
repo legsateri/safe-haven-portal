@@ -43,7 +43,11 @@ class LoginController extends Controller
     {
         if (!$user->verified) {
             auth()->logout();
-            return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
+            return back()->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email');
+        }
+        if ($user->banned == 1) {
+            auth()->logout();
+            return back()->with('warning', 'Account is currently suspended, please contact Safe Haven Network administrator');
         }
         return redirect()->intended($this->redirectPath());
     }

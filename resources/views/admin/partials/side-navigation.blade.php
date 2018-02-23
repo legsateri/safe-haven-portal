@@ -84,10 +84,12 @@
             <span class="nav-link-text">Settings</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseSettings">
+            <?php /*
             <li>
               <a href="/admin/settings/application"><i class="fa fa-sliders" aria-hidden="true"></i>
                 Application Settings</a>
             </li>
+            */ ?>
             <li>
               <a href="/admin/settings/admin-users"><i class="fa fa-user-secret" aria-hidden="true"></i>
 

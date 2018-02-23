@@ -14,6 +14,7 @@ use Validator;
 use App\User;
 use Hash;
 use App\Admin;
+use App\Organisation;
 
 class UserEditController extends Controller
 {
@@ -134,15 +135,23 @@ class UserEditController extends Controller
             
             if($checkEmail == null || ($checkEmail != null && $checkEmail->id == $user->id)){
                 
+                // get new user type based on organisatio type
+                $organisation = Organisation::where('id', $request->organisation)->first();
+                $orgType = ObjectType::where([
+                    ['id', '=', $organisation->org_type_id]
+                ])->first();
+                $userType = ObjectType::where([
+                    ['type', '=', 'user'],
+                    ['value', '=', $orgType->value]
+                ])->first();
+
                 //update user
                 $user->first_name = $request->first_name;
                 $user->last_name = $request->last_name;
                 $user->email = $request->email;
                 $user->organisation_id = $request->organisation;
-                //kada updateujemo tip organizacije moramo da updateujemo i tip usera
-
+                $user->user_type_id = $userType->id;
                 $user->slug = str_slug($user['first_name'] . ' ' . $user['last_name'], '-');
-                
                 $user->update();
 
                 return redirect()
