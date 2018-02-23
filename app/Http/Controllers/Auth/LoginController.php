@@ -55,7 +55,7 @@ class LoginController extends Controller
         if ($user->organisation_id == "" || $user->organisation_id == null)
         {
             auth()->logout();
-            return back()->with('warning', 'Account don\'t belong to any organzation, please contact your former organization or Safe Haven Network administrator');
+            return back()->with('warning', 'Account don\'t belong to any organization, please contact your former organization or Safe Haven Network administrator');
         }
         else
         {
