@@ -70,7 +70,11 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::post('/users/user-add', 'Admin\UsersController@addSubmit')->name('admin.users.user_add.submit');
 
 		// edit user page
-		Route::get('/user/{id}/{slug}', 'Admin\UserEditController@editUserPage')->name('admin.user.edit.page');
+		// Route::get('/user/{id}/{slug}', 'Admin\UserEditController@editUserPage')->name('admin.user.edit.page');
+		Route::get('/user/{id}/{slug}/general', 'Admin\UserEditController@editUserGeneral')->name('admin.user.edit.general.page');
+		Route::get('/user/{id}/{slug}/contact', 'Admin\UserEditController@editUserContact')->name('admin.user.edit.contact.page');
+		Route::get('/user/{id}/{slug}/password', 'Admin\UserEditController@editUserPassword')->name('admin.user.edit.password.page');
+
 		// edit user form submits
 		Route::post('/user/{id}/{slug}/edit/general', 'Admin\UserEditController@submitGeneral')->name('admin.user.edit.submit.general');
 		Route::post('/user/{id}/{slug}/edit/contact', 'Admin\UserEditController@submitContact')->name('admin.user.edit.submit.contact');

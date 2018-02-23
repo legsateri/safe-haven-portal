@@ -152,7 +152,7 @@ class UsersController extends Controller
                 
                 // redirect to user edit page with success message
                 return redirect()
-                    ->route('admin.user.edit.page', [
+                    ->route('admin.user.edit.general.page', [
                         'id' => $user->id,
                         'slug' => $user->slug
                     ])

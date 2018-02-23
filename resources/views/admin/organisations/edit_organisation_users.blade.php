@@ -58,7 +58,7 @@
                         @foreach( $users as $user )
                             <tr>
                                 <th scope="row">{{ $counter }}</th>
-                                <td><a href="{{ route('admin.user.edit.page', ['id' => $user->id, 'slug' =>  $user->slug ]) }}">{{ $user->first_name }} {{ $user->last_name }}</a></td>
+                                <td><a href="{{ route('admin.user.edit.general.page', ['id' => $user->id, 'slug' =>  $user->slug ]) }}">{{ $user->first_name }} {{ $user->last_name }}</a></td>
                                 <td>{{ $user->email }}</td>
                                 <td>
                                     @if( $user->verified == 1 )

@@ -13,13 +13,68 @@ use App\State;
 use Validator;
 use App\User;
 use Hash;
+use App\Admin;
 
 class UserEditController extends Controller
 {
-    /**
-     * display edit user page
-     */
-    public function editUserPage($id, $slug)
+
+    public function editUserGeneral($id, $slug)
+    {
+        // get user data
+        $user = $this->_getUserData($id, $slug);
+        // get organisations
+        $organisations = DB::table('organisations')
+        ->select([
+            'organisations.name as name', 
+            'organisations.id as id'
+        ])
+        ->get();
+
+        return  view('admin.users.user.edit_user_general', 
+                compact('user', 'organisations'));
+    }
+
+    public function editUserContact($id, $slug)
+    {
+        // get user data
+        $user = $this->_getUserData($id, $slug);
+
+        // get user phone
+        $userPhone = Phone::where([
+            ['entity_type', '=', 'user'],
+            ['entity_id', '=', $user->id]
+        ])->first();
+
+        // get user address
+        $userAddress = Address::where([
+            ['entity_type', '=', 'user'],
+            ['entity_id', '=', $user->id]
+        ])->first();
+
+        $phoneTypes = ObjectType::where([
+            ['type', '=', 'phone']
+        ])->get();
+
+        $addressTypes = ObjectType::where([
+            ['type', '=', 'address']
+        ])->get();
+
+        $states = State::all();
+
+        return  view('admin.users.user.edit_user_contact', 
+                compact('user', 'userPhone', 'userAddress', 'phoneTypes', 'addressTypes', 'states'));
+    }
+
+    public function editUserPassword($id, $slug)
+    {
+        // get user data
+        $user = $this->_getUserData($id, $slug);
+
+        return  view('admin.users.user.edit_user_password', 
+                compact('user'));
+    }
+
+    private function _getUserData($id, $slug)
     {
         // get user data
         $user = DB::table('users')
@@ -45,40 +100,10 @@ class UserEditController extends Controller
         if ( !isset($user->id) )
         {
             // user not found, return error
-            return "404 error<br>resource not found";
+            die("resource not found");
         }
 
-        // get user phone
-        $userPhone = Phone::where([
-            ['entity_type', '=', 'user'],
-            ['entity_id', '=', $user->id]
-        ])->first();
-
-        // get user address
-        $userAddress = Address::where([
-            ['entity_type', '=', 'user'],
-            ['entity_id', '=', $user->id]
-        ])->first();
-
-        $organisations = DB::table('organisations')
-        ->select([
-            'organisations.name as name', 
-            'organisations.id as id'
-        ])
-        ->get();
-
-        $phoneTypes = ObjectType::where([
-            ['type', '=', 'phone']
-        ])->get();
-
-        $addressTypes = ObjectType::where([
-            ['type', '=', 'address']
-        ])->get();
-
-        $states = State::all();
-
-        return  view('admin.users.user.edit_user', 
-                compact('user', 'userPhone', 'userAddress', 'organisations', 'phoneTypes', 'addressTypes', 'states'));
+        return $user;
     }
 
 
@@ -121,7 +146,7 @@ class UserEditController extends Controller
                 $user->update();
 
                 return redirect()
-                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->route('admin.user.edit.general.page', ['id' => $user->id, 'slug' => $user->slug])
                     ->with('success-general', ' General information successfully changed!');
 
             } elseif ($checkEmail->id != $user->id) {
@@ -194,7 +219,7 @@ class UserEditController extends Controller
                 $userAddress->save();
             
                 return redirect()
-                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->route('admin.user.edit.contact.page', ['id' => $user->id, 'slug' => $user->slug])
                     ->with('success-contact', ' Contact information successfully changed!');
         }
         
@@ -224,7 +249,7 @@ class UserEditController extends Controller
             ])->first();
 
             //find admin
-            $currentAdmin = Auth('admin')->user()->email;
+            $currentAdmin = Admin::where('id', Auth('admin')->user()->id)->first();
 
             // check if admin password is valid
             if (Hash::check($request->admin_password, $currentAdmin->password)){ 
@@ -235,7 +260,7 @@ class UserEditController extends Controller
                 $user->update();
                 
                 return redirect()
-                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->route('admin.user.edit.password.page', ['id' => $user->id, 'slug' => $user->slug])
                     ->with('success-password', ' Password was successfully changed!');
 
             } else {
@@ -284,11 +309,13 @@ class UserEditController extends Controller
 
                 if ($user->verified == "1") {
                     return redirect()
-                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    // ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->back()
                     ->with('success-verify1', 'User set as verified');
                 } else {
                     return redirect()
-                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    // ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->back()
                     ->with('success-verify0', 'User set as not verified');
                 }
                 
@@ -339,11 +366,13 @@ class UserEditController extends Controller
 
                 if ($user->banned == "1") {
                     return redirect()
-                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    // ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->back()
                     ->with('success-ban1', 'User is banned!');
                 } else {
                     return redirect()
-                    ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    // ->route('admin.user.edit.page', ['id' => $user->id, 'slug' => $user->slug])
+                    ->back()
                     ->with('success-ban0', 'User is active');
                 }
                 
