@@ -10,6 +10,12 @@ jQuery(document).ready(function() {
 
         $('input:checkbox').prop('checked', false); // browser remembers last checkbox state, clear it
 
+        // mask for register form text input
+        $('#tax_id').mask('00-0000000');
+        $('#org_code').mask('00000');
+        $('#org_phone_num').mask('000-000-0000');
+        $('#contact_phone_num').mask('000-000-0000');
+
         $('.btn.signup_advocate, .btn.signup_shelter').click(function() { // sign up shelter or advocate
 
             var user_type_advocate = $(this).hasClass('signup_advocate');
@@ -38,6 +44,12 @@ jQuery(document).ready(function() {
 
                 $('#sign_up_tax_id_row').fadeOut("fast", function () {
                 });
+                $('#org_name').val('');
+                $('#org_name').removeAttr('required');
+                $('#tax_id').val('');
+                $('#tax_id').removeAttr('required');
+                $('#org_phone_num').val('');
+                $('#org_phone_num').removeAttr('required');
             } else {
                 $('#sign_up_org_code_half_row').fadeOut("fast", function () {
                     $('#sign_up_org_name_half_row').fadeIn("slow", function () {
@@ -45,14 +57,47 @@ jQuery(document).ready(function() {
                     });
                     $('#sign_up_tax_id_row').fadeIn("slow", function () {
                     });
+                    $('#org_code').val('');
+                    $('#org_code').removeAttr('required');
                 });
             }
         });
+
+        $(function() {
+            $("#user_pass_confirm").keyup(function() {
+                var password = $("#user_pass").val();
+                $("#passwordConfirmHelpBlock").html(password == $(this).val()
+                    ? "Passwords match."
+                    : "Passwords do not match!"
+                );
+            });
+        });
+
+        /*jQuery.validator.setDefaults({
+            debug: true,
+            success: "valid"
+        });
+        $( "#shn_register_form" ).validate({
+            rules: {
+                user_pass: "required",
+                user_pass_confirm: {
+                    equalTo: "#user_pass"
+                }
+            }
+        });*/
+
+
     }
 
     if ( $('#accordion_client_new_application').length != 0 ) { // if client new application page
 
         $('.accordion_section_2 .card-header a, .accordion_section_3 .card-header a, .accordion_section_4 .card-header a').removeAttr('href', '#');
+
+        // mask for register form text input
+        /*$('#tax_id').mask('00-0000000');*/
+        $('#contact_phone_num').mask('000-000-0000');
+        $('#zip').mask('00000');
+        /*$('#contact_phone_num').mask('000-000-0000');*/
 
         /*--------------- text/textarea input function for all starts --------------------*/
 
@@ -239,6 +284,8 @@ jQuery(document).ready(function() {
 
                         jQuery.each(obj.data.message, function (index, value) {
 
+                            value = value.replace(/\\/gi,""); // replace backslash
+
                             $('#' + index).next('.invalid-feedback').html(value);
 
                             if ( $('#' + index).hasClass('is-valid') ) {
@@ -399,8 +446,41 @@ jQuery(document).ready(function() {
 
         $('#add_another_pet').click(function() { // add another pet
 
-            var latest_pet_id = $(this).closest('.form-row').prev().find('#pet_application_1').last().attr('id');
-            $(this).closest('.form-row').prev().find('#pet_application_1').clone().appendTo("#pet_form_cont");
+           /* var latest_pet_cont_class = $(this).closest('.form-row').prev().find('.pet_application_1').last().attr('class');*/
+
+            var latest_pet_cont_class = $('#pet_form_cont > div:last-child').attr('class');
+            console.log("latest_pet_cont_class =" + latest_pet_cont_class);
+            var new_pet_cont_class_id = parseInt(latest_pet_cont_class.replace("pet_application_", "")) + 1;
+            /*$(this).closest('.form-row').prev().find('.pet_application_1').clone().appendTo("#pet_form_cont");*/
+
+            var original_form_template = $('#pet_form_cont > .pet_application_1');
+            var original_checkbox_states = original_form_template.find('input[type="radio"]:checked');
+
+            var new_form = original_form_template.clone();
+            new_form.css('display','none').appendTo("#pet_form_cont");
+
+            original_checkbox_states.prop('checked',true);
+
+            var new_pet_cont_class = 'pet_application_' + new_pet_cont_class_id.toString()
+
+            /*$('#pet_form_cont > div:last-child').removeClass().addClass(new_pet_cont_class);*/
+            new_form.removeClass().addClass(new_pet_cont_class);
+
+            console.log("new_pet_cont_class =" + new_pet_cont_class);
+
+            /*$('.' + new_pet_cont_class + ' input[type="text"]').val('');*/
+            new_form.find('input[type="text"]').val('');
+            /*$('.' + new_pet_cont_class + ' textarea').val('');*/
+            new_form.find('textarea').val('');
+            new_form.find('input[type="radio"]:checked').prop('checked', false);
+
+            new_form.find('input[type="radio"]').attr('id','zzz');
+
+            new_form.fadeIn("slow", function () {});
+
+            /*$('.' + new_pet_cont_class + ' input[type="radio"]:checked').prop('checked', false);
+            $('.pet_application_2 input[type="radio"]:checked').prop('checked', false);*/
+
         });
 
 
@@ -409,7 +489,9 @@ jQuery(document).ready(function() {
             var clicked_button = $(this);
             var new_client_app_form_data = $( '#new_client_app_form' ).serializeArray();
             var new_pet_app_form_data = $( '#new_pet_app_form' ).serializeArray();
+            var assign_application_to_form_data = $( '#assign_application_to_form_data' ).serializeArray();
             full_form_array = new_client_app_form_data.concat(new_pet_app_form_data);
+            full_form_array = full_form_array.concat(assign_application_to_form_data);
 
             // fix action key value
             var full_form_array_action = [];
@@ -433,6 +515,7 @@ jQuery(document).ready(function() {
                     if ( obj.success == true ) {
 
                         setTimeout(function(){
+                            $('#assign_to_me, #add_to_clients_in_need').prop('disabled', true);
                             clicked_button.addClass('disabled');
                             $('#client_new_application_start_another').fadeIn("slow", function () {});
                             $('.check_4').fadeIn("slow", function () {});
@@ -503,7 +586,7 @@ jQuery(document).ready(function() {
                         $('.spinner_cont').css('display','none');
                         modal_button_clicked.fadeOut("fast", function () {});
 
-                        $('.modal-body').html('Client has been successfully released');
+                        $('.modal-body').html('Client has been successfully accepted.');
 
                         $('#list-example a[href="#list-item-' + confirmed_accept_client_id + '"]').fadeOut("fast", function () {});
                         $('.scrollspy-example #list-item-' + confirmed_accept_client_id).fadeOut("fast", function () {});

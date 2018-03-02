@@ -65,7 +65,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label for="contact_phone_num">Phone Number (10 digits)</label>
-                                        <input  type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}\d{3}\d{4}$" placeholder="XXXXXXXXXX" required="" 
+                                        <input  type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX" required=""
                                                 @if ( isset($tempData['client-phone-number']) )
                                                     value="{{ $tempData['client-phone-number'] }}"
                                                 @else
@@ -245,7 +245,7 @@
                                 {{ csrf_field() }}
                                <input name="action" value="validation_multi_pet" type="hidden">
                                 <div id="pet_form_cont">
-                                    <div id="pet_application_1">
+                                    <div class="pet_application_1">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="">Pet Type</label>
@@ -694,7 +694,7 @@
                                 <div class="form-row">
 
                                     <div class="form-group col-md-12 text-right">
-                                        <?php /*<button id="add_another_pet" type="button" class="btn btn-primary">Add Another Pet</button>*/ ?>
+                                        <button id="add_another_pet" type="button" class="btn btn-primary">Add Another Pet</button>
                                         <button id="next_step_2_3" type="button" class="btn btn-primary">Next Step</button>
                                         <div class="spinner_cont spinner_form_2"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
                                     </div>
@@ -761,6 +761,36 @@
             </div>
             <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
                 <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12 text-center">
+                            <form id="assign_application_to_form_data">
+                                <label for="">Assign Application</label>
+                                <div style="display: block;" class="radio_custom_group">
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input  type="radio" id="assign_to_me" value="assign_to_me" name="assign_application_to"
+                                                {{--@if ( isset( $tempData['pet-spayed'] ) )
+                                                @if ( in_array( $tempData['pet-spayed'], ['spayed_yes', 'yes'] ) )
+                                                checked
+                                                @endif
+                                                @endif--}}
+                                                class="custom-control-input">
+                                        <label class="custom-control-label" for="assign_to_me">Assign this Client to me</label>
+                                    </div>
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input  type="radio" id="add_to_clients_in_need" value="add_to_clients_in_need" name="assign_application_to"
+                                                {{--@if ( isset( $tempData['pet-spayed'] ) )
+                                                @if ( in_array( $tempData['pet-spayed'], ['spayed_no', 'no'] ) )
+                                                checked
+                                                @endif
+                                                @endif--}}
+                                                class="custom-control-input">
+                                        <label class="custom-control-label" for="add_to_clients_in_need">Add Client to Clients in Need List</label>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback">More example invalid feedback text</div>
+                            </form>
+                        </div>
+                    </div>
                     <div class="form-row">
                         <div class="form-group col-md-12 text-center">
 

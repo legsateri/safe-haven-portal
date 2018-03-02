@@ -6,6 +6,9 @@
 <script src="{{url('/')}}/js/popper.min.js"></script>
 <script src="{{url('/')}}/js/bootstrap.min.js"></script>
 <script src="{{url('/')}}/js/holder.min.js"></script>
+<script src="{{url('/')}}/js/jquery.mask.js"></script>
+<?php /*<script src="{{url('/')}}/js/jquery.validate.min.js"></script>
+<script src="{{url('/')}}/js/additional-methods.min.js"></script>*/ ?>
 <script src="{{url('/')}}/js/sh_custom.js"></script>
 <script>
     Holder.addTheme('thumb', {

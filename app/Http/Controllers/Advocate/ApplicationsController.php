@@ -409,7 +409,7 @@ class ApplicationsController extends Controller
     private function _validateClientPhoneNumber($value)
     {
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|regex:/^\d{3}\d{3}\d{4}$/'
+            'value' => 'required|regex:/^\d{3}-\d{3}-\d{4}$/'
         ]);
 
         if ( !$validator->fails() )
@@ -751,7 +751,7 @@ class ApplicationsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name'            => 'required|string|max:20',
             'last_name'             => 'required|string|max:20',
-            'contact_phone_number'  => 'required|regex:/^\d{3}\d{3}\d{4}$/',
+            'contact_phone_number'  => 'required|regex:/^\d{3}-\d{3}-\d{4}$/',
             'phone_number_type'     => 'required|in:' . $phoneTypes,
             'email'                 => 'required|email|max:40|unique:clients,email',
             'pref_contact_method'   => 'required|in:phone,email,text_message',

@@ -75,9 +75,9 @@ class RegisterController extends Controller
             'org_name'          => 'nullable|max:40|required_without:already_with_org',
             'organization_code' => 'nullable|required_with:already_with_org|exists:organisations,code',
             'tax_id'            => 'nullable|required_without:already_with_org|regex:/^\d{2}-\d{7}$/|unique:organisations',
-            'org_phone_number'  => 'nullable|required_without:already_with_org|regex:/^\d{3}\d{3}\d{4}$/',
+            'org_phone_number'  => 'nullable|required_without:already_with_org|regex:/^\d{3}-\d{3}-\d{4}$/',
 
-            'contact_phone_number'      => 'required|regex:/^\d{3}\d{3}\d{4}$/',
+            'contact_phone_number'      => 'required|regex:/^\d{3}-\d{3}-\d{4}$/',
             'sign_up_form_user_type'    => 'required|in:advocate,shelter',
             'terms_of_use'              => 'required|in:on',
         ]);
