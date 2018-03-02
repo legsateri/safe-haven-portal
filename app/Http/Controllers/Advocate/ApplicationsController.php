@@ -111,10 +111,23 @@ class ApplicationsController extends Controller
         /**
          * validation for single fields
          */
-        if ( $request->action == "validation_single" )
-        {
+        if ( $request->action == "validation_single" ) {
 
-            switch ($request->element_id) {
+            // check for elements coming from add another pet form, and trim if needed
+            if ( strpos( $request->element_id, '-' ) !== false ) {
+                $request_element_id = strstr($request->element_id, '-', true);
+
+                // checkbox values also have form number, check for those, and trim
+                if ( strpos( $request->input_value, '-' ) !== false ) {
+                    $request->input_value = strstr($request->input_value, '-', true);
+                }
+
+            } else {
+                $request_element_id = $request->element_id;
+            }
+
+           /* switch ($request->element_id) {*/
+            switch ($request_element_id) {
 
                 case 'org_first_name':
                     $response = $this->_validateClientFirstName($request->input_value);

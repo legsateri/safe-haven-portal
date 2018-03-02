@@ -691,7 +691,7 @@
                                     </div>
                                 </div>
                             </form>
-                                <div class="form-row">
+                                <div class="form-row new_client_form_button_row mt-3">
 
                                     <div class="form-group col-md-12 text-right">
                                         <button id="add_another_pet" type="button" class="btn btn-primary">Add Another Pet</button>

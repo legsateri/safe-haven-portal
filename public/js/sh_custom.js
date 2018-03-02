@@ -101,7 +101,8 @@ jQuery(document).ready(function() {
 
         /*--------------- text/textarea input function for all starts --------------------*/
 
-        $("input[type='text'], textarea, input[type='phone'], input[type='email']").blur(function (e) {
+        /*$("input[type='text'], textarea, input[type='phone'], input[type='email']").blur(function (e) {*/
+        $("input[type='text'], textarea, input[type='phone'], input[type='email']").on("blur", function() {
 
             var ajaxurl = '/application/new/ajax';
             var sh_input_id = $(this).attr('id');
@@ -202,7 +203,8 @@ jQuery(document).ready(function() {
 
         /*--------------- radio input function for all starts --------------------*/
 
-        $('input[type=radio]').change(function() {
+        /*$('input[type=radio]').change(function() {*/
+        $('input[type=radio]').on("change", function() {
 
             var ajaxurl = '/application/new/ajax';
 
@@ -446,40 +448,71 @@ jQuery(document).ready(function() {
 
         $('#add_another_pet').click(function() { // add another pet
 
-           /* var latest_pet_cont_class = $(this).closest('.form-row').prev().find('.pet_application_1').last().attr('class');*/
-
+            // calculate order number of the form to be added
             var latest_pet_cont_class = $('#pet_form_cont > div:last-child').attr('class');
-            console.log("latest_pet_cont_class =" + latest_pet_cont_class);
             var new_pet_cont_class_id = parseInt(latest_pet_cont_class.replace("pet_application_", "")) + 1;
-            /*$(this).closest('.form-row').prev().find('.pet_application_1').clone().appendTo("#pet_form_cont");*/
 
+            // find all checked checkboxes, need to remember because it disappears on clone
             var original_form_template = $('#pet_form_cont > .pet_application_1');
             var original_checkbox_states = original_form_template.find('input[type="radio"]:checked');
 
-            var new_form = original_form_template.clone();
+            // clone original/template form and append it to form's container
+            var new_form = original_form_template.clone(true, true);
             new_form.css('display','none').appendTo("#pet_form_cont");
 
+            // set checkboxes again
             original_checkbox_states.prop('checked',true);
 
-            var new_pet_cont_class = 'pet_application_' + new_pet_cont_class_id.toString()
-
-            /*$('#pet_form_cont > div:last-child').removeClass().addClass(new_pet_cont_class);*/
+            // construct class of the new form with proper order number, add it to form
+            var new_pet_cont_class = 'pet_application_' + new_pet_cont_class_id.toString();
             new_form.removeClass().addClass(new_pet_cont_class);
 
-            console.log("new_pet_cont_class =" + new_pet_cont_class);
-
-            /*$('.' + new_pet_cont_class + ' input[type="text"]').val('');*/
+            // delete cloned content in new form, set checkboxes
             new_form.find('input[type="text"]').val('');
-            /*$('.' + new_pet_cont_class + ' textarea').val('');*/
             new_form.find('textarea').val('');
             new_form.find('input[type="radio"]:checked').prop('checked', false);
 
-            new_form.find('input[type="radio"]').attr('id','zzz');
+            //prepare to generate ids, names and fors of new form inputs, with proper order number
+            var elements_types = ['input[type="radio"]', 'input[type="text"]', 'textarea'];
 
+            // iterate through each input type
+            jQuery.each(elements_types, function (index_outer, element_type) {
+
+                //get all ids and names of elements in new form
+                var elements_ids = [];
+                var elements_names = [];
+                new_form.find(element_type).each(function(){
+                    elements_ids.push($(this).attr("id"));
+                    elements_names.push($(this).attr("name"));
+                });
+
+                // add new order number to all inputs ids in array
+                var elements_numbered_ids = [];
+                jQuery.each(elements_ids, function (index, value) {
+                    elements_numbered_ids.push(elements_ids[index] + '-' + new_pet_cont_class_id);
+                });
+
+                // add new order number to all inputs names in array
+                var elements_numbered_names = [];
+                jQuery.each(elements_names, function (index, value) {
+                    elements_numbered_names.push(elements_names[index] + '-' + new_pet_cont_class_id);
+                });
+
+                // place updated ids, names, fors back to inputs and labels
+                new_form.find(element_type).each(function(index){
+
+                    $(this).attr("id", elements_numbered_ids[index]);
+                    if ( index_outer === 0 ) {
+                        $(this).next('label').attr("for", elements_numbered_ids[index]);
+                    } else {
+                        $(this).prev('label').attr("for", elements_numbered_ids[index]);
+                    }
+                    $(this).attr("name", elements_numbered_names[index]);
+                });
+            });
+
+            // show new form
             new_form.fadeIn("slow", function () {});
-
-            /*$('.' + new_pet_cont_class + ' input[type="radio"]:checked').prop('checked', false);
-            $('.pet_application_2 input[type="radio"]:checked').prop('checked', false);*/
 
         });
 

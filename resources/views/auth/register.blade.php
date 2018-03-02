@@ -136,7 +136,7 @@
                             </ul>
                         </div>
                     @endif
-                    <form action="{{ route('register') }}" method="post">
+                    <form id="shn_register_form" action="{{ route('register') }}" method="post">
                         {{ csrf_field() }}
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -152,7 +152,7 @@
                             </div>
                             <div id="sign_up_org_name_half_row" class="form-group col-md-6">
                                 <label for="org_name">Organization Name</label>
-                                <input type="text" class="form-control" id="org_name" maxlength="40" name="org_name" value="{{ old('org_name') }}">
+                                <input type="text" class="form-control" id="org_name" maxlength="40" name="org_name" value="{{ old('org_name') }}" required="">
                             </div>
                             <div id="sign_up_org_code_half_row" class="form-group col-md-6">
                                 <label for="org_code">Organization Code</label>
@@ -162,11 +162,11 @@
                         <div id="sign_up_tax_id_row" class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="tax_id">Tax ID (EIN) - (9 digits)</label>
-                                <input type="text" class="form-control" id="tax_id" maxlength="10" name="tax_id" pattern="^\d{2}-\d{7}$" value="{{ old('tax_id') }}" placeholder="XX-XXXXXXX">
+                                <input type="text" class="form-control" id="tax_id" maxlength="10" name="tax_id" pattern="^\d{2}-\d{7}$" value="{{ old('tax_id') }}" placeholder="XX-XXXXXXX" required="">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="org_phone_num">Organization Phone Number - (10 digits)</label>
-                                <input type="phone" class="form-control" id="org_phone_num" maxlength="10" name="org_phone_number" pattern="^\d{3}\d{3}\d{4}$" value="{{ old('org_phone_number') }}" placeholder="XXXXXXXXXX">
+                                <input type="phone" class="form-control" id="org_phone_num" maxlength="10" name="org_phone_number" pattern="^\d{3}-\d{3}-\d{4}$" value="{{ old('org_phone_number') }}" placeholder="XXX-XXX-XXXX" required="">
                             </div>
                         </div>
                         <div class="form-row">
@@ -186,22 +186,27 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="contact_phone_num">Contact Phone Number</label>
-                                <input type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}\d{3}\d{4}$" placeholder="XXXXXXXXXX" required="" value="{{ old('contact_phone_number') }}">
+                                <input type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX" required="" value="{{ old('contact_phone_number') }}">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="user_pass">Password</label>
-                                <input type="password" minlength="6" maxlength="20" class="form-control" id="user_pass" name="password" required="">
+                                <input type="password" minlength="8" maxlength="20" class="form-control" id="user_pass" name="password" required="" aria-describedby="passwordHelpBlock">
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    Your password must be 8-20 characters long and contain at least one upper-case letter and one number.
+                                </small>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="user_pass_confirm">Confirm Password</label>
-                                <input type="password" class="form-control" id="user_pass_confirm" name="password_confirmation" minlength="6" maxlength="20" required="">
+                                <input type="password" class="form-control" id="user_pass_confirm" name="password_confirmation" minlength="8" maxlength="20" required="" aria-describedby="passwordConfirmHelpBlock">
+                                <small id="passwordConfirmHelpBlock" class="form-text text-muted">
+                                </small>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" name="terms_of_use" id="terms_of_use"
+                                <input type="checkbox" class="custom-control-input" name="terms_of_use" required id="terms_of_use"
                                     @if( old('terms_of_use') == 'on' )
                                         checked
                                     @endif

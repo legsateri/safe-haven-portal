@@ -349,6 +349,49 @@ div[class*="spinner_form_"] {
     border-color: #00C851;
 }
 
+.custom-select.is-invalid:focus,
+.form-control.is-invalid:focus,
+.was-validated .custom-select:invalid:focus,
+.was-validated .form-control:invalid:focus {
+    box-shadow: none;
+}
+
+.custom-select.is-valid:focus,
+.form-control.is-valid:focus,
+.was-validated .custom-select:valid:focus,
+.was-validated .form-control:valid:focus {
+    box-shadow: none;
+}
+
+#accordion_client_new_application input:required {
+    box-shadow: none;
+}
+
+.new_client_form_row > .col-lg-8 {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#pet_form_cont [class*="pet_application_"] {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#pet_form_cont [class*="pet_application_"] + [class*="pet_application_"] {
+    /*border-top: 1px dashed black;*/
+    margin-top: 20px;
+    padding-top: 15px;
+}
+
+#pet_form_cont [class*="pet_application_"]:nth-child(2n) {
+    background-color: #82b1ff;
+    border-radius: 4px;
+}
+
+.new_client_form_row .new_client_form_button_row {
+
+}
+
 
 
 
