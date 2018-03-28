@@ -311,6 +311,14 @@ jQuery(document).ready(function() {
             $('.spinner_form_2').css('display','inline');
 
             var new_pet_app_form_data = $( '#new_pet_app_form' ).serializeArray();
+            console.log(new_pet_app_form_data);
+
+            // multi pets per client
+            var number_of_pets_applications = $('[class*="pet_application_"]').length;
+            var number_of_pets = { name: "number_of_pets", value: number_of_pets_applications};
+
+            new_pet_app_form_data.push(number_of_pets);
+            console.log(new_pet_app_form_data);
             var ajaxurl = '/application/new/ajax';
 
             jQuery.ajax({
@@ -332,15 +340,31 @@ jQuery(document).ready(function() {
                         }, 2000);
                     } else {
 
+                        var element_not_valid;
                         jQuery.each(obj.data.message, function (index, value) {
 
-                            $('#' + index).next('.invalid-feedback').html(value);
+                            if ( $('#' + index).length != 0  ) { // text inputs, textareas
+                                element_not_valid = $('#' + index);
+                            } else { // radios
+                                element_not_valid = $('[name="' + index + '"]').closest('.radio_custom_group');
+                            }
+
+                            element_not_valid.next('.invalid-feedback').html(value);
+
+                            if ( element_not_valid.hasClass('is-valid') ) {
+                                element_not_valid.removeClass('is-valid').addClass('is-invalid');
+                            } else {
+                                element_not_valid.addClass('is-invalid');
+                            }
+
+                            /*$('#' + index).next('.invalid-feedback').html(value);
 
                             if ( $('#' + index).hasClass('is-valid') ) {
                                 $('#' + index).removeClass('is-valid').addClass('is-invalid');
                             } else {
                                 $('#' + index).addClass('is-invalid');
-                            }
+                            }*/
+
                         });
                         $('.spinner_form_2').css('display','none');
                     }
@@ -574,6 +598,23 @@ jQuery(document).ready(function() {
     /*--------------- clients in need page starts --------------------*/
 
     if ( $('.clients_in_need_cont').length != 0 ) { // if clients in need page
+
+        // forms' color fix for client with multi pets
+        if ($('.scrollspy-example [id*="list-item-"] > form').length > 2) {
+
+            $('.scrollspy-example [id*="list-item-"]').each(function(index){
+
+                //$(this).css("background-color", '#ffffff');
+                //$(this).attr("id", elements_numbered_ids[index]);
+                /*if ( index_outer === 0 ) {
+                    $(this).next('label').attr("for", elements_numbered_ids[index]);
+                } else {
+                    $(this).prev('label').attr("for", elements_numbered_ids[index]);
+                }
+                $(this).attr("name", elements_numbered_names[index]);*/
+            });
+
+        }
 
         $('.list-group-item').click(function() {
             $('#list-example').css('padding-top','4rem');

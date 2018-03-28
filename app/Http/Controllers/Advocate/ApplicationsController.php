@@ -952,7 +952,38 @@ class ApplicationsController extends Controller
 
     } // end _validateNewApplicationStageOne
 
+    /**
+     * validate number of pets in the new application
+     */
+    private function _validatePetNumber($value)
+    {
+        $validator = Validator::make(['value' => $value], [
+            'value' => 'required|digits:1'
+        ]);
 
+        if ( !$validator->fails() )
+        {
+            // add value to user temp data
+            $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+            $temp['pets-number-of'] = $value;
+            TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
+
+            return ['success' => true];
+        }
+
+        // return error mesasage
+        if ( $value == "" || $value == null )
+        {
+            return [
+                'success' => false,
+                'message' => 'Failed access'
+            ];
+        }
+        return [
+            'success' => false,
+            'message' => 'Failed access'
+        ];
+    } // end _validatePetNumber
 
     /**
      * validate per type
@@ -1750,170 +1781,189 @@ class ApplicationsController extends Controller
     private function _validateNewApplicationStageTwo($request)
     {
         $result['success'] = true;
-        
-        $check = $this->_validatePetType($request->pet_type);
+
+        $check = $this->_validatePetNumber($request->number_of_pets);
         if ( $check['success'] == false )
         {
-            $result['success'] = false;
-            $result['message']['pet_type'] = $check['message'];
-        }
-        
-        $check = $this->_validatePetName($request->pet_name);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['pet_name'] = $check['message'];
+            die;
+            /*$result['success'] = false;
+            $result['message']['number_of_pets'] = $check['message'];*/
         }
 
+        $number_of_pets = $request->number_of_pets;
 
-        $check = $this->_validatePetBreed($request->breed);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['breed'] = $check['message'];
-        }
+        for ($i = 1; $i <= $number_of_pets; $i++) {
 
+            if ($i === 1) {
+                $item_suffix = '';
+            } else {
+                $item_suffix = '-' . $i;
+            }
 
-        $check = $this->_validatePetWeight($request->weight);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['weight'] = $check['message'];
-        }
-        
-        
-        $check = $this->_validatePetAge($request->age);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['age'] = $check['message'];
-        } 
-        
-        $check = $this->_validatePetDescription($request->description);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['description'] = $check['message'];
-        } 
-        
-        $check = $this->_validatePetSpayed($request->pet_spayed);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['pet_spayed'] = $check['message'];
-        } 
+            $check = $this->_validatePetType($request->{"pet_type".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pet_type'.$item_suffix] = $check['message'];
+            }
 
-        $check = $this->_validatePetSpayedObject($request->pet_spay_object);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['pet_spay_object'] = $check['message'];
-        } 
-
-        $check = $this->_validatePetChipped($request->pet_chipped);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['pet_chipped'] = $check['message'];
-        } 
-
-        $check = $this->_validatePetVaccined($request->pet_vaccined);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['pet_vaccined'] = $check['message'];
-        } 
+            $check = $this->_validatePetName($request->{"pet_name".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pet_name'.$item_suffix] = $check['message'];
+            }
 
 
-        $check = $this->_validatePetDietaryNeeds($request->dietary_needs);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['dietary_needs'] = $check['message'];
-        } 
+            $check = $this->_validatePetBreed($request->{"breed".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['breed'.$item_suffix] = $check['message'];
+            }
 
-        $check = $this->_validatePetVeterinaryNeeds($request->veterinary_needs);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['veterinary_needs'] = $check['message'];
-        } 
 
-        $check = $this->_validatePetBehavior($request->pets_behavior);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['pets_behavior'] = $check['message'];
-        } 
+            $check = $this->_validatePetWeight($request->{"weight".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['weight'.$item_suffix] = $check['message'];
+            }
 
-        $check = $this->_validatePetAbuserAccess($request->abuser_access);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['abuser_access'] = $check['message'];
-        } 
 
-        $check = $this->_validatePetRelevantInfo($request->pet_relevant_info);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['pet_relevant_info'] = $check['message'];
-        } 
+            $check = $this->_validatePetAge($request->{"age".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['age'.$item_suffix] = $check['message'];
+            }
 
-        $check = $this->_validatePetHowLong($request->how_long);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['how_long'] = $check['message'];
-        } 
+            $check = $this->_validatePetDescription($request->{"description".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['description'.$item_suffix] = $check['message'];
+            }
 
-        $check = $this->_validatePetPoliceInvolved($request->police_involved);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['police_involved'] = $check['message'];
-        } 
+            $check = $this->_validatePetSpayed($request->{"pet_spayed".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pet_spayed'.$item_suffix] = $check['message'];
+            }
 
-        $check = $this->_validateClientProtectiveOrder($request->protective_order);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['protective_order'] = $check['message'];
-        } 
+            $check = $this->_validatePetSpayedObject($request->{"pet_spay_object".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pet_spay_object'.$item_suffix] = $check['message'];
+            }
 
-        $check = $this->_validatePetCovered($request->pet_covered);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['pet_covered'] = $check['message'];
-        } 
+            $check = $this->_validatePetChipped($request->{"pet_chipped".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pet_chipped'.$item_suffix] = $check['message'];
+            }
 
-        $check = $this->_validatePetClientPaperwork($request->pet_paperwork);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['pet_paperwork'] = $check['message'];
-        } 
+            $check = $this->_validatePetVaccined($request->{"pet_vaccined".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pet_vaccined'.$item_suffix] = $check['message'];
+            }
 
-        $check = $this->_validatePetAbuserPaperwork($request->pet_abuser_paperwork);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['pet_abuser_paperwork'] = $check['message'];
-        }
 
-        $check = $this->_validateAbuserDetails($request->abuser_details);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['abuser_details'] = $check['message'];
-        }
+            $check = $this->_validatePetDietaryNeeds($request->{"dietary_needs".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['dietary_needs'.$item_suffix] = $check['message'];
+            }
 
-        $check = $this->_validatePetBoardingOptions($request->boarding_options);
-        if ( $check['success'] == false )
-        {
-            $result['success'] = false;
-            $result['message']['boarding_options'] = $check['message'];
+            $check = $this->_validatePetVeterinaryNeeds($request->{"veterinary_needs".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['veterinary_needs'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validatePetBehavior($request->{"pets_behavior".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pets_behavior'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validatePetAbuserAccess($request->{"abuser_access".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['abuser_access'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validatePetRelevantInfo($request->{"pet_relevant_info".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pet_relevant_info'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validatePetHowLong($request->{"how_long".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['how_long'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validatePetPoliceInvolved($request->{"police_involved".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['police_involved'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validateClientProtectiveOrder($request->{"protective_order".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['protective_order'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validatePetCovered($request->{"pet_covered".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pet_covered'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validatePetClientPaperwork($request->{"pet_paperwork".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pet_paperwork'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validatePetAbuserPaperwork($request->{"pet_abuser_paperwork".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['pet_abuser_paperwork'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validateAbuserDetails($request->{"abuser_details".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['abuser_details'.$item_suffix] = $check['message'];
+            }
+
+            $check = $this->_validatePetBoardingOptions($request->{"boarding_options".$item_suffix});
+            if ( $check['success'] == false )
+            {
+                $result['success'] = false;
+                $result['message']['boarding_options'.$item_suffix] = $check['message'];
+            }
         }
 
         return $result;
