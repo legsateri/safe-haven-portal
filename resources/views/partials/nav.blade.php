@@ -1,4 +1,13 @@
 <header>
+    <div class="navbar navbar-dark bg-dark">
+        <div class="container d-flex justify-content-between">
+            {{--<a href="#" class="navbar-brand">Album</a>--}}
+            <a class="navbar-brand" href="http://thesafehavennetwork.org" id="logoA"><img alt="Shn side logo 2" id="logoImg" src="/img/SHN-side-logo-2-ce9fc412115910e6ac7df874d95a98c9.png"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
     <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">
             <div class="row">
@@ -18,15 +27,6 @@
                     </ul>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="navbar navbar-dark bg-dark">
-        <div class="container d-flex justify-content-between">
-            {{--<a href="#" class="navbar-brand">Album</a>--}}
-            <a class="navbar-brand" href="http://thesafehavennetwork.org" id="logoA"><img alt="Shn side logo 2" id="logoImg" src="/img/SHN-side-logo-2-ce9fc412115910e6ac7df874d95a98c9.png"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
         </div>
     </div>
 </header>
