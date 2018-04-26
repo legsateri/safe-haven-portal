@@ -11,7 +11,7 @@
     </div>
 @endif
 
-<div class="card mb-3">
+<div class="card mb-3 admin_add_org_page">
 <div class="card-header">
     <i class="fa fa-area-chart"></i> Add Organization</div>
 <div class="card-body">
@@ -64,9 +64,8 @@
             <div class="form-group col-md-4  offset-md-2">
                 <label for="tax_id">Tax id <small>(optional)</small></label>
                 <input  type="text" class="form-control"
-                        id="tax_id" name="tax_id" 
-                        maxlength="40" 
-                        placeholder="e.g. 12-1234567"
+                        id="tax_id" name="tax_id"
+                        maxlength="10" pattern="^\d{2}-\d{7}$" placeholder="XX-XXXXXXX"
                         value="{{ old('tax_id') }}">
                 <!-- error message -->
                 @if ($errors->has('tax_id'))
@@ -127,9 +126,8 @@
             <div class="form-group col-md-4">
                 <label for="phone">Office Phone <small>(optional)</small></label>
                 <input  type="text" class="form-control"
-                        id="phone" name="phone" 
-                        maxlength="40" 
-                        placeholder="phone number"
+                        id="phone" name="phone"
+                        maxlength="12" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX"
                         value="{{ old('phone') }}">
                 <!-- error message -->
                 @if ($errors->has('phone'))
@@ -161,9 +159,8 @@
             <div class="form-group col-md-3">
                 <label for="zip_code">Zip <small>(optional)</small></label>
                 <input  type="text" class="form-control"
-                        id="zip_code" name="zip_code" 
-                        maxlength="40" 
-                        placeholder="e.g. 12345"
+                        id="zip_code" name="zip_code"
+                        maxlength="5" placeholder="XXXXX"
                         value="{{ old('zip_code') }}"
                         >
                 <!-- error message -->

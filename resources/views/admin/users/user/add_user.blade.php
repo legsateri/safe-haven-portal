@@ -11,7 +11,7 @@
     </div>
 @endif
 
-<div class="card mb-3">
+<div class="card mb-3 admin_add_user_page">
 <div class="card-header">
     <i class="fa fa-area-chart"></i> Add User</div>
 <div class="card-body">
@@ -86,8 +86,8 @@
             <div class="form-group col-md-4">
                 <label for="phone">Office Phone</label>
                 <input  type="text" class="form-control"
-                        id="phone" name="phone" 
-                        maxlength="40" 
+                        id="phone" name="phone"
+                        maxlength="12" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX"
                         value="{{ old('phone') }}">
                 <!-- error message -->
                 @if ($errors->has('phone'))

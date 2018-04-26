@@ -73,6 +73,8 @@
     <script src="{{url('/')}}/js/sb-admin.min.js"></script>
     <!-- Custom scripts for this page-->
     <!-- <script src="{{url('/')}}/js/sb-admin-charts.min.js"></script> -->
+    <script src="{{url('/')}}/js/jquery.mask.js"></script>
+    <script src="{{url('/')}}/js/sh_admin_custom.js"></script>
   </div>
 </body>
 

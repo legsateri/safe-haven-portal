@@ -11,7 +11,7 @@
     </div>
 @endif
 
-<div class="card mb-3">
+<div class="card mb-3 admin_edit_org_contact_page">
 @include('admin.organisations.edit_organisation_header')
 @include('admin.organisations.edit_organisation_submenu_partial')
 
@@ -51,8 +51,8 @@
             <div class="form-group col-md-4">
                 <label for="phone">Office Phone</label>
                 <input  type="text" class="form-control"
-                        id="phone" name="phone" 
-                        maxlength="40" 
+                        id="phone" name="phone"
+                        maxlength="12" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX"
                         @if( isset( $phone->number ) )
                             value="{{ $phone->number }}"
                         @else
@@ -117,8 +117,8 @@
             <div class="form-group col-md-3">
                 <label for="zip_code">Zip</label>
                 <input  type="text" class="form-control"
-                        id="zip_code" name="zip_code" 
-                        maxlength="40" 
+                        id="zip_code" name="zip_code"
+                        maxlength="5" placeholder="XXXXX"
                         @if( isset( $address->zip_code ) )
                             value="{{ $address->zip_code }}"
                         @else

@@ -11,7 +11,7 @@
     </div>
 @endif
 
-<div class="card mb-3">
+<div class="card mb-3 admin_edit_org_general_page">
 @include('admin.organisations.edit_organisation_header')
 @include('admin.organisations.edit_organisation_submenu_partial')
 
@@ -71,7 +71,7 @@
                 <label for="tax_id">Tax ID</label>
                 <input  type="text" class="form-control"
                         id="tax_id" name="tax_id"
-                        maxlength="40"
+                        maxlength="10" pattern="^\d{2}-\d{7}$" placeholder="XX-XXXXXXX"
                         @if( isset($organisation->tax_id) )
                             value="{{ $organisation->tax_id }}"
                         @endif

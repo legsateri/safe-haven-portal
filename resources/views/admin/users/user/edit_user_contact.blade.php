@@ -6,7 +6,7 @@
 <div class="card mb-3">
 
 @include('admin.users.user.edit_user_header_partial')
-<div class="card-body">
+<div class="card-body admin_edit_user_page">
     <?php
     /**
      * update contact information form
@@ -52,8 +52,8 @@
             <div class="form-group col-md-4 offset-md-2">
                 <label for="phone">Phone number</label>
                 <input  type="text" class="form-control"
-                        id="phone_number" name="phone_number" 
-                        maxlength="40" 
+                        id="phone_number" name="phone_number"
+                        maxlength="12" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX"
                         @if ( isset($userPhone->number) )
                             value="{{ $userPhone->number }}"
                         @endif
@@ -114,8 +114,8 @@
             <div class="form-group col-md-3">
                 <label for="zip_code">Zip</label>
                 <input  type="text" class="form-control"
-                        id="zip_code" name="zip_code" 
-                        maxlength="40" 
+                        id="zip_code" name="zip_code"
+                        maxlength="5" placeholder="XXXXX"
                         @if( isset($userAddress->zip_code) )
                             value="{{ $userAddress->zip_code }}"
                         @endif

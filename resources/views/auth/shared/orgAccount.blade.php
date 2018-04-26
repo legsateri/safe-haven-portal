@@ -90,7 +90,7 @@
                                     <label for="tax_id">Tax ID (EIN) - (9 digits)</label>
                                     <input  type="text" class="form-control"
                                             id="tax_id" name="tax_id"
-                                            maxlength="10" pattern="^\d{2}-\d{7}$" placeholder=""
+                                            maxlength="10" pattern="^\d{2}-\d{7}$" placeholder="XX-XXXXXXX"
                                             value="<?php
                                                     if (isset($organisation->tax_id)):
                                                     echo $organisation->tax_id;
@@ -222,7 +222,7 @@
                                     <label for="contact_phone_num">Contact Phone Number</label>
                                     <input  type="phone" class="form-control"
                                             id="contact_phone_num" name="phone_number"
-                                            maxlength="10" pattern="^\d{3}\d{3}\d{4}$" placeholder="XXXXXXXXXX" 
+                                            maxlength="12" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX"
                                             value="<?php
                                                     if (isset($organisationPhone->number)):
                                                     echo $organisationPhone->number;

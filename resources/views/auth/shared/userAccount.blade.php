@@ -21,7 +21,7 @@
 @endif
 
     <!-- My Account -->
-    <div class="card mb-3">
+    <div class="card mb-3 user_account_cont">
         <div class="card-header"><i class="fa fa-user-o"></i> My Account</div>
         
         <div class="card-body">
@@ -98,7 +98,7 @@
                                 <label for="phone">Phone Number</label>
                                 <input  type="text" class="form-control"
                                         id="phone" name="phone_number"
-                                        placeholder="XXXXXXXXXX"
+                                        maxlength="12" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX"
                                         value="<?php
                                                 if (isset($userPhone->number)):
                                                 echo $userPhone->number;
@@ -200,7 +200,7 @@
                                 <label for="zip">Zip/Postal Code</label>
                                 <input  type="text" class="form-control"
                                         id="zip" name="zip_code"
-                                        placeholder="Zip/Postal Code"
+                                        maxlength="5" placeholder="XXXXX"
                                         value="<?php
                                                 if (isset($userAddress->zip_code)):
                                                 echo $userAddress->zip_code;

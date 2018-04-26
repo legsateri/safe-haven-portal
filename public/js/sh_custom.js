@@ -6,6 +6,17 @@ jQuery(document).ready(function() {
         $('body').removeClass('sidenav-toggled');
     })
 
+    if ( $('.org_account_cont').length != 0 ) { // if user my org page
+        $('#tax_id').mask('00-0000000');
+        $('#contact_phone_num').mask('000-000-0000');
+        $('#zip').mask('00000');
+    }
+
+    if ( $('.user_account_cont').length != 0 ) { // if user my account page
+        $('#phone').mask('000-000-0000');
+        $('#zip').mask('00000');
+    }
+
     if ( $('.sh_signup').length != 0 ) { // if sign up page
 
         $('input:checkbox').prop('checked', false); // browser remembers last checkbox state, clear it
