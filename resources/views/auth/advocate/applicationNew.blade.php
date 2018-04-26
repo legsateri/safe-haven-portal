@@ -724,8 +724,8 @@
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                             <div class="row text-center mb-3">
-                                I understand that this application will be reviewed by The Safe Haven Network’s partner Safe Haven Providers,
-                                which includes animal shelters and foster homes. I understand that some of these Safe Haven Providers are
+                                I understand that this application will be reviewed by The Safe Haven Network's partner Safe Haven Providers,
+                                which includes animal shelters and foster homes. I understand that these Safe Haven Providers are
                                 independent programs that may require additional information from me and may have different guidelines for admission.
                             </div>
                             <div class="row text-center">
