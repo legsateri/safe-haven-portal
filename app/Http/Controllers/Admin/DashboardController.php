@@ -4,11 +4,108 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use DB;
+use App\Client;
+use App\Organisation;
+use App\Application;
+use App\Status;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard.dashboard');
+        $applications = DB::table('applications')
+        ->join('clients', 'applications.client_id', '=', 'clients.id')
+        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('users', 'applications.accepted_by_advocate_id', '=', 'users.id')
+        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        ->where([
+            ['accepted_by_advocate_id', '=', null],
+            ['release_status_id', '=', null],
+        ])
+        ->orWhere([
+            ['accepted_by_advocate_id', '=', ''],
+            ['release_status_id', '=', null],
+        ])
+        ->select([
+            'clients.first_name as first_name',
+            'clients.last_name as last_name',
+            'clients.email as email',
+            'applications.created_at as created_at',
+            'organisations.name as org_name',
+        ])
+        ->get();
+
+        $pets_returned_to_owner = DB::table('pets')
+        ->join('clients', 'pets.client_id', '=', 'clients.id')
+        ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
+        ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
+        ->join('application_pets', 'pets.id', '=', 'application_pets.pet_id')
+        ->join('statuses', 'application_pets.release_status_id', '=', 'statuses.id')
+        ->where([
+            ['object_types.type', '=', 'pet'],
+            ['statuses.type', '=', 'pet_release'],
+            ['statuses.value', '=', 'pet_released_to_owner'],
+        ])
+        ->count();
+
+        $pet_released_to_adoption = DB::table('pets')
+        ->join('clients', 'pets.client_id', '=', 'clients.id')
+        ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
+        ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
+        ->join('application_pets', 'pets.id', '=', 'application_pets.pet_id')
+        ->join('statuses', 'application_pets.release_status_id', '=', 'statuses.id')
+        ->where([
+            ['object_types.type', '=', 'pet'],
+            ['statuses.type', '=', 'pet_release'],
+            ['statuses.value', '=', 'pet_released_to_adoption_pool'],
+        ])
+        ->count();
+
+        $pet_not_served = DB::table('pets')
+        ->join('clients', 'pets.client_id', '=', 'clients.id')
+        ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
+        ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
+        ->join('application_pets', 'pets.id', '=', 'application_pets.pet_id')
+        ->join('statuses', 'application_pets.release_status_id', '=', 'statuses.id')
+        ->where([
+            ['object_types.type', '=', 'pet'],
+            ['statuses.type', '=', 'pet_release'],
+            ['statuses.value', '=', 'pet_services_not_provided'],
+        ])
+        ->count();
+
+        $pet_not_admitted = DB::table('pets')
+        ->join('clients', 'pets.client_id', '=', 'clients.id')
+        ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
+        ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
+        ->join('application_pets', 'pets.id', '=', 'application_pets.pet_id')
+        ->join('statuses', 'application_pets.release_status_id', '=', 'statuses.id')
+        ->where([
+            ['object_types.type', '=', 'pet'],
+            ['statuses.type', '=', 'pet_release'],
+            ['statuses.value', '=', 'pet_not_admitted'],
+        ])
+        ->count();
+
+        $total_pets = DB::table('pets')
+        ->join('clients', 'pets.client_id', '=', 'clients.id')
+        ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
+        ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
+        ->join('application_pets', 'pets.id', '=', 'application_pets.pet_id')
+        ->join('statuses', 'application_pets.release_status_id', '=', 'statuses.id')
+        ->where([
+            ['object_types.type', '=', 'pet'],
+            ['statuses.type', '=', 'pet_release'],
+        ])
+        ->count();
+
+        return view('admin.dashboard.dashboard', compact('applications',
+            'pets_returned_to_owner', 'pet_released_to_adoption', 'pet_not_served', 'pet_not_admitted','total_pets'));
+
+                        
+        
     }
+
 }

@@ -27,6 +27,7 @@ class UsersController extends Controller
             ['object_types.type', '=', 'user'],
             ['object_types.value', '=', 'advocate'],
         ])
+
         ->select([
             'users.id as id',
             'users.first_name as first_name',
@@ -45,7 +46,7 @@ class UsersController extends Controller
     }
 
     /**
-     * display advocates list page
+     * display shelter list page
      */
     public function shelters()
     {
