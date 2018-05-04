@@ -130,6 +130,73 @@ body.ct-vertical-align .card {
     max-width: none;
     text-overflow: ellipsis; }
 
+  /*-----------Custom SHN styles start--------------*/
+
+    .btn_verified {
+      margin-right: 10px;
+    }
+
+    .btn_banned,
+    .btn_verified {
+      cursor: pointer;
+      font-size: .82rem;
+    }
+
+    .modal_password_cont {
+      margin: 0 auto;
+      width: 70%;
+      margin-bottom: 25px;
+    }
+
+
+
+    @media (max-width: 767px) {
+
+      .btn_banned,
+      .btn_verified {
+        width: 100%;
+        margin-right: 0;
+        margin-top: 20px;
+      }
+
+      .btn_verified {
+        margin-bottom: 20px;
+      }
+
+      .btn_admin_active,
+      .btn_add_new_admin_user,
+      .btn_add_new_user,
+      .btn_add_org,
+      .btn_org_approved {
+        margin-top: 20px;
+        width: 100%;
+      }
+
+    }
+
+    @media (min-width: 320px) and (max-width: 575.99px) {
+
+      .content-wrapper {
+        border: 1px solid orange;
+      }
+
+      .btn_banned,
+      .btn_verified {
+        font-size: .8rem;
+      }
+
+      .btn_org_approved {
+        font-size: .72rem;
+      }
+
+      .btn_admin_active {
+        font-size: .75rem;
+      }
+
+    }
+  /*----------Custom SHN styles end---------------*/
+
+
 @media (min-width: 992px) {
   #mainNav .navbar-brand {
     width: 250px; }

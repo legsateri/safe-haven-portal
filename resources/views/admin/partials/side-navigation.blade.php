@@ -10,7 +10,7 @@
 
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Organizations">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseOrganizations" data-parent="#exampleAccordion">
-            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+            <i class="fa fa-university" aria-hidden="true"></i>
 
             <span class="nav-link-text">Organizations</span>
           </a>
@@ -32,7 +32,7 @@
 
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseUsers" data-parent="#exampleAccordion">
-            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+            <i class="fa fa-users" aria-hidden="true"></i>
 
             <span class="nav-link-text">Users</span>
           </a>

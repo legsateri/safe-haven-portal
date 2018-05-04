@@ -71,25 +71,31 @@
 
     <div class="card mb-3">
         <div class="card-header">
-            <i class="fa fa-area-chart"></i> Edit Admin User {{ $admin->name }}
-            <button type="button" 
-                    class="btn 
-                    @if( $admin->active == 1 )
-                        btn-success
-                    @else
-                        btn-warning
-                    @endif
-                    " 
-                    data-toggle="modal" 
-                    data-target="#admin_active_status_modal"
-                    style="float:right;"
-                    >
-                    @if( $admin->active == 1 )
-                        Admin user is active
-                    @else
-                        Admin user is not active
-                    @endif
-            </button>    
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <i class="fa fa-area-chart"></i> Edit Admin User {{ $admin->name }}
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <button type="button"
+                            class="btn_admin_active btn
+                            @if( $admin->active == 1 )
+                                btn-success
+                            @else
+                                btn-warning
+                            @endif
+                            "
+                            data-toggle="modal"
+                            data-target="#admin_active_status_modal"
+                            style="float:right;"
+                            >
+                            @if( $admin->active == 1 )
+                                Admin user active. Click to unset.
+                            @else
+                                Admin user not active. Click to activate.
+                            @endif
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="card-body">
 
@@ -303,7 +309,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group modal_password_cont">
                                     <label for="password">Your password</label>
                                     <input type="password" class="form-control"
                                     id="your_password" name="password_ban" 

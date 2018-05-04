@@ -3,11 +3,17 @@
 @section('content')
 <div class="card mb-3">
 <div class="card-header">
-    <i class="fa fa-area-chart"></i> Shelter Users
-    <a  href="{{ route('admin.users.user_add.list') }}"
-        class="btn btn-primary"
-        style="float:right;"
-        >Add new user</a>    
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <i class="fa fa-area-chart"></i> Shelter Users
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <a  href="{{ route('admin.users.user_add.list') }}"
+                class="btn_add_new_user btn btn-primary"
+                style="float:right;"
+                >Add new user</a>
+        </div>
+    </div>
 </div>
 <div class="card-body">
     <?php

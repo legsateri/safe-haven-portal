@@ -8,11 +8,17 @@
 @section('content')
     <div class="card mb-3">
         <div class="card-header">
-            <i class="fa fa-area-chart"></i> Admin Users
-            <a  href="{{ route('admin.settings.admin-user.add') }}"
-                class="btn btn-primary"
-                style="float:right"
-                >Add new admin user</a>    
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <i class="fa fa-area-chart"></i> Admin Users
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <a  href="{{ route('admin.settings.admin-user.add') }}"
+                        class="btn_add_new_admin_user btn btn-primary"
+                        style="float:right"
+                        >Add new admin user</a>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             

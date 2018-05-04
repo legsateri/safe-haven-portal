@@ -1,46 +1,50 @@
 <div class="card-header">
-    <i class="fa fa-user"></i> Edit {{ $user->first_name }} {{ $user->last_name }}
-    
-    <!-- Button trigger modal -->
-    <button type="button" 
-            class="btn 
-            @if( $user->banned == 1 )
-                btn-danger
-            @else
-                btn-success
-            @endif
-            " 
-            data-toggle="modal" 
-            data-target="#user_ban_modal"
-            style="float:right;"
-            >
-            @if( $user->banned == 0 )
-                Account is active
-            @else
-                Account is suspended
-            @endif
-    </button>
+    <div class="row">
+        <div class="col-lg-3 col-md-3">
+            <i class="fa fa-user"></i> Edit {{ $user->first_name }} {{ $user->last_name }}
+        </div>
+        <div class="col-lg-9 col-md-9">
+            <!-- Button trigger modal -->
+            <button type="button"
+                    class="btn_banned btn
+                    @if( $user->banned == 1 )
+                        btn-danger
+                    @else
+                        btn-success
+                    @endif
+                    "
+                    data-toggle="modal"
+                    data-target="#user_ban_modal"
+                    style="float:right;"
+                    >
+                    @if( $user->banned == 0 )
+                        Account is active. Click to suspend.
+                    @else
+                        Account suspended. Click to activate.
+                    @endif
+            </button>
 
-    <!-- Button trigger modal -->
-    <button type="button" 
-            class="btn 
-            @if( $user->verified == 1 )
-                btn-success
-            @else
-                btn-warning
-            @endif
-            " 
-            data-toggle="modal" 
-            data-target="#email_verification_modal"
-            style="float:right;"
-            >
-            @if( $user->verified == 1 )
-                User email is verified
-            @else
-                User email is not verified
-            @endif
-    </button>
-
+            <!-- Button trigger modal -->
+            <button type="button"
+                    class="btn_verified btn
+                    @if( $user->verified == 1 )
+                        btn-success
+                    @else
+                        btn-warning
+                    @endif
+                    "
+                    data-toggle="modal"
+                    data-target="#email_verification_modal"
+                    style="float:right;"
+                    >
+                    @if( $user->verified == 1 )
+                        User email verified. Click to unset.
+                    @else
+                        User email not verified. Click to verify.
+                    @endif
+            </button>
+        </div>
+    </div>
 </div>
 
 <ul class="nav nav-tabs">
@@ -105,7 +109,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-md-12">
+                    <div class="form-group modal_password_cont">
                         <label for="admin_password_verify">Your password</label>
                         <input  type="password" class="form-control"
                                 id="admin_password_verify" name="admin_password_verify" 
@@ -179,7 +183,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-md-12">
+                    <div class="form-group modal_password_cont">
                         <label for="admin-password">Your password</label>
                         <input  type="password" class="form-control"
                                 id="admin-password" name="admin_password_ban" 

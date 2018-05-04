@@ -1,28 +1,34 @@
 <div class="card-header">
-    <i class="fa fa-area-chart"></i> Edit {{ $organisation->name }}
-    <!-- Button trigger modal -->
-    <button type="button" 
-            class="btn 
-            @if( $organisation->org_status_value == 'submitted' )
-                btn-warning
-            @elseif( $organisation->org_status_value == 'approved' )
-                btn-success
-            @elseif( $organisation->org_status_value == 'suspended' )
-                btn-danger
-            @endif
-            " 
-            data-toggle="modal" 
-            data-target="#organisation_verification_modal"
-            style="float:right;"
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <i class="fa fa-area-chart"></i> Edit {{ $organisation->name }}
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <!-- Button trigger modal -->
+            <button type="button"
+                    class="btn_org_approved btn
+                    @if( $organisation->org_status_value == 'submitted' )
+                            btn-warning
+@elseif( $organisation->org_status_value == 'approved' )
+                            btn-success
+@elseif( $organisation->org_status_value == 'suspended' )
+                            btn-danger
+@endif
+                            "
+                    data-toggle="modal"
+                    data-target="#organisation_verification_modal"
+                    style="float:right;"
             >
-            @if( $organisation->org_status_value == 'submitted' )
-                Waiting for verification
-            @elseif( $organisation->org_status_value == 'approved' )
-                Organization is approved
-            @elseif( $organisation->org_status_value == 'suspended' )
-                Organization is suspended
-            @endif
-    </button>
+                @if( $organisation->org_status_value == 'submitted' )
+                    Waiting for verification
+                @elseif( $organisation->org_status_value == 'approved' )
+                    Organization approved. Click to suspend.
+                @elseif( $organisation->org_status_value == 'suspended' )
+                    Organization suspended. Click to approve.
+                @endif
+            </button>
+        </div>
+    </div>
 </div>
 
 
@@ -66,7 +72,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="form-group col-md-12">
+                    <div class="form-group modal_password_cont">
                         <label for="admin_password_verify">Your password</label>
                         <input  type="password" class="form-control"
                                 id="admin_password_verify" name="admin_password_verify" 

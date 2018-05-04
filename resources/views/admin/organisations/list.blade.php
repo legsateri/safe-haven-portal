@@ -3,12 +3,18 @@
 @section('content')
 <div class="card mb-3">
 <div class="card-header">
-    <i class="fa fa-area-chart"></i> 
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <i class="fa fa-area-chart"></i>
     {{ $type->label }} Organizations
-    <a  href="{{ route('admin.organisation.add.page') }}"
-        class="btn btn-primary"
-        style="float:right;"
-    >Add new organization</a>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <a  href="{{ route('admin.organisation.add.page') }}"
+                class="btn_add_org btn btn-primary"
+                style="float:right;"
+            >Add new organization</a>
+        </div>
+    </div>
 </div>
 <div class="card-body">
     <?php
