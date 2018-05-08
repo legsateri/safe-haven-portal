@@ -558,6 +558,11 @@ jQuery(document).ready(function() {
             var new_client_app_form_data = $( '#new_client_app_form' ).serializeArray();
             var new_pet_app_form_data = $( '#new_pet_app_form' ).serializeArray();
             var assign_application_to_form_data = $( '#assign_application_to_form_data' ).serializeArray();
+
+            var number_of_pets_applications = $('[class*="pet_application_"]').length;
+            var number_of_pets = { name: "number_of_pets", value: number_of_pets_applications};
+            new_pet_app_form_data.push(number_of_pets);
+
             full_form_array = new_client_app_form_data.concat(new_pet_app_form_data);
             full_form_array = full_form_array.concat(assign_application_to_form_data);
 

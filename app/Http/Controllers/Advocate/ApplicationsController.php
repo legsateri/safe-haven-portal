@@ -113,6 +113,7 @@ class ApplicationsController extends Controller
          */
         if ( $request->action == "validation_single" ) {
 
+            /*
             // check for elements coming from add another pet form, and trim if needed
             if ( strpos( $request->element_id, '-' ) !== false ) {
                 $request_element_id = strstr($request->element_id, '-', true);
@@ -123,6 +124,30 @@ class ApplicationsController extends Controller
                 }
 
             } else {
+                $request_element_id = $request->element_id;
+            }
+            */
+
+            /**
+             * extracting entry number if exist
+             * that will define order of pet in application
+             * form
+             */
+            $request_element_pet_order = null;
+            if ( strpos( $request->element_id, '-' ) !== false )
+            {
+                $temp = explode('-', $request->element_id);
+                $request_element_id = $temp[0];
+                if ( isset($temp[1]) )
+                {
+                    if ( (int)$temp[1] > 0 )
+                    {
+                        $request_element_pet_order = (int)$temp[1];
+                    }
+                }
+            }
+            else
+            {
                 $request_element_id = $request->element_id;
             }
 
@@ -174,95 +199,95 @@ class ApplicationsController extends Controller
                  * pet data validation
                  */
                 case 'pet_type':
-                    $response = $this->_validatePetType($request->input_value);
+                    $response = $this->_validatePetType($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'pet_name':
-                    $response = $this->_validatePetName($request->input_value);
+                    $response = $this->_validatePetName($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'breed':
-                    $response = $this->_validatePetBreed($request->input_value);
+                    $response = $this->_validatePetBreed($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'weight':
-                    $response = $this->_validatePetWeight($request->input_value);
+                    $response = $this->_validatePetWeight($request->input_value, $request_element_pet_order);
                     break;
                 
                 case 'age':
-                    $response = $this->_validatePetAge($request->input_value);
+                    $response = $this->_validatePetAge($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'description':
-                    $response = $this->_validatePetDescription($request->input_value);
+                    $response = $this->_validatePetDescription($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'pet_spayed':
-                    $response = $this->_validatePetSpayed($request->input_value);
+                    $response = $this->_validatePetSpayed($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'pet_spay_object':
-                    $response = $this->_validatePetSpayedObject($request->input_value);
+                    $response = $this->_validatePetSpayedObject($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'pet_chipped':
-                    $response = $this->_validatePetChipped($request->input_value);
+                    $response = $this->_validatePetChipped($request->input_value, $request_element_pet_order);
                     break;
                 
                 case 'pet_vaccined':
-                    $response = $this->_validatePetVaccined($request->input_value);
+                    $response = $this->_validatePetVaccined($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'dietary_needs':
-                    $response = $this->_validatePetDietaryNeeds($request->input_value);
+                    $response = $this->_validatePetDietaryNeeds($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'veterinary_needs':
-                    $response = $this->_validatePetVeterinaryNeeds($request->input_value);
+                    $response = $this->_validatePetVeterinaryNeeds($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'pets_behavior':
-                    $response = $this->_validatePetBehavior($request->input_value);
+                    $response = $this->_validatePetBehavior($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'abuser_access':
-                    $response = $this->_validatePetAbuserAccess($request->input_value);
+                    $response = $this->_validatePetAbuserAccess($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'pet_relevant_info':
-                    $response = $this->_validatePetRelevantInfo($request->input_value);
+                    $response = $this->_validatePetRelevantInfo($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'how_long':
-                    $response = $this->_validatePetHowLong($request->input_value);
+                    $response = $this->_validatePetHowLong($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'police_involved':
-                    $response = $this->_validatePetPoliceInvolved($request->input_value);
+                    $response = $this->_validatePetPoliceInvolved($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'protective_order':
-                    $response = $this->_validateClientProtectiveOrder($request->input_value);
+                    $response = $this->_validateClientProtectiveOrder($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'pet_covered':
-                    $response = $this->_validatePetCovered($request->input_value);
+                    $response = $this->_validatePetCovered($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'pet_paperwork':
-                    $response = $this->_validatePetClientPaperwork($request->input_value);
+                    $response = $this->_validatePetClientPaperwork($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'pet_abuser_paperwork':
-                    $response = $this->_validatePetAbuserPaperwork($request->input_value);
+                    $response = $this->_validatePetAbuserPaperwork($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'abuser_details':
-                    $response = $this->_validateAbuserDetails($request->input_value);
+                    $response = $this->_validateAbuserDetails($request->input_value, $request_element_pet_order);
                     break;
 
                 case 'boarding_options':
-                    $response = $this->_validatePetBoardingOptions($request->input_value);
+                    $response = $this->_validatePetBoardingOptions($request->input_value, $request_element_pet_order);
                     break;
 
 
@@ -289,10 +314,11 @@ class ApplicationsController extends Controller
          */
 
         if ( $request->action == "validation_multi_final" )
-        {
+        { 
             // disable when testing
             //$response = $this->_validateNewApplicationStageOne($request);
             $response = $this->_validateNewApplicationFinal($request);
+
             if ( $response['success'] == true )
             {
                 $this->_createNewApplication();
@@ -988,7 +1014,7 @@ class ApplicationsController extends Controller
     /**
      * validate per type
      */
-    private function _validatePetType($value)
+    private function _validatePetType($value, $petOrder)
     {
         $petTypesDB = ObjectType::where('type', 'pet')->get();
         $petTypes = "";
@@ -999,7 +1025,15 @@ class ApplicationsController extends Controller
             {
                 $petTypes .= ",";
             }
-            $petTypes .= $item->value . "_type,". $item->value;
+            if ( $petOrder == null )
+            {
+                $petTypes .= $item->value . "_type,". $item->value;
+            }
+            else
+            {
+                $petTypes .= $item->value . "_type-".$petOrder.",". $item->value;
+            }
+            
             $firstItem = false;
         }
 
@@ -1011,7 +1045,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-type'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-type'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-type'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
 
             // return success
@@ -1037,7 +1078,7 @@ class ApplicationsController extends Controller
     /**
      * validate pet name
      */
-    private function _validatePetName($value)
+    private function _validatePetName($value, $petOrder)
     {
         $validator = Validator::make(['value' => $value], [
             'value' => 'required|string|max:25'
@@ -1047,7 +1088,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-name'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-name'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-name'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
     
             // return success
@@ -1075,7 +1123,7 @@ class ApplicationsController extends Controller
     /** 
      * validate pet breed
      */
-    private function _validatePetBreed($value)
+    private function _validatePetBreed($value, $petOrder)
     {
         $validator = Validator::make(['value' => $value], [
             'value' => 'required|string|max:25'
@@ -1085,7 +1133,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-breed'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-breed'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-breed'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
     
             // return success
@@ -1113,7 +1168,7 @@ class ApplicationsController extends Controller
     /**
      * validate pet weight
      */
-    private function _validatePetWeight($value)
+    private function _validatePetWeight($value, $petOrder)
     {
         $validator = Validator::make(['value' => $value], [
             'value' => 'required|numeric'
@@ -1123,7 +1178,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-weight'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-weight'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-weight'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1147,7 +1209,7 @@ class ApplicationsController extends Controller
     /**
      * validate pet age
      */
-    private function _validatePetAge($value)
+    private function _validatePetAge($value, $petOrder)
     {
         $validator = Validator::make(['value' => $value], [
             'value' => 'required|numeric'
@@ -1157,7 +1219,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-age'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-age'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-age'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1181,7 +1250,7 @@ class ApplicationsController extends Controller
     /** 
      * validate pet description 
      */
-    private function _validatePetDescription($value)
+    private function _validatePetDescription($value, $petOrder)
     {
         $maxLength = '500';
         $validator = Validator::make(['value' => $value], [
@@ -1192,7 +1261,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-description'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-description'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-description'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1218,17 +1294,29 @@ class ApplicationsController extends Controller
     /**
      * validation Pet Spayed property
      */
-    private function _validatePetSpayed($value)
+    private function _validatePetSpayed($value, $petOrder)
     {
+        $possible_values = "spayed_yes,spayed_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "spayed_yes-".$petOrder.",spayed_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:spayed_yes,spayed_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-spayed'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-spayed'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-spayed'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1252,17 +1340,29 @@ class ApplicationsController extends Controller
     /**
      * validation Pet Spayed object property
      */
-    private function _validatePetSpayedObject($value)
+    private function _validatePetSpayedObject($value, $petOrder)
     {
+        $possible_values = "spay_object_yes,spay_object_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "spay_object_yes-".$petOrder.",spay_object_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:spay_object_yes,spay_object_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-spayed-object'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-spayed-object'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-spayed-object'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1284,17 +1384,29 @@ class ApplicationsController extends Controller
 
     
 
-    private function _validatePetChipped($value)
+    private function _validatePetChipped($value, $petOrder)
     {
+        $possible_values = "chipped_yes,chipped_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "chipped_yes-".$petOrder.",chipped_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:chipped_yes,chipped_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-chipped'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-chipped'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-chipped'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1314,17 +1426,29 @@ class ApplicationsController extends Controller
     } // end _validatePetChipped
 
 
-    private function _validatePetVaccined($value)
+    private function _validatePetVaccined($value, $petOrder)
     {
+        $possible_values = "vaccine_yes,vaccine_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "vaccine_yes-".$petOrder.",vaccine_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:vaccine_yes,vaccine_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-vaccine'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-vaccine'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-vaccine'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1345,7 +1469,7 @@ class ApplicationsController extends Controller
 
 
 
-    private function _validatePetDietaryNeeds($value)
+    private function _validatePetDietaryNeeds($value, $petOrder)
     {
         $maxLength = '500';
         $validator = Validator::make(['value' => $value], [
@@ -1356,7 +1480,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-dietary-needs'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-dietary-needs'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-dietary-needs'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1378,7 +1509,7 @@ class ApplicationsController extends Controller
     } // end _validatePetDietaryNeeds
 
 
-    private function _validatePetVeterinaryNeeds($value)
+    private function _validatePetVeterinaryNeeds($value, $petOrder)
     {
         $maxLength = '500';
         $validator = Validator::make(['value' => $value], [
@@ -1389,7 +1520,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-veterinary-needs'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-veterinary-needs'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-veterinary-needs'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1412,7 +1550,7 @@ class ApplicationsController extends Controller
 
 
 
-    private function _validatePetBehavior($value)
+    private function _validatePetBehavior($value, $petOrder)
     {
         $maxLength = '500';
         $validator = Validator::make(['value' => $value], [
@@ -1423,7 +1561,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-behavior'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-behavior'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-behavior'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1445,17 +1590,29 @@ class ApplicationsController extends Controller
     } // end _validatePetBehavior
 
 
-    private function _validatePetAbuserAccess($value)
+    private function _validatePetAbuserAccess($value, $petOrder)
     {
+        $possible_values = "abuser_access_yes,abuser_access_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "abuser_access_yes-".$petOrder.",abuser_access_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:abuser_access_yes,abuser_access_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-abuser-access'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-abuser-access'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-abuser-access'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1477,7 +1634,7 @@ class ApplicationsController extends Controller
 
 
 
-    private function _validatePetRelevantInfo($value)
+    private function _validatePetRelevantInfo($value, $petOrder)
     {
         $maxLength = '500';
         $validator = Validator::make(['value' => $value], [
@@ -1488,7 +1645,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-relevant-info'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-relevant-info'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-relevant-info'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1511,7 +1675,7 @@ class ApplicationsController extends Controller
 
 
 
-    private function _validatePetHowLong($value)
+    private function _validatePetHowLong($value, $petOrder)
     {
         $maxValue = 30;
         $validator = Validator::make(['value' => $value], [
@@ -1524,7 +1688,14 @@ class ApplicationsController extends Controller
             {
                 // add value to user temp data
                 $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-                $temp['pet-how-long'] = $value;
+                if ( $petOrder == null )
+                {
+                    $temp['pet-how-long'] = $value;
+                }
+                else
+                {
+                    $temp[$petOrder]['pet-how-long'] = $value;
+                }
                 TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
                 
                 return ['success' => true];
@@ -1553,17 +1724,29 @@ class ApplicationsController extends Controller
     } // end _validatePetHowLong
 
 
-    private function _validatePetPoliceInvolved($value)
+    private function _validatePetPoliceInvolved($value, $petOrder)
     {
+        $possible_values = "police_involved_yes,police_involved_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "police_involved_yes-".$petOrder.",police_involved_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:police_involved_yes,police_involved_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-police-involved'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-police-involved'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-police-involved'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1584,17 +1767,29 @@ class ApplicationsController extends Controller
     } // end _validatePetPoliceInvolved
 
 
-    private function _validateClientProtectiveOrder($value)
+    private function _validateClientProtectiveOrder($value, $petOrder)
     {
+        $possible_values = "protective_order_yes,protective_order_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "protective_order_yes-".$petOrder.",protective_order_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:protective_order_yes,protective_order_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['client-protective-order'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['client-protective-order'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['client-protective-order'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1617,17 +1812,29 @@ class ApplicationsController extends Controller
 
 
 
-    private function _validatePetCovered($value)
+    private function _validatePetCovered($value, $petOrder)
     {
+        $possible_values = "pet_covered_yes,pet_covered_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "pet_covered_yes-".$petOrder.",pet_covered_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:pet_covered_yes,pet_covered_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-protective-order-covered'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-protective-order-covered'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-protective-order-covered'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1649,17 +1856,29 @@ class ApplicationsController extends Controller
 
 
 
-    private function _validatePetClientPaperwork($value)
+    private function _validatePetClientPaperwork($value, $petOrder)
     {
+        $possible_values = "pet_paperwork_yes,pet_paperwork_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "pet_paperwork_yes-".$petOrder.",pet_paperwork_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:pet_paperwork_yes,pet_paperwork_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-client-paperwork'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-client-paperwork'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-client-paperwork'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1681,17 +1900,29 @@ class ApplicationsController extends Controller
 
 
 
-    private function _validatePetAbuserPaperwork($value)
+    private function _validatePetAbuserPaperwork($value, $petOrder)
     {
+        $possible_values = "pet_abuser_paperwork_yes,pet_abuser_paperwork_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "pet_abuser_paperwork_yes-".$petOrder.",pet_abuser_paperwork_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:pet_abuser_paperwork_yes,pet_abuser_paperwork_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-abuser-paperwork'] = $value;
+            if ( $petOrder == null )
+            {  
+                $temp['pet-abuser-paperwork'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-abuser-paperwork'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1712,7 +1943,7 @@ class ApplicationsController extends Controller
     }
 
 
-    private function _validateAbuserDetails($value)
+    private function _validateAbuserDetails($value, $petOrder)
     {
         $maxLength = '500';
         $validator = Validator::make(['value' => $value], [
@@ -1723,7 +1954,14 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['abuser-details'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['abuser-details'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['abuser-details'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1745,17 +1983,29 @@ class ApplicationsController extends Controller
 
 
 
-    private function _validatePetBoardingOptions($value)
+    private function _validatePetBoardingOptions($value, $petOrder)
     {
+        $possible_values = "boarding_options_yes,boarding_options_no,yes,no";
+        if ( $petOrder != null )
+        {
+            $possible_values = "boarding_options_yes-".$petOrder.",boarding_options_no-".$petOrder.",yes,no";
+        }
         $validator = Validator::make(['value' => $value], [
-            'value' => 'required|in:boarding_options_yes,boarding_options_no,yes,no'
+            'value' => 'required|in:'.$possible_values
         ]);
 
         if ( !$validator->fails() )
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            $temp['pet-boarding-options'] = $value;
+            if ( $petOrder == null )
+            {
+                $temp['pet-boarding-options'] = $value;
+            }
+            else
+            {
+                $temp[$petOrder]['pet-boarding-options'] = $value;
+            }
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1785,9 +2035,9 @@ class ApplicationsController extends Controller
         $check = $this->_validatePetNumber($request->number_of_pets);
         if ( $check['success'] == false )
         {
-            die;
-            /*$result['success'] = false;
-            $result['message']['number_of_pets'] = $check['message'];*/
+            // die('pet number missing');
+            $result['success'] = false;
+            $result['message']['number_of_pets'] = $check['message'];
         }
 
         $number_of_pets = $request->number_of_pets;
@@ -1796,18 +2046,20 @@ class ApplicationsController extends Controller
 
             if ($i === 1) {
                 $item_suffix = '';
+                $pet_order_number = null;
             } else {
                 $item_suffix = '-' . $i;
+                $pet_order_number = $i;
             }
 
-            $check = $this->_validatePetType($request->{"pet_type".$item_suffix});
+            $check = $this->_validatePetType($request->{"pet_type".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['pet_type'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetName($request->{"pet_name".$item_suffix});
+            $check = $this->_validatePetName($request->{"pet_name".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
@@ -1815,7 +2067,7 @@ class ApplicationsController extends Controller
             }
 
 
-            $check = $this->_validatePetBreed($request->{"breed".$item_suffix});
+            $check = $this->_validatePetBreed($request->{"breed".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
@@ -1823,7 +2075,7 @@ class ApplicationsController extends Controller
             }
 
 
-            $check = $this->_validatePetWeight($request->{"weight".$item_suffix});
+            $check = $this->_validatePetWeight($request->{"weight".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
@@ -1831,42 +2083,42 @@ class ApplicationsController extends Controller
             }
 
 
-            $check = $this->_validatePetAge($request->{"age".$item_suffix});
+            $check = $this->_validatePetAge($request->{"age".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['age'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetDescription($request->{"description".$item_suffix});
+            $check = $this->_validatePetDescription($request->{"description".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['description'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetSpayed($request->{"pet_spayed".$item_suffix});
+            $check = $this->_validatePetSpayed($request->{"pet_spayed".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['pet_spayed'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetSpayedObject($request->{"pet_spay_object".$item_suffix});
+            $check = $this->_validatePetSpayedObject($request->{"pet_spay_object".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['pet_spay_object'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetChipped($request->{"pet_chipped".$item_suffix});
+            $check = $this->_validatePetChipped($request->{"pet_chipped".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['pet_chipped'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetVaccined($request->{"pet_vaccined".$item_suffix});
+            $check = $this->_validatePetVaccined($request->{"pet_vaccined".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
@@ -1874,91 +2126,91 @@ class ApplicationsController extends Controller
             }
 
 
-            $check = $this->_validatePetDietaryNeeds($request->{"dietary_needs".$item_suffix});
+            $check = $this->_validatePetDietaryNeeds($request->{"dietary_needs".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['dietary_needs'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetVeterinaryNeeds($request->{"veterinary_needs".$item_suffix});
+            $check = $this->_validatePetVeterinaryNeeds($request->{"veterinary_needs".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['veterinary_needs'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetBehavior($request->{"pets_behavior".$item_suffix});
+            $check = $this->_validatePetBehavior($request->{"pets_behavior".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['pets_behavior'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetAbuserAccess($request->{"abuser_access".$item_suffix});
+            $check = $this->_validatePetAbuserAccess($request->{"abuser_access".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['abuser_access'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetRelevantInfo($request->{"pet_relevant_info".$item_suffix});
+            $check = $this->_validatePetRelevantInfo($request->{"pet_relevant_info".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['pet_relevant_info'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetHowLong($request->{"how_long".$item_suffix});
+            $check = $this->_validatePetHowLong($request->{"how_long".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['how_long'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetPoliceInvolved($request->{"police_involved".$item_suffix});
+            $check = $this->_validatePetPoliceInvolved($request->{"police_involved".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['police_involved'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validateClientProtectiveOrder($request->{"protective_order".$item_suffix});
+            $check = $this->_validateClientProtectiveOrder($request->{"protective_order".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['protective_order'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetCovered($request->{"pet_covered".$item_suffix});
+            $check = $this->_validatePetCovered($request->{"pet_covered".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['pet_covered'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetClientPaperwork($request->{"pet_paperwork".$item_suffix});
+            $check = $this->_validatePetClientPaperwork($request->{"pet_paperwork".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['pet_paperwork'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetAbuserPaperwork($request->{"pet_abuser_paperwork".$item_suffix});
+            $check = $this->_validatePetAbuserPaperwork($request->{"pet_abuser_paperwork".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['pet_abuser_paperwork'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validateAbuserDetails($request->{"abuser_details".$item_suffix});
+            $check = $this->_validateAbuserDetails($request->{"abuser_details".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
                 $result['message']['abuser_details'.$item_suffix] = $check['message'];
             }
 
-            $check = $this->_validatePetBoardingOptions($request->{"boarding_options".$item_suffix});
+            $check = $this->_validatePetBoardingOptions($request->{"boarding_options".$item_suffix}, $pet_order_number);
             if ( $check['success'] == false )
             {
                 $result['success'] = false;
@@ -2004,6 +2256,7 @@ class ApplicationsController extends Controller
 
     private function _createNewApplication()
     {   
+        echo "ready!!!!"; exit;
         $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
 
         // create new client database entry
