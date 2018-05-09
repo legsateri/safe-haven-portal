@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminsTableSeeder::class);
 
         $this->call(UsersTableSeeder::class);
-        $this->call(ClientApplicationsSeeder::class);
+        // $this->call(ClientApplicationsSeeder::class); // commented since db is changed
         
     }
 }

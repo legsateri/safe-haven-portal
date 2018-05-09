@@ -17,10 +17,11 @@ class CreatePetsTable extends Migration
             $table->increments('id');
             $table->integer('client_id')->unsigned();
             $table->integer('organisation_id')->unsigned()->nullable();
+            $table->integer('pet_application_id')->unsigned();  // new added
             $table->integer('pet_type_id')->unsigned();
             $table->string('name');
             $table->string('breed');
-            $table->decimal('weight',  8, 2);
+            $table->decimal('weight', 8, 2);
             $table->integer('age');
             $table->dateTime('reported')->nullable();
             $table->text('description');
@@ -33,6 +34,16 @@ class CreatePetsTable extends Migration
             $table->text('vet_needs');
             $table->text('temperament');
             $table->text('aditional_info');
+
+            // new start
+            $table->boolean('abuser_visiting_access');
+            $table->text('estimated_lenght_of_housing');
+            $table->boolean('pet_protective_order');
+            $table->boolean('client_legal_owner_of_pet');
+            $table->boolean('abuser_legal_owner_of_pet');   
+            // $table->boolean('explored_boarding_options');
+            // new end
+
             $table->dateTime('released_at')->nullable();
             $table->dateTime('relinguished_at')->nullable();
             $table->boolean('completed')->nullable();
@@ -45,6 +56,7 @@ class CreatePetsTable extends Migration
             $table->foreign('organisation_id')->references('id')->on('organisations');
             $table->foreign('pet_type_id')->references('id')->on('object_types');
             // $table->foreign('release_status_id')->references('id')->on('statuses');
+            $table->foreign('pet_application_id')->references('id')->on('application_pets');
         });
     }
 

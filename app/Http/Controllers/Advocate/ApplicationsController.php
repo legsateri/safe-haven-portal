@@ -542,12 +542,12 @@ class ApplicationsController extends Controller
         if ( !$validator->fails() )
         {
             
-            $validator_unique = Validator::make(['value' => $value], [
-                'value' => 'unique:clients,email'
-            ]);
+            // $validator_unique = Validator::make(['value' => $value], [
+            //     'value' => 'unique:clients,email'
+            // ]);
 
-            if ( !$validator_unique->fails() )
-            {
+            // if ( !$validator_unique->fails() )
+            // {
                 // add value to user temp data
                 $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
                 $temp['client-email'] = $value;
@@ -555,11 +555,11 @@ class ApplicationsController extends Controller
                 
                 // return success
                 return ['success' => true];
-            }
-            return [
-                'success' => false,
-                'message' => "Email can\'t be used"
-            ];
+            // }
+            // return [
+            //     'success' => false,
+            //     'message' => "Email can\'t be used"
+            // ];
             
         }
         
@@ -2096,7 +2096,7 @@ class ApplicationsController extends Controller
     private function _createNewApplication()
     {   
         $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-        var_dump( $temp ); exit;
+
         // create new client database entry
         $client = new Client();
         $client->organisation_id = Auth::user()->organisation_id;
@@ -2108,69 +2108,12 @@ class ApplicationsController extends Controller
         $client->slug = str_slug($temp['client-first-name'] . ' ' . $temp['client-last-name'] , '-');
         $client->save();
 
-        // find pet type
-        $petType = DB::table('object_types')
-                        ->where([
-                            ['type', '=', 'pet'],
-                            ['value', '=', $temp['pet-type']]
-                        ])
-                        ->first();
-
-        // create new pet database entry
-        $pet = new Pet();
-        $pet->client_id = $client->id;
-        $pet->organisation_id = Auth::user()->organisation_id;
-        $pet->pet_type_id = $petType->id;
-        $pet->name = $temp['pet-name'];
-        $pet->breed = $temp['pet-breed'];
-        $pet->weight = $temp['pet-weight'];
-        $pet->age = $temp['pet-age'];
-        $pet->description = $temp['pet-description'];
-        if ( in_array($temp['pet-chipped'], ['yes', 'chipped_yes']) )
-        {
-            $pet->microchipped = 1;
-        }
-        else
-        {
-            $pet->microchipped = 0;
-        }
-        if ( in_array($temp['pet-vaccine'], ['yes', 'vaccine_yes']) )
-        {
-            $pet->vaccinations = 1;
-        }
-        else
-        {
-            $pet->vaccinations = 0;
-        }
-        if ( in_array($temp['pet-spayed'], ['yes', 'spayed_yes']) )
-        {
-            $pet->sprayed = 1;
-        }
-        else
-        {
-            $pet->sprayed = 0;
-        }
-        if ( in_array($temp['pet-spayed-object'], ['yes', 'spay_object_yes']) )
-        {
-            $pet->objection_to_spray = 1;
-        }
-        else
-        {
-            $pet->objection_to_spray = 0;
-        }
-        $pet->dietary_needs = $temp['pet-dietary-needs'];
-        $pet->vet_needs = $temp['pet-veterinary-needs'];
-        $pet->temperament = $temp['pet-behavior'];
-        $pet->aditional_info = $temp['pet-relevant-info'];
-        $pet->slug = str_slug($temp['pet-name'], '-');
-        $pet->save();
-
         // create client application database entry
         $application = new Application();
         $application->client_id = $client->id;
         $application->organisation_id = Auth::user()->organisation_id;
         $application->created_by_advocate_id = Auth::user()->id;
-        if ( in_array($temp['pet-police-involved'], ['yes', 'police_involved_yes']) )
+        if ( in_array($temp['pet'][1]['pet-police-involved'], ['yes', 'police_involved_yes-1']) )
         {
             $application->police_involved = 1;
         }
@@ -2178,7 +2121,7 @@ class ApplicationsController extends Controller
         {
             $application->police_involved = 0;
         }
-        if ( in_array($temp['client-protective-order'], ['yes', 'protective_order_yes']) )
+        if ( in_array($temp['pet'][1]['client-protective-order'], ['yes', 'protective_order_yes-1']) )
         {
             $application->protective_order = 1;
         }
@@ -2186,50 +2129,26 @@ class ApplicationsController extends Controller
         {
             $application->protective_order = 0;
         }
-        $application->abuser_notes = $temp['abuser-details'];
+        $application->abuser_notes = $temp['pet'][1]['abuser-details'];
+
+        // check assingn to
+        if ( isset( $_POST['assign_application_to'] ) )
+        {
+            if( $_POST['assign_application_to'] == 'assign_to_me' )
+            {
+                $application->accepted_by_advocate_id = Auth::user()->id;
+            }
+        }
+
         $application->save();
 
         // create pet application database entry
         $application_pet = new ApplicationPet();
         $application_pet->application_id = $application->id;
-        $application_pet->pet_id = $pet->id;
         $application_pet->client_id = $client->id;
         $application_pet->organisation_id = Auth::user()->organisation_id;
         $application_pet->created_by_advocate_id = Auth::user()->id;
-        if ( in_array($temp['pet-abuser-access'], ['yes', 'abuser_access_yes']) )
-        {
-            $application_pet->abuser_visiting_access = 1;
-        }
-        else
-        {
-            $application_pet->abuser_visiting_access = 0;
-        }
-        $application_pet->estimated_lenght_of_housing = $temp['pet-how-long'];
-        if ( in_array($temp['pet-protective-order-covered'], ['yes', 'pet_covered_yes']) )
-        {
-            $application_pet->pet_protective_order = 1;
-        }
-        else
-        {
-            $application_pet->pet_protective_order = 0;
-        }
-        if ( in_array($temp['pet-client-paperwork'], ['yes', 'pet_paperwork_yes']) )
-        {
-            $application_pet->client_legal_owner_of_pet = 1;
-        }
-        else
-        {
-            $application_pet->client_legal_owner_of_pet = 0;
-        }
-        if ( in_array($temp['pet-abuser-paperwork'], ['yes', 'pet_abuser_paperwork_yes']) )
-        {
-            $application_pet->abuser_legal_owner_of_pet = 1;
-        }
-        else
-        {
-            $application_pet->abuser_legal_owner_of_pet = 0;
-        }
-        if ( in_array($temp['pet-boarding-options'], ['yes', 'boarding_options_yes']) )
+        if ( in_array($temp['pet'][1]['pet-boarding-options'], ['yes', 'boarding_options_yes-1']) )
         {
             $application_pet->explored_boarding_options = 1;
         }
@@ -2238,6 +2157,116 @@ class ApplicationsController extends Controller
             $application_pet->explored_boarding_options = 0;
         }
         $application_pet->save();
+
+
+        // create pet entries in database
+        $pets_count = 0;
+        foreach ($temp['pet'] as $key => $value) {
+
+            if ( $key == "" )
+            {
+                continue;
+            }
+            $pets_count++;
+
+            // find pet type
+            $value['pet-type'] = str_replace("_type", "", $value['pet-type']);
+            $petType = DB::table('object_types')
+                            ->where([
+                                ['type', '=', 'pet'],
+                                ['value', '=', $value['pet-type']]
+                            ])
+                            ->first();
+
+            // create new pet database entry
+            $pet = new Pet();
+            $pet->client_id = $client->id;
+            $pet->organisation_id = Auth::user()->organisation_id;
+            $pet->pet_application_id = $application->id;
+            $pet->pet_type_id = $petType->id;
+            $pet->name = $value['pet-name'];
+            $pet->breed = $value['pet-breed'];
+            $pet->weight = $value['pet-weight'];
+            $pet->age = $value['pet-age'];
+            $pet->description = $value['pet-description'];
+            if ( in_array($value['pet-chipped'], ['yes', 'chipped_yes']) )
+            {
+                $pet->microchipped = 1;
+            }
+            else
+            {
+                $pet->microchipped = 0;
+            }
+            if ( in_array($value['pet-vaccine'], ['yes', 'vaccine_yes']) )
+            {
+                $pet->vaccinations = 1;
+            }
+            else
+            {
+                $pet->vaccinations = 0;
+            }
+            if ( in_array($value['pet-spayed'], ['yes', 'spayed_yes']) )
+            {
+                $pet->sprayed = 1;
+            }
+            else
+            {
+                $pet->sprayed = 0;
+            }
+            if ( in_array($value['pet-spayed-object'], ['yes', 'spay_object_yes']) )
+            {
+                $pet->objection_to_spray = 1;
+            }
+            else
+            {
+                $pet->objection_to_spray = 0;
+            }
+            $pet->dietary_needs = $value['pet-dietary-needs'];
+            $pet->vet_needs = $value['pet-veterinary-needs'];
+            $pet->temperament = $value['pet-behavior'];
+            $pet->aditional_info = $value['pet-relevant-info'];
+            $pet->slug = str_slug($value['pet-name'], '-');
+            if ( in_array($value['pet-abuser-access'], ['yes', 'abuser_access_yes']) )
+            {
+                $pet->abuser_visiting_access = 1;
+            }
+            else
+            {
+                $pet->abuser_visiting_access = 0;
+            }
+            $pet->estimated_lenght_of_housing = $value['pet-how-long'];
+            if ( in_array($value['pet-protective-order-covered'], ['yes', 'pet_covered_yes']) )
+            {
+                $pet->pet_protective_order = 1;
+            }
+            else
+            {
+                $pet->pet_protective_order = 0;
+            }
+            if ( in_array($value['pet-client-paperwork'], ['yes', 'pet_paperwork_yes']) )
+            {
+                $pet->client_legal_owner_of_pet = 1;
+            }
+            else
+            {
+                $pet->client_legal_owner_of_pet = 0;
+            }
+            if ( in_array($value['pet-abuser-paperwork'], ['yes', 'pet_abuser_paperwork_yes']) )
+            {
+                $pet->abuser_legal_owner_of_pet = 1;
+            }
+            else
+            {
+                $pet->abuser_legal_owner_of_pet = 0;
+            }
+            $pet->save();
+
+        }
+
+        // update client database entry
+        // update pet count
+        $client->pets_count = $pets_count;
+        $client->update();
 
         // get phone type
         $phone_type = ObjectType::where([

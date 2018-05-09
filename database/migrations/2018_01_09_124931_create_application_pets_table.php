@@ -16,18 +16,19 @@ class CreateApplicationPetsTable extends Migration
         Schema::create('application_pets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('application_id')->unsigned();
-            $table->integer('pet_id')->unsigned();
+            // $table->integer('pet_id')->unsigned();
             $table->integer('client_id')->unsigned();
             $table->integer('organisation_id')->unsigned();
             $table->integer('created_by_advocate_id')->unsigned();
             $table->integer('accepted_by_shelter_organisation_id')->unsigned()->nullable();
             $table->integer('status')->default(0);
 
-            $table->boolean('abuser_visiting_access');
-            $table->text('estimated_lenght_of_housing');
-            $table->boolean('pet_protective_order');
-            $table->boolean('client_legal_owner_of_pet');
-            $table->boolean('abuser_legal_owner_of_pet');   
+            // moved to pets table
+            // $table->boolean('abuser_visiting_access');
+            // $table->text('estimated_lenght_of_housing');
+            // $table->boolean('pet_protective_order');
+            // $table->boolean('client_legal_owner_of_pet');
+            // $table->boolean('abuser_legal_owner_of_pet');   
             $table->boolean('explored_boarding_options');
             
             $table->integer('release_status_id')->unsigned()->nullable();
@@ -35,7 +36,7 @@ class CreateApplicationPetsTable extends Migration
             $table->timestamps();
 
             $table->foreign('application_id')->references('id')->on('applications');
-            $table->foreign('pet_id')->references('id')->on('pets');
+            // $table->foreign('pet_id')->references('id')->on('pets');
             $table->foreign('client_id')->references('id')->on('clients');
             $table->foreign('organisation_id')->references('id')->on('organisations');
             $table->foreign('accepted_by_shelter_organisation_id')->references('id')->on('organisations');
