@@ -133,7 +133,7 @@ class ApplicationsController extends Controller
              * that will define order of pet in application
              * form
              */
-            $request_element_pet_order = null;
+            $request_element_pet_order = 1;
             if ( strpos( $request->element_id, '-' ) !== false )
             {
                 $temp = explode('-', $request->element_id);
@@ -1025,7 +1025,7 @@ class ApplicationsController extends Controller
             {
                 $petTypes .= ",";
             }
-            if ( $petOrder == null )
+            if ( $petOrder == 1 )
             {
                 $petTypes .= $item->value . "_type,". $item->value;
             }
@@ -1045,14 +1045,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-type'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-type'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-type'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
 
             // return success
@@ -1088,14 +1081,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-name'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-name'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-name'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
     
             // return success
@@ -1133,14 +1119,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-breed'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-breed'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-breed'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
     
             // return success
@@ -1178,14 +1157,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-weight'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-weight'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-weight'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1219,14 +1191,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-age'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-age'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-age'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1261,14 +1226,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-description'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-description'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-description'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1297,7 +1255,7 @@ class ApplicationsController extends Controller
     private function _validatePetSpayed($value, $petOrder)
     {
         $possible_values = "spayed_yes,spayed_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "spayed_yes-".$petOrder.",spayed_no-".$petOrder.",yes,no";
         }
@@ -1309,14 +1267,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-spayed'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-spayed'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-spayed'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1343,7 +1294,7 @@ class ApplicationsController extends Controller
     private function _validatePetSpayedObject($value, $petOrder)
     {
         $possible_values = "spay_object_yes,spay_object_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "spay_object_yes-".$petOrder.",spay_object_no-".$petOrder.",yes,no";
         }
@@ -1355,14 +1306,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-spayed-object'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-spayed-object'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-spayed-object'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1387,7 +1331,7 @@ class ApplicationsController extends Controller
     private function _validatePetChipped($value, $petOrder)
     {
         $possible_values = "chipped_yes,chipped_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "chipped_yes-".$petOrder.",chipped_no-".$petOrder.",yes,no";
         }
@@ -1399,14 +1343,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-chipped'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-chipped'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-chipped'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1429,7 +1366,7 @@ class ApplicationsController extends Controller
     private function _validatePetVaccined($value, $petOrder)
     {
         $possible_values = "vaccine_yes,vaccine_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "vaccine_yes-".$petOrder.",vaccine_no-".$petOrder.",yes,no";
         }
@@ -1441,14 +1378,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-vaccine'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-vaccine'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-vaccine'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1480,14 +1410,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-dietary-needs'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-dietary-needs'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-dietary-needs'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1520,14 +1443,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-veterinary-needs'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-veterinary-needs'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-veterinary-needs'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1561,14 +1477,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-behavior'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-behavior'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-behavior'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1593,7 +1502,7 @@ class ApplicationsController extends Controller
     private function _validatePetAbuserAccess($value, $petOrder)
     {
         $possible_values = "abuser_access_yes,abuser_access_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "abuser_access_yes-".$petOrder.",abuser_access_no-".$petOrder.",yes,no";
         }
@@ -1605,14 +1514,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-abuser-access'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-abuser-access'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-abuser-access'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1645,14 +1547,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-relevant-info'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-relevant-info'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-relevant-info'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1688,14 +1583,7 @@ class ApplicationsController extends Controller
             {
                 // add value to user temp data
                 $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-                if ( $petOrder == null )
-                {
-                    $temp['pet-how-long'] = $value;
-                }
-                else
-                {
-                    $temp[$petOrder]['pet-how-long'] = $value;
-                }
+                $temp['pet'][$petOrder]['pet-how-long'] = $value;
                 TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
                 
                 return ['success' => true];
@@ -1727,7 +1615,7 @@ class ApplicationsController extends Controller
     private function _validatePetPoliceInvolved($value, $petOrder)
     {
         $possible_values = "police_involved_yes,police_involved_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "police_involved_yes-".$petOrder.",police_involved_no-".$petOrder.",yes,no";
         }
@@ -1739,14 +1627,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-police-involved'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-police-involved'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-police-involved'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1770,7 +1651,7 @@ class ApplicationsController extends Controller
     private function _validateClientProtectiveOrder($value, $petOrder)
     {
         $possible_values = "protective_order_yes,protective_order_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "protective_order_yes-".$petOrder.",protective_order_no-".$petOrder.",yes,no";
         }
@@ -1782,14 +1663,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['client-protective-order'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['client-protective-order'] = $value;
-            }
+            $temp['pet'][$petOrder]['client-protective-order'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1815,7 +1689,7 @@ class ApplicationsController extends Controller
     private function _validatePetCovered($value, $petOrder)
     {
         $possible_values = "pet_covered_yes,pet_covered_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "pet_covered_yes-".$petOrder.",pet_covered_no-".$petOrder.",yes,no";
         }
@@ -1827,14 +1701,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-protective-order-covered'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-protective-order-covered'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-protective-order-covered'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1859,7 +1726,7 @@ class ApplicationsController extends Controller
     private function _validatePetClientPaperwork($value, $petOrder)
     {
         $possible_values = "pet_paperwork_yes,pet_paperwork_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "pet_paperwork_yes-".$petOrder.",pet_paperwork_no-".$petOrder.",yes,no";
         }
@@ -1871,14 +1738,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-client-paperwork'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-client-paperwork'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-client-paperwork'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1903,7 +1763,7 @@ class ApplicationsController extends Controller
     private function _validatePetAbuserPaperwork($value, $petOrder)
     {
         $possible_values = "pet_abuser_paperwork_yes,pet_abuser_paperwork_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "pet_abuser_paperwork_yes-".$petOrder.",pet_abuser_paperwork_no-".$petOrder.",yes,no";
         }
@@ -1915,14 +1775,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {  
-                $temp['pet-abuser-paperwork'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-abuser-paperwork'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-abuser-paperwork'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1954,14 +1807,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['abuser-details'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['abuser-details'] = $value;
-            }
+            $temp['pet'][$petOrder]['abuser-details'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -1986,7 +1832,7 @@ class ApplicationsController extends Controller
     private function _validatePetBoardingOptions($value, $petOrder)
     {
         $possible_values = "boarding_options_yes,boarding_options_no,yes,no";
-        if ( $petOrder != null )
+        if ( $petOrder != 1 )
         {
             $possible_values = "boarding_options_yes-".$petOrder.",boarding_options_no-".$petOrder.",yes,no";
         }
@@ -1998,14 +1844,7 @@ class ApplicationsController extends Controller
         {
             // add value to user temp data
             $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-            if ( $petOrder == null )
-            {
-                $temp['pet-boarding-options'] = $value;
-            }
-            else
-            {
-                $temp[$petOrder]['pet-boarding-options'] = $value;
-            }
+            $temp['pet'][$petOrder]['pet-boarding-options'] = $value;
             TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
             
             return ['success' => true];
@@ -2256,9 +2095,8 @@ class ApplicationsController extends Controller
 
     private function _createNewApplication()
     {   
-        echo "ready!!!!"; exit;
         $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
-
+        var_dump( $temp ); exit;
         // create new client database entry
         $client = new Client();
         $client->organisation_id = Auth::user()->organisation_id;
