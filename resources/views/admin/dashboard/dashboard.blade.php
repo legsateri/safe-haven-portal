@@ -17,6 +17,11 @@
                     $counter = ($pageNo - 1) * 10 + 1; 
                 }
             }
+
+            if ( $total_pets == 0 )
+            {
+                $total_pets = 1;
+            }
         ?>
         <div class="table-responsive">
             <table class="table table-striped table-hover" width="100%" cellspacing="0">
@@ -63,6 +68,7 @@
             Pets released to adoption = {{ $pet_released_to_adoption }} = {{ round (($pet_released_to_adoption*100 /  $total_pets),2) }} % </br>
             Pets not served = {{ $pet_not_served }} = {{ round (($pet_not_served*100 / $total_pets),2) }} % </br>
             Pets not admitted = {{ $pet_not_admitted }} = {{ round (($pet_not_admitted*100 / $total_pets),2) }} % </br>
+  
             </div>
         </div>
     </div>
@@ -83,7 +89,7 @@
 
 @section('pageJS')
     <script src="{{url('/')}}/js/Chart.min.js"></script>
-    
+   
     <script>
         Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif', Chart.defaults.global.defaultFontColor = "#292b2c";
         ctx = document.getElementById("myPieChart"),
@@ -98,4 +104,5 @@
                 }
             });
     </script>
+    
 @endsection
