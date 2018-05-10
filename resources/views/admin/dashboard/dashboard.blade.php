@@ -18,10 +18,6 @@
                 }
             }
 
-            if ( $total_pets == 0 )
-            {
-                $total_pets = 1;
-            }
         ?>
         <div class="table-responsive">
             <table class="table table-striped table-hover" width="100%" cellspacing="0">
@@ -55,20 +51,16 @@
 
     <div class="row">
     <div class="col-lg-6">
-        <!-- Example Pie Chart Card-->
+        <!--Pie Chart Card-->
         <div class="card mb-3">
             <div class="card-header">
                 <i class="fa fa-pie-chart"></i> Chart of resolutions - released pets </div>
             <div class="card-body">
-                <canvas id="myPieChart" width="200px%" height="100"></canvas>
-                <!-- samo vrednosti za proveravanje -->
-                </br></br>Total number of released pets = {{ $total_pets }} </br></br>
-
-            Pets returned to owners = {{ $pets_returned_to_owner }} = {{ round (($pets_returned_to_owner*100 / $total_pets),2) }} % </br>
-            Pets released to adoption = {{ $pet_released_to_adoption }} = {{ round (($pet_released_to_adoption*100 /  $total_pets),2) }} % </br>
-            Pets not served = {{ $pet_not_served }} = {{ round (($pet_not_served*100 / $total_pets),2) }} % </br>
-            Pets not admitted = {{ $pet_not_admitted }} = {{ round (($pet_not_admitted*100 / $total_pets),2) }} % </br>
-  
+                @if ($total_released_pets!=0) 
+                    <canvas id="myPieChart" width="200px%" height="100"></canvas>
+                @else 
+                    There are no released pets yet.
+                @endif 
             </div>
         </div>
     </div>
@@ -89,7 +81,7 @@
 
 @section('pageJS')
     <script src="{{url('/')}}/js/Chart.min.js"></script>
-   
+    @if ($total_released_pets!=0)
     <script>
         Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif', Chart.defaults.global.defaultFontColor = "#292b2c";
         ctx = document.getElementById("myPieChart"),
@@ -98,11 +90,12 @@
                 data: {
                     labels: [" Pets returned to owners", "Pets released to adoption pool", "Pets not served", "Pets not admitted"],
                     datasets: [{
-                        data: [{{ round (($pets_returned_to_owner*100 / $total_pets),2) }}, {{ round (($pet_released_to_adoption*100 /  $total_pets),2) }}, {{ round (($pet_not_served*100 / $total_pets),2) }}, {{ round (($pet_not_admitted*100 / $total_pets),2) }}],
+                        data: [{{ round (($pets_returned_to_owner*100 / $total_released_pets),2) }}, {{ round (($pet_released_to_adoption*100 /  $total_released_pets),2) }}, {{ round (($pet_not_served*100 / $total_released_pets),2) }}, {{ round (($pet_not_admitted*100 / $total_released_pets),2) }}],
                         backgroundColor: ["#007bff", "#dc3545", "#ffc107", "#28a745"]
                     }]
                 }
             });
     </script>
+    @endif
     
 @endsection

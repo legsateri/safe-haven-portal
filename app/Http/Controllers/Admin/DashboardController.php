@@ -41,7 +41,7 @@ class DashboardController extends Controller
         ->join('clients', 'pets.client_id', '=', 'clients.id')
         ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
         ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
-        ->join('application_pets', 'pets.id', '=', 'application_pets.pet_id')
+        ->join('application_pets', 'pets.pet_application_id', '=', 'application_pets.id')
         ->join('statuses', 'application_pets.release_status_id', '=', 'statuses.id')
         ->where([
             ['object_types.type', '=', 'pet'],
@@ -54,7 +54,7 @@ class DashboardController extends Controller
         ->join('clients', 'pets.client_id', '=', 'clients.id')
         ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
         ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
-        ->join('application_pets', 'pets.id', '=', 'application_pets.pet_id')
+        ->join('application_pets', 'pets.pet_application_id', '=', 'application_pets.id')
         ->join('statuses', 'application_pets.release_status_id', '=', 'statuses.id')
         ->where([
             ['object_types.type', '=', 'pet'],
@@ -67,7 +67,7 @@ class DashboardController extends Controller
         ->join('clients', 'pets.client_id', '=', 'clients.id')
         ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
         ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
-        ->join('application_pets', 'pets.id', '=', 'application_pets.pet_id')
+        ->join('application_pets', 'pets.pet_application_id', '=', 'application_pets.id')
         ->join('statuses', 'application_pets.release_status_id', '=', 'statuses.id')
         ->where([
             ['object_types.type', '=', 'pet'],
@@ -80,7 +80,7 @@ class DashboardController extends Controller
         ->join('clients', 'pets.client_id', '=', 'clients.id')
         ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
         ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
-        ->join('application_pets', 'pets.id', '=', 'application_pets.pet_id')
+        ->join('application_pets', 'pets.pet_application_id', '=', 'application_pets.id')
         ->join('statuses', 'application_pets.release_status_id', '=', 'statuses.id')
         ->where([
             ['object_types.type', '=', 'pet'],
@@ -89,11 +89,11 @@ class DashboardController extends Controller
         ])
         ->count();
 
-        $total_pets = DB::table('pets')
+        $total_released_pets = DB::table('pets')
         ->join('clients', 'pets.client_id', '=', 'clients.id')
         ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
         ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
-        ->join('application_pets', 'pets.id', '=', 'application_pets.pet_id')
+        ->join('application_pets', 'pets.pet_application_id', '=', 'application_pets.id')
         ->join('statuses', 'application_pets.release_status_id', '=', 'statuses.id')
         ->where([
             ['object_types.type', '=', 'pet'],
@@ -102,7 +102,7 @@ class DashboardController extends Controller
         ->count();
 
         return view('admin.dashboard.dashboard', compact('applications',
-            'pets_returned_to_owner', 'pet_released_to_adoption', 'pet_not_served', 'pet_not_admitted','total_pets'));
+            'pets_returned_to_owner', 'pet_released_to_adoption', 'pet_not_served', 'pet_not_admitted','total_released_pets'));
 
                         
         
