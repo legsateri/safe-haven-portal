@@ -217,51 +217,56 @@ jQuery(document).ready(function() {
         /*$('input[type=radio]').change(function() {*/
         $('input[type=radio]').on("change", function() {
 
-            var ajaxurl = '/application/new/ajax';
-
-            var token = $(this).closest('form').find('input[name="_token"]').val();
-            var sh_input_value = $(this).attr('id');
             var sh_input_id = $(this).attr('name'); // this is actually sh_group_input_name
-            var clicked_radio = $(this);
 
-            var data = {
-                action: 'validation_single',
-                element_id: sh_input_id,
-                input_value: sh_input_value,
-                _token: token
-            };
+            if ( sh_input_id != 'assign_application_to'  ) { // do not send ajax for these radios
 
-            jQuery.ajax({
-                method: "POST",
-                url: ajaxurl,
-                data: data,
-                success: function (data, status, response) {
+                var ajaxurl = '/application/new/ajax';
 
-                    var obj = response.responseJSON;
+                var token = $(this).closest('form').find('input[name="_token"]').val();
+                var sh_input_value = $(this).attr('id');
 
-                    if ( obj.success == true ) {
+                var clicked_radio = $(this);
 
-                        if ( clicked_radio.closest('.radio_custom_group').hasClass('is-invalid') ) {
-                            clicked_radio.closest('.radio_custom_group').removeClass('is-invalid').addClass('is-valid');
+                var data = {
+                    action: 'validation_single',
+                    element_id: sh_input_id,
+                    input_value: sh_input_value,
+                    _token: token
+                };
+
+                jQuery.ajax({
+                    method: "POST",
+                    url: ajaxurl,
+                    data: data,
+                    success: function (data, status, response) {
+
+                        var obj = response.responseJSON;
+
+                        if ( obj.success == true ) {
+
+                            if ( clicked_radio.closest('.radio_custom_group').hasClass('is-invalid') ) {
+                                clicked_radio.closest('.radio_custom_group').removeClass('is-invalid').addClass('is-valid');
+                            } else {
+                                clicked_radio.closest('.radio_custom_group').addClass('is-valid');
+                            }
                         } else {
-                            clicked_radio.closest('.radio_custom_group').addClass('is-valid');
-                        }
-                    } else {
 
-                        clicked_radio.closest('.radio_custom_group').next('.invalid-feedback').html(obj.data.message);
+                            clicked_radio.closest('.radio_custom_group').next('.invalid-feedback').html(obj.data.message);
 
-                        if ( clicked_radio.closest('.radio_custom_group').hasClass('is-valid') ) {
-                            clicked_radio.closest('.radio_custom_group').removeClass('is-valid').addClass('is-invalid');
-                        } else {
-                            clicked_radio.closest('.radio_custom_group').addClass('is-invalid');
+                            if ( clicked_radio.closest('.radio_custom_group').hasClass('is-valid') ) {
+                                clicked_radio.closest('.radio_custom_group').removeClass('is-valid').addClass('is-invalid');
+                            } else {
+                                clicked_radio.closest('.radio_custom_group').addClass('is-invalid');
+                            }
                         }
+                    },
+                    error: function (xml, status, error) {
+                    },
+                    complete: function (xml, status) {
                     }
-                },
-                error: function (xml, status, error) {
-                },
-                complete: function (xml, status) {
-                }
-            });
+                });
+            }
         });
 
         /*--------------- radio input function for all ends --------------------*/

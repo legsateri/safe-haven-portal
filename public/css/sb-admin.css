@@ -148,7 +148,15 @@ body.ct-vertical-align .card {
       margin-bottom: 25px;
     }
 
+    .modal-footer > .row {
+      width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+    }
 
+    #logOutModal .modal-footer > .btn {
+      width: 100%;
+    }
 
     @media (max-width: 767px) {
 
@@ -170,6 +178,19 @@ body.ct-vertical-align .card {
       .btn_org_approved {
         margin-top: 20px;
         width: 100%;
+      }
+
+      .modal-footer button[type="submit"] {
+        margin-top: 20px;
+      }
+
+      #logOutModal .modal-footer {
+        display: block;
+      }
+
+      #logOutModal .modal-footer > a {
+        margin-left: 0;
+        margin-top: 20px;
       }
 
     }

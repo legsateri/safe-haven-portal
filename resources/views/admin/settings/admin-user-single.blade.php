@@ -319,10 +319,10 @@
                             </div>
                             <div class="modal-footer">
                                 <div class="row">
-                                    <div class="col-sm">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
                                         <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Cancel</button>
                                     </div>
-                                    <div class="col-sm">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
                                         <button type="submit" class="btn btn-primary btn-block"         
                                             >@if( $admin->active == 1 )
                                                 Set admin user as inactive
