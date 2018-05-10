@@ -296,6 +296,7 @@ class ClientsController extends Controller
                     $qa_badge[$dataEntry->id] =  $qa_badge[$dataEntry->id] + 1;
                 }
             }
+
         }
 // dd($qa_badge);
         return  view('auth.advocate.clientsCurrent', 
@@ -331,7 +332,7 @@ class ClientsController extends Controller
         $dataEntries = DB::table('applications')
             ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
             ->join('clients', 'applications.client_id', '=', 'clients.id')
-            ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+            // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
             ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
             ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
             ->where([
@@ -343,8 +344,23 @@ class ClientsController extends Controller
             ->orderBy('applications.created_at', $filter_rules['order_by'])
             ->paginate(4);
 
+        // echo "<pre>";
+        $dataEntriesPets = [];
+        foreach( $dataEntries as $dataEntrie )
+        {
+            
+            // var_dump($dataEntrie);
+            // exit;
+            $dataEntriesPets[$dataEntrie->id] = DB::table('pets')
+            ->where([
+                ['pets.client_id', '=', $dataEntrie->client_id]
+            ])
+            ->get();
+        }
+        // var_dump($dataEntriesPets);
+
         return  view('auth.advocate.clientsInNeed', 
-                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'filter_rules'));
+                compact('currentUser', 'dataEntries', 'dataEntriesPets', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'filter_rules'));
     }
 
 
