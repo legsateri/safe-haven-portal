@@ -109,6 +109,20 @@ class ApplicationsController extends Controller
         }
 
         /**
+         * pet form closed by user
+         */
+        if ( $request->action == "close_pet_form" ) {
+
+            $ajax_response['success'] =true;
+            if ( $ajax_response['success'] != true )
+            {
+                $ajax_response['data']['message'] = 'not good value';
+            }
+            return $ajax_response;
+
+        }
+
+        /**
          * validation for single fields
          */
         if ( $request->action == "validation_single" ) {

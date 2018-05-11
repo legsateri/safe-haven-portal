@@ -324,13 +324,6 @@
                         <div class="col-lg-2 col-md-2">
                         </div>
                     </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-12 text-right">
-
-                            <button id="next_step_3_4" type="button" class="btn btn-primary disabled">Next Step</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -381,6 +374,7 @@
 
                             <button id="client_new_application_submit" type="button" class="btn btn-primary">Submit Application</button>
                             <a href="/application/new" id="client_new_application_start_another" type="button" class="btn btn-primary">Start another Application</a>
+                            <div class="spinner_cont spinner_form_4"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
                         </div>
                     </div>
                 </div>

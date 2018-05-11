@@ -394,92 +394,15 @@ jQuery(document).ready(function() {
 
         $('#i_understand').click(function() { // step 3 to 4
 
-            $('.spinner_form_3').css('display','inline');
-
             if ( $(this).hasClass('disabled') !== true ) {
 
+                $('.spinner_form_3').css('display','inline');
                 var clicked_button = $(this);
-                var ajaxurl = '/application/new/ajax';
-                var token = clicked_button.next('input[name="_token"]').val();
-
-                var data = {
-                    action: 'validation_single',
-                    element_id: 'i_understand',
-                    input_value: 'true',
-                    _token: token
-                };
 
                 $('.spinner_form_3').css('display','none');
                 $('.check_3').fadeIn("slow", function () {});
                 clicked_button.addClass('disabled');
-                $('#next_step_3_4').removeClass('disabled');
 
-                /*jQuery.ajax({
-                    method: "POST",
-                    url: ajaxurl,
-                    data: data,
-                    success: function (data, status, response) {
-
-                        console.log('are we here i understand');
-                        var obj = response.responseJSON;
-                        console.log('are we here1 i understand');
-
-                        if ( typeof obj.data !== 'undefined' ) {
-                            console.log('obj.message = ' + obj.data.message);
-                            console.log('obj.global_answer_counts = ' + obj.data.global_answer_counts);
-                            console.log('obj.current_answer_value = ' + obj.data.current_answer_value);
-                        }
-                        console.log('are we here2 i understand');
-
-                        if ( obj.success == true ) {
-                            console.log('super cool i understand');
-
-                            $('.spinner_form_3').css('display','none');
-                            clicked_button.addClass('disabled');
-                            $('#next_step_3_4').removeClass('disabled');
-
-                            /!*if ( $('#' + sh_input_id).hasClass('is-invalid') ) {
-                                $('#' + sh_input_id).removeClass('is-invalid').addClass('is-valid');
-                            } else {
-                                $('#' + sh_input_id).addClass('is-valid');
-                            }*!/
-                        } else {
-                            console.log('not cool');
-                            console.log('sh_input_id = ' + sh_input_id);
-
-                            // TODO support email change set
-                            var tech_support_message = 'Please contact us at support@ztech.io';
-                            $('.spinner_form_3').css('display','none');
-                            alert(obj.data.message + '<br/>' + tech_support_message);
-
-                            //$('#' + sh_input_id).next('.invalid-feedback').html(obj.data.message);
-
-                            /!*if ( $('#' + sh_input_id).hasClass('is-valid') ) {
-                                $('#' + sh_input_id).removeClass('is-valid').addClass('is-invalid');
-                            } else {
-                                $('#' + sh_input_id).addClass('is-invalid');
-                            }*!/
-                        }
-
-
-                    }, // end success
-                    error: function (xml, status, error) {
-                        // do something if there was an error
-                        //console.log('zzz6 - error');
-                    },
-                    complete: function (xml, status) {
-                        // do something after success or error no matter what
-                        // console.log('zzz6 - completed');
-                    }
-                }); // end ajax post*/
-
-            }
-
-        });
-
-        $('#next_step_3_4').click(function() { // step 3 to 4
-
-            if ( $(this).hasClass('disabled') !== true ) {
                 $('.accordion_section_4 .card-header a').attr('href', '#collapseFour');
                 $('#collapseThree').collapse('hide');
                 $('#collapseFour').collapse('show');
@@ -551,56 +474,42 @@ jQuery(document).ready(function() {
                 });
             });
 
+            // add close control
+            $('.' + new_pet_cont_class).prepend('<div class="new_app_pet_form_close"><i class="fa fa-times" aria-hidden="true"></i></div>');
+
             // show new form
             new_form.fadeIn("slow", function () {});
 
         });
 
+        $('[class*="pet_application_"]').on('click', '.new_app_pet_form_close',function() {
 
-        $('#client_new_application_submit').click(function() { // final submit of whole form
+            var this_pet_form_class = $(this).closest('[class*="pet_application_"]').attr('class');
 
-            var clicked_button = $(this);
-            var new_client_app_form_data = $( '#new_client_app_form' ).serializeArray();
-            var new_pet_app_form_data = $( '#new_pet_app_form' ).serializeArray();
-            var assign_application_to_form_data = $( '#assign_application_to_form_data' ).serializeArray();
+            var this_pet_form_number = this_pet_form_class.replace("pet_application_", "");
 
-            var number_of_pets_applications = $('[class*="pet_application_"]').length;
-            var number_of_pets = { name: "number_of_pets", value: number_of_pets_applications};
-            new_pet_app_form_data.push(number_of_pets);
+            var token = $(this).closest('#new_pet_app_form').find('input[name="_token"]').val();
 
-            full_form_array = new_client_app_form_data.concat(new_pet_app_form_data);
-            full_form_array = full_form_array.concat(assign_application_to_form_data);
-
-            // fix action key value
-            var full_form_array_action = [];
-
-            jQuery.each(full_form_array, function (index, value) {
-                if ( full_form_array[index].name === "action" ) {
-                    full_form_array[index].value = 'validation_multi_final';
-                }
-                full_form_array_action.push(full_form_array[index]);
-            });
+            var data = {
+                action: 'close_pet_form',
+                pet_form_number: this_pet_form_number,
+                _token: token
+            };
 
             var ajaxurl = '/application/new/ajax';
 
             jQuery.ajax({
                 method: "POST",
                 url: ajaxurl,
-                data: full_form_array,
+                data: data,
                 success: function (data, status, response) {
                     var obj = response.responseJSON;
 
                     if ( obj.success == true ) {
+                        $( "." + this_pet_form_class ).remove();
 
-                        setTimeout(function(){
-                            $('#assign_to_me, #add_to_clients_in_need').prop('disabled', true);
-                            clicked_button.addClass('disabled');
-                            $('#client_new_application_start_another').fadeIn("slow", function () {});
-                            $('.check_4').fadeIn("slow", function () {});
-                            $('#client_new_application_submit').html('Application Submitted');
-                        }, 1000);
                     } else {
-
+                        $('.spinner_form_4').css('display','none');
                         // TODO support email change set
                         var tech_support_message = 'Please contact us at support@ztech.io';
 
@@ -613,6 +522,70 @@ jQuery(document).ready(function() {
                 complete: function (xml, status) {
                 }
             });
+        });
+
+
+        $('#client_new_application_submit').click(function() { // final submit of whole form
+
+            if ( $(this).hasClass('disabled') !== true ) {
+
+                $('.spinner_form_4').css('display','inline');
+                var clicked_button = $(this);
+                var new_client_app_form_data = $( '#new_client_app_form' ).serializeArray();
+                var new_pet_app_form_data = $( '#new_pet_app_form' ).serializeArray();
+                var assign_application_to_form_data = $( '#assign_application_to_form_data' ).serializeArray();
+
+                var number_of_pets_applications = $('[class*="pet_application_"]').length;
+                var number_of_pets = { name: "number_of_pets", value: number_of_pets_applications};
+                new_pet_app_form_data.push(number_of_pets);
+
+                full_form_array = new_client_app_form_data.concat(new_pet_app_form_data);
+                full_form_array = full_form_array.concat(assign_application_to_form_data);
+
+                // fix action key value
+                var full_form_array_action = [];
+
+                jQuery.each(full_form_array, function (index, value) {
+                    if ( full_form_array[index].name === "action" ) {
+                        full_form_array[index].value = 'validation_multi_final';
+                    }
+                    full_form_array_action.push(full_form_array[index]);
+                });
+
+                var ajaxurl = '/application/new/ajax';
+
+                jQuery.ajax({
+                    method: "POST",
+                    url: ajaxurl,
+                    data: full_form_array,
+                    success: function (data, status, response) {
+                        var obj = response.responseJSON;
+
+                        if ( obj.success == true ) {
+
+                            setTimeout(function(){
+                                $('#assign_to_me, #add_to_clients_in_need').prop('disabled', true);
+                                clicked_button.addClass('disabled');
+                                $('.spinner_form_4').css('display','none');
+                                $('#client_new_application_start_another').fadeIn("slow", function () {});
+                                $('.check_4').fadeIn("slow", function () {});
+                                $('#client_new_application_submit').html('Application Submitted');
+                            }, 1000);
+                        } else {
+                            $('.spinner_form_4').css('display','none');
+                            // TODO support email change set
+                            var tech_support_message = 'Please contact us at support@ztech.io';
+
+                            alert(obj.message + '<br/>' + tech_support_message);
+                        }
+
+                    },
+                    error: function (xml, status, error) {
+                    },
+                    complete: function (xml, status) {
+                    }
+                });
+            }
         });
     }
 
