@@ -36,7 +36,8 @@ class DashboardController extends Controller
             'organisations.name as org_name',
         ])
         ->get();
-
+        
+        // Chart - realeased pets
         $pets_returned_to_owner = DB::table('pets')
         ->join('clients', 'pets.client_id', '=', 'clients.id')
         ->leftJoin('organisations', 'pets.organisation_id', '=', 'organisations.id')
@@ -101,11 +102,55 @@ class DashboardController extends Controller
         ])
         ->count();
 
-        return view('admin.dashboard.dashboard', compact('applications',
-            'pets_returned_to_owner', 'pet_released_to_adoption', 'pet_not_served', 'pet_not_admitted','total_released_pets'));
+        // Chart - realeased clients
+        $completed = DB::table('applications')
+        ->join('clients', 'applications.client_id', '=', 'clients.id')
+        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        ->where([
+            ['statuses.type', '=', 'client_release'],
+            ['statuses.value', '=', 'completed'],
+        ])
+        ->count();
 
-                        
-        
+        $not_provided = DB::table('applications')
+        ->join('clients', 'applications.client_id', '=', 'clients.id')
+        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        ->where([
+            ['statuses.type', '=', 'client_release'],
+            ['statuses.value', '=', 'not_provided'],
+        ])
+        ->count();
+
+        $no_longer_needed = DB::table('applications')
+        ->join('clients', 'applications.client_id', '=', 'clients.id')
+        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        ->where([
+            ['statuses.type', '=', 'client_release'],
+            ['statuses.value', '=', 'not_provided'],
+        ])
+        ->count();
+
+        $total_released_client = DB::table('applications')
+        ->join('clients', 'applications.client_id', '=', 'clients.id')
+        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        ->where([
+            ['statuses.type', '=', 'client_release'],
+        ])
+        ->count();
+
+        return  view('admin.dashboard.dashboard', 
+                compact('applications', 'pets_returned_to_owner','pet_released_to_adoption',
+                        'pet_not_served','pet_not_admitted','total_released_pets',
+                        'completed','not_provided','no_longer_needed','total_released_client'));
+
     }
 
 }

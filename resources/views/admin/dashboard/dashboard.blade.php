@@ -66,21 +66,26 @@
     </div>
 
     <div class="col-lg-6">
-        <!-- Example Bar Chart Card-->
+        <!--Pie Chart Card-->
         <div class="card mb-3">
-        <div class="card-header">
-            <i class="fa fa-bar-chart"></i> Bar Chart </div>
-        <div class="card-body">
-            <!-- <canvas id="myBarChart" width="100" height="50"></canvas> -->
-        </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            <div class="card-header">
+                <i class="fa fa-pie-chart"></i> Chart of resolutions - released pets </div>
+            <div class="card-body">
+                @if ($total_released_client!=0) 
+                    <canvas id="myPieChartClient" width="200px%" height="100"></canvas>
+                @else 
+                    There are no released clients yet.
+                @endif 
+            </div>
         </div>
     </div>
 </div>
+
 @endsection
 
 @section('pageJS')
     <script src="{{url('/')}}/js/Chart.min.js"></script>
+    
     @if ($total_released_pets!=0)
     <script>
         Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif', Chart.defaults.global.defaultFontColor = "#292b2c";
@@ -90,8 +95,30 @@
                 data: {
                     labels: [" Pets returned to owners", "Pets released to adoption pool", "Pets not served", "Pets not admitted"],
                     datasets: [{
-                        data: [{{ round (($pets_returned_to_owner*100 / $total_released_pets),2) }}, {{ round (($pet_released_to_adoption*100 /  $total_released_pets),2) }}, {{ round (($pet_not_served*100 / $total_released_pets),2) }}, {{ round (($pet_not_admitted*100 / $total_released_pets),2) }}],
+                        data: [ {{ round (($pets_returned_to_owner*100 / $total_released_pets),2) }}, 
+                                {{ round (($pet_released_to_adoption*100 /  $total_released_pets),2) }},
+                                {{ round (($pet_not_served*100 / $total_released_pets),2) }},
+                                {{ round (($pet_not_admitted*100 / $total_released_pets),2) }}],
                         backgroundColor: ["#007bff", "#dc3545", "#ffc107", "#28a745"]
+                    }]
+                }
+            });
+    </script>
+    @endif
+
+    @if ($total_released_client!=0)
+    <script>
+        Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif', Chart.defaults.global.defaultFontColor = "#292b2c";
+        ctx = document.getElementById("myPieChartClient"),
+            myPieChartClient = new Chart(ctx, {
+                type: "pie",
+                data: {
+                    labels: ["Clients completed", "Service not provided", "Service no longer needed"],
+                    datasets: [{
+                        data: [ {{ round (($completed*100 / $total_released_client),2) }},
+                                {{ round (($not_provided*100 /  $total_released_client),2) }},
+                                {{ round (($no_longer_needed*100 / $total_released_client),2) }}],
+                        backgroundColor: ["#007bff", "#dc3545", "#ffc107"]
                     }]
                 }
             });

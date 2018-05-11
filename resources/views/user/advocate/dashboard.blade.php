@@ -16,7 +16,7 @@
                         $counter = ($pageNo - 1) * 10 + 1; 
                     }
                 }
-
+ 
             ?>
             <div class="table-responsive">
                 <table class="table table-striped table-hover" width="100%" cellspacing="0">
@@ -70,6 +70,7 @@
 
 @section('pageJS')
     <script src="{{url('/')}}/js/Chart.min.js"></script>
+
     @if ($data['total_released_client']!=0)
     <script>
         Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif', Chart.defaults.global.defaultFontColor = "#292b2c";
@@ -81,9 +82,8 @@
                     datasets: [{
                         data: [ {{ round (($data['completed']*100 / $data['total_released_client']),2) }},
                                 {{ round (($data['not_provided']*100 /  $data['total_released_client']),2) }},
-                                {{ round (($data['no_longer_needed']*100 / $data['total_released_client']),2) }},
+                                {{ round (($data['no_longer_needed']*100 / $data['total_released_client']),2) }}],
                         backgroundColor: ["#007bff", "#dc3545", "#ffc107"]
-                        // #28a745
                     }]
                 }
             });
