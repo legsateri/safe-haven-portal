@@ -459,6 +459,7 @@ div[class*="spinner_form_"] {
     /*border-top: 1px dashed black;*/
     margin-top: 20px;
     padding-top: 15px;
+    position: relative;
 }
 
 #pet_form_cont [class*="pet_application_"]:nth-child(2n) {
@@ -470,7 +471,21 @@ div[class*="spinner_form_"] {
 
 }
 
+.new_app_pet_form_close {
+    position: absolute;
+    right: 3px;
+    font-size: 22px;
+    cursor: pointer;
+    top: -7px;
+}
 
+.new_app_pet_form_close:hover {
+    color: #0056b3;
+}
+
+.pet_application_1 .new_app_pet_form_close {
+    display: none;
+}
 
 
 /******* Responsive views start **********/
