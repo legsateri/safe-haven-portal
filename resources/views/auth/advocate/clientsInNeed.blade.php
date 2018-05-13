@@ -151,25 +151,21 @@
                                     @php ($color_class = '')
                         @endif
                             <div id="list-item-{{ $dataEntry->application_id }}" class="new_client_form_row {{$color_class}}">
-
+                                
+                                <?php
+                                /**
+                                 * client data partial load
+                                 */
+                                ?>
                                 @include('auth.advocate.partials.client_list_client_details')
                                 <?php  
                                 /**
-                                 * pets details part
-                                 * start
+                                 * pets details partial load
                                  */
                                 ?>
-
-
-                                <?php  
-                                /**
-                                 * pets details part
-                                 * end
-                                 */
-                                ?>
-
-
-
+                                @foreach( $dataEntriesPets[$dataEntry->id] as $petEntry )
+                                    @include('auth.advocate.partials.client_list_pet_details')
+                                @endforeach
 
                             </div>
                         @endforeach

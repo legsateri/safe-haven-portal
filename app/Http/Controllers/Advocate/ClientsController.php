@@ -68,7 +68,7 @@ class ClientsController extends Controller
             $dataEntries = DB::table('applications')
             ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
             ->join('clients', 'applications.client_id', '=', 'clients.id')
-            ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+            // ->join('pets', 'application_pets.id', '=', 'pets.pet_application_id')
             ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
             ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
             ->where([
@@ -90,35 +90,36 @@ class ClientsController extends Controller
                 'applications.release_status_id as release_status_id',
                 'applications.created_at as created_at',
                 'applications.id as application_id',
-                'application_pets.pet_id as pet_id',
-                'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
-                'application_pets.abuser_visiting_access as abuser_visiting_access',
-                'application_pets.estimated_lenght_of_housing as estimated_lenght_of_housing',
-                'application_pets.pet_protective_order as pet_protective_order',
-                'application_pets.client_legal_owner_of_pet as client_legal_owner_of_pet',
-                'application_pets.abuser_legal_owner_of_pet as abuser_legal_owner_of_pet',
-                'application_pets.explored_boarding_options as explored_boarding_options',
+                'application_pets.id as application_pets_id',
+                // 'application_pets.pet_id as pet_id',
+                // 'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
+                // 'application_pets.abuser_visiting_access as abuser_visiting_access',
+                // 'application_pets.estimated_lenght_of_housing as estimated_lenght_of_housing',
+                // 'application_pets.pet_protective_order as pet_protective_order',
+                // 'application_pets.client_legal_owner_of_pet as client_legal_owner_of_pet',
+                // 'application_pets.abuser_legal_owner_of_pet as abuser_legal_owner_of_pet',
+                // 'application_pets.explored_boarding_options as explored_boarding_options',
                 'clients.first_name as first_name',
                 'clients.last_name as last_name',
                 'clients.email as email',
                 'clients.best_way_to_reach as best_way_to_reach',
                 'clients.pets_count as pets_count',
-                'pets.slug as slug',
-                'pets.pet_type_id as pet_type_id',
-                'pets.name as name',
-                'pets.breed as breed',
-                'pets.weight as weight',
-                'pets.age as age',
-                'pets.reported as reported',
-                'pets.description as description',
-                'pets.microchipped as microchipped',
-                'pets.vaccinations as vaccinations',
-                'pets.sprayed as sprayed',
-                'pets.objection_to_spray as objection_to_spray',
-                'pets.dietary_needs as dietary_needs',
-                'pets.vet_needs as vet_needs',
-                'pets.temperament as temperament',
-                'pets.aditional_info as aditional_info',
+                // 'pets.slug as slug',
+                // 'pets.pet_type_id as pet_type_id',
+                // 'pets.name as name',
+                // 'pets.breed as breed',
+                // 'pets.weight as weight',
+                // 'pets.age as age',
+                // 'pets.reported as reported',
+                // 'pets.description as description',
+                // 'pets.microchipped as microchipped',
+                // 'pets.vaccinations as vaccinations',
+                // 'pets.sprayed as sprayed',
+                // 'pets.objection_to_spray as objection_to_spray',
+                // 'pets.dietary_needs as dietary_needs',
+                // 'pets.vet_needs as vet_needs',
+                // 'pets.temperament as temperament',
+                // 'pets.aditional_info as aditional_info',
                 'addresses.state as state',
                 'addresses.city as city',
                 'addresses.zip_code as zip_code',
@@ -298,6 +299,34 @@ class ClientsController extends Controller
             }
 
         }
+
+        $dataEntriesPets = [];
+        $dataEntriesPetLeads = [];
+        foreach( $dataEntries as $dataEntry )
+        {
+            $dataEntriesPets[$dataEntry->application_pets_id] = DB::table('pets')
+            ->where([
+                ['pets.client_id', '=', $dataEntry->client_id]
+            ])
+            ->get();
+                // echo "<pre>";
+            foreach( $dataEntriesPets[$dataEntry->id] as $tempPet )
+            {
+                // var_dump( $tempPet );
+                if( !isset( $dataEntriesPetLeads[$dataEntry->client_id] ) )
+                {
+                    // $dataEntriesPetLeads[$dataEntry->client_id]['abuser_notes'] = $dataEntry->abuser_notes;
+                    // $dataEntriesPetLeads[$dataEntry->client_id]['explored_boarding_options'] = $dataEntry->explored_boarding_options;
+                    // $dataEntriesPetLeads[$dataEntry->client_id]['protective_order'] = $dataEntry->protective_order;
+                    // $dataEntriesPetLeads[$dataEntry->client_id]['police_involved'] = $dataEntry->police_involved;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
 // dd($qa_badge);
         return  view('auth.advocate.clientsCurrent', 
                 compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'qa_badge', 'filter_rules'));
@@ -332,7 +361,6 @@ class ClientsController extends Controller
         $dataEntries = DB::table('applications')
             ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
             ->join('clients', 'applications.client_id', '=', 'clients.id')
-            // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
             ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
             ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
             ->where([
@@ -344,23 +372,34 @@ class ClientsController extends Controller
             ->orderBy('applications.created_at', $filter_rules['order_by'])
             ->paginate(4);
 
-        // echo "<pre>";
         $dataEntriesPets = [];
-        foreach( $dataEntries as $dataEntrie )
+        $dataEntriesPetLeads = [];
+        foreach( $dataEntries as $dataEntry )
         {
-            
-            // var_dump($dataEntrie);
-            // exit;
-            $dataEntriesPets[$dataEntrie->id] = DB::table('pets')
+            $dataEntriesPets[$dataEntry->id] = DB::table('pets')
             ->where([
-                ['pets.client_id', '=', $dataEntrie->client_id]
+                ['pets.client_id', '=', $dataEntry->client_id]
             ])
             ->get();
+
+            foreach( $dataEntriesPets[$dataEntry->id] as $tempPet )
+            {
+                if( !isset( $dataEntriesPetLeads[$dataEntry->client_id] ) )
+                {
+                    $dataEntriesPetLeads[$dataEntry->client_id]['abuser_notes'] = $dataEntry->abuser_notes;
+                    $dataEntriesPetLeads[$dataEntry->client_id]['explored_boarding_options'] = $dataEntry->explored_boarding_options;
+                    $dataEntriesPetLeads[$dataEntry->client_id]['protective_order'] = $dataEntry->protective_order;
+                    $dataEntriesPetLeads[$dataEntry->client_id]['police_involved'] = $dataEntry->police_involved;
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
-        // var_dump($dataEntriesPets);
 
         return  view('auth.advocate.clientsInNeed', 
-                compact('currentUser', 'dataEntries', 'dataEntriesPets', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'filter_rules'));
+                compact('currentUser', 'dataEntries', 'dataEntriesPets', 'dataEntriesPetLeads', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'filter_rules'));
     }
 
 
