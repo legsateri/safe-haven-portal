@@ -17,6 +17,7 @@ if ( $counter > 1 )
 }
 ?>
 <div class="pet_application{{$classSufix}}">
+    <div class="new_app_pet_form_close"><i class="fa fa-times" aria-hidden="true"></i></div>
     <div class="form-row">
         <?php
         /**
