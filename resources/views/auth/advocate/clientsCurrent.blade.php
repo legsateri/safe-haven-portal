@@ -314,8 +314,21 @@
                          */
                         ?>
                         @foreach( $dataEntries as $dataEntry )
-
+                            
+                            <?php 
+                            /**
+                             * client details
+                             */
+                            ?>
                             @include('auth.advocate.partials.client_list_current_details')
+                            <?php  
+                            /**
+                             * pets details partial load
+                             */
+                            ?>
+                            @foreach( $dataEntriesPets[$dataEntry->id] as $petEntry )
+                                @include('auth.advocate.partials.client_list_pet_details')
+                            @endforeach
 
                         @endforeach
                         <?php

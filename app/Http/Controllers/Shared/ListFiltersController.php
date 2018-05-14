@@ -175,7 +175,7 @@ class ListFiltersController extends Controller
         // validate request data
         $validator = Validator::make($request->all(), [
             'order_by' => 'required|in:asc,desc',
-            'pet_type' => 'required|in:all' . $pet_types
+            'pet_type' => 'nullable|in:all' . $pet_types
         ]);
 
         if ( !$validator->fails() )

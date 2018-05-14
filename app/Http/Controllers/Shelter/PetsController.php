@@ -58,7 +58,7 @@ class PetsController extends Controller
         if ( $filter_rules['pet_type'] == 'all' )
         {
             $dataEntries = DB::table('application_pets')
-            ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+            // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
             ->join('applications', 'application_pets.application_id', '=', 'applications.id')
             ->join('addresses', 'application_pets.client_id' , '=' , 'addresses.entity_id')
             ->where([
@@ -72,17 +72,32 @@ class PetsController extends Controller
         else
         {
             $dataEntries = DB::table('application_pets')
-            ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+            // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
             ->join('applications', 'application_pets.application_id', '=', 'applications.id')
             ->join('addresses', 'application_pets.client_id' , '=' , 'addresses.entity_id')
             ->where([
                 ['application_pets.status', '=', '1'],
-                ['pets.pet_type_id', '=', $filter_rules['pet_type']],
+                // ['pets.pet_type_id', '=', $filter_rules['pet_type']],
                 ['application_pets.accepted_by_shelter_organisation_id', '=', Auth::user()->organisation_id],
                 ['addresses.entity_type', '=', 'client'],
             ])
             ->orderBy('application_pets.created_at', $filter_rules['order_by'])
             ->paginate(4);
+        }
+
+        /**
+         * get pet details
+         */
+        $dataEntriesPets = [];
+        foreach( $dataEntries as $dataEntry )
+        {
+            $dataEntriesPets[$dataEntry->id] = 
+            DB::table('pets')
+            ->where([
+                ['pets.pet_application_id', '=', $dataEntry->id],
+                // ['pets.pet_type_id', '=', $filter_rules['pet_type']]
+            ])
+            ->get();
         }
 
         // get number of messages that are not seen by current user
@@ -117,7 +132,7 @@ class PetsController extends Controller
         }
 
         return  view('auth.shelter.petsAssociated', 
-                compact('currentUser', 'dataEntries', 'petTypes', 'qa_badge', 'filter_rules'));
+                compact('currentUser', 'dataEntries', 'dataEntriesPets', 'petTypes', 'qa_badge', 'filter_rules'));
     }
 
 
@@ -146,7 +161,7 @@ class PetsController extends Controller
         if ( $filter_rules['pet_type'] == 'all' )
         {
             $dataEntries = DB::table('application_pets')
-            ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+            // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
             ->join('applications', 'application_pets.application_id', '=', 'applications.id')
             ->join('addresses', 'application_pets.client_id' , '=' , 'addresses.entity_id')
             ->where([
@@ -161,12 +176,12 @@ class PetsController extends Controller
         else
         {
             $dataEntries = DB::table('application_pets')
-            ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+            // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
             ->join('applications', 'application_pets.application_id', '=', 'applications.id')
             ->join('addresses', 'application_pets.client_id' , '=' , 'addresses.entity_id')
             ->where([
                 ['application_pets.status', '=', '0'],
-                ['pets.pet_type_id', '=', $filter_rules['pet_type']],
+                // ['pets.pet_type_id', '=', $filter_rules['pet_type']],
                 ['addresses.entity_type', '=', 'client'],
                 ['applications.accepted_by_advocate_id', '<>', null],
                 ['applications.accepted_by_advocate_id', '<>', '']
@@ -174,6 +189,22 @@ class PetsController extends Controller
             ->orderBy('application_pets.created_at', $filter_rules['order_by'])
             ->paginate(4);
         }
+
+        /**
+         * get pet details
+         */
+        $dataEntriesPets = [];
+        foreach( $dataEntries as $dataEntry )
+        {
+            $dataEntriesPets[$dataEntry->id] = 
+            DB::table('pets')
+            ->where([
+                ['pets.pet_application_id', '=', $dataEntry->id],
+                // ['pets.pet_type_id', '=', $filter_rules['pet_type']]
+            ])
+            ->get();
+        }
+
 
         // get number of messages that are not seen by current user
         // and where question is posted by user's shelter
@@ -207,7 +238,7 @@ class PetsController extends Controller
         }
 
         return  view('auth.shelter.petsInNeed', 
-                compact('currentUser', 'dataEntries', 'petTypes', 'currentShelter', 'qa_badge', 'filter_rules'));
+                compact('currentUser', 'dataEntries', 'dataEntriesPets', 'petTypes', 'currentShelter', 'qa_badge', 'filter_rules'));
     }
 
 
@@ -238,11 +269,15 @@ class PetsController extends Controller
             ->first();
 
             if ( $applicationPet )
-            {
+            {   
+                // var_dump( $applicationPet );
+                // echo "<br>";
                 // validate status of client application
                 $application = Application::where('id', $applicationPet->application_id)->first();
+                // var_dump($application);
                 if ( $application->status == 1 && $application->accepted_by_advocate_id != null && $application->accepted_by_advocate_id != '' )
                 {
+                    // echo "teeeest!!! ";
                     // upate pet application entry
                     $applicationPet->accepted_by_shelter_organisation_id = Auth::user()->organisation_id;
                     $applicationPet->status = 1;

@@ -92,13 +92,13 @@ class ClientsController extends Controller
                 'applications.id as application_id',
                 'application_pets.id as application_pets_id',
                 // 'application_pets.pet_id as pet_id',
-                // 'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
+                'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
                 // 'application_pets.abuser_visiting_access as abuser_visiting_access',
                 // 'application_pets.estimated_lenght_of_housing as estimated_lenght_of_housing',
                 // 'application_pets.pet_protective_order as pet_protective_order',
                 // 'application_pets.client_legal_owner_of_pet as client_legal_owner_of_pet',
                 // 'application_pets.abuser_legal_owner_of_pet as abuser_legal_owner_of_pet',
-                // 'application_pets.explored_boarding_options as explored_boarding_options',
+                'application_pets.explored_boarding_options as explored_boarding_options',
                 'clients.first_name as first_name',
                 'clients.last_name as last_name',
                 'clients.email as email',
@@ -309,16 +309,15 @@ class ClientsController extends Controller
                 ['pets.client_id', '=', $dataEntry->client_id]
             ])
             ->get();
-                // echo "<pre>";
+
             foreach( $dataEntriesPets[$dataEntry->id] as $tempPet )
             {
-                // var_dump( $tempPet );
                 if( !isset( $dataEntriesPetLeads[$dataEntry->client_id] ) )
                 {
-                    // $dataEntriesPetLeads[$dataEntry->client_id]['abuser_notes'] = $dataEntry->abuser_notes;
-                    // $dataEntriesPetLeads[$dataEntry->client_id]['explored_boarding_options'] = $dataEntry->explored_boarding_options;
-                    // $dataEntriesPetLeads[$dataEntry->client_id]['protective_order'] = $dataEntry->protective_order;
-                    // $dataEntriesPetLeads[$dataEntry->client_id]['police_involved'] = $dataEntry->police_involved;
+                    $dataEntriesPetLeads[$dataEntry->client_id]['abuser_notes'] = $dataEntry->abuser_notes;
+                    $dataEntriesPetLeads[$dataEntry->client_id]['explored_boarding_options'] = $dataEntry->explored_boarding_options;
+                    $dataEntriesPetLeads[$dataEntry->client_id]['protective_order'] = $dataEntry->protective_order;
+                    $dataEntriesPetLeads[$dataEntry->client_id]['police_involved'] = $dataEntry->police_involved;
                 }
                 else
                 {
@@ -327,9 +326,9 @@ class ClientsController extends Controller
             }
         }
 
-// dd($qa_badge);
         return  view('auth.advocate.clientsCurrent', 
-                compact('currentUser', 'dataEntries', 'petTypes', 'phoneTypes', 'states', 'preferedContactMethods', 'qa_badge', 'filter_rules'));
+                compact('currentUser', 'dataEntries', 'dataEntriesPets', 'dataEntriesPetLeads', 'petTypes', 
+                        'phoneTypes', 'states', 'preferedContactMethods', 'qa_badge', 'filter_rules'));
     }
 
     /**
