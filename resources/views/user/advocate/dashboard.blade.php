@@ -87,6 +87,10 @@
                     }]
                 }
             });
+        console.log('completed = ' +{{ $data['completed']}});
+        console.log('not_provided = ' + {{$data['not_provided']}});
+        console.log('no_longer_needed = ' + {{$data['no_longer_needed']}});
+        console.log('total = ' + {{$data['total_released_client']}});
     </script>
     @endif
     
