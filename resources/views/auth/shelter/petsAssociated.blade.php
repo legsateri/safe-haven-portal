@@ -28,7 +28,7 @@
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline d-block">
                                             <input id="pet_services_not_provided_type" value="pet_services_not_provided" name="pet_release_type" class="custom-control-input" type="radio">
-                                            <label class="custom-control-label" for="pet_services_not_provided_type">Services Not Provided</label>
+                                            <label class="custom-control-label" for="pet_services_not_provided_type">Client Chose Not to Proceed</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline d-block">
                                             <input id="pet_released_to_adoption_pool_type" value="pet_released_to_adoption_pool" name="pet_release_type" class="custom-control-input" type="radio">

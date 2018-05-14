@@ -83,7 +83,7 @@
             myPieChart = new Chart(ctx, {
                 type: "pie",
                 data: {
-                    labels: ["Pets returned to owners", "Pets released to adoption pool", "Pets not served", "Pets not admitted"],
+                    labels: ["Pets returned to owners", "Pets released to adoption pool", "Client Chose Not to Proceed", "Pets not admitted"],
                     datasets: [{
                         data: [ {{ round (($data['pets_returned_to_owner']*100 / $data['total_released_pets']),2) }},
                                 {{ round (($data['pet_released_to_adoption']*100 /  $data['total_released_pets']),2) }}, 

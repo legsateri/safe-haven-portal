@@ -78,7 +78,7 @@
             myPieChart = new Chart(ctx, {
                 type: "pie",
                 data: {
-                    labels: ["Clients completed", "Service not provided", "Service no longer needed"],
+                    labels: ["Clients completed", "Client Chose Not to Proceed", "Service no longer needed"],
                     datasets: [{
                         data: [ {{ round (($data['completed']*100 / $data['total_released_client']),2) }},
                                 {{ round (($data['not_provided']*100 /  $data['total_released_client']),2) }},
@@ -87,6 +87,10 @@
                     }]
                 }
             });
+        console.log('completed = ' +{{ $data['completed']}});
+        console.log('not_provided = ' + {{$data['not_provided']}});
+        console.log('no_longer_needed = ' + {{$data['no_longer_needed']}});
+        console.log('total = ' + {{$data['total_released_client']}});
     </script>
     @endif
     

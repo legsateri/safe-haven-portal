@@ -275,9 +275,11 @@ class PetsController extends Controller
                 // validate status of client application
                 $application = Application::where('id', $applicationPet->application_id)->first();
                 // var_dump($application);
+                // exit;
                 if ( $application->status == 1 && $application->accepted_by_advocate_id != null && $application->accepted_by_advocate_id != '' )
                 {
                     // echo "teeeest!!! ";
+                    // exit;
                     // upate pet application entry
                     $applicationPet->accepted_by_shelter_organisation_id = Auth::user()->organisation_id;
                     $applicationPet->status = 1;
@@ -295,21 +297,31 @@ class PetsController extends Controller
                     )
                     ->first();
 
-                    $data = DB::table('application_pets')
+                    $data['application'] = DB::table('application_pets')
                     ->join('applications', 'application_pets.application_id', '=', 'applications.id')
                     ->join('clients', 'applications.client_id', '=', 'clients.id')
                     ->join('organisations', 'application_pets.accepted_by_shelter_organisation_id', '=', 'organisations.id')
-                    ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                    // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
                     ->where([
                         ['application_pets.id', '=', $applicationPet->id]
                     ])
                     ->select(
+                        'application_pets.id as id',
                         'clients.first_name as client_first_name',
                         'clients.last_name as client_last_name',
-                        'organisations.name as shelter_name',
-                        'pets.name as pet_name'
+                        'organisations.name as shelter_name'
+                        // 'pets.name as pet_name'
                     )
                     ->first();
+
+                    $data['pets'] = DB::table('pets')
+                    ->where([
+                        ['pets.pet_application_id', '=', $data['application']->id]
+                    ])
+                    ->select(
+                        'pets.name as name'
+                    )
+                    ->get();
 
                     $shelterAgent = DB::table('users')
                     ->where([

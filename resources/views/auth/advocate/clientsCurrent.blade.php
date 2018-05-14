@@ -27,7 +27,7 @@
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
                                             <input id="not_provided_type" value="not_provided" name="release_type" class="custom-control-input" checked="" type="radio">
-                                            <label class="custom-control-label" for="not_provided_type">Services Not Provided</label>
+                                            <label class="custom-control-label" for="not_provided_type">Client Chose Not to Proceed</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
                                             <input id="no_longer_needed_type" value="no_longer_needed" name="release_type" class="custom-control-input" type="radio">
@@ -314,7 +314,20 @@
                          */
                         ?>
                         @foreach( $dataEntries as $dataEntry )
-                            
+                                @if ($loop->iteration == 1)
+                                    @php ($color_class = 'multi_form_color_blue')
+                                    {{--<div id="list-item-{{ $dataEntry->application_id }}" class="new_client_form_row multi_form_color">--}}
+                                @elseif ($loop->iteration == 2)
+                                    @php ($color_class = 'multi_form_color_red')
+                                @elseif ($loop->iteration == 3)
+                                    @php ($color_class = 'multi_form_color_yellow')
+                                @elseif ($loop->iteration == 4)
+                                    @php ($color_class = 'multi_form_color_green')
+                                @else
+                                    {{--<div id="list-item-{{ $dataEntry->application_id }}" class="new_client_form_row">--}}
+                                    @php ($color_class = '')
+                                @endif
+                                <div id="list-item-{{ $dataEntry->application_id }}" class="new_client_form_row {{$color_class}}">
                             <?php 
                             /**
                              * client details
@@ -329,7 +342,7 @@
                             @foreach( $dataEntriesPets[$dataEntry->id] as $petEntry )
                                 @include('auth.advocate.partials.client_list_pet_details')
                             @endforeach
-
+                                </div>
                         @endforeach
                         <?php
                         /**
