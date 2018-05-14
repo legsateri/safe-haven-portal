@@ -15,7 +15,7 @@
                     </div>
                     <div class="modal-body">
                         Once Pets are accepted, emails are sent to Advocates letting them know there is a Safe Haven waiting for them.
-                        By clicking 'Accept Pet' below, your organization is agreeing to work with the Advocate
+                        By clicking 'Confirm Accept Pet' below, your organization is agreeing to work with the Advocate
                         and Client to establish a temporary home for the pet.
                     </div>
                     <div class="modal-footer">
