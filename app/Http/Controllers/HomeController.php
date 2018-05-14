@@ -183,11 +183,17 @@ class HomeController extends Controller
         foreach ($applications as $application) 
         {   
             $pets[$application->id] = DB::table('pets')
+            ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
             ->where([
                 ['pets.pet_application_id', '=', $application->id]
             ])
+            ->select([
+                'pets.name as name',
+                'object_types.value as type',
+                'pets.breed as breed'
+            ])
             ->get();
-        } 
+        }  
 
         // Chart - realeased pets 
         $pets_returned_to_owner = DB::table('application_pets')
