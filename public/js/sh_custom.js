@@ -83,21 +83,6 @@ jQuery(document).ready(function() {
                 );
             });
         });
-
-        /*jQuery.validator.setDefaults({
-            debug: true,
-            success: "valid"
-        });
-        $( "#shn_register_form" ).validate({
-            rules: {
-                user_pass: "required",
-                user_pass_confirm: {
-                    equalTo: "#user_pass"
-                }
-            }
-        });*/
-
-
     }
 
     if ( $('#accordion_client_new_application').length != 0 ) { // if client new application page
@@ -105,14 +90,24 @@ jQuery(document).ready(function() {
         $('.accordion_section_2 .card-header a, .accordion_section_3 .card-header a, .accordion_section_4 .card-header a').removeAttr('href', '#');
 
         // mask for register form text input
-        /*$('#tax_id').mask('00-0000000');*/
         $('#contact_phone_num').mask('000-000-0000');
         $('#zip').mask('00000');
-        /*$('#contact_phone_num').mask('000-000-0000');*/
+
+        // prepare mask for multi pet form dynamic elements
+        $('body').on('focus', '.weight', function() {
+            $(this).mask('000.0');
+        });
+
+        $('body').on('focus', '.age', function() {
+            $(this).mask('000');
+        });
+
+        $('body').on('focus', '.how_long', function() {
+            $(this).mask('00');
+        });
 
         /*--------------- text/textarea input function for all starts --------------------*/
 
-        /*$("input[type='text'], textarea, input[type='phone'], input[type='email']").blur(function (e) {*/
         $("input[type='text'], textarea, input[type='phone'], input[type='email']").on("blur", function() {
 
             var ajaxurl = '/application/new/ajax';
@@ -214,7 +209,6 @@ jQuery(document).ready(function() {
 
         /*--------------- radio input function for all starts --------------------*/
 
-        /*$('input[type=radio]').change(function() {*/
         $('input[type=radio]').on("change", function() {
 
             var sh_input_id = $(this).attr('name'); // this is actually sh_group_input_name
@@ -327,14 +321,13 @@ jQuery(document).ready(function() {
             $('.spinner_form_2').css('display','inline');
 
             var new_pet_app_form_data = $( '#new_pet_app_form' ).serializeArray();
-            console.log(new_pet_app_form_data);
 
             // multi pets per client
             var number_of_pets_applications = $('[class*="pet_application_"]').length;
             var number_of_pets = { name: "number_of_pets", value: number_of_pets_applications};
 
             new_pet_app_form_data.push(number_of_pets);
-            console.log(new_pet_app_form_data);
+
             var ajaxurl = '/application/new/ajax';
 
             jQuery.ajax({
@@ -507,7 +500,6 @@ jQuery(document).ready(function() {
 
                         alert(obj.message + '<br/>' + tech_support_message);
                     }
-
                 },
                 error: function (xml, status, error) {
                 },
@@ -570,7 +562,6 @@ jQuery(document).ready(function() {
 
                             alert(obj.message + '<br/>' + tech_support_message);
                         }
-
                     },
                     error: function (xml, status, error) {
                     },
@@ -622,7 +613,6 @@ jQuery(document).ready(function() {
             modal_button_clicked.addClass('disabled');
 
             var confirmed_accept_client_id = $('#exampleModal [type=\'hidden\']').val();
-            console.log('confirmed_accept_client_id = ' + confirmed_accept_client_id);
 
             var ajaxurl = '/clients/accept/ajax';
             var token = $('[name="_token"]').val();
@@ -688,9 +678,7 @@ jQuery(document).ready(function() {
         $('[id*="list-button-item-"]').click(function() {
 
             var client_id = $(this).attr('id');
-            console.log(client_id);
             client_id = client_id.replace("list-button-item-", "");
-            console.log(client_id);
 
             $('#currentClientsModal [type=\'hidden\']').val(client_id);
             $('#currentClientsModal #completed_type').prop('checked',true);
@@ -763,15 +751,12 @@ jQuery(document).ready(function() {
 
         $('[id*="list-button-qa-item-"]').click(function() {
 
-            //$('#currentClientsQAModal textarea').val('');
-
             var client_id = $(this).attr('id');
             client_id = client_id.replace("list-button-qa-item-", "");
 
             $('#currentClientsQAModal #client_qa_id').val(client_id);
             $('#currentClientsQAModal #currentClientsQAModalLabel span').html($(this).closest('a').find('h5').html());
 
-            //var ajaxurl = '/client/get_thread/ajax';
             var ajaxurl = '/client/get_thread/ajax';
             var token = $('[name="_token"]').val();
 
@@ -791,7 +776,6 @@ jQuery(document).ready(function() {
                     if ( obj.success == true ) {
 
                         $('#currentClientsQAModal .modal-body').html('');
-                        console.log('super cool');
                         $('#currentClientsQAModal .modal-body').append(obj.data);
 
                         $('#currentClientsQAModal').modal('show');
@@ -815,10 +799,8 @@ jQuery(document).ready(function() {
 
         $('#currentClientsQAModal').on('click', '.client_qa_edit',function() {
 
-           console.log('edit clicked');
             var container = $(this).closest('.card-body');
             var answer_content = container.find('.card-text').html();
-            console.log('answer_content = ' + answer_content);
 
             container.find('.invalid-feedback').css('display','none');
             $(this).fadeOut("fast", function () {});
@@ -832,7 +814,6 @@ jQuery(document).ready(function() {
         $('#currentClientsQAModal').on('click', '.client_qa_edit_cancel',function() {
 
             var container = $(this).closest('.card-body');
-            //var answer_content = container.find('.card-text').html();
             container.find('form').fadeOut("fast", function () {
                 container.find('.card-text').fadeIn("fast", function () {});
                 container.find('.client_qa_edit').fadeIn("fast", function () {});
@@ -859,8 +840,6 @@ jQuery(document).ready(function() {
             var ajaxurl = '/client/send_answer/ajax';
             var token = $('[name="_token"]').val();
 
-           // var organisation_id = $('#petsInNeedQAModal #organisation_id').val();
-
             var data = {
                 action: 'current_client_answer_post',
                 client_current_qa_id: client_current_qa_id,
@@ -877,8 +856,6 @@ jQuery(document).ready(function() {
                     var obj = response.responseJSON;
 
                     if ( obj.success == true ) {
-
-                        console.log('super cool');
 
                         modal_button_clicked.next('.spinner_cont').css('display','none');
                         modal_button_clicked.removeClass('disabled');
@@ -1130,7 +1107,7 @@ jQuery(document).ready(function() {
     if ( $('.current_pets_cont').length != 0 ) {
 
         $('.list-group-item').click(function() {
-            console.log('something');
+
             $('#list-example').css('padding-top','4rem');
             $('[id*="list-item-"]').css('padding-top','4rem');
         });
@@ -1138,9 +1115,7 @@ jQuery(document).ready(function() {
         $('[id*="list-button-item-"]').click(function() {
 
             var pet_id = $(this).attr('id');
-            console.log(pet_id);
             pet_id = pet_id.replace("list-button-item-", "");
-            console.log(pet_id);
 
             $('#currentPetsModal [type=\'hidden\']').val(pet_id);
 
@@ -1154,7 +1129,6 @@ jQuery(document).ready(function() {
             modal_button_clicked.addClass('disabled');
 
             var confirmed_release_pet_id = $('#currentPetsModal [type=\'hidden\']').val();
-            console.log('confirmed_release_pet_id = ' + confirmed_release_pet_id);
 
             var confirmed_release_pet_reason = $('#currentPetsModal input:checked').val();
 
@@ -1203,8 +1177,6 @@ jQuery(document).ready(function() {
                 },
                 complete: function (xml, status) {
                     // do something after success or error no matter what
-                    console.log('completed');
-
                 }
             });
 

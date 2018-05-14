@@ -93,14 +93,14 @@ if ( $counter > 1 )
          */
         ?>
         <div class="form-group col-md-3">
-            <label for="weight{{ $sufix }}">Weight</label>
-            <input  type="text" class="form-control" id="weight{{ $sufix }}" maxlength="4" required="" 
+            <label for="weight{{ $sufix }}">Weight (lb)</label>
+            <input  type="text" class="form-control weight" id="weight{{ $sufix }}" maxlength="5" required=""
                     @if ( isset( $tempData['pet'][$counter]['pet-weight'] ) )
                         value="{{ $tempData['pet'][$counter]['pet-weight'] }}" 
                     @else
                         value="{{ old('weight').$sufix }}" 
                     @endif
-                    name="weight{{ $sufix }}" placeholder="">
+                    name="weight{{ $sufix }}" placeholder="XXX.X">
             <div class="invalid-feedback">More example invalid feedback text</div>
         </div>
 
@@ -112,13 +112,13 @@ if ( $counter > 1 )
         ?>
         <div class="form-group col-md-3">
             <label for="age{{ $sufix }}">Age</label>
-            <input  type="text" class="form-control" id="age{{ $sufix }}" maxlength="3" required="" 
+            <input  type="text" class="form-control age" id="age{{ $sufix }}" maxlength="3" required=""
                     @if ( isset( $tempData['pet'][$counter]['pet-age'] ) )
                         value="{{ $tempData['pet'][$counter]['pet-age'] }}" 
                     @else
                         value="{{ old('age').$sufix }}" 
                     @endif
-                    name="age{{ $sufix }}" placeholder="">
+                    name="age{{ $sufix }}" placeholder="XXX">
             <div class="invalid-feedback">More example invalid feedback text</div>
         </div>
     </div>
@@ -379,14 +379,14 @@ if ( $counter > 1 )
         ?>
         <div class="form-group col-md-6">
             <label for="how_long{{ $sufix }}">Approximately how long will temporary housing be required? (Please note that our program is currently limited to 30 day placement)</label>
-            <input  type="text" class="form-control" id="how_long{{ $sufix }}" maxlength="3" required="" 
+            <input  type="text" class="form-control how_long" id="how_long{{ $sufix }}" maxlength="3" required=""
                     @if ( isset( $tempData['pet'][$counter]['pet-how-long'] ) )
                         value="{{ $tempData['pet'][$counter]['pet-how-long'] }}" 
                     @else
                         value="{{ old('pet_name').$sufix }}" 
                     @endif
                     
-                    name="how_long{{ $sufix }}" placeholder="">
+                    name="how_long{{ $sufix }}" placeholder="XX">
             <div class="invalid-feedback">More example invalid feedback text</div>
         </div>
 
