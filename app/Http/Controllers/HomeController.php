@@ -77,6 +77,8 @@ class HomeController extends Controller
             'applications.created_at as created_at',
             'organisations.name as org_name',
         ])
+        ->latest()
+        ->limit(10)
         ->get();
         
         // Chart - realeased clients
@@ -162,6 +164,8 @@ class HomeController extends Controller
             'applications.created_at as created_at',
             'object_types.value as type',
         ])
+        ->latest()
+        ->limit(10)
         ->get();
 
         
