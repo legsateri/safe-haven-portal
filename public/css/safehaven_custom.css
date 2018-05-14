@@ -735,7 +735,7 @@ div[class*="spinner_form_"] {
 
 @media (min-width: 992px) and (max-width: 1199.99px) {
     body {
-        border: 1px solid red;
+        /*border: 1px solid red;*/
     }
 }
 

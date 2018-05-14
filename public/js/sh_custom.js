@@ -372,15 +372,6 @@ jQuery(document).ready(function() {
                             } else {
                                 element_not_valid.addClass('is-invalid');
                             }
-
-                            /*$('#' + index).next('.invalid-feedback').html(value);
-
-                            if ( $('#' + index).hasClass('is-valid') ) {
-                                $('#' + index).removeClass('is-valid').addClass('is-invalid');
-                            } else {
-                                $('#' + index).addClass('is-invalid');
-                            }*/
-
                         });
                         $('.spinner_form_2').css('display','none');
                     }
@@ -407,6 +398,7 @@ jQuery(document).ready(function() {
                 $('#collapseThree').collapse('hide');
                 $('#collapseFour').collapse('show');
             }
+
         });
 
         $('#add_another_pet').click(function() { // add another pet
@@ -1004,7 +996,7 @@ jQuery(document).ready(function() {
 
         $('#petsInNeedModal').on('hidden.bs.modal', function (e) {
             $('#petsInNeedModal .modal-body').html('Once Pets are accepted, emails are sent to Advocates letting them know there is a Safe Haven waiting for them.' +
-                                        'By clicking \'Accept Pet\' below, your organization is agreeing to work with the Advocate' +
+                                        'By clicking \'Confirm Accept Pet\' below, your organization is agreeing to work with the Advocate' +
                                         'and Client to establish a temporary home for the pet.');
             $('#confirm_accept_pet').css('display','inline-block').removeClass('disabled');;
         })
