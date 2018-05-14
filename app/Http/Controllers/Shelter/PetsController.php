@@ -270,17 +270,9 @@ class PetsController extends Controller
 
             if ( $applicationPet )
             {   
-                // var_dump( $applicationPet );
-                // echo "<br>";
-                // validate status of client application
                 $application = Application::where('id', $applicationPet->application_id)->first();
-                // var_dump($application);
-                // exit;
                 if ( $application->status == 1 && $application->accepted_by_advocate_id != null && $application->accepted_by_advocate_id != '' )
                 {
-                    // echo "teeeest!!! ";
-                    // exit;
-                    // upate pet application entry
                     $applicationPet->accepted_by_shelter_organisation_id = Auth::user()->organisation_id;
                     $applicationPet->status = 1;
                     $applicationPet->update();
@@ -301,7 +293,6 @@ class PetsController extends Controller
                     ->join('applications', 'application_pets.application_id', '=', 'applications.id')
                     ->join('clients', 'applications.client_id', '=', 'clients.id')
                     ->join('organisations', 'application_pets.accepted_by_shelter_organisation_id', '=', 'organisations.id')
-                    // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
                     ->where([
                         ['application_pets.id', '=', $applicationPet->id]
                     ])
@@ -310,7 +301,6 @@ class PetsController extends Controller
                         'clients.first_name as client_first_name',
                         'clients.last_name as client_last_name',
                         'organisations.name as shelter_name'
-                        // 'pets.name as pet_name'
                     )
                     ->first();
 

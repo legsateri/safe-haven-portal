@@ -492,6 +492,53 @@ div[class*="spinner_form_"] {
 
 /******* Responsive views start **********/
 
+@media (max-width: 767.99px) {
+
+    #client_new_application_submit,
+    #i_understand,
+    .i_understand_button_cont,
+    #next_step_2_3,
+    #add_another_pet,
+    #next_step_1_2,
+    .sh_save_btn {
+        width: 100%;
+    }
+
+    #client_new_application_start_another,
+    #next_step_2_3 {
+        margin-top: 1.5rem;
+    }
+
+    #assign_application_to_form_data .custom-control,
+    #next_step_1_2 {
+        margin-top: 1rem;
+    }
+
+    #client_new_application_submit {
+        margin-top: 0.5rem;
+    }
+
+    #accordion_client_new_application .spinner_cont {
+        position: absolute;
+        top: 6px;
+        right: 50px;
+    }
+
+    #accordion_client_new_application .spinner_cont.spinner_form_1 {
+         top: 22px;
+    }
+
+    #accordion_client_new_application .spinner_cont.spinner_form_2 {
+        top: 68px;
+    }
+
+    #accordion_client_new_application .spinner_cont.spinner_form_4 {
+        top: 14px;
+    }
+
+
+}
+
 /*Extra small devices (portrait phones, less than 576px)*/
 @media (max-width: 575.99px) {
 

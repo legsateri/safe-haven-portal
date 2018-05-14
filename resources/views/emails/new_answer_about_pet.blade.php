@@ -11,9 +11,30 @@
     <p>You have receiving this email because advocate has aswered on question that your organisation has posted about pet.</p>
     <p>
         <ul>
-            <li>Pet's name: {{ $data->pet_name }}</li>
-            <li>Your question: {{ $data->question }}</li>
-            <li>Answer: {{ $data->answer }}</li>
+            <li>
+                @if ( count($data['pets']) == 1 )
+                    Pet's name: 
+                @else
+                    Pet names: 
+                @endif
+                <?php
+                    $firstPet = true;
+                    $petNames = '';
+                    foreach( $data['pets'] as $pet )
+                    {
+                        if ( $firstPet == false )
+                        {
+                            $petNames .= ', ';
+                        }
+                        $petNames .= $pet->name;
+                        $firstPet = false;
+                    }
+                ?>
+                {{ $petNames }}
+            </li>
+
+            <li>Your question: {{ $data['application']->question }}</li>
+            <li>Answer: {{ $data['application']->answer }}</li>
         </ul>
     </p>
     <p>To see more details you need to login to your account.</p>

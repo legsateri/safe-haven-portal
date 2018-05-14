@@ -16,7 +16,7 @@ class CreateQuestionConversationsTable extends Migration
         Schema::create('question_conversations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('application_pet_id')->unsigned();
-            $table->integer('pet_id')->unsigned();
+            $table->integer('pet_id')->unsigned()->nullable();
             $table->integer('shelter_organisation_id')->unsigned();
             $table->text('title');
             $table->timestamps();
