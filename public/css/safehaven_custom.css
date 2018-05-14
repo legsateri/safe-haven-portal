@@ -385,11 +385,13 @@ div[class*="spinner_form_"] {
 }
 
 .scrollspy-example > div.multi_form_color_yellow > form:nth-child(2n)  {
-    background-color: #fff59d; /*yellow lighten-3*/
+    /*background-color: #fff59d;*/ /*yellow lighten-3*/
+    background-color: #ffd180; /*orange accent-1*/
 }
 
 .scrollspy-example > div.multi_form_color_yellow > form:nth-child(2n+1)  {
-    background-color: #fff176; /*yellow lighten-2*/
+    /*background-color: #ffd180;*/ /*orange accent-1*/
+    background-color: #ffab40; /*orange accent-2*/
 }
 
 .scrollspy-example > div.multi_form_color_green > form:nth-child(2n)  {
