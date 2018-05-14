@@ -34,14 +34,62 @@
                 @foreach($data['applications'] as $application)
                     <tr>
                         <th scope="row">{{ $counter }}</th>
-                        <td>{{ $application->name }}</td>
-                        <td>{{ $application->type }}</td>
-                        <td>{{ $application->breed }}</td>
+                        
+                        <td> 
+                        <?php
+                            $firstPet = true;
+                            $petNames = '';
+                            foreach( $data['pets'][$application->id] as $pet )
+                            {
+                                if ( $firstPet == false )
+                                {
+                                    $petNames .= ' / ';
+                                }
+                                $petNames .= $pet->name;
+                                $firstPet = false;
+                            }
+                        ?>
+                        {{ $petNames }}
+                        </td>
+
+                        <td>
+                        <?php
+                            $firstPet = true;
+                            $petTypes = '';
+                            foreach( $data['pets'][$application->id] as $pet )
+                            {
+                                if ( $firstPet == false )
+                                {
+                                    $petTypes .= ' / ';
+                                }
+                                $petTypes .= $pet->type;
+                                $firstPet = false;
+                            }
+                        ?>
+                        {{ $petTypes }}
+                        </td>
+
+                        <td>
+                        <?php
+                            $firstPet = true;
+                            $petBreed = '';
+                            foreach( $data['pets'][$application->id] as $pet )
+                            {
+                                if ( $firstPet == false )
+                                {
+                                    $petBreed .= ' / ';
+                                }
+                                $petBreed .= $pet->breed;
+                                $firstPet = false;
+                            }
+                        ?>
+                        {{ $petBreed }}
+                        </td>
+ 
                         <td>{{ $application->created_at }}</td>
-                        <td></td>
                     </tr>
                         <?php $counter++; ?>
-                    @endforeach
+                @endforeach
                     
                 </tbody>
             </table>
