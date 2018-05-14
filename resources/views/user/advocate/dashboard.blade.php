@@ -78,7 +78,7 @@
             myPieChart = new Chart(ctx, {
                 type: "pie",
                 data: {
-                    labels: ["Clients completed", "Service not provided", "Service no longer needed"],
+                    labels: ["Clients completed", "Client Chose Not to Proceed", "Service no longer needed"],
                     datasets: [{
                         data: [ {{ round (($data['completed']*100 / $data['total_released_client']),2) }},
                                 {{ round (($data['not_provided']*100 /  $data['total_released_client']),2) }},

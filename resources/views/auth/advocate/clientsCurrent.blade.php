@@ -27,7 +27,7 @@
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
                                             <input id="not_provided_type" value="not_provided" name="release_type" class="custom-control-input" checked="" type="radio">
-                                            <label class="custom-control-label" for="not_provided_type">Services Not Provided</label>
+                                            <label class="custom-control-label" for="not_provided_type">Client Chose Not to Proceed</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
                                             <input id="no_longer_needed_type" value="no_longer_needed" name="release_type" class="custom-control-input" type="radio">
