@@ -536,6 +536,45 @@ div[class*="spinner_form_"] {
         top: 14px;
     }
 
+    .current_pets_cont #currentPetsModal .modal-footer,
+    .pets_in_need_cont #petsInNeedModal .modal-footer,
+    .current_clients_cont #currentClientsModal .modal-footer,
+    .clients_in_need_cont #exampleModal .modal-footer {
+        display: block;
+        position: relative;
+    }
+
+    .current_pets_cont #currentPetsModal .modal-footer button,
+    .pets_in_need_cont #petsInNeedModal .modal-footer button,
+    .current_clients_cont #currentClientsModal .modal-footer button,
+    .clients_in_need_cont #exampleModal .modal-footer button {
+        width: 100%;
+    }
+
+    .current_pets_cont #currentPetsModal .modal-footer #confirm_release_pet,
+    .pets_in_need_cont #petsInNeedModal .modal-footer #confirm_accept_pet,
+    .current_clients_cont #currentClientsModal .modal-footer #confirm_release_client,
+    .clients_in_need_cont #exampleModal .modal-footer #confirm_accept_client {
+        margin-top: 1rem;
+        margin-left: 0;
+    }
+
+    .current_pets_cont #currentPetsModal .modal-footer .btn-secondary,
+    .pets_in_need_cont #petsInNeedModal .modal-footer .btn-secondary,
+    .current_clients_cont #currentClientsModal .modal-footer .btn-secondary,
+    .clients_in_need_cont #exampleModal .modal-footer .btn-secondary {
+        margin-right: 0;
+    }
+
+    .current_pets_cont #currentPetsModal .spinner_cont,
+    .pets_in_need_cont #petsInNeedModal .spinner_cont,
+    .current_clients_cont #currentClientsModal .spinner_cont,
+    .clients_in_need_cont #exampleModal .spinner_cont {
+        position: absolute;
+        bottom: 20px;
+        right: 14px;
+    }
+
 
 }
 
