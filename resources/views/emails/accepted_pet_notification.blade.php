@@ -11,9 +11,29 @@
     <p>Pet that is related to your client has bee accepted by shelter</p>
     <p>
         <ul>
-            <li>Client's name: {{ $data->client_first_name }} {{ $data->client_last_name }}</li>
-            <li>Pet's name: {{ $data->pet_name }}</li>
-            <li>Shelter name: {{ $data->shelter_name }}</li>
+            <li>Client's name: {{ $data['application']->client_first_name }} {{ $data['application']->client_last_name }}</li>
+            <li>
+            @if ( count($data['pets']) == 1 )
+                Pet's name: 
+            @else
+                Pet names: 
+            @endif
+            <?php
+                $firstPet = true;
+                $petNames = '';
+                foreach( $data['pets'] as $pet )
+                {
+                    if ( $firstPet == false )
+                    {
+                        $petNames .= ', ';
+                    }
+                    $petNames .= $pet->name;
+                    $firstPet = false;
+                }
+            ?>
+            {{ $petNames }}
+            </li>
+            <li>Shelter name: {{ $data['application']->shelter_name }}</li>
             <li>Shelter agent name: {{ $shelterAgent->shelter_user_first_name }} {{ $shelterAgent->shelter_user_last_name }}</li>
             <li>Email of shelter agent: {{ $shelterAgent->shelter_user_email }}</li>
         </ul>
