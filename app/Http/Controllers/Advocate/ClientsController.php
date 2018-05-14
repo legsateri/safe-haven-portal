@@ -436,21 +436,36 @@ class ClientsController extends Controller
                  * send mass mail to all shelter users
                  */
                 // get data from database for filling email template
-                $data = DB::table('application_pets')
-                ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
-                ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
+                $data['application'] = DB::table('application_pets')
+                // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                // ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
                 ->join('organisations', 'application_pets.organisation_id', '=', 'organisations.id')
                 ->where([
                     ['application_pets.application_id', '=', $application->id]
                 ])
                 ->select(
-                    'pets.name as name',
-                    'pets.age as age',
-                    'object_types.label as type',
-                    'pets.breed as breed',
+                    'application_pets.id as id',
+                    // 'pets.name as name',
+                    // 'pets.age as age',
+                    // 'object_types.label as type',
+                    // 'pets.breed as breed',
                     'organisations.name as adv_organisation_name'
                 )
                 ->first();
+                
+                $data['pets'] = DB::table('pets')
+                ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
+                ->where([
+                    ['pets.pet_application_id', '=', $data['application']->id]
+                ])
+                ->select(
+                    'pets.name as name',
+                    'pets.age as age',
+                    'pets.breed as breed',
+                    'object_types.label as type'
+                )
+                ->get();
+
                 // send email notification
                 Mail::bcc($this->_getActiveShelterUsers())->send(new NewPetInNeedMail($data));
 
