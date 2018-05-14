@@ -34,9 +34,13 @@
                 @foreach($data['applications'] as $application)
                     <tr>
                         <th scope="row">{{ $counter }}</th>
-                        <td>{{ $application->name }}</td>
-                        <td>{{ $application->type }}</td>
-                        <td>{{ $application->breed }}</td>
+                        
+                        <td> 
+                        @foreach($data['pets'][$application->id] as $pet)
+                        {{ $pet->name }}
+                        @endforeach
+                        </td>
+                        
                         <td>{{ $application->created_at }}</td>
                         <td></td>
                     </tr>

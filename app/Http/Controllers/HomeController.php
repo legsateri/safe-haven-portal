@@ -51,10 +51,15 @@ class HomeController extends Controller
 
     }
 
+    /**
+     * Get advocate data for dashboard.
+     * 
+     */
     protected function _getAdvocateData($currentUser) 
     {
         $advocateData = [];
         
+        // Get Clients applications
         $applications = DB::table('applications')
         ->join('clients', 'applications.client_id', '=', 'clients.id')
         ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
@@ -77,10 +82,10 @@ class HomeController extends Controller
             'applications.created_at as created_at',
             'organisations.name as org_name',
         ])
-        ->latest()
+        ->oldest()
         ->limit(10)
         ->get();
-        
+
         // Chart - realeased clients
         $completed = DB::table('applications')
         ->join('clients', 'applications.client_id', '=', 'clients.id')
@@ -138,17 +143,24 @@ class HomeController extends Controller
         return $advocateData;
     }
 
+
+    /**
+     * Get shelter data for dashboard.
+     * 
+     */
+
     protected function _getShelterData($currentUser) 
     {
         $shelterData = [];
         
+        // Get pets applicatons
         $applications = DB::table('application_pets')
         ->join('applications', 'application_pets.application_id', '=', 'applications.id' )
-        ->join('pets', 'application_pets.id', '=', 'pets.pet_application_id')
+        // ->join('pets', 'application_pets.id', '=', 'pets.pet_application_id')
         ->join('clients', 'application_pets.client_id', '=', 'clients.id')
         ->join('organisations', 'application_pets.organisation_id', '=', 'organisations.id' )
         ->join('users', 'application_pets.created_by_advocate_id', '=', 'users.id')
-        ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
+        // ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
         ->leftJoin('statuses', 'application_pets.release_status_id','=', 'statuses.id')
         ->where([
             ['accepted_by_shelter_organisation_id', '=', null],
@@ -159,17 +171,25 @@ class HomeController extends Controller
             ['application_pets.release_status_id', '=', null],
         ])
         ->select([
-            'pets.name as name',
-            'pets.breed as breed',
-            'applications.created_at as created_at',
-            'object_types.value as type',
+            'application_pets.id as id',
+            'application_pets.created_at as created_at'
         ])
-        ->latest()
+        ->oldest()
         ->limit(10)
         ->get();
-
         
-        // Chart - realeased pets
+        // Get pets details
+        $pets = [];
+        foreach ($applications as $application) 
+        {   
+            $pets[$application->id] = DB::table('pets')
+            ->where([
+                ['pets.pet_application_id', '=', $application->id]
+            ])
+            ->get();
+        } 
+
+        // Chart - realeased pets 
         $pets_returned_to_owner = DB::table('application_pets')
         ->join('applications', 'application_pets.application_id', '=', 'applications.id' )
         ->join('pets', 'application_pets.id', '=', 'pets.pet_application_id')
@@ -246,11 +266,13 @@ class HomeController extends Controller
 
 
         $shelterData['applications'] = $applications;
+        $shelterData['pets'] = $pets;
         $shelterData['pets_returned_to_owner'] = $pets_returned_to_owner;
         $shelterData['pet_released_to_adoption'] = $pet_released_to_adoption;
         $shelterData['pet_not_served'] = $pet_not_served;
         $shelterData['pet_not_admitted'] = $pet_not_admitted;
         $shelterData['total_released_pets'] = $total_released_pets;
+        // dd($shelterData['applications']);
         return $shelterData ;
     }
 
