@@ -350,10 +350,10 @@ div[class*="spinner_form_"] {
     border-color: #ffbb33;
 }
 
-.scrollspy-example > div:last-child {
+.scrollspy-example > div:nth-child(4) {
     background-color: #b9f6ca;
 }
-.list-group-item.active:last-child {
+.list-group-item.active:nth-child(4) {
     background-color: #00C851;
     /*background-color: #b9f6ca;*/
     border-color: #00C851;
