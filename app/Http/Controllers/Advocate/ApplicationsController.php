@@ -54,6 +54,7 @@ class ApplicationsController extends Controller
 
         $petTypes = ObjectType::where('type', 'pet')->get();
 
+        TempObject::delete(Auth::user()->id, 'new-client-application-form'); // clear temp entry on every page refresh
         $tempData = TempObject::get(Auth::user()->id, 'new-client-application-form');
 
         return  view('auth.advocate.applicationNew', 
@@ -112,6 +113,8 @@ class ApplicationsController extends Controller
          * pet form closed by user
          */
         if ( $request->action == "close_pet_form" ) {
+
+            $this->_closePetForm($request->pet_form_number);
 
             $ajax_response['success'] =true;
             if ( $ajax_response['success'] != true )
@@ -374,6 +377,17 @@ class ApplicationsController extends Controller
             $ajax_response['data']['message'] = $response['message'];
         }
         return $ajax_response;
+    }
+
+
+    private function _closePetForm($petOrder)
+    {
+        $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
+        if ( isset($temp['pet'][$petOrder]) )    
+        {
+            unset($temp['pet'][$petOrder]);
+        }
+        TempObject::set(Auth::user()->id, 'new-client-application-form', $temp);
     }
 
 
