@@ -2164,6 +2164,7 @@ class ApplicationsController extends Controller
         {
             if( $_POST['assign_application_to'] == 'assign_to_me' )
             {
+                $application->status = 1;
                 $application->accepted_by_advocate_id = Auth::user()->id;
             }
         }
