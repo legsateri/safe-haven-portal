@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Advocate;
 
+use App\Mail\MailToAdvocates;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use Illuminate\Support\Facades\Mail;
 use Validator;
 use DB;
 
@@ -54,11 +56,17 @@ class ApplicationsController extends Controller
 
         $petTypes = ObjectType::where('type', 'pet')->get();
 
+        // get advocate organizations from db
+        $advOrgs = DB::table('organisations')
+            ->select('name', 'id')
+            ->where('org_type_id', '=', 3)
+            ->get();
+
         TempObject::delete(Auth::user()->id, 'new-client-application-form'); // clear temp entry on every page refresh
         $tempData = TempObject::get(Auth::user()->id, 'new-client-application-form');
 
         return  view('auth.advocate.applicationNew', 
-                compact('currentUser', 'phoneTypes', 'states', 'preferedContactMethods', 'petTypes', 'tempData'));
+                compact('currentUser', 'phoneTypes', 'states', 'preferedContactMethods', 'petTypes', 'tempData', 'advOrgs'));
     }
 
     /**
@@ -72,7 +80,6 @@ class ApplicationsController extends Controller
 
     public function ajaxHandler(Request $request)
     {
-        
         if ( !isset(Auth::user()->id) )
         {
             return [
@@ -1600,7 +1607,7 @@ class ApplicationsController extends Controller
 
     private function _validatePetHowLong($value, $petOrder)
     {
-        $maxValue = 30;
+        $maxValue = 99;
         $validator = Validator::make(['value' => $value], [
             'value' => 'required|integer'
         ]);
@@ -2125,9 +2132,52 @@ class ApplicationsController extends Controller
     {   
         $temp = TempObject::get(Auth::user()->id, 'new-client-application-form');
 
-        // create new client database entry
         $client = new Client();
-        $client->organisation_id = Auth::user()->organisation_id;
+        $application = new Application();
+        $application_pet = new ApplicationPet();
+        $pet = new Pet();
+
+        // First check 'assign to'.
+        if (isset( $_POST['assign_application_to']))
+        {
+            if ($_POST['assign_application_to'] == 'assign_to_me')
+            {
+                $client->organisation_id = Auth::user()->organisation_id;
+                $application->organisation_id = Auth::user()->organisation_id;
+                $application_pet->organisation_id = Auth::user()->organisation_id;
+                $pet->organisation_id = Auth::user()->organisation_id;
+            }
+
+            if ($_POST['assign_application_to'] == 'add_to_clients_in_need')
+            {
+                if (isset($_POST['adv_org_selection']) && $_POST['adv_org_selection'] != 'default') {
+                    $isDigit = ctype_digit($_POST['adv_org_selection']);
+                    if ($isDigit) {
+                        $advOrg = DB::table('organisations')
+                            ->select('id')
+                            ->where('org_type_id', '=', 3)
+                            ->where('id', '=', $_POST['adv_org_selection'])
+                            ->first();
+                        if ($advOrg != null) {
+                            $client->organisation_id = $_POST['adv_org_selection'];
+                            $application->organisation_id = $_POST['adv_org_selection'];
+                            $application_pet->organisation_id = $_POST['adv_org_selection'];
+                            $pet->organisation_id = $_POST['adv_org_selection'];
+                        } else {
+                            die(); // must be a number from advocate organizations database;
+                        }
+                    } else {
+                        die(); // must be a number;
+                    }
+                } else {
+                    die(); // must be selected and can't be default.
+                }
+            }
+        }
+
+        // create new client database entry
+        //$client = new Client();
+        //$client->organisation_id = Auth::user()->organisation_id;
         $client->first_name = $temp['client-first-name'];
         $client->last_name = $temp['client-last-name'];
         $client->email = $temp['client-email'];
@@ -2137,9 +2187,9 @@ class ApplicationsController extends Controller
         $client->save();
 
         // create client application database entry
-        $application = new Application();
+        //$application = new Application();
         $application->client_id = $client->id;
-        $application->organisation_id = Auth::user()->organisation_id;
+        //$application->organisation_id = Auth::user()->organisation_id;
         $application->created_by_advocate_id = Auth::user()->id;
         if ( in_array($temp['pet'][1]['pet-police-involved'], ['yes', 'police_involved_yes-1']) )
         {
@@ -2159,7 +2209,7 @@ class ApplicationsController extends Controller
         }
         $application->abuser_notes = $temp['pet'][1]['abuser-details'];
 
-        // check assingn to
+        // Second check 'assign to'.
         if ( isset( $_POST['assign_application_to'] ) )
         {
             if( $_POST['assign_application_to'] == 'assign_to_me' )
@@ -2167,15 +2217,20 @@ class ApplicationsController extends Controller
                 $application->status = 1;
                 $application->accepted_by_advocate_id = Auth::user()->id;
             }
+
+            if( $_POST['assign_application_to'] == 'add_to_clients_in_need' )
+            {
+                $this->_sendMailToAdvocatesFromChosenOrganization($client);
+            }
         }
 
         $application->save();
 
         // create pet application database entry
-        $application_pet = new ApplicationPet();
+        //$application_pet = new ApplicationPet();
         $application_pet->application_id = $application->id;
         $application_pet->client_id = $client->id;
-        $application_pet->organisation_id = Auth::user()->organisation_id;
+        //$application_pet->organisation_id = Auth::user()->organisation_id;
         $application_pet->created_by_advocate_id = Auth::user()->id;
         if ( in_array($temp['pet'][1]['pet-boarding-options'], ['yes', 'boarding_options_yes-1']) )
         {
@@ -2208,10 +2263,10 @@ class ApplicationsController extends Controller
                             ->first();
 
             // create new pet database entry
-            $pet = new Pet();
+            //$pet = new Pet();
             $pet->client_id = $client->id;
-            $pet->organisation_id = Auth::user()->organisation_id;
-            $pet->pet_application_id = $application->id;
+            //$pet->organisation_id = Auth::user()->organisation_id;
+            $pet->pet_application_id = $application_pet->id;
             $pet->pet_type_id = $petType->id;
             $pet->name = $value['pet-name'];
             $pet->breed = $value['pet-breed'];
@@ -2323,11 +2378,29 @@ class ApplicationsController extends Controller
         $address->street = $temp['client-address'];
         $address->zip_code = $temp['client-zip'];
         $address->save();
-        
+
         TempObject::delete(Auth::user()->id, 'new-client-application-form');
 
         return true;
         
+    }
+
+    private function _sendMailToAdvocatesFromChosenOrganization($client){
+        $user_emails = DB::table('users')
+            ->where([
+                ['users.organisation_id', '=', $client->organisation_id],
+                ['users.user_type_id', '=', 1]
+            ])
+            ->select(
+                'users.email'
+            )
+            ->get();
+
+//                foreach($user_emails as $user_email){
+//                    Mail::bcc($user_email)->send(new MailToAdvocates($client));
+//                }
+
+        Mail::bcc($user_emails)->send(new MailToAdvocates($client));
     }
 
 }

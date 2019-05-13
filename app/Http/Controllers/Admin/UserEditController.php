@@ -173,11 +173,23 @@ class UserEditController extends Controller
      */
     public function submitContact($id, $slug, Request $request)
     {  
+        $validAddressTypesDB = ObjectType::where('type', 'address')->get();
+        $validAddressTypes = "";
+        $firstLoop = 1;
+        foreach( $validAddressTypesDB as $tempItem )
+        {
+            if ( $firstLoop == 0 )
+            {
+                $validAddressTypes .= ',';
+            }
+            $validAddressTypes .= (string)$tempItem->id;
+            $firstLoop = 0;
+        }
         //validate data from form
         $validator = Validator::make($request->all(),[
-            'phone_type'    => 'nullable|exists:object_types,id',
-            'phone_number'  => 'required|regex:/^\d{3}\d{3}\d{4}$/',
-            'address_type'  => 'nullable|exists:object_types,id',  
+            'phone_type'    => 'required|exists:object_types,id',
+            'phone_number'  => 'required|regex:/^\d{3}-\d{3}-\d{4}$/',
+            'address_type'  => 'nullable|required_with:city,zip_code,street,state|in:'.$validAddressTypes,  
             'city'          => 'nullable|string|max:255',
             'zip_code'      => 'nullable|integer|regex:/^\d{5}$/',
             'street'        => 'nullable|string|max:255',
@@ -222,7 +234,14 @@ class UserEditController extends Controller
             }
                 $userAddress->address_type_id = $request->address_type;
                 $userAddress->street = $request->street;
-                $userAddress->state = $userState->name;
+                if( $request->state != null )
+                {
+                    $userAddress->state = $userState->name;
+                }
+                else
+                {
+                    $userAddress->state = null;
+                }
                 $userAddress->city = $request->city;
                 $userAddress->zip_code = $request->zip_code;
                 $userAddress->save();
@@ -244,8 +263,8 @@ class UserEditController extends Controller
     public function submitPassword($id, $slug, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'admin_password'  =>  'required|string|min:6|max:40',
-            'new_password'  =>  'required|string|min:6|max:40',
+            'admin_password'  =>  'required|string|min:8|max:20',
+            'new_password'  =>  'required|string|min:8|max:20|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
             'repeat_new_password' =>  'required|same:new_password',
         ]);
 
@@ -350,7 +369,7 @@ class UserEditController extends Controller
         //validate data from form
         $validator = Validator::make($request->all(), [
             'new_ban_value'    => 'boolean',
-            'admin_password_ban' => 'required|string|min:6|max:40',
+            'admin_password_ban' => 'required|string|min:8|max:20',
         ]);
 
         if (!($validator->fails())){

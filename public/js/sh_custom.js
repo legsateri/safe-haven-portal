@@ -15,7 +15,40 @@ jQuery(document).ready(function() {
     if ( $('.user_account_cont').length != 0 ) { // if user my account page
         $('#phone').mask('000-000-0000');
         $('#zip').mask('00000');
+
+        $("#repeat_new_pass").keyup(function() {
+            var new_password = $("#new_pass").val();
+            $("#passwordConfirmHelpBlock").html(new_password == $(this).val()
+                ? "Passwords match."
+                : "Passwords do not match!"
+            );
+        });
+
+        $("#save_new_password").click(function validateUserChangePassword() {
+            if ($("#new_pass").val() != $("#repeat_new_pass").val()) {
+                $("#repeat_new_pass").get(0).setCustomValidity('Passwords do not match!');
+            } else {
+                $("#repeat_new_pass").get(0).setCustomValidity('');
+            }
+        });
     }
+
+    // alert fade out
+    $(function() {
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 4000);
+    });
+    
+    $(function() {
+        window.setTimeout(function() {
+            $(".text-danger").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 4000);
+    });
 
     if ( $('.sh_signup').length != 0 ) { // if sign up page
 
@@ -74,14 +107,20 @@ jQuery(document).ready(function() {
             }
         });
 
-        $(function() {
-            $("#user_pass_confirm").keyup(function() {
-                var password = $("#user_pass").val();
-                $("#passwordConfirmHelpBlock").html(password == $(this).val()
-                    ? "Passwords match."
-                    : "Passwords do not match!"
-                );
-            });
+        $("#user_pass_confirm").keyup(function() {
+            var password = $("#user_pass").val();
+            $("#passwordConfirmHelpBlock").html(password == $(this).val()
+                ? "Passwords match."
+                : "Passwords do not match!"
+            );
+        });
+
+        $("#sign_up").click(function validateSignUpPassword() {
+            if ($("#user_pass").val() != $("#user_pass_confirm").val()) {
+                $("#user_pass_confirm").get(0).setCustomValidity('Passwords do not match!');
+            } else {
+                $("#user_pass_confirm").get(0).setCustomValidity('');
+            }
         });
     }
 

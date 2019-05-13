@@ -362,7 +362,13 @@
                                                 @endif
                                                 @endif--}}
                                                 class="custom-control-input">
-                                        <label class="custom-control-label" for="add_to_clients_in_need">Add Client to Clients in Need List</label>
+                                        <label class="custom-control-label" for="add_to_clients_in_need"></label>
+                                        <select id="adv_org_sel" name="adv_org_selection" class="custom-select">
+                                            <option value="default">Please choose Advocate Organization</option>
+                                            @foreach ($advOrgs->all() as $advOrg)
+                                                <option value="{{$advOrg->id}}">{{$advOrg->name}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="invalid-feedback">More example invalid feedback text</div>
@@ -383,3 +389,7 @@
     </div>
 
 @endsection
+
+@push('js-radio')
+    <script type="text/javascript" src="{{ URL::asset('js/custom.js') }}"></script>
+@endpush

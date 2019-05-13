@@ -102,8 +102,8 @@ class UsersController extends Controller
             'last_name'         => 'required|string|max:25',                         
             'user_type'         => 'required|exists:object_types,id',
             'email'             => 'required|email|max:255|unique:users,email',
-            'phone'             => 'required|regex:/^\d{3}\d{3}\d{4}$/',
-            'password'          => 'required|string|min:6|max:40',
+            'phone'             => 'required|regex:/^\d{3}-\d{3}-\d{4}$/',
+            'password'          => 'required|string|min:8|max:20|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
             'repeat-password'   => 'required|same:password',
             'organisation'      => 'required|exists:organisations,id'
         ]);
@@ -163,7 +163,7 @@ class UsersController extends Controller
                     ])
                     ->with('success', 'User account successfully created!');
             } else {
-                return redirect()->back()->with('error', 'User type and Organisation type must match!');
+                return redirect()->back()->with('error', 'User type and Organization type must match!');
             }            
         }  
 

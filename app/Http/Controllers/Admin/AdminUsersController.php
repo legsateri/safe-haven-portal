@@ -55,9 +55,9 @@ class AdminUsersController extends Controller
         $validator = Validator::make($request->all(),[
             'name'              => 'required|string|max:50',
             'email'             => 'required|email|max:60|unique:admins,email',
-            'password'          => 'required|string|max:40|min:6',
+            'password'          => 'required|string|max:20|min:8|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
             'repeat_password'   => 'required|same:password',
-            'your_password'     => 'required|string|max:40|min:6',
+            'your_password'     => 'required|string|max:20|min:8',
         ]);
 
         if (!($validator->fails()))

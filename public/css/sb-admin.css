@@ -158,6 +158,11 @@ body.ct-vertical-align .card {
       width: 100%;
     }
 
+    .text-danger-custom {
+      color: #dc3545;
+      display: none;
+    }
+
     @media (max-width: 767px) {
 
       .btn_banned,

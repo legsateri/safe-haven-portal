@@ -3,53 +3,6 @@
 @section('content')
     <div class="card mb-3 current_clients_cont">
 
-        <div class="modal fade" id="currentClientsModal" tabindex="-1" role="dialog" aria-labelledby="currentClientsModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="currentClientsModalLabel">Client Release</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row mb-3 modal_body_text">
-                                Please select the reason for release. A release announcement will be sent out to the appropriate
-                                Shelter and Safe Haven volunteers.
-                            </div>
-                            <div class="row modal_body_inputs">
-                                <div class="form-group col-md-12">
-                                    <div style="display: block;" class="radio_custom_group">
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input id="completed_type" value="completed" name="release_type" class="custom-control-input" type="radio">
-                                            <label class="custom-control-label" for="completed_type">Services Completed</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input id="not_provided_type" value="not_provided" name="release_type" class="custom-control-input" checked="" type="radio">
-                                            <label class="custom-control-label" for="not_provided_type">Client Chose Not to Proceed</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input id="no_longer_needed_type" value="no_longer_needed" name="release_type" class="custom-control-input" type="radio">
-                                            <label class="custom-control-label" for="no_longer_needed_type">Services No Longer Needed</label>
-                                        </div>
-                                    </div>
-                                    <div class="invalid-feedback">More example invalid feedback text</div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="confirm_release_client" type="button" class="btn btn-primary">Confirm Release Client</button>
-                        <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
-                        <input type="hidden" value=""/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Modal Q&A-->
         <div class="modal fade" id="currentClientsQAModal" tabindex="-1" role="dialog" aria-labelledby="currentClientsQAModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -61,7 +14,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                    <?php /*
+                        <?php /*
                         <!-- NOTE to Milos - type 1 template - not answered yet - starts -->
                         <div class="card mb-2">
                             <div class="card-body">
@@ -179,7 +132,7 @@
         </div>
 
         <div class="card-header">
-            <i class="fa fa-users" aria-hidden="true"></i> Current Clients</div>
+            <i class="fa fa-archive" aria-hidden="true"></i> Clients Archive</div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-5 col-sm-12 order-sm-2 order-2 order-md-1">
@@ -188,7 +141,7 @@
                     </div>
                 </div>
                 <div class="col-md-7 col-sm-12 order-sm-1 order-1 order-md-2 mb-2">
-                    <?php 
+                    <?php
                     /**
                      * listing filters
                      * (start)
@@ -198,59 +151,71 @@
                             action="{{ route('list-filters.submit', ['uenc' => base64_encode( route( Route::current()->getName() ) )]) }}"
                             method="post">
                         {{ csrf_field() }}
-                        <input type="hidden" name="filter_name" value="current_clients">
+                        <input type="hidden" name="filter_name" value="clients_archive">
                         <div class="form-group mr-2">
                             <label class="mr-2" for="order_by_select_type">Order by</label>
-                            <select class="custom-select" 
-                                    name="order_by" 
+                            <select class="custom-select"
+                                    name="order_by"
                                     id="order_by_select_type">
                                 <option value="desc"
                                         @if( isset( $filter_rules['order_by'] ) )
-                                            @if ( $filter_rules['order_by'] == 'desc' )
-                                                selected
-                                            @endif
+                                        @if ( $filter_rules['order_by'] == 'desc' )
+                                        selected
+                                        @endif
                                         @endif
                                 >Latest</option>
                                 <option value="asc"
                                         @if( isset( $filter_rules['order_by'] ) )
-                                            @if ( $filter_rules['order_by'] == 'asc' )
-                                                selected
-                                            @endif
+                                        @if ( $filter_rules['order_by'] == 'asc' )
+                                        selected
+                                        @endif
                                         @endif
                                 >Oldest</option>
                             </select>
                         </div>
                         <div class="form-group mr-2">
-                            <label for="filter_by_answered"></label>
-                            <select class="custom-select" 
-                                    name="filter_by_answered" 
-                                    id="filter_by_answered">
+                            <label for="filter_by_release_state"></label>
+                            <select class="custom-select"
+                                    name="filter_by_release_state"
+                                    id="filter_by_release_state">
+
                                 <option value="all"
-                                        @if( isset( $filter_rules['filter_by_answered'] ) )
-                                            @if ( $filter_rules['filter_by_answered'] == 'all' )
-                                                selected
-                                            @endif
+                                        @if( isset( $filter_rules['filter_by_release_state'] ) )
+                                        @if ( $filter_rules['filter_by_release_state'] == 'all' )
+                                        selected
                                         @endif
-                                >Display All</option>
-                                <option value="answered"
-                                        @if( isset( $filter_rules['filter_by_answered'] ) )
-                                            @if ( $filter_rules['filter_by_answered'] == 'answered' )
-                                                selected
-                                            @endif
                                         @endif
-                                >Answered</option>
-                                <option value="unanswered"
-                                        @if( isset( $filter_rules['filter_by_answered'] ) )
-                                            @if ( $filter_rules['filter_by_answered'] == 'unanswered' )
-                                                selected
-                                            @endif
+                                >Display All Release States</option>
+
+                                <option value="services_completed"
+                                        @if( isset( $filter_rules['filter_by_release_state'] ) )
+                                        @if ( $filter_rules['filter_by_release_state'] == 'services_completed' )
+                                        selected
                                         @endif
-                                >Unanswered</option>
+                                        @endif
+                                >Services Completed</option>
+
+                                <option value="client_chose_not_to_proceed"
+                                        @if( isset( $filter_rules['filter_by_release_state'] ) )
+                                        @if ( $filter_rules['filter_by_release_state'] == 'client_chose_not_to_proceed' )
+                                        selected
+                                        @endif
+                                        @endif
+                                >Client Chose Not to Proceed</option>
+
+                                <option value="services_no_longer_needed"
+                                        @if( isset( $filter_rules['filter_by_release_state'] ) )
+                                        @if ( $filter_rules['filter_by_release_state'] == 'services_no_longer_needed' )
+                                        selected
+                                        @endif
+                                        @endif
+                                >Services No Longer Needed</option>
+
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i></button>
                     </form>
-                    <?php 
+                    <?php
                     /**
                      * listing filters
                      * (end)
@@ -268,7 +233,7 @@
                          */
                         ?>
                         @foreach( $dataEntries as $dataEntry )
-                            <a  href="#list-item-{{ $dataEntry->application_id }}" 
+                            <a  href="#list-item-{{ $dataEntry->application_id }}"
                                 class="list-group-item list-group-item-action flex-column align-items-start active">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">{{ $dataEntry->first_name }} {{ $dataEntry->last_name }}</h5>
@@ -280,14 +245,30 @@
                                     {{--<span class="badge badge-primary badge-pill">{{ $dataEntry->pets_count }}</span>--}}
                                 </div>
                                 <div class="justify-content-between d-flex city_pet_number_cont mt-3">
-                                     {{--TODO Milos check blade vars--}}
+                                    {{--TODO Milos check blade vars--}}
                                     <button id="list-button-qa-item-{{$dataEntry->application_id}}" type="button" class="btn-sm btn-primary">
-                                        Q & A 
-                                        @if( $qa_badge[$dataEntry->id] > 0 )
-                                            <span class="badge badge-light ml-1">{{$qa_badge[$dataEntry->id]}}</span><span class="sr-only">unanswered messages</span>
-                                        @endif
+                                        Q & A
                                     </button>
-                                    <button id="list-button-item-{{ $dataEntry->application_id }}" type="button" class="btn-sm btn-primary">Release Client</button>
+                                    <span>Closed on: {{date('M-d-Y', strtotime($dataEntry->closed_on))}} UTC</span>
+                                </div>
+                                <div class="justify-content-between d-flex city_pet_number_cont mt-3">
+
+                                    @if ($dataEntry->shelter_name != null)
+                                        <span>{{$dataEntry->shelter_name}}</span>
+                                    @else
+                                        <span>Not admitted by any shelter</span>
+                                    @endif
+
+                                    @if ($dataEntry->release_status_id == 4)
+                                        <span>Services Completed</span>
+                                    @elseif ($dataEntry->release_status_id == 5)
+                                        <span>Client Chose Not to Proceed</span>
+                                    @elseif ($dataEntry->release_status_id == 6)
+                                        <span>Services No Longer Needed</span>
+                                    @else
+                                        <span>Feedback</span>
+                                    @endif
+
                                 </div>
                             </a>
                         @endforeach
@@ -314,35 +295,35 @@
                          */
                         ?>
                         @foreach( $dataEntries as $dataEntry )
-                                @if ($loop->iteration == 1)
-                                    @php ($color_class = 'multi_form_color_blue')
-                                    {{--<div id="list-item-{{ $dataEntry->application_id }}" class="new_client_form_row multi_form_color">--}}
-                                @elseif ($loop->iteration == 2)
-                                    @php ($color_class = 'multi_form_color_red')
-                                @elseif ($loop->iteration == 3)
-                                    @php ($color_class = 'multi_form_color_yellow')
-                                @elseif ($loop->iteration == 4)
-                                    @php ($color_class = 'multi_form_color_green')
-                                @else
-                                    {{--<div id="list-item-{{ $dataEntry->application_id }}" class="new_client_form_row">--}}
-                                    @php ($color_class = '')
-                                @endif
-                                <div id="list-item-{{ $dataEntry->application_id }}" class="new_client_form_row {{$color_class}}">
-                            <?php 
-                            /**
-                             * client details
-                             */
-                            ?>
-                            @include('auth.advocate.partials.client_list_current_details')
-                            <?php  
-                            /**
-                             * pets details partial load
-                             */
-                            ?>
-                            @foreach( $dataEntriesPets[$dataEntry->application_pets_id] as $petEntry )
-                                @include('auth.advocate.partials.client_list_pet_details')
-                            @endforeach
-                                </div>
+                            @if ($loop->iteration == 1)
+                                @php ($color_class = 'multi_form_color_blue')
+                                {{--<div id="list-item-{{ $dataEntry->application_id }}" class="new_client_form_row multi_form_color">--}}
+                            @elseif ($loop->iteration == 2)
+                                @php ($color_class = 'multi_form_color_red')
+                            @elseif ($loop->iteration == 3)
+                                @php ($color_class = 'multi_form_color_yellow')
+                            @elseif ($loop->iteration == 4)
+                                @php ($color_class = 'multi_form_color_green')
+                            @else
+                                {{--<div id="list-item-{{ $dataEntry->application_id }}" class="new_client_form_row">--}}
+                                @php ($color_class = '')
+                            @endif
+                            <div id="list-item-{{ $dataEntry->application_id }}" class="new_client_form_row {{$color_class}}">
+                                <?php
+                                /**
+                                 * client details
+                                 */
+                                ?>
+                                @include('auth.advocate.partials.client_list_current_details')
+                                <?php
+                                /**
+                                 * pets details partial load
+                                 */
+                                ?>
+                                @foreach( $dataEntriesPets[$dataEntry->application_pets_id] as $petEntry )
+                                    @include('auth.advocate.partials.client_list_pet_details')
+                                @endforeach
+                            </div>
                         @endforeach
                         <?php
                         /**

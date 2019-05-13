@@ -11,9 +11,9 @@
           'sitekey' : '{{ $config->recaptcha_public_key }}'
         });
       };
+    </script>
       */
       ?>
-    </script>
 @endsection
 
 @section('content')
@@ -80,7 +80,7 @@
     </div>
     <section class="jumbotron text-center sh_signup">
         <div class="container">
-            <div class="jumbotron_container">
+            <div class="jumbotron_container" <?php if($errors->any()) { echo 'style="display:none;"'; }?>>
                 <h1 class="jumbotron-heading">What type of organization are you?</h1>
                 <p class="lead">
                     PLEASE NOTE: The Safe Haven Network Referral Program is based in Chicago and is currently only available to clients in Chicago
@@ -91,9 +91,10 @@
                     Program.
                 </p>
             </div>
-            <h1 class="jumbotron-heading signup_advocate">Advocate sign up</h1>
-            <h1 class="jumbotron-heading signup_shelter">Shelter sign up</h1>
-            <div class="row signup_cards_row">
+            <?php $user_type = '';?>
+            <h1 class="jumbotron-heading signup_advocate" <?php if($errors->any() && old("sign_up_form_user_type")=="advocate") { echo 'style="display:block;"'; $user_type = 'advocate';}?>>Advocate sign up</h1>
+            <h1 class="jumbotron-heading signup_shelter" <?php if($errors->any() && old("sign_up_form_user_type")=="shelter") { echo 'style="display:block;"'; $user_type = 'shelter';}?>>Shelter sign up</h1>
+            <div class="row signup_cards_row" <?php if($errors->any()) { echo 'style="display:none;"'; }?>>
                 <div class="col-xl-2 col-lg-2 col-md-1">
                 </div>
                 <div class="col-xl-8 col-lg-8 col-md-10 col-sm-12 col-xs-12">
@@ -123,7 +124,7 @@
                 <div class="col-xl-2 col-lg-2 col-md-1">
                 </div>
             </div>
-            <div class="row signup_form_row">
+            <div class="row signup_form_row" <?php if($errors->any()) { echo 'style="display:flex;"'; }?>>
                 <div class="col-lg-2 col-md-2">
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
@@ -150,8 +151,8 @@
                                     <span class="custom-control-description">Already with an organization?</span>
                                 </label>
                             </div>
-                            <div id="sign_up_org_name_half_row" class="form-group col-md-6">
-                                <label for="org_name">Organization Name</label>
+                            <div id="sign_up_org_name_half_row" class="form-group col-md-6" >
+                                <label for="org_name" >Organization Name</label>
                                 <input type="text" class="form-control" id="org_name" maxlength="40" name="org_name" value="{{ old('org_name') }}" required="">
                             </div>
                             <div id="sign_up_org_code_half_row" class="form-group col-md-6">
@@ -169,7 +170,7 @@
                                 <input type="phone" class="form-control" id="org_phone_num" maxlength="10" name="org_phone_number" pattern="^\d{3}-\d{3}-\d{4}$" value="{{ old('org_phone_number') }}" placeholder="XXX-XXX-XXXX" required="">
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div id="sign_up_name_id_row" class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="org_last_name">First Name</label>
                                 <input type="text" class="form-control" id="org_first_name" maxlength="25" required="" value="{{ old('first_name') }}" name="first_name" placeholder="">
@@ -179,7 +180,7 @@
                                 <input type="text" class="form-control" id="org_last_name" maxlength="25" required="" value="{{ old('last_name') }}" name="last_name" placeholder="">
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div id="sign_up_contact_info_id_row"class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputEmail4">Email</label>
                                 <input type="email" maxlength="45" class="form-control" id="inputEmail4" name="email" placeholder="e.g. yourname@yourmail.com" required="" value="{{ old('email') }}">
@@ -189,7 +190,7 @@
                                 <input type="phone" class="form-control" id="contact_phone_num" name="contact_phone_number" maxlength="10" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX" required="" value="{{ old('contact_phone_number') }}">
                             </div>
                         </div>
-                        <div class="form-row">
+                        <div id="sign_up_password_id_row"class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="user_pass">Password</label>
                                 <input type="password" minlength="8" maxlength="20" class="form-control" id="user_pass" name="password" required="" aria-describedby="passwordHelpBlock">
@@ -199,7 +200,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="user_pass_confirm">Confirm Password</label>
-                                <input type="password" class="form-control" id="user_pass_confirm" name="password_confirmation" minlength="8" maxlength="20" required="" aria-describedby="passwordConfirmHelpBlock">
+                                <input type="password" minlength="8" maxlength="20" class="form-control" id="user_pass_confirm" name="password_confirmation" required="" aria-describedby="passwordConfirmHelpBlock">
                                 <small id="passwordConfirmHelpBlock" class="form-text text-muted">
                                 </small>
                             </div>
@@ -219,8 +220,8 @@
                             </label>
                         </div>
                         <div id="html_element_captcha"></div>
-                        <input id="sign_up_form_user_type" type="hidden" name="sign_up_form_user_type" value="">
-                        <button type="submit" class="sh_sign_btn btn btn-primary">Sign up</button>
+                        <input id="sign_up_form_user_type" type="hidden" name="sign_up_form_user_type" value="<?php if($errors->any()) { echo $user_type;}?>">
+                        <button type="submit" id="sign_up" class="sh_sign_btn btn btn-primary">Sign up</button>
                     </form>
                 </div>
                 <div class="col-lg-2 col-md-2">

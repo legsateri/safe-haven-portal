@@ -34,6 +34,21 @@ body,
     min-height: calc(100vh - 56px);
 }*/
 
+ul {
+    list-style-type: none;
+}
+
+#sign_up_org_name_half_row label:after,
+#sign_up_org_code_half_row label:after,
+#sign_up_tax_id_row label:after,
+#sign_up_name_id_row label:after,
+#sign_up_contact_info_id_row label:after,
+#sign_up_password_id_row label:after {
+    color: #e32;
+    content: ' *';
+    display: inline;
+}
+
 #logoA {
     display: inline-block;
     vertical-align: middle;
@@ -806,12 +821,32 @@ div[class*="spinner_form_"] {
         border: 2px solid #ffffff;
     }
 
-
 }
 
 @media (min-width: 576px) and (max-width: 767.99px) {
     .content-wrapper {
         border: 1px solid green;
+    }
+}
+
+@media (min-width: 768px) {
+
+    #assign_application_to_form_data .radio_custom_group {
+        display: flex !important;
+        justify-content: center;
+        flex-direction: row;
+    }
+
+    #assign_application_to_form_data .radio_custom_group .custom-radio:first-child {
+        margin-top: 6px;
+    }
+
+    #assign_application_to_form_data .custom-radio + .custom-radio .custom-control-label::before {
+        top: 10px;
+    }
+
+    #assign_application_to_form_data .radio_custom_group .custom-radio + .custom-radio .custom-control-label::after {
+        top: 10px;
     }
 }
 

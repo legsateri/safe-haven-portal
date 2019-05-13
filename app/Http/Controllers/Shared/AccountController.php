@@ -62,8 +62,8 @@ class AccountController extends Controller
         $validator = Validator::make($request->all(),[          
         'first_name'        => 'required|string|max:25',
         'last_name'         => 'required|string|max:25',                         
-        'email'             => 'required|string|email|max:45|unique:users,email,'.Auth()->user()->id,
-        'phone_number'      => 'required|regex:/^\d{3}\d{3}\d{4}$/',
+        'email'             => 'required|string|email|max:45|unique:users,email,'.Auth()->user()->id.',id',
+        'phone_number'      => 'required|regex:/^\d{3}-\d{3}-\d{4}$/',
         'phone_number_type' => 'nullable|exists:object_types,id',
         'street'            => 'nullable|string|max:255',
         'city'              => 'nullable|string|max:255',
@@ -154,8 +154,8 @@ class AccountController extends Controller
 
         //
         $validator = Validator::make($request->all(), [
-            'old_password'  =>  'required|string|min:6|max:40',
-            'new_password'  =>  'required|string|min:6|max:40',
+            'old_password'  =>  'required|string|min:8|max:20',
+            'new_password'  =>  'required|string|min:8|max:20|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
             'repeat_new_password' =>  'required|same:new_password',
         ]);
 

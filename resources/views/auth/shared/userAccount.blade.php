@@ -27,7 +27,7 @@
         <div class="card-body">
 
             <!-- Update user's info -->
-            <form method="post" action="{{ route('user.account.update.info') }}" style="margin: 5px 30px">
+            <form  method="post" action="{{ route('user.account.update.info') }}" style="margin: 5px 30px">
                 {{ csrf_field() }}
 
                 <div class="form row">
@@ -36,15 +36,9 @@
                     <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">                                                                                   
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
-                                <label for="first-name">First name</label>
-                                <input  type="text" class="form-control"
-                                        id="first-name" name="first_name"
-                                        placeholder="Enter first name"
-                                        value="<?php
-                                                if (isset($currentUser->first_name)):
-                                                echo $currentUser->first_name;
-                                                endif;
-                                                ?>"
+                                <label for="first-name">First Name</label>
+                                <input  type="text" class="form-control" id="first-name" name="first_name" placeholder="Enter first name"
+                                        value="<?php if (isset($currentUser->first_name)) {echo $currentUser->first_name;} ?>"
                                         required>
                                 <!-- error message -->
                                 @if ($errors->has('first_name'))
@@ -56,15 +50,9 @@
                             </div>
                                     
                             <div class="col-md-6 mb-3">
-                                <label for="last-name">Last name</label>
-                                <input  type="text" class="form-control"
-                                        id="last-name" name="last_name"
-                                        placeholder="Enter last name"
-                                        value="<?php
-                                                if (isset($currentUser->last_name)):
-                                                echo $currentUser->last_name;
-                                                endif;
-                                                ?>"
+                                <label for="last-name">Last Name</label>
+                                <input  type="text" class="form-control" id="last-name" name="last_name" placeholder="Enter last name"
+                                        value="<?php if (isset($currentUser->last_name)) {echo $currentUser->last_name;} ?>"
                                         required>
                                 <!-- error message -->
                                 @if ($errors->has('last_name'))
@@ -78,14 +66,8 @@
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
                                 <label for="email">Email address</label>
-                                <input  type="email" class="form-control"
-                                        id="email" name="email"
-                                        placeholder="email@example.com"
-                                        value="<?php
-                                                if (isset($currentUser->email)):
-                                                echo $currentUser->email;
-                                                endif;
-                                                ?>">
+                                <input  type="email" class="form-control" id="email" name="email" placeholder="email@example.com"
+                                        value="<?php if (isset($currentUser->email)) {echo $currentUser->email;} ?>">
                                 <!-- error message -->
                                 @if ($errors->has('email'))
                                     <div class="text-danger">
@@ -96,14 +78,8 @@
                                         
                             <div class="col-md-4 mb-3">
                                 <label for="phone">Phone Number</label>
-                                <input  type="text" class="form-control"
-                                        id="phone" name="phone_number"
-                                        maxlength="12" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX"
-                                        value="<?php
-                                                if (isset($userPhone->number)):
-                                                echo $userPhone->number;
-                                                endif;
-                                                ?>"
+                                <input  type="text" class="form-control" id="phone" name="phone_number" maxlength="12" pattern="^\d{3}-\d{3}-\d{4}$" placeholder="XXX-XXX-XXXX"
+                                        value="<?php if (isset($userPhone->number)) {echo $userPhone->number;} ?>"
                                         required>
                                  <!-- error message -->
                                 @if ($errors->has('phone_number'))
@@ -138,14 +114,8 @@
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
                                 <label for="street">Address</label>
-                                <input  type="text" class="form-control"
-                                        id="street" name="street"
-                                        placeholder="Enter your address"
-                                        value="<?php
-                                                if (isset($userAddress->street)):
-                                                echo $userAddress->street;
-                                                endif;
-                                                ?>">
+                                <input  type="text" class="form-control" id="street" name="street" placeholder="Enter your address"
+                                        value="<?php if (isset($userAddress->street)) {echo $userAddress->street;} ?>">
                                 <!-- error message -->
                                 @if ($errors->has('street'))
                                     <div class="text-danger">
@@ -180,14 +150,8 @@
 
                             <div class="col-md-3 mb-3">
                                 <label for="number">City</label>
-                                    <input  type="text" class="form-control"
-                                            id="city" name="city"
-                                            placeholder="City"
-                                            value="<?php
-                                                if (isset($userAddress->city)):
-                                                echo $userAddress->city;
-                                                endif;
-                                                ?>">
+                                    <input  type="text" class="form-control" id="city" name="city" placeholder="City"
+                                            value="<?php if (isset($userAddress->city)) {echo $userAddress->city;} ?>">
                                 <!-- error message -->
                                 @if ($errors->has('city'))
                                     <div class="text-danger">
@@ -198,14 +162,8 @@
 
                             <div class="col-md-3 mb-3">
                                 <label for="zip">Zip/Postal Code</label>
-                                <input  type="text" class="form-control"
-                                        id="zip" name="zip_code"
-                                        maxlength="5" placeholder="XXXXX"
-                                        value="<?php
-                                                if (isset($userAddress->zip_code)):
-                                                echo $userAddress->zip_code;
-                                                endif;
-                                                ?>">
+                                <input  type="text" class="form-control" id="zip" name="zip_code" pattern="^\d{5}$" maxlength="5" placeholder="XXXXX"
+                                        value="<?php if (isset($userAddress->zip_code)) {echo $userAddress->zip_code;} ?>">
                                 <!-- error message -->
                                 @if ($errors->has('zip_code'))
                                     <div class="text-danger">
@@ -242,7 +200,7 @@
         <div class="card-body">
             
             <!-- Update password -->
-            <form method="post" action="{{ route('user.account.update.password') }}" style="margin: 5px 30px">
+            <form id="update_password_form" method="post" action="{{ route('user.account.update.password') }}" style="margin: 5px 30px">
                 {{ csrf_field() }}
 
                 <div class="form row">
@@ -253,11 +211,7 @@
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="old_pass">Old password</label>
-                                <input  type="password" class="form-control"
-                                        id="old_pass" name="old_password"
-                                        aria-describedby="passHelp"
-                                        placeholder="Enter old password"
-                                        required>
+                                <input  type="password" class="form-control" id="old_pass" name="old_password" placeholder="Enter old password" required>
                                 <!-- error message -->
                                 @if ($errors->has('old_password'))
                                     <div class="text-danger">
@@ -270,11 +224,10 @@
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="new_pass">New password</label>
-                                <input  type="password" class="form-control"
-                                        id="new_pass" name="new_password"
-                                        aria-describedby="passHelp"
-                                        placeholder="Enter new password"
-                                        required>
+                                <input  type="password" minlength="8" maxlength="20" class="form-control" id="new_pass" name="new_password" placeholder="Enter new password" required="" aria-describedby="passwordHelpBlock">
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    Your password must be 8-20 characters long and contain at least one upper-case letter and one number.
+                                </small>
                                 <!-- error message -->
                                 @if ($errors->has('new_password'))
                                     <div class="text-danger">
@@ -286,12 +239,10 @@
 
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="repeat_new_pass">New password</label>
-                                <input  type="password" class="form-control"
-                                        id="repeat_new_pass" name="repeat_new_password"
-                                        aria-describedby="passHelp"
-                                        placeholder="Repeat new password"
-                                        required>
+                                <label for="repeat_new_pass">Repeat new password</label>
+                                <input  type="password" minlength="8" maxlength="20" class="form-control" id="repeat_new_pass" name="repeat_new_password" placeholder="Repeat new password" aria-describedby="passwordConfirmHelpBlock" required>
+                                <small id="passwordConfirmHelpBlock" class="form-text text-muted">
+                                </small>
                                 <!-- error message -->
                                 @if ($errors->has('repeat_new_password'))
                                     <div class="text-danger">
@@ -303,7 +254,7 @@
                         <br>
 
                         <div class="form-row" >
-                            <button type="submit" class="sh_save_btn btn btn-outline-primary float-right">Save</button>
+                            <button type="submit" id="save_new_password" class="sh_save_btn btn btn-outline-primary float-right">Save</button>
                         </div>
                     </div>
                 </div>

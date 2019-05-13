@@ -89,7 +89,7 @@
 
         <div class="form row">
             <div class="form-group col-md-4  offset-md-2">
-                <label for="type">Organisation type</label>
+                <label for="type">Organization type</label>
                 <select name="type" id="type">
                     <option value="">Select type</option>
                     @foreach ( $organisationTypes as $organisationType )

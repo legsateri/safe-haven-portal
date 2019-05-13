@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Hello!</h1>
-    <p>You have receiving this email because shelter has posted question about pet that belongs to client of your organization.</p>
+    <p>You are receiving this email because shelter has posted question about pet that belongs to client of yours.</p>
     <p>
         <ul>
             <li>Client's name: {{ $data['application']->client_first_name }} {{ $data['application']->client_last_name }}</li>

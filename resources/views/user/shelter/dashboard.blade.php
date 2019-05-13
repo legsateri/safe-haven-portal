@@ -17,83 +17,89 @@
             }
         }
         ?>
-        
-        <div class="table-responsive">
-            <table class="table table-striped table-hover" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Breed</th>
-                        <th scope="col">Created at</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-area-chart"></i>Unread applications
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Breed</th>
+                                    <th scope="col">Created at</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                @foreach($data['applications'] as $application)
-                    <tr>
-                        <th scope="row">{{ $counter }}</th>
-                        
-                        <td> 
-                        <?php
-                            $firstPet = true;
-                            $petNames = '';
-                            foreach( $data['pets'][$application->id] as $pet )
-                            {
-                                if ( $firstPet == false )
-                                {
-                                    $petNames .= ' / ';
-                                }
-                                $petNames .= $pet->name;
-                                $firstPet = false;
-                            }
-                        ?>
-                        {{ $petNames }}
-                        </td>
+                            @foreach($data['applications'] as $application)
+                                <tr>
+                                    <th scope="row">{{ $counter }}</th>
 
-                        <td>
-                        <?php
-                            $firstPet = true;
-                            $petTypes = '';
-                            foreach( $data['pets'][$application->id] as $pet )
-                            {
-                                if ( $firstPet == false )
-                                {
-                                    $petTypes .= ' / ';
-                                }
-                                $petTypes .= $pet->type;
-                                $firstPet = false;
-                            }
-                        ?>
-                        {{ $petTypes }}
-                        </td>
+                                    <td>
+                                    <?php
+                                        $firstPet = true;
+                                        $petNames = '';
+                                        foreach( $data['pets'][$application->id] as $pet )
+                                        {
+                                            if ( $firstPet == false )
+                                            {
+                                                $petNames .= ' / ';
+                                            }
+                                            $petNames .= $pet->name;
+                                            $firstPet = false;
+                                        }
+                                    ?>
+                                    {{ $petNames }}
+                                    </td>
 
-                        <td>
-                        <?php
-                            $firstPet = true;
-                            $petBreed = '';
-                            foreach( $data['pets'][$application->id] as $pet )
-                            {
-                                if ( $firstPet == false )
-                                {
-                                    $petBreed .= ' / ';
-                                }
-                                $petBreed .= $pet->breed;
-                                $firstPet = false;
-                            }
-                        ?>
-                        {{ $petBreed }}
-                        </td>
- 
-                        <td>{{ $application->created_at }}</td>
-                    </tr>
-                        <?php $counter++; ?>
-                @endforeach
-                    
-                </tbody>
-            </table>
-        </div>
+                                    <td>
+                                    <?php
+                                        $firstPet = true;
+                                        $petTypes = '';
+                                        foreach( $data['pets'][$application->id] as $pet )
+                                        {
+                                            if ( $firstPet == false )
+                                            {
+                                                $petTypes .= ' / ';
+                                            }
+                                            $petTypes .= $pet->type;
+                                            $firstPet = false;
+                                        }
+                                    ?>
+                                    {{ $petTypes }}
+                                    </td>
+
+                                    <td>
+                                    <?php
+                                        $firstPet = true;
+                                        $petBreed = '';
+                                        foreach( $data['pets'][$application->id] as $pet )
+                                        {
+                                            if ( $firstPet == false )
+                                            {
+                                                $petBreed .= ' / ';
+                                            }
+                                            $petBreed .= $pet->breed;
+                                            $firstPet = false;
+                                        }
+                                    ?>
+                                    {{ $petBreed }}
+                                    </td>
+
+                                    <td>{{ $application->created_at }}</td>
+                                </tr>
+                                    <?php $counter++; ?>
+                            @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
         <div class="row">
             <div class="col-lg-6">

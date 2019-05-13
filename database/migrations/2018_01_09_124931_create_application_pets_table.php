@@ -21,6 +21,7 @@ class CreateApplicationPetsTable extends Migration
             $table->integer('organisation_id')->unsigned();
             $table->integer('created_by_advocate_id')->unsigned();
             $table->integer('accepted_by_shelter_organisation_id')->unsigned()->nullable();
+            $table->integer('shelter_id_previous_state')->unsigned()->nullable();
             $table->integer('status')->default(0);
 
             // moved to pets table
@@ -40,6 +41,7 @@ class CreateApplicationPetsTable extends Migration
             $table->foreign('client_id')->references('id')->on('clients');
             $table->foreign('organisation_id')->references('id')->on('organisations');
             $table->foreign('accepted_by_shelter_organisation_id')->references('id')->on('organisations');
+            $table->foreign('shelter_id_previous_state')->references('id')->on('organisations');
             $table->foreign('created_by_advocate_id')->references('id')->on('users');
             $table->foreign('release_status_id')->references('id')->on('statuses');
         });

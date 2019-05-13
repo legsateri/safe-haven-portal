@@ -1,63 +1,33 @@
 @extends('layouts.user-main')
 
 @section('content')
-    <div class="card mb-3 current_pets_cont">
+    <div class="card mb-3 pets_in_need_cont">
 
-        <!-- Modal -->
-        <div class="modal fade" id="currentPetsModal" tabindex="-1" role="dialog" aria-labelledby="currentPetsModalLabel" aria-hidden="true">
+        <!-- Modal Q&A-->
+        <div class="modal fade" id="petsInNeedQAModal" tabindex="-1" role="dialog" aria-labelledby="petsInNeedQAModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="currentPetsModalLabel">Client Release</h5>
-
+                        <h5 class="modal-title" id="petsInNeedQAModalLabel"><span></span> - Questions and Answers </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row mb-3 modal_body_text">
-                                Please select the reason for release. A release announcement will be sent out to the Advocate and Safe Haven volunteers.
-                            </div>
-                            <div class="row modal_body_inputs">
-                                <div class="form-group col-md-12">
-                                    <div style="display: block;" class="radio_custom_group">
-                                        <div class="custom-control custom-radio custom-control-inline d-block">
-                                            <input id="pet_released_to_owner_type" value="pet_released_to_owner" name="pet_release_type" class="custom-control-input" checked="" type="radio">
-                                            <label class="custom-control-label" for="pet_released_to_owner_type">Released To Owner</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline d-block">
-                                            <input id="pet_services_not_provided_type" value="pet_services_not_provided" name="pet_release_type" class="custom-control-input" type="radio">
-                                            <label class="custom-control-label" for="pet_services_not_provided_type">Client Chose Not to Proceed</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline d-block">
-                                            <input id="pet_released_to_adoption_pool_type" value="pet_released_to_adoption_pool" name="pet_release_type" class="custom-control-input" type="radio">
-                                            <label class="custom-control-label" for="pet_released_to_adoption_pool_type">Released to Adoption Pool</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline d-block">
-                                            <input id="pet_not_admitted_type" value="pet_not_admitted" name="pet_release_type" class="custom-control-input" type="radio">
-                                            <label class="custom-control-label" for="pet_not_admitted_type">Pet Not Admitted</label>
-                                        </div>
-                                    </div>
-                                    <div class="invalid-feedback">More example invalid feedback text</div>
-                                </div>
-                            </div>
-                        </div>
-
+                        <div class="modal-body-inner-cont"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="confirm_release_pet" type="button" class="btn btn-primary">Confirm Release Pet</button>
+                        {{--<button id="confirm_accept_pet_qa" type="button" class="btn btn-primary">Send</button>--}}
                         <div class="spinner_cont spinner_modal"><i class="fa fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
                         <input type="hidden" value=""/>
                     </div>
-
                 </div>
             </div>
         </div>
 
         <div class="card-header">
-            <i class="fa fa-home"></i> Currently Accepted Pets</div>
+            <i class="fa fa-archive"></i> Pets Archive</div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-5 col-sm-12 order-sm-2 order-2 order-md-1">
@@ -76,7 +46,7 @@
                             action="{{ route('list-filters.submit', ['uenc' => base64_encode( route( Route::current()->getName() ) )]) }}"
                             method="post">
                         {{ csrf_field() }}
-                        <input type="hidden" name="filter_name" value="accepted_pets">
+                        <input type="hidden" name="filter_name" value="pets_archive">
                         <div class="form-group mr-2">
                             <label class="mr-2" for="order_by_select_type">Order by</label>
                             <select class="custom-select" 
@@ -96,6 +66,54 @@
                                             @endif
                                         @endif
                                 >Oldest</option>
+                            </select>
+                        </div>
+                        <div class="form-group mr-2">
+                            <label for="filter_by_release_state"></label>
+                            <select class="custom-select"
+                                    name="filter_by_release_state"
+                                    id="filter_by_release_state">
+
+                                <option value="all"
+                                        @if( isset( $filter_rules['filter_by_release_state'] ) )
+                                        @if ( $filter_rules['filter_by_release_state'] == 'all' )
+                                        selected
+                                        @endif
+                                        @endif
+                                >Display All Release States</option>
+
+                                <option value="released_to_owner"
+                                        @if( isset( $filter_rules['filter_by_release_state'] ) )
+                                        @if ( $filter_rules['filter_by_release_state'] == 'released_to_owner' )
+                                        selected
+                                        @endif
+                                        @endif
+                                >Released to Owner</option>
+
+                                <option value="client_chose_not_to_proceed"
+                                        @if( isset( $filter_rules['filter_by_release_state'] ) )
+                                        @if ( $filter_rules['filter_by_release_state'] == 'client_chose_not_to_proceed' )
+                                        selected
+                                        @endif
+                                        @endif
+                                >Client Chose Not to Proceed</option>
+
+                                <option value="released_to_adoption_pool"
+                                        @if( isset( $filter_rules['filter_by_release_state'] ) )
+                                        @if ( $filter_rules['filter_by_release_state'] == 'released_to_adoption_pool' )
+                                        selected
+                                        @endif
+                                        @endif
+                                >Released to Adoption Pool</option>
+
+                                <option value="pet_not_admitted"
+                                        @if( isset( $filter_rules['filter_by_release_state'] ) )
+                                        @if ( $filter_rules['filter_by_release_state'] == 'pet_not_admitted' )
+                                        selected
+                                        @endif
+                                        @endif
+                                >Pet Not Admitted</option>
+
                             </select>
                         </div>
                         <?php /*
@@ -135,7 +153,6 @@
             <div class="row main_cont">
                 <div class="col-xl-3 col-lg-4 col-md-4 col-5">
                     <div id="list-example" class="list-group">
-
                         <?php
                         /**
                          * generate left selection menu
@@ -153,11 +170,29 @@
                                     <small>{{ date('M/d/Y', strtotime($dataEntry->created_at)) }}</small>
                                 </div>
                                 <div class="justify-content-between d-flex zip_pet_number_cont mt-3">
-                                    <p class="mb-1"><span class="mr-1">{{$dataEntry->zip_code}}</span></p>
+                                    <p class="mb-1"><span class="mr-1">{{$dataEntry->zip_code}}</span><small>{{$dataEntry->city}}</small></p>
                                 </div>
                                 <div class="justify-content-between d-flex city_pet_number_cont mt-3">
-                                    <small>{{$dataEntry->city}}</small>
-                                    <button id="list-button-item-{{$dataEntry->id}}" type="button" class="btn-sm btn-primary">Release Pet</button>
+                                    <button id="list-button-qa-item-{{$dataEntry->id}}" type="button" class="btn-sm btn-primary">
+                                        Q & A
+                                    </button>
+                                    <span>Released at: {{ date('M-d-Y', strtotime($dataEntry->updated_at)) }} UTC</span>
+                                </div>
+                                <div class="justify-content-between d-flex city_pet_number_cont mt-3">
+                                    <span>{{$dataEntry->first_name}} {{$dataEntry->last_name}}</span>
+                                    <span>
+                                        @if ($dataEntry->release_status_id == 7)
+                                            <span>Released To Owner</span>
+                                        @elseif ($dataEntry->release_status_id == 8)
+                                            <span>Client Chose Not to Proceed</span>
+                                        @elseif ($dataEntry->release_status_id == 9)
+                                            <span>Released to Adoption Pool</span>
+                                        @elseif ($dataEntry->release_status_id == 10)
+                                            <span>Pet Not Admitted</span>
+                                        @else
+                                            <span>Feedback</span>
+                                        @endif
+                                    </span>
                                 </div>
                             </a>
                         @endforeach
@@ -216,7 +251,7 @@
                                                                         name="pet_type"
                                                                         class="custom-control-input"
                                                                         @if ( $petType->id == $tempPet->pet_type_id )
-                                                                        checked=""
+                                                                            checked=""
                                                                         @endif
                                                                 >
                                                                 <label class="custom-control-label" for="{{ $petType->value }}_type">{{ $petType->label }}</label>
@@ -262,7 +297,7 @@
                                                 <div class="form-group col-md-12">
                                                     <label for="description">Description</label>
                                                     <textarea class="form-control" id="description" name="description" rows="1" disabled
-                                                    >{{$tempPet->description}}</textarea>
+                                                        >{{$tempPet->description}}</textarea>
                                                     <div class="invalid-feedback">More example invalid feedback text</div>
                                                 </div>
                                             </div>
@@ -274,7 +309,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="spayed_yes" value="yes" name="pet_spayed"
                                                                     @if ( $tempPet->sprayed == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="spayed_yes">Yes</label>
@@ -282,7 +317,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="spayed_no" value="no" name="pet_spayed"
                                                                     @if ( $tempPet->sprayed != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="spayed_no">No</label>
@@ -296,7 +331,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="spay_object_yes" value="yes" name="pet_spay_object"
                                                                     @if ( $tempPet->objection_to_spray == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="spay_object_yes">Yes</label>
@@ -304,7 +339,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="spay_object_no" value="no" name="pet_spay_object"
                                                                     @if ( $tempPet->objection_to_spray != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="spay_object_no">No</label>
@@ -321,7 +356,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="chipped_yes" value="yes" name="pet_chipped"
                                                                     @if ( $tempPet->microchipped == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="chipped_yes">Yes</label>
@@ -329,7 +364,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="chipped_no" value="no" name="pet_chipped"
                                                                     @if ( $tempPet->microchipped != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="chipped_no">No</label>
@@ -343,7 +378,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="vaccine_yes" value="yes" name="pet_vaccined"
                                                                     @if ( $tempPet->vaccinations == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="vaccine_yes">Yes</label>
@@ -351,7 +386,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="vaccine_no" value="no" name="pet_vaccined"
                                                                     @if ( $tempPet->vaccinations != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="vaccine_no">No</label>
@@ -365,13 +400,13 @@
                                                 <div class="form-group col-md-6">
                                                     <label for="dietary_needs">Any special dietary needs?</label>
                                                     <textarea class="form-control" id="dietary_needs" name="dietary_needs" rows="2" disabled
-                                                    >{{$tempPet->dietary_needs}}</textarea>
+                                                        >{{$tempPet->dietary_needs}}</textarea>
                                                     <div class="invalid-feedback">More example invalid feedback text</div>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label for="veterinary_needs">Any special veterinary needs?</label>
                                                     <textarea class="form-control" id="veterinary_needs" name="veterinary_needs" rows="2" disabled
-                                                    >{{$tempPet->vet_needs}}</textarea>
+                                                        >{{$tempPet->vet_needs}}</textarea>
                                                     <div class="invalid-feedback">More example invalid feedback text</div>
                                                 </div>
                                             </div>
@@ -380,7 +415,7 @@
                                                 <div class="form-group col-md-6">
                                                     <label for="pets_behavior">Please describe the pets behavior and temperament</label>
                                                     <textarea class="form-control" id="pets_behavior" name="pets_behavior" rows="2" disabled
-                                                    >{{$tempPet->temperament}}</textarea>
+                                                        >{{$tempPet->temperament}}</textarea>
                                                     <div class="invalid-feedback">More example invalid feedback text</div>
                                                 </div>
                                                 <div class="form-group col-md-6">
@@ -389,7 +424,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="abuser_access_yes" value="yes" name="abuser_access"
                                                                     @if ( $tempPet->abuser_visiting_access == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="abuser_access_yes">Yes</label>
@@ -397,7 +432,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="abuser_access_no" value="no" name="abuser_access"
                                                                     @if ( $tempPet->abuser_visiting_access != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="abuser_access_no">No</label>
@@ -411,7 +446,7 @@
                                                 <div class="form-group col-md-12">
                                                     <label for="pet_relevant_info">Any other relevant information for this pet?</label>
                                                     <textarea class="form-control" id="pet_relevant_info" name="pet_relevant_info" rows="1" disabled
-                                                    >{{$tempPet->aditional_info}}</textarea>
+                                                        >{{$tempPet->aditional_info}}</textarea>
                                                     <div class="invalid-feedback">More example invalid feedback text</div>
                                                 </div>
                                             </div>
@@ -432,7 +467,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="police_involved_yes" value="yes" name="police_involved"
                                                                     @if ( $dataEntry->police_involved == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="police_involved_yes">Yes</label>
@@ -440,7 +475,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="police_involved_no" value="no" name="police_involved"
                                                                     @if ( $dataEntry->police_involved != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="police_involved_no">No</label>
@@ -457,7 +492,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="protective_order_yes" value="yes"
                                                                     @if ( $dataEntry->protective_order == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     name="protective_order" class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="protective_order_yes">Yes</label>
@@ -465,7 +500,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="protective_order_no" value="no" name="protective_order"
                                                                     @if ( $dataEntry->protective_order != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="protective_order_no">No</label>
@@ -479,7 +514,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="pet_covered_yes" value="yes" name="pet_covered"
                                                                     @if ( $tempPet->pet_protective_order == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="pet_covered_yes">Yes</label>
@@ -487,7 +522,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="pet_covered_no" value="no" name="pet_covered"
                                                                     @if ( $tempPet->pet_protective_order != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="pet_covered_no">No</label>
@@ -504,7 +539,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="pet_paperwork_yes" value="yes" name="pet_paperwork"
                                                                     @if ( $tempPet->client_legal_owner_of_pet == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="pet_paperwork_yes">Yes</label>
@@ -512,7 +547,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="pet_paperwork_no" value="no" name="pet_paperwork"
                                                                     @if ( $tempPet->client_legal_owner_of_pet != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="pet_paperwork_no">No</label>
@@ -526,7 +561,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="pet_abuser_paperwork_yes" value="yes" name="pet_abuser_paperwork"
                                                                     @if ( $tempPet->abuser_legal_owner_of_pet == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="pet_abuser_paperwork_yes">Yes</label>
@@ -534,7 +569,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="pet_abuser_paperwork_no" value="no" name="pet_abuser_paperwork"
                                                                     @if ( $tempPet->abuser_legal_owner_of_pet != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="pet_abuser_paperwork_no">No</label>
@@ -548,7 +583,7 @@
                                                 <div class="form-group col-md-12">
                                                     <label for="abuser_details">Please add any details about the abuser that may be helpful for protection. (frequent locations, names of friends, phone numbers used, etc)</label>
                                                     <textarea class="form-control" id="abuser_details" name="abuser_details" rows="2" disabled
-                                                    >{{$dataEntry->abuser_notes}}</textarea>
+                                                        >{{$dataEntry->abuser_notes}}</textarea>
                                                     <div class="invalid-feedback">More example invalid feedback text</div>
                                                 </div>
                                             </div>
@@ -560,7 +595,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="boarding_options_yes" value="yes" name="boarding_options"
                                                                     @if ( $dataEntry->explored_boarding_options == 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="boarding_options_yes">Yes</label>
@@ -568,7 +603,7 @@
                                                         <div class="custom-control custom-radio custom-control-inline">
                                                             <input  type="radio" id="boarding_options_no" value="no" name="boarding_options"
                                                                     @if ( $dataEntry->explored_boarding_options != 1 ) )
-                                                                    checked
+                                                                        checked
                                                                     @endif
                                                                     class="custom-control-input" disabled>
                                                             <label class="custom-control-label" for="boarding_options_no">No</label>
@@ -598,6 +633,8 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
+
 @endsection

@@ -49,10 +49,10 @@ class AccountSettingsController extends Controller
                     $admin->name = $request->name;
                     $admin->email = $request->email;
                     $admin->update();
-                    return redirect()->back()->with('message0', 'Information successfully updated!');
+                    return redirect()->back()->with('success', 'Information successfully updated!');
 
                 } elseif ($check_admin->id != $admin->id) {
-                    return redirect()->back()->with('message', 'Admin user with this email address already exists!');
+                    return redirect()->back()->with('email-error', 'Admin user with this email address already exists!');
                 }
             } // if
         } // if
@@ -64,8 +64,8 @@ class AccountSettingsController extends Controller
         {
             // validate data from from
             $validator = Validator::make($request->all(), [
-                'old_password'  =>  'required|string|min:6|max:40',
-                'new_password'  =>  'required|string|min:6|max:40',
+                'old_password'  =>  'required|string|min:8|max:20',
+                'new_password'  =>  'required|string|min:8|max:20|regex:/^(?=.*[A-Z])(?=.*\d).+$/',
                 'new_password2' =>  'required|same:new_password',
             ]);
 
@@ -83,11 +83,11 @@ class AccountSettingsController extends Controller
                     $admin->password = $hashed;
                     $admin->update();
                     // $admin_message = '<div class="alerts alert-green center"><p>Password updated!</p></div>';
-                    return redirect()->back()->with('message1', 'Password updated!');
+                    return redirect()->back()->with('password-success', 'Password updated!');
 
                 } else {
                     // invalid old password
-                    return redirect()->back()->with('message2', 'Invalid old password!');
+                    return redirect()->back()->with('old-password-error', 'Invalid old password!');
                     // $admin_message = '<div class="alerts alert-error center"><p>Invalid old password!</p></div>';
                 }
                 
@@ -98,15 +98,15 @@ class AccountSettingsController extends Controller
                 $errors = $validator->errors();
 
                 if ( $errors->first('old_password') != null ){
-                    return redirect()->back()->with('message3', $errors->first('old_password'));
+                    return redirect()->back()->with('old-password-validation-error', $errors->first('old_password'));
                 }
 
                 if ( $errors->first('new_password') != null ){
-                    return redirect()->back()->with('message4', $errors->first('new_password'));
+                    return redirect()->back()->with('new-password-validation-error', $errors->first('new_password'));
                 }
 
                 if ( $errors->first('new_password2') != null ){
-                    return redirect()->back()->with('message5', $errors->first('new_password2'));
+                    return redirect()->back()->with('repeat-password-validation-error', $errors->first('new_password2'));
                 }
             }
         }

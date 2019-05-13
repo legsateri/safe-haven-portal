@@ -78,7 +78,7 @@
 
         <div class="form row">
             <div class="form-group col-md-4  offset-md-2">
-                <label for="organisation_type">Organisation type</label>
+                <label for="organisation_type">Organization type</label>
                 <br>
                 <select name="organisation_type" id="organisation_type">
                     <option value="">Select type</option>
@@ -178,7 +178,7 @@
                 <input  type="text" class="form-control"
                         id="street" name="street" 
                         maxlength="100" 
-                        placeholder="street nad number"
+                        placeholder="Number and street"
                         value="{{ old('street') }}"
                         >
                 <!-- error message -->

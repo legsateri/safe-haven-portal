@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>SB Admin - Start Bootstrap Template</title>
+  <title>Safe Haven Network</title>
   <!-- Bootstrap core CSS-->
   <link href="{{url('/')}}/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
@@ -66,7 +66,7 @@
     <!-- Page level plugin JavaScript-->
     <!-- <script src="{{url('/')}}/js/Chart.min.js"></script> -->
     <!-- Custom scripts for all pages-->
-    <!-- <script src="{{url('/')}}/js/sb-admin.min.js"></script> -->
+    <script src="{{url('/')}}/js/sb-admin.min.js"></script>
     <!-- Custom scripts for this page-->
     <!-- <script src="{{url('/')}}/js/sb-admin-charts.min.js"></script> -->
     <script src="{{url('/')}}/js/jquery.mask.js"></script>
@@ -74,6 +74,9 @@
     <script src="{{url('/')}}/js/sh_custom.js"></script>
     @yield('pageJS')
   </div>
+
+@stack('js-radio')
+
 </body>
 
 </html>

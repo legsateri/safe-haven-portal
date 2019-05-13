@@ -21,7 +21,7 @@
 
     <div class="row">
         <div class="form-group col-md-8 offset-md-2">   
-            <h4>Organisation Users</h4>
+            <h4>Organization Users</h4>
             <hr> 
         </div>
     </div>

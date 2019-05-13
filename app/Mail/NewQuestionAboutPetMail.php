@@ -29,6 +29,6 @@ class NewQuestionAboutPetMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.new_question_about_pet');
+        return $this->view('emails.new_question_about_pet')->subject($this->data['subject']);
     }
 }

@@ -4,7 +4,7 @@
 <meta name="author" content="">
 <link rel="icon" href="../../../../favicon.ico">
 
-<title>SHN Secure Portal</title>
+<title>Safe Haven Network</title>
 
 <!-- Bootstrap core CSS -->
 <link href="{{url('/')}}/css/bootstrap.min.css" rel="stylesheet">

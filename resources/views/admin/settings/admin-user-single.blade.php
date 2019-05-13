@@ -69,7 +69,7 @@
 @endif
 
 
-    <div class="card mb-3">
+    <div class="card mb-3 edit_admin_user_cont">
         <div class="card-header">
             <div class="row">
                 <div class="col-lg-6 col-md-6">
@@ -216,6 +216,9 @@
                                 maxlength="40"
                                 placeholder="new admin password" 
                                 >
+                        <small id="passwordHelpBlock" class="form-text text-muted">
+                            Your password must be 8-20 characters long and contain at least one upper-case letter and one number.
+                        </small>
                         <!-- error message -->
                         @if ($errors->has('new_password'))
                             <div class="text-danger">
@@ -231,6 +234,8 @@
                                 maxlength="40" 
                                 placeholder="Repeat password"
                                 >
+                        <small id="passwordConfirmHelpBlock" class="form-text text-muted">
+                        </small>
                         <!-- error message -->
                         @if ($errors->has('repeat_password'))
                             <div class="text-danger">

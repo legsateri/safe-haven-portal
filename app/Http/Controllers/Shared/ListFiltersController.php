@@ -31,7 +31,9 @@ class ListFiltersController extends Controller
         'clients_in_need',
         'current_clients',
         'pets_in_need',
-        'accepted_pets'
+        'accepted_pets',
+        'clients_archive',
+        'pets_archive'
     ];
 
 
@@ -58,6 +60,12 @@ class ListFiltersController extends Controller
                         break;
                     case 'accepted_pets':
                         $this->_acceptedPetsFilter($request);
+                        break;
+                    case 'clients_archive':
+                        $this->_clientsArchiveFilter($request);
+                        break;
+                    case 'pets_archive':
+                        $this->_petsArchiveFilter($request);
                         break;
 
                 } // end switch
@@ -130,18 +138,17 @@ class ListFiltersController extends Controller
      */
     protected function _petsInNeedFilter($request)
     {
-        // get all pet types
+        /*// get all pet types
         $pet_types = "";
         $pet_types_db = DB::table('object_types')->where('type', 'pet')->select('id')->get();
         foreach( $pet_types_db as $pet_type_db )
         {
             $pet_types .= ',' . (string)$pet_type_db->id;
-        }
-        
+        }*/
+
         // validate request data
         $validator = Validator::make($request->all(), [
-            'order_by' => 'required|in:asc,desc',
-            'pet_type' => 'required|in:all' . $pet_types
+            'order_by' => 'required|in:asc,desc'
         ]);
 
         if ( !$validator->fails() )
@@ -149,8 +156,7 @@ class ListFiltersController extends Controller
             // save filter rules in temp data
             $temp = TempObject::get(Auth::user()->id, 'list-filters');
             $temp['pets_in_need'] = [
-                'order_by' => $request->order_by,
-                'pet_type' => $request->pet_type
+                'order_by' => $request->order_by
             ];
             TempObject::set(Auth::user()->id, 'list-filters', $temp);
         }
@@ -191,5 +197,54 @@ class ListFiltersController extends Controller
 
     } // end _acceptedPetsFilter
 
+    /**
+     * handle update filter rules
+     * for clients archive list
+     */
+    protected function _clientsArchiveFilter($request)
+    {
+        // validate request data
+        $validator = Validator::make($request->all(), [
+            'order_by' => 'required|in:asc,desc',
+            'filter_by_release_state' => 'required|in:all,services_completed,client_chose_not_to_proceed,services_no_longer_needed'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // save filter rules in temp data
+            $temp = TempObject::get(Auth::user()->id, 'list-filters');
+            $temp['clients_archive'] = [
+                'order_by' => $request->order_by,
+                'filter_by_release_state' => $request->filter_by_release_state
+            ];
+            TempObject::set(Auth::user()->id, 'list-filters', $temp);
+        }
+
+    } // end _clientsArchiveFilter
+
+    /**
+     * handle update filter rules
+     * for pets archive list
+     */
+    protected function _petsArchiveFilter($request)
+    {
+        // validate request data
+        $validator = Validator::make($request->all(), [
+            'order_by' => 'required|in:asc,desc',
+            'filter_by_release_state' => 'required|in:all,released_to_owner,client_chose_not_to_proceed,released_to_adoption_pool,pet_not_admitted'
+        ]);
+
+        if ( !$validator->fails() )
+        {
+            // save filter rules in temp data
+            $temp = TempObject::get(Auth::user()->id, 'list-filters');
+            $temp['pets_archive'] = [
+                'order_by' => $request->order_by,
+                'filter_by_release_state' => $request->filter_by_release_state
+            ];
+            TempObject::set(Auth::user()->id, 'list-filters', $temp);
+        }
+
+    } // end _petsArchiveFilter
 
 }

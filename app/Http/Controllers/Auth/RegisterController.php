@@ -69,7 +69,7 @@ class RegisterController extends Controller
             'first_name'        => 'required|string|max:25',
             'last_name'         => 'required|string|max:25',
             'email'             => 'required|string|email|max:45|unique:users',
-            'password'          => 'required|string|min:6|max:20|confirmed',
+            'password'          => 'required|string|min:8|max:20|regex:/^(?=.*[A-Z])(?=.*\d).+$/|confirmed',
 
             'already_with_org'  => 'nullable|in:on',
             'org_name'          => 'nullable|max:40|required_without:already_with_org',

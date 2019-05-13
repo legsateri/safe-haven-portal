@@ -82,19 +82,19 @@ class OrganizationController extends Controller
      * Update user organisation page.
      */
     public function updateInfo(Request $request){
-        // dd($request);
+
         //validate data from form
         $validator = Validator::make($request->all(),[          
             'name'                  => 'required|string|max:255',
-            'code'                  => 'nullable|string|max:20',
+            'code'                  => 'nullable|string|max:20|unique:organisations,code,'.Auth()->user()->organisation_id.',id',
             'tax_id'                => 'nullable|regex:/^\d{2}-\d{7}$/',
             'services'              => 'nullable|string|max:3000',
             'office_hours'          => 'nullable|string|max:1000',
             'website'               => 'nullable|max:100|url',
             'geographic_area_served'=> 'nullable|string|max:3000',
             // 'org_admin'          => '',
-            'email'                 => 'required|email|max:255',
-            'phone_number'          => 'required|regex:/^\d{3}\d{3}\d{4}$/',
+            'email'                 => 'required|email|max:255|unique:organisations,email,'.Auth()->user()->organisation_id.',id',
+            'phone_number'          => 'required|regex:/^\d{3}-\d{3}-\d{4}$/',
             'street'                => 'nullable|string|max:255',
             'city'                  => 'nullable|string|max:255',
             'zip_code'              => 'nullable|regex:/^\d{5}$/',
@@ -193,7 +193,7 @@ class OrganizationController extends Controller
                     $organisationAddress->save();
                 }
 
-                return redirect()->back()->with('success', 'Organisation successfully updated!');
+                return redirect()->back()->with('success', 'Organization successfully updated!');
 
             } elseif (!isset($organisationAdmin->id)) {
                 return redirect()->back()->with('error', 'You have no authority to make changes!');

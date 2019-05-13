@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Advocate;
 
+use App\ApplicationPet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -312,7 +313,7 @@ class ClientsController extends Controller
             ])
             ->get();
 
-            foreach( $dataEntriesPets[$dataEntry->id] as $tempPet )
+            foreach( $dataEntriesPets[$dataEntry->application_pets_id] as $tempPet )
             {
                 if( !isset( $dataEntriesPetLeads[$dataEntry->client_id] ) )
                 {
@@ -404,6 +405,384 @@ class ClientsController extends Controller
     }
 
 
+    /**
+     * clients archive list page
+     */
+    public function archiveList(){
+
+        $currentUser = UserObject::get(Auth::user()->email, 'email');
+
+        // get list filter rules
+        $filter_rules = [];
+        $temp = TempObject::get(Auth::user()->id, 'list-filters');
+        if ( isset($temp['clients_archive']) )
+        {
+            $filter_rules = $temp['clients_archive'];
+        }
+        // defaults for filter
+        if ( !isset( $filter_rules['order_by'] ) ) { $filter_rules['order_by'] = 'asc'; }
+        if ( !isset( $filter_rules['filter_by_release_state'] ) ) { $filter_rules['filter_by_release_state'] = 'all'; }
+
+        $petTypes = ObjectType::where('type', 'pet')->get();
+        $phoneTypes = ObjectType::where('type', 'phone')->get();
+        $states = State::all();
+        $preferedContactMethods = [
+            'phone' => 'Phone',
+            'email' => 'Email',
+            'text_message' => 'Text message'
+        ];
+
+        // get client list
+        if ( $filter_rules['filter_by_release_state'] == 'all' )
+        {
+            $dataEntries = DB::table('applications')
+                ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
+                ->leftJoin('organisations', 'application_pets.shelter_id_previous_state', '=', 'organisations.id')
+                ->join('clients', 'applications.client_id', '=', 'clients.id')
+                // ->join('pets', 'application_pets.id', '=', 'pets.pet_application_id')
+                ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+                ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+                ->where([
+                    ['addresses.entity_type', '=', 'client'],
+                    ['phones.entity_type', '=', 'client'],
+//                    ['applications.status', '=', '1'],
+                    ['applications.release_status_id', '<>', null],
+                    ['applications.organisation_id', '=', $currentUser->organisation_id],
+//                    ['applications.accepted_by_advocate_id', '=', Auth::user()->id]
+                ])
+                ->select(
+                    'applications.id as id',
+                    'clients.id as client_id',
+                    'applications.created_by_advocate_id as created_by_advocate_id',
+                    'applications.accepted_by_advocate_id as accepted_by_advocate_id',
+                    'applications.status as status',
+                    'applications.police_involved as police_involved',
+                    'applications.protective_order as protective_order',
+                    'applications.abuser_notes as abuser_notes',
+                    'applications.release_status_id as release_status_id',
+                    'applications.created_at as created_at',
+                    'applications.updated_at as closed_on',
+                    'applications.id as application_id',
+                    'application_pets.id as application_pets_id',
+                    // 'application_pets.pet_id as pet_id',
+                    'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
+                    // 'application_pets.abuser_visiting_access as abuser_visiting_access',
+                    // 'application_pets.estimated_lenght_of_housing as estimated_lenght_of_housing',
+                    // 'application_pets.pet_protective_order as pet_protective_order',
+                    // 'application_pets.client_legal_owner_of_pet as client_legal_owner_of_pet',
+                    // 'application_pets.abuser_legal_owner_of_pet as abuser_legal_owner_of_pet',
+                    'application_pets.explored_boarding_options as explored_boarding_options',
+                    'clients.first_name as first_name',
+                    'clients.last_name as last_name',
+                    'clients.email as email',
+                    'clients.best_way_to_reach as best_way_to_reach',
+                    'clients.pets_count as pets_count',
+                    // 'pets.slug as slug',
+                    // 'pets.pet_type_id as pet_type_id',
+                    // 'pets.name as name',
+                    // 'pets.breed as breed',
+                    // 'pets.weight as weight',
+                    // 'pets.age as age',
+                    // 'pets.reported as reported',
+                    // 'pets.description as description',
+                    // 'pets.microchipped as microchipped',
+                    // 'pets.vaccinations as vaccinations',
+                    // 'pets.sprayed as sprayed',
+                    // 'pets.objection_to_spray as objection_to_spray',
+                    // 'pets.dietary_needs as dietary_needs',
+                    // 'pets.vet_needs as vet_needs',
+                    // 'pets.temperament as temperament',
+                    // 'pets.aditional_info as aditional_info',
+                    'addresses.state as state',
+                    'addresses.city as city',
+                    'addresses.zip_code as zip_code',
+                    'addresses.street as street',
+                    'phones.number as number',
+                    'phones.phone_type_id as phone_type_id',
+                    'organisations.name as shelter_name'
+                )
+                ->orderBy('applications.created_at', $filter_rules['order_by'])
+                ->paginate(4);
+        }
+        elseif( $filter_rules['filter_by_release_state'] == 'services_completed' )
+        {
+            $dataEntries = DB::table('applications')
+                ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
+                ->leftJoin('organisations', 'application_pets.shelter_id_previous_state', '=', 'organisations.id')
+                ->join('clients', 'applications.client_id', '=', 'clients.id')
+                // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+                ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+                ->where([
+                    ['addresses.entity_type', '=', 'client'],
+                    ['phones.entity_type', '=', 'client'],
+//                    ['applications.status', '=', '1'],
+                    ['applications.release_status_id', '=', '4'],
+                    ['applications.organisation_id', '=', $currentUser->organisation_id]
+//                    ['applications.accepted_by_advocate_id', '=', Auth::user()->id],
+                ])
+                ->select(
+                    'applications.id as id',
+                    'clients.id as client_id',
+                    'applications.created_by_advocate_id as created_by_advocate_id',
+                    'applications.accepted_by_advocate_id as accepted_by_advocate_id',
+                    'applications.status as status',
+                    'applications.police_involved as police_involved',
+                    'applications.protective_order as protective_order',
+                    'applications.abuser_notes as abuser_notes',
+                    'applications.release_status_id as release_status_id',
+                    'applications.created_at as created_at',
+                    'applications.updated_at as closed_on',
+                    'applications.id as application_id',
+                    'application_pets.id as application_pets_id',
+                    // 'application_pets.pet_id as pet_id',
+                    'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
+                    // 'application_pets.abuser_visiting_access as abuser_visiting_access',
+                    // 'application_pets.estimated_lenght_of_housing as estimated_lenght_of_housing',
+                    // 'application_pets.pet_protective_order as pet_protective_order',
+                    // 'application_pets.client_legal_owner_of_pet as client_legal_owner_of_pet',
+                    // 'application_pets.abuser_legal_owner_of_pet as abuser_legal_owner_of_pet',
+                    'application_pets.explored_boarding_options as explored_boarding_options',
+                    'clients.first_name as first_name',
+                    'clients.last_name as last_name',
+                    'clients.email as email',
+                    'clients.best_way_to_reach as best_way_to_reach',
+                    'clients.pets_count as pets_count',
+                    // 'pets.slug as slug',
+                    // 'pets.pet_type_id as pet_type_id',
+                    // 'pets.name as name',
+                    // 'pets.breed as breed',
+                    // 'pets.weight as weight',
+                    // 'pets.age as age',
+                    // 'pets.reported as reported',
+                    // 'pets.description as description',
+                    // 'pets.microchipped as microchipped',
+                    // 'pets.vaccinations as vaccinations',
+                    // 'pets.sprayed as sprayed',
+                    // 'pets.objection_to_spray as objection_to_spray',
+                    // 'pets.dietary_needs as dietary_needs',
+                    // 'pets.vet_needs as vet_needs',
+                    // 'pets.temperament as temperament',
+                    // 'pets.aditional_info as aditional_info',
+                    'addresses.state as state',
+                    'addresses.city as city',
+                    'addresses.zip_code as zip_code',
+                    'addresses.street as street',
+                    'phones.number as number',
+                    'phones.phone_type_id as phone_type_id',
+                    'organisations.name as shelter_name'
+                )
+                ->orderBy('applications.created_at', $filter_rules['order_by'])
+                ->paginate(4);
+        }
+        elseif( $filter_rules['filter_by_release_state'] == 'client_chose_not_to_proceed' )
+        {
+            $dataEntries = DB::table('applications')
+                ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
+                ->leftJoin('organisations', 'application_pets.shelter_id_previous_state', '=', 'organisations.id')
+                ->join('clients', 'applications.client_id', '=', 'clients.id')
+                // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+                ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+                ->where([
+                    ['addresses.entity_type', '=', 'client'],
+                    ['phones.entity_type', '=', 'client'],
+//                    ['applications.status', '=', '1'],
+                    ['applications.release_status_id', '=', '5'],
+                    ['applications.organisation_id', '=', $currentUser->organisation_id]
+//                    ['applications.accepted_by_advocate_id', '=', Auth::user()->id],
+                ])
+                ->select(
+                    'applications.id as id',
+                    'clients.id as client_id',
+                    'applications.created_by_advocate_id as created_by_advocate_id',
+                    'applications.accepted_by_advocate_id as accepted_by_advocate_id',
+                    'applications.status as status',
+                    'applications.police_involved as police_involved',
+                    'applications.protective_order as protective_order',
+                    'applications.abuser_notes as abuser_notes',
+                    'applications.release_status_id as release_status_id',
+                    'applications.created_at as created_at',
+                    'applications.updated_at as closed_on',
+                    'applications.id as application_id',
+                    'application_pets.id as application_pets_id',
+                    // 'application_pets.pet_id as pet_id',
+                    'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
+                    // 'application_pets.abuser_visiting_access as abuser_visiting_access',
+                    // 'application_pets.estimated_lenght_of_housing as estimated_lenght_of_housing',
+                    // 'application_pets.pet_protective_order as pet_protective_order',
+                    // 'application_pets.client_legal_owner_of_pet as client_legal_owner_of_pet',
+                    // 'application_pets.abuser_legal_owner_of_pet as abuser_legal_owner_of_pet',
+                    'application_pets.explored_boarding_options as explored_boarding_options',
+                    'clients.first_name as first_name',
+                    'clients.last_name as last_name',
+                    'clients.email as email',
+                    'clients.best_way_to_reach as best_way_to_reach',
+                    'clients.pets_count as pets_count',
+                    // 'pets.slug as slug',
+                    // 'pets.pet_type_id as pet_type_id',
+                    // 'pets.name as name',
+                    // 'pets.breed as breed',
+                    // 'pets.weight as weight',
+                    // 'pets.age as age',
+                    // 'pets.reported as reported',
+                    // 'pets.description as description',
+                    // 'pets.microchipped as microchipped',
+                    // 'pets.vaccinations as vaccinations',
+                    // 'pets.sprayed as sprayed',
+                    // 'pets.objection_to_spray as objection_to_spray',
+                    // 'pets.dietary_needs as dietary_needs',
+                    // 'pets.vet_needs as vet_needs',
+                    // 'pets.temperament as temperament',
+                    // 'pets.aditional_info as aditional_info',
+                    'addresses.state as state',
+                    'addresses.city as city',
+                    'addresses.zip_code as zip_code',
+                    'addresses.street as street',
+                    'phones.number as number',
+                    'phones.phone_type_id as phone_type_id',
+                    'organisations.name as shelter_name'
+                )
+                ->orderBy('applications.created_at', $filter_rules['order_by'])
+                ->paginate(4);
+        }
+        elseif( $filter_rules['filter_by_release_state'] == 'services_no_longer_needed' )
+        {
+            $dataEntries = DB::table('applications')
+                ->join('application_pets', 'applications.id', '=', 'application_pets.application_id')
+                ->leftJoin('organisations', 'application_pets.shelter_id_previous_state', '=', 'organisations.id')
+                ->join('clients', 'applications.client_id', '=', 'clients.id')
+                // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
+                ->join('addresses', 'applications.client_id' , '=' , 'addresses.entity_id')
+                ->join('phones', 'applications.client_id' , '=' , 'phones.entity_id')
+                ->where([
+                    ['addresses.entity_type', '=', 'client'],
+                    ['phones.entity_type', '=', 'client'],
+//                    ['applications.status', '=', '1'],
+                    ['applications.release_status_id', '=', '6'],
+                    ['applications.organisation_id', '=', $currentUser->organisation_id]
+//                    ['applications.accepted_by_advocate_id', '=', Auth::user()->id],
+                ])
+                ->select(
+                    'applications.id as id',
+                    'clients.id as client_id',
+                    'applications.created_by_advocate_id as created_by_advocate_id',
+                    'applications.accepted_by_advocate_id as accepted_by_advocate_id',
+                    'applications.status as status',
+                    'applications.police_involved as police_involved',
+                    'applications.protective_order as protective_order',
+                    'applications.abuser_notes as abuser_notes',
+                    'applications.release_status_id as release_status_id',
+                    'applications.created_at as created_at',
+                    'applications.updated_at as closed_on',
+                    'applications.id as application_id',
+                    'application_pets.id as application_pets_id',
+                    // 'application_pets.pet_id as pet_id',
+                    'application_pets.accepted_by_shelter_organisation_id as accepted_by_shelter_organisation_id',
+                    // 'application_pets.abuser_visiting_access as abuser_visiting_access',
+                    // 'application_pets.estimated_lenght_of_housing as estimated_lenght_of_housing',
+                    // 'application_pets.pet_protective_order as pet_protective_order',
+                    // 'application_pets.client_legal_owner_of_pet as client_legal_owner_of_pet',
+                    // 'application_pets.abuser_legal_owner_of_pet as abuser_legal_owner_of_pet',
+                    'application_pets.explored_boarding_options as explored_boarding_options',
+                    'clients.first_name as first_name',
+                    'clients.last_name as last_name',
+                    'clients.email as email',
+                    'clients.best_way_to_reach as best_way_to_reach',
+                    'clients.pets_count as pets_count',
+                    // 'pets.slug as slug',
+                    // 'pets.pet_type_id as pet_type_id',
+                    // 'pets.name as name',
+                    // 'pets.breed as breed',
+                    // 'pets.weight as weight',
+                    // 'pets.age as age',
+                    // 'pets.reported as reported',
+                    // 'pets.description as description',
+                    // 'pets.microchipped as microchipped',
+                    // 'pets.vaccinations as vaccinations',
+                    // 'pets.sprayed as sprayed',
+                    // 'pets.objection_to_spray as objection_to_spray',
+                    // 'pets.dietary_needs as dietary_needs',
+                    // 'pets.vet_needs as vet_needs',
+                    // 'pets.temperament as temperament',
+                    // 'pets.aditional_info as aditional_info',
+                    'addresses.state as state',
+                    'addresses.city as city',
+                    'addresses.zip_code as zip_code',
+                    'addresses.street as street',
+                    'phones.number as number',
+                    'phones.phone_type_id as phone_type_id',
+                    'organisations.name as shelter_name'
+                )
+                ->orderBy('applications.created_at', $filter_rules['order_by'])
+                ->paginate(4);
+        }
+        else
+        {
+            die('internal error');
+        }
+        // dd($dataEntries);
+
+        /* No badges in archive
+        // get Q&A unanswered questions number
+        $qa_badge = [];
+
+        foreach( $dataEntries as $dataEntry )
+        {
+            $qa_badge[$dataEntry->id] = 0;
+
+            $questions = DB::table('application_pets')
+                ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+                ->leftJoin('question_conversation_messages', 'question_conversations.id', '=', 'question_conversation_messages.conversation_id')
+                ->where([
+                    ['application_pets.application_id', '=', $dataEntry->id]
+                ])
+                ->get();
+            // dd($questions);
+
+            foreach( $questions as $question )
+            {
+                if( $question->message == null )
+                {
+                    $qa_badge[$dataEntry->id] =  $qa_badge[$dataEntry->id] + 1;
+                }
+            }
+
+        }
+        */
+
+        $dataEntriesPets = [];
+        $dataEntriesPetLeads = [];
+        foreach( $dataEntries as $dataEntry )
+        {
+            $dataEntriesPets[$dataEntry->application_pets_id] = DB::table('pets')
+                ->where([
+                    ['pets.client_id', '=', $dataEntry->client_id]
+                ])
+                ->get();
+
+            foreach( $dataEntriesPets[$dataEntry->application_pets_id] as $tempPet )
+            {
+                if( !isset( $dataEntriesPetLeads[$dataEntry->client_id] ) )
+                {
+                    $dataEntriesPetLeads[$dataEntry->client_id]['abuser_notes'] = $dataEntry->abuser_notes;
+                    $dataEntriesPetLeads[$dataEntry->client_id]['explored_boarding_options'] = $dataEntry->explored_boarding_options;
+                    $dataEntriesPetLeads[$dataEntry->client_id]['protective_order'] = $dataEntry->protective_order;
+                    $dataEntriesPetLeads[$dataEntry->client_id]['police_involved'] = $dataEntry->police_involved;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        return view('auth.advocate.clientsArchive',
+            compact('currentUser', 'dataEntries', 'dataEntriesPets', 'dataEntriesPetLeads', 'petTypes',
+                'phoneTypes', 'states', 'preferedContactMethods', 'qa_badge', 'filter_rules'));
+
+    }
+
 
     /**
      * ajax handler for accepting new client
@@ -468,6 +847,8 @@ class ClientsController extends Controller
                 )
                 ->get();
 
+                $data['subject'] = "Safe Haven Secure Portal notification: New Pet(s) in need available";
+
                 // send email notification
                 Mail::bcc($this->_getActiveShelterUsers())->send(new NewPetInNeedMail($data));
 
@@ -479,7 +860,7 @@ class ClientsController extends Controller
 
         return [
             'success' => false,
-            'message' => 'Accepting client application failed'
+            'message' => 'This Client has already been accepted. Refresh your page to continue.'
         ];
     }
 
@@ -489,6 +870,7 @@ class ClientsController extends Controller
      */
     public function releaseClient(Request $request)
     {
+
         // validate data from request
         $validator = Validator::make($request->all(), [
             'client_id' => 'required|integer|exists:applications,id',
@@ -498,6 +880,19 @@ class ClientsController extends Controller
 
         if ( !$validator->fails() )
         {
+
+            // check if client's pet is currently accepted in shelter
+            $accepted_by_shelter_organisation_id = DB::table('application_pets')
+                ->where('client_id', '=', $request->client_id)
+                ->where('status', '=', 1)
+                ->get();
+            if($accepted_by_shelter_organisation_id->count() !== 0){
+                return [
+                    'success' => false,
+                    'message' => 'The Client can\'t be released because Pet is still not released by the shelter. After Shelter releases the Pet, please refresh your page and try again.'
+                ];
+            }
+
             // check is advocate accepted this client
             $application = Application::where([
                 ['organisation_id', '=', Auth::user()->organisation_id],
@@ -537,7 +932,7 @@ class ClientsController extends Controller
             }
 
         }
-        
+
         return [
             'success' => false,
             'message' => 'Releasing client failed'

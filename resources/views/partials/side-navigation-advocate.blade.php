@@ -29,6 +29,10 @@
           <a href="/application/new"><i class="fa fa-file-text" aria-hidden="true"></i>
             New Client Application</a>
         </li>
+        <li>
+          <a href="/clients/archive"><i class="fa fa-archive" aria-hidden="true"></i>
+            Clients Archive</a>
+        </li>
       </ul>
     </li>
 

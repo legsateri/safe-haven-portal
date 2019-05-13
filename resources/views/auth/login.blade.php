@@ -18,8 +18,8 @@
                         </div>
                     @endif
                     @if ($errors->any())
-                        <div>
-                            <p>invalid credentials</p>
+                        <div class="alert alert-danger">
+                            <p>These credentials do not match our records.</p>
                         </div>
                     @endif
                     <form   class="form-signin"

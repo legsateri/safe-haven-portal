@@ -69,7 +69,7 @@ class QuestionMessages extends Controller
                                     'organisations.name as organisation_name'
                                 )
                                 ->where([
-                                    ['question_conversations.pet_id', '=', $application_pet->pet_id]
+                                    ['question_conversations.application_pet_id', '=', $application_pet->id]
                                 ])
                                 ->orderBy('question_conversations.created_at', 'desc')
                                 ->get();
@@ -162,7 +162,8 @@ class QuestionMessages extends Controller
 
                 // dd($questions);
 
-                $html = view('auth.render.questionsClientListModal', compact('questions', 'advocateOrganisation'))->render();
+                $isClientsArchive = strpos($request->headers->get('referer'), 'clients/archive');
+                $html = view('auth.render.questionsClientListModal', compact('questions', 'advocateOrganisation','isClientsArchive'))->render();
                 // return $html;
                 return [
                     'success' => true,
@@ -220,6 +221,7 @@ class QuestionMessages extends Controller
                 ->join('clients', 'applications.client_id', '=', 'clients.id')
                 // ->join('pets', 'application_pets.pet_id', '=', 'pets.id')
                 ->join('question_conversations', 'application_pets.id', '=', 'question_conversations.application_pet_id')
+                ->join('users', 'application_pets.created_by_advocate_id', '=', 'users.id')
                 ->where([
                     ['application_pets.id', '=', $application_pet->id],
                     ['question_conversations.id', '=', $question->id]
@@ -229,7 +231,8 @@ class QuestionMessages extends Controller
                     'clients.first_name as client_first_name',
                     'clients.last_name as client_last_name',
                     // 'pets.name as pet_name',
-                    'question_conversations.title as question'
+                    'question_conversations.title as question',
+                    'users.id as advocate_id'
                 )
                 ->first();
 
@@ -242,8 +245,11 @@ class QuestionMessages extends Controller
                 )
                 ->get();
 
+                $data['subject'] = "Safe Haven Secure Portal notification: New question posted related to your client's pet";
+
                 // send notification
-                Mail::bcc($this->_getActiveUsersFromOrg($data['application']->adv_organisation_id))->send(new NewQuestionAboutPetMail($data));
+//                Mail::bcc($this->_getActiveUsersFromOrg($data['application']->adv_organisation_id))->send(new NewQuestionAboutPetMail($data));
+                Mail::bcc($this->_getPetsAdvocateMail($data['application']->advocate_id))->send(new NewQuestionAboutPetMail($data));
 
                 return [
                     'success' => true
@@ -339,8 +345,10 @@ class QuestionMessages extends Controller
                     )
                     ->get();
 
+                    $data['subject'] = "Safe Haven Secure Portal notification: New answer posted on question about pet";
+
                     // send notification
-                    Mail::bcc($this->_getActiveUsersFromOrg($data['application']->shelter_organisation_id))->send(new NewAnswerAboutPetMail($data));
+                    Mail::bcc($this->_getActiveUsersFromOrg($petApplication->shelter_organisation_id))->send(new NewAnswerAboutPetMail($data));
 
                     return [
                         'success' => true
@@ -400,8 +408,11 @@ class QuestionMessages extends Controller
                         'pets.name as name'
                     )
                     ->get();
+
+                    $data['subject'] = "Safe Haven Secure Portal notification: New answer posted on question about pet";
+
                     // send notification
-                    Mail::bcc($this->_getActiveUsersFromOrg($data['application']->shelter_organisation_id))->send(new NewAnswerAboutPetMail($data));
+                    Mail::bcc($this->_getActiveUsersFromOrg($petApplication->shelter_organisation_id))->send(new NewAnswerAboutPetMail($data));
 
                     return [
                         'success' => true,
@@ -445,4 +456,20 @@ class QuestionMessages extends Controller
 
         return $emails;
     }
+
+    protected function _getPetsAdvocateMail($advocate_id){
+
+        return DB::table('users')
+            ->where([
+                ['users.id', '=', $advocate_id],
+                ['users.verified', '=', 1],
+                ['users.banned', '=', 0]
+            ])
+            ->select(
+                'users.email'
+            )
+            ->get();
+
+    }
+
 }

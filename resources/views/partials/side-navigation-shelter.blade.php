@@ -1,9 +1,9 @@
 <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item nav_item_logo_cont">
-         <a class="navbar-brand pl-3" href="{{ route('user.dashboard') }}">
-             <img src="{{url('/')}}/img/SHN-side-logo-2-ce9fc412115910e6ac7df874d95a98c9.png" class="logo nav-link-text"/>
-             <img src="{{url('/')}}/img/SHN-side-logo-3-small.png" class="logo logo_collapsed_visible"/>
-         </a>
+            <a class="navbar-brand pl-3" href="{{ route('user.dashboard') }}">
+                <img src="{{url('/')}}/img/SHN-side-logo-2-ce9fc412115910e6ac7df874d95a98c9.png" class="logo nav-link-text"/>
+                <img src="{{url('/')}}/img/SHN-side-logo-3-small.png" class="logo logo_collapsed_visible"/>
+            </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link" href="{{ route('user.dashboard') }}">
@@ -24,6 +24,10 @@
             <li>
               <a href="/pets/in-need"><i class="fa fa-heart" aria-hidden="true"></i>
                  Pets in Need</a>
+            </li>
+            <li>
+              <a href="/pets/archive"><i class="fa fa-archive" aria-hidden="true"></i>
+                 Pets Archive</a>
             </li>
           </ul>
         </li>

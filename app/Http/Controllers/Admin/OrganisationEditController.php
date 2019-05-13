@@ -312,10 +312,10 @@ class OrganisationEditController extends Controller
         // validate data from request
         $validator = Validator::make($request->all(),[
             'email'     => 'nullable|email|max:45|unique:organisations,email,'.$organisation->id,
-            'phone'     => 'nullable|regex:/^\d{3}\d{3}\d{4}$/',
+            'phone'     => 'nullable|regex:/^\d{3}-\d{3}-\d{4}$/',
             'state'     => 'nullable|exists:states,name',
             'city'      => 'nullable|string|max:45',
-            'zip_code'  => 'nullable|string|max:5',
+            'zip_code'  => 'nullable|regex:/^\d{5}$/',
             'street'    => 'nullable|string|max:65',
         ]);
 
@@ -675,7 +675,7 @@ class OrganisationEditController extends Controller
                 }
                 else
                 {
-                    $message = "Organisation is approved! You still need to approve users that belongs to this organization.";
+                    $message = "Organization is approved! You still need to approve users that belongs to this organization.";
                 }
                 // return back with message
                 return redirect()->back()->with('success', $message);

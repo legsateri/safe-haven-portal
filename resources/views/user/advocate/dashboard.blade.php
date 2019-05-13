@@ -18,41 +18,47 @@
                 }
  
             ?>
-            <div class="table-responsive">
-                <table class="table table-striped table-hover" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Organisation</th>
-                            <th scope="col">Created at</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-area-chart"></i>Unread applications
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Organization</th>
+                                <th scope="col">Created at</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                    @foreach($data['applications'] as $application)
-                        <tr>
-                            <th scope="row">{{ $counter }}</th>
-                            <td>{{ $application->first_name }} {{ $application->last_name }}</td>
-                            <td>{{ $application->email }}</td>
-                            <td>{{ $application->org_name }}</td>
-                            <td>{{ $application->created_at }}</td>
-                            <td></td>
-                        </tr>
-                            <?php $counter++; ?>
-                        @endforeach
-                        
-                    </tbody>
-                </table>
+                            @foreach($data['applications'] as $application)
+                                <tr>
+                                    <th scope="row">{{ $counter }}</th>
+                                    <td>{{ $application->first_name }} {{ $application->last_name }}</td>
+                                    <td>{{ $application->email }}</td>
+                                    <td>{{ $application->org_name }}</td>
+                                    <td>{{ $application->created_at }}</td>
+                                    <td></td>
+                                </tr>
+                                <?php $counter++; ?>
+                            @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            
             <div class="row">
                 <div class="col-lg-6">
                     <!--Pie Chart Card-->
                     <div class="card mb-3">
                         <div class="card-header">
-                            <i class="fa fa-pie-chart"></i> Chart of resolutions - released pets </div>
+                            <i class="fa fa-pie-chart"></i> Chart of resolutions - released clients </div>
                         <div class="card-body">
                             @if ($data['total_released_client']!=0) 
                                 <canvas id="myPieChart" width="200px%" height="100"></canvas>

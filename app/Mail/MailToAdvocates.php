@@ -7,19 +7,19 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class NewPetInNeedMail extends Mailable
+class MailToAdvocates extends Mailable
 {
     use Queueable, SerializesModels;
-    public $data;
+    public $client;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($client)
     {
-        $this->data = $data;
+        $this->client = $client;
     }
 
     /**
@@ -29,6 +29,6 @@ class NewPetInNeedMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.new_pet_in_need')->subject($this->data['subject']);
+        return $this->view('emails.new_client_to_advocates')->subject('New client application');
     }
 }

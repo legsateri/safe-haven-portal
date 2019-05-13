@@ -141,6 +141,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		// clients in need list page
 		Route::get('/clients/in-need', 'Advocate\ClientsController@inNeedList')->name('advocate.clients-in-need.list');
 
+        // clients archive list page
+        Route::get('/clients/archive', 'Advocate\ClientsController@archiveList')->name('advocate.clients-archive.list');
+
 		// new client application page (form)
 		Route::get('/application/new', 'Advocate\ApplicationsController@newApplication')->name('advocate.application.new.form');
 		// submit new client application form
@@ -167,6 +170,9 @@ Route::group(['prefix' => env('ADMIN_PANEL_LOCATION', 'admin')], function () {
 		Route::get('/pets', 'Shelter\PetsController@associatedList')->name('shelter.pets.associated.list');
 		// pets in need list page
 		Route::get('/pets/in-need', 'Shelter\PetsController@inNeedList')->name('shelter.pets-in-need.list');
+
+		// pets archive list page
+		Route::get('/pets/archive', 'Shelter\PetsController@archiveList')->name('shelter.pets-archive.list');
 
 		// ajax for accepting new pet
 		Route::post('/pet/accept/ajax', 'Shelter\PetsController@acceptpet');

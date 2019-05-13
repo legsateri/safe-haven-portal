@@ -95,9 +95,10 @@ class OrganisationController extends Controller
             'tax_id'            => 'nullable|regex:/^\d{2}-\d{7}$/|unique:organisations',
             'organisation_type' => 'required|in:' . $organisationTypesIdString,
             'email'             => 'nullable|email|max:45|unique:organisations',
-            'phone'             => 'nullable|numeric|max:10',
+            'phone'             => 'nullable|regex:/^\d{3}-\d{3}-\d{4}$/',
             'city'              => 'nullable|string',
-            'zip_code'          => 'nullable|numeric|max:5',
+            // 'zip_code'          => 'nullable|numeric|max:5',
+            'zip_code'          => 'nullable|regex:/^\d{5}$/',
             'street'            => 'nullable|string|max:50',
             'state'             => 'nullable|exists:states,name',
         ]);

@@ -68,12 +68,12 @@ class HomeController extends Controller
         ->where([
             ['applications.organisation_id', '=', $currentUser->organisation_id],
             ['accepted_by_advocate_id', '=', null],
-            ['release_status_id', '=', null],
+            ['applications.status', '=', 0],
         ])
         ->orWhere([
             ['applications.organisation_id', '=', $currentUser->organisation_id],
             ['accepted_by_advocate_id', '=', ''],
-            ['release_status_id', '=', null],
+            ['applications.status', '=', 0],
         ])
         ->select([
             'clients.first_name as first_name',
@@ -87,52 +87,94 @@ class HomeController extends Controller
         ->get();
 
         // Chart - realeased clients
+        // $completed = DB::table('applications')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->where([
+        //     ['applications.organisation_id', '=', $currentUser->organisation_id],
+        //     ['statuses.type', '=', 'client_release'],
+        //     ['statuses.value', '=', 'completed'],
+        // ])
+        // ->count();
+
         $completed = DB::table('applications')
-        ->join('clients', 'applications.client_id', '=', 'clients.id')
-        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
-        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
-        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
         ->where([
-            ['applications.organisation_id', '=', $currentUser->organisation_id],
-            ['statuses.type', '=', 'client_release'],
-            ['statuses.value', '=', 'completed'],
+            // ['statuses.type', '=', 'client_release'],
+            // ['statuses.value', '=', 'completed'],
+            ['applications.release_status_id', '=', 4],
+            ['applications.organisation_id', '=', Auth::user()->organisation_id]
+
         ])
         ->count();
+
+        // $not_provided = DB::table('applications')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->where([
+        //     ['applications.organisation_id', '=', $currentUser->organisation_id],
+        //     ['statuses.type', '=', 'client_release'],
+        //     ['statuses.value', '=', 'not_provided'],
+        // ])
+        // ->count();
 
         $not_provided = DB::table('applications')
-        ->join('clients', 'applications.client_id', '=', 'clients.id')
-        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
-        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
-        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
         ->where([
-            ['applications.organisation_id', '=', $currentUser->organisation_id],
-            ['statuses.type', '=', 'client_release'],
-            ['statuses.value', '=', 'not_provided'],
+            // ['statuses.type', '=', 'client_release'],
+            // ['statuses.value', '=', 'not_provided'],
+            ['applications.release_status_id', '=', 5],
+            ['applications.organisation_id', '=', Auth::user()->organisation_id]
         ])
         ->count();
+
+        // $no_longer_needed = DB::table('applications')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->where([
+        //     ['applications.organisation_id', '=', $currentUser->organisation_id],
+        //     ['statuses.type', '=', 'client_release'],
+        //     ['statuses.value', '=', 'not_provided'],
+        // ])
+        // ->count();
 
         $no_longer_needed = DB::table('applications')
-        ->join('clients', 'applications.client_id', '=', 'clients.id')
-        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
-        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
-        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
         ->where([
-            ['applications.organisation_id', '=', $currentUser->organisation_id],
-            ['statuses.type', '=', 'client_release'],
-            ['statuses.value', '=', 'not_provided'],
+            // ['statuses.type', '=', 'client_release'],
+            // ['statuses.value', '=', 'not_provided'],
+            ['applications.release_status_id', '=', 6],
+            ['applications.organisation_id', '=', Auth::user()->organisation_id]
         ])
         ->count();
 
-        $total_released_client = DB::table('applications')
-        ->join('clients', 'applications.client_id', '=', 'clients.id')
-        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
-        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
-        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
-        ->where([
-            ['applications.organisation_id', '=', $currentUser->organisation_id],
-            ['statuses.type', '=', 'client_release'],
-        ])
-        ->count();
+        // $total_released_client = DB::table('applications')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->where([
+        //     ['applications.organisation_id', '=', $currentUser->organisation_id],
+        //     ['statuses.type', '=', 'client_release'],
+        // ])
+        // ->count();
+
+        $total_released_client = $completed + $not_provided + $no_longer_needed;
 
         $advocateData['applications'] = $applications;
         $advocateData['completed'] = $completed;
@@ -163,13 +205,16 @@ class HomeController extends Controller
         // ->join('object_types', 'pets.pet_type_id', '=', 'object_types.id')
         ->leftJoin('statuses', 'application_pets.release_status_id','=', 'statuses.id')
         ->where([
-            ['accepted_by_shelter_organisation_id', '=', null],
-            ['application_pets.release_status_id', '=', null],
+            // ['accepted_by_shelter_organisation_id', '=', null],
+            ['application_pets.status', '=', 0],
+            ['applications.status', '=', 1],
+            // ['applications.accepted_by_advocate_id', '<>', null],
+            // ['applications.accepted_by_advocate_id', '<>', ""],
         ])
-        ->orWhere([
-            ['accepted_by_shelter_organisation_id', '=', ''],
-            ['application_pets.release_status_id', '=', null],
-        ])
+        // ->orWhere([
+        //     ['accepted_by_shelter_organisation_id', '=', ''],
+        //     ['application_pets.release_status_id', '=', null],
+        // ])
         ->select([
             'application_pets.id as id',
             'application_pets.created_at as created_at'

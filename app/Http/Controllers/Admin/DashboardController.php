@@ -106,48 +106,72 @@ class DashboardController extends Controller
 
         // Chart - realeased clients
         $completed = DB::table('applications')
-        ->join('clients', 'applications.client_id', '=', 'clients.id')
-        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
-        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
-        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
         ->where([
-            ['statuses.type', '=', 'client_release'],
-            ['statuses.value', '=', 'completed'],
+            // ['statuses.type', '=', 'client_release'],
+            // ['statuses.value', '=', 'completed'],
+            ['applications.release_status_id', '=', 4]
         ])
         ->count();
 
         $not_provided = DB::table('applications')
-        ->join('clients', 'applications.client_id', '=', 'clients.id')
-        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
-        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
-        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
         ->where([
-            ['statuses.type', '=', 'client_release'],
-            ['statuses.value', '=', 'not_provided'],
+            // ['statuses.type', '=', 'client_release'],
+            // ['statuses.value', '=', 'not_provided'],
+            ['applications.release_status_id', '=', 5]
         ])
         ->count();
 
         $no_longer_needed = DB::table('applications')
-        ->join('clients', 'applications.client_id', '=', 'clients.id')
-        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
-        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
-        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
         ->where([
-            ['statuses.type', '=', 'client_release'],
-            ['statuses.value', '=', 'not_provided'],
+            // ['statuses.type', '=', 'client_release'],
+            // ['statuses.value', '=', 'not_provided'],
+            ['applications.release_status_id', '=', 6]
         ])
         ->count();
 
-        $total_released_client = DB::table('applications')
-        ->join('clients', 'applications.client_id', '=', 'clients.id')
-        ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
-        ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
-        ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
-        ->where([
-            ['statuses.type', '=', 'client_release'],
-        ])
-        ->count();
+        // $total_released_client = DB::table('applications')
+        // ->join('clients', 'applications.client_id', '=', 'clients.id')
+        // ->join('organisations', 'applications.organisation_id', '=', 'organisations.id' )
+        // ->join('users', 'applications.created_by_advocate_id', '=', 'users.id')
+        // ->leftJoin('statuses', 'applications.release_status_id','=', 'statuses.id')
+        // ->where([
+        //     ['statuses.type', '=', 'client_release'],
+        // ])
+        // ->count();
 
+        $total_released_client = $completed + $not_provided + $no_longer_needed;
+        
+        // echo "pets_returned_to_owner<br>";
+        // var_dump($pets_returned_to_owner);
+        // echo '<br>pet_released_to_adoption<br>';
+        // var_dump($pet_released_to_adoption);
+        // echo '<br>pet_not_served<br>';
+        // var_dump($pet_not_served);
+        // echo '<br>pet_not_admitted<br>';
+        // var_dump($pet_not_admitted);
+        // echo '<br>total_released_pets<br>';
+        // var_dump($total_released_pets);
+        // echo '<br>completed<br>';
+        // var_dump($completed);
+        // echo '<br>not_provided<br>';
+        // var_dump($not_provided);
+        // echo '<br>no_longer_needed<br>';
+        // var_dump($no_longer_needed);
+        // echo '<br>total_released_client<br>';
+        // var_dump($total_released_client);
+        // exit;
         return  view('admin.dashboard.dashboard', 
                 compact('applications', 'pets_returned_to_owner','pet_released_to_adoption',
                         'pet_not_served','pet_not_admitted','total_released_pets',
